@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: NEXORA-BACKEND
+  data:
+    mongodb:
+      uri: mongodb://shiviraj:shiviraj@localhost:27018/NEXORA?authSource=admin
+
+server:
+  port: 9001
+
+app:
+  security:
+    auth-service-base-url: "http://localhost:9001"
+    internal-access-token: "internalAccessToken"
+    un-secured-path:
+      - "/auth/register"
+      - "/auth/login"
+      - "/auth/validate"
+      - "/users/register"
+    partially-secured-path:
+      - "/premises"
+    validate-path: "/auth/validate"
