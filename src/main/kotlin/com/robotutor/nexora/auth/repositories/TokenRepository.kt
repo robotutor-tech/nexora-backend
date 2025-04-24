@@ -9,5 +9,6 @@ import reactor.core.publisher.Mono
 @Repository
 interface TokenRepository : ReactiveCrudRepository<Token, TokenId> {
     fun findByValue(token: String): Mono<Token>
+    fun findByTokenId(tokenId: TokenId): Mono<Token>
 
 }

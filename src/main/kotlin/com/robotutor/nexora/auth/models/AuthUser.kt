@@ -1,7 +1,7 @@
 package com.robotutor.nexora.auth.models
 
 import com.robotutor.nexora.auth.controllers.views.AuthUserRequest
-import com.robotutor.nexora.utils.models.UserId
+import com.robotutor.nexora.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

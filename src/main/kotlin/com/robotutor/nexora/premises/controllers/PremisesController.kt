@@ -3,7 +3,7 @@ package com.robotutor.nexora.premises.controllers
 import com.robotutor.nexora.premises.controllers.view.PremisesCreateRequest
 import com.robotutor.nexora.premises.controllers.view.PremisesView
 import com.robotutor.nexora.premises.services.PremisesService
-import com.robotutor.nexora.utils.models.UserData
+import com.robotutor.nexora.security.models.UserData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux

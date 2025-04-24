@@ -1,7 +1,7 @@
 package com.robotutor.nexora.user.conrollers.views
 
 import com.robotutor.nexora.user.models.UserDetails
-import com.robotutor.nexora.utils.models.UserId
+import com.robotutor.nexora.security.models.UserId
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size

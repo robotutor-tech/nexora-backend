@@ -1,4 +1,4 @@
-package com.robotutor.nexora.utils.models
+package com.robotutor.nexora.security.models
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.user.models
 
 import com.robotutor.nexora.user.conrollers.views.UserRequest
-import com.robotutor.nexora.utils.models.UserId
+import com.robotutor.nexora.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

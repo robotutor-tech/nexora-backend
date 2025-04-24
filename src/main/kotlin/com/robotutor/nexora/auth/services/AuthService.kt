@@ -2,16 +2,16 @@ package com.robotutor.nexora.auth.services
 
 import com.robotutor.iot.exceptions.BadDataException
 import com.robotutor.iot.exceptions.DuplicateDataException
-import com.robotutor.loggingstarter.Logger
-import com.robotutor.loggingstarter.logOnError
-import com.robotutor.loggingstarter.logOnSuccess
 import com.robotutor.nexora.auth.controllers.views.AuthLoginRequest
 import com.robotutor.nexora.auth.controllers.views.AuthUserRequest
 import com.robotutor.nexora.auth.exceptions.NexoraError
 import com.robotutor.nexora.auth.models.AuthUser
 import com.robotutor.nexora.auth.models.Token
 import com.robotutor.nexora.auth.repositories.AuthRepository
-import com.robotutor.nexora.utils.createMonoError
+import com.robotutor.nexora.logger.Logger
+import com.robotutor.nexora.logger.logOnError
+import com.robotutor.nexora.logger.logOnSuccess
+import com.robotutor.nexora.security.createMonoError
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

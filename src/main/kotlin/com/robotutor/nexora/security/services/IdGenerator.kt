@@ -1,7 +1,7 @@
-package com.robotutor.nexora.utils.services
+package com.robotutor.nexora.security.services
 
-import com.robotutor.nexora.utils.models.ID_SEQUENCE_COLLECTION
-import com.robotutor.nexora.utils.models.IdSequence
+import com.robotutor.nexora.security.models.ID_SEQUENCE_COLLECTION
+import com.robotutor.nexora.security.models.IdSequence
 import org.springframework.data.mongodb.core.FindAndModifyOptions
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria

@@ -1,14 +1,14 @@
 package com.robotutor.nexora.premises.services
 
-import com.robotutor.loggingstarter.Logger
-import com.robotutor.loggingstarter.logOnError
-import com.robotutor.loggingstarter.logOnSuccess
+import com.robotutor.nexora.logger.Logger
+import com.robotutor.nexora.logger.logOnError
+import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.premises.controllers.view.PremisesCreateRequest
 import com.robotutor.nexora.premises.models.IdType
 import com.robotutor.nexora.premises.models.Premises
 import com.robotutor.nexora.premises.repositories.PremisesRepository
-import com.robotutor.nexora.utils.models.UserData
-import com.robotutor.nexora.utils.services.IdGeneratorService
+import com.robotutor.nexora.security.models.UserData
+import com.robotutor.nexora.security.services.IdGeneratorService
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

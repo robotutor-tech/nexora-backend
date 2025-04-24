@@ -13,10 +13,19 @@ app:
     auth-service-base-url: "http://localhost:9001"
     internal-access-token: "internalAccessToken"
     un-secured-path:
-      - "/auth/register"
       - "/auth/login"
       - "/auth/validate"
-      - "/users/register"
+      - "/orchestration/users/register"
     partially-secured-path:
-      - "/premises"
+      - "/orchestration/premises/register"
     validate-path: "/auth/validate"
+  orchestration:
+    internal-access-token: ${app.security.internal-access-token}
+    auth-service:
+      base-url: "http://localhost:9001"
+    user-service:
+      base-url: "http://localhost:9001"
+    premises-service:
+      base-url: "http://localhost:9001"
+    iam-service:
+      base-url: "http://localhost:9001"

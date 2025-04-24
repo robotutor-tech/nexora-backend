@@ -1,4 +1,4 @@
-package com.robotutor.nexora.utils.models
+package com.robotutor.nexora.security.models
 
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.gateway.view.AuthenticationResponseData
@@ -15,9 +15,9 @@ data class UserData(val userId: UserId, val premisesId: PremisesId? = null) : IA
 
 data class UserPremisesData(val userId: UserId, val premisesId: PremisesId) : IAuthenticationData {
     companion object {
-        fun from(authenticationData: AuthenticationResponseData): UserPremisesData {
+        fun from(authenticationData: AuthenticationResponseData): UserPremisesData? {
             if (authenticationData.premisesId == null) {
-                throw Exception("User premises not found") // TODO update this exception with relevant data
+                return null
             }
             return UserPremisesData(userId = authenticationData.userId, premisesId = authenticationData.premisesId)
         }

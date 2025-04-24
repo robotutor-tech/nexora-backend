@@ -1,10 +1,10 @@
 package com.robotutor.nexora.webClient
 
-import com.robotutor.loggingstarter.LogDetails
-import com.robotutor.loggingstarter.Logger
-import com.robotutor.loggingstarter.logOnError
-import com.robotutor.loggingstarter.logOnSuccess
-import com.robotutor.loggingstarter.models.ServerWebExchangeDTO
+import com.robotutor.nexora.logger.LogDetails
+import com.robotutor.nexora.logger.Logger
+import com.robotutor.nexora.logger.logOnError
+import com.robotutor.nexora.logger.logOnSuccess
+import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -12,7 +12,6 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.time.LocalDateTime
 
 @Component
 class WebClientWrapper(private val webClient: WebClient) {
@@ -57,7 +56,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     skipAdditionalDetails = skipLoggingAdditionalDetails,
                     additionalDetails = mapOf("method" to "GET", "path" to url)
                 )
-                .contextWrite { it.putAll(ctx).put("startTime", LocalDateTime.now()) }
+                .contextWrite { it.putAll(ctx) }
                 .doOnSubscribe {
                     logger.info(
                         LogDetails(
@@ -110,7 +109,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     skipAdditionalDetails = skipLoggingAdditionalDetails,
                     additionalDetails = mapOf("method" to "POST", "path" to url)
                 )
-                .contextWrite { it.putAll(ctx).put("startTime", LocalDateTime.now()) }
+                .contextWrite { it.putAll(ctx) }
                 .doOnSubscribe {
                     logger.info(
                         LogDetails(
@@ -160,7 +159,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     skipAdditionalDetails = skipLoggingAdditionalDetails,
                     additionalDetails = mapOf("method" to "GET", "path" to url)
                 )
-                .contextWrite { it.putAll(ctx).put("startTime", LocalDateTime.now()) }
+                .contextWrite { it.putAll(ctx) }
                 .doOnSubscribe {
                     logger.info(
                         LogDetails(
@@ -213,7 +212,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     skipAdditionalDetails = skipLoggingAdditionalDetails,
                     additionalDetails = mapOf("method" to "POST", "path" to url)
                 )
-                .contextWrite { it.putAll(ctx).put("startTime", LocalDateTime.now()) }
+                .contextWrite { it.putAll(ctx) }
                 .doOnSubscribe {
                     logger.info(
                         LogDetails(

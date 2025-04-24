@@ -1,4 +1,4 @@
-package com.robotutor.nexora.utils
+package com.robotutor.nexora.security
 
 import org.springframework.web.server.ServerWebExchange
 import com.robotutor.nexora.webClient.exceptions.BaseException

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.premises.models
 
-import com.robotutor.nexora.utils.models.UserId
+import com.robotutor.nexora.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

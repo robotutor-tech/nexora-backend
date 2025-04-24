@@ -1,18 +1,20 @@
 package com.robotutor.nexora.security.filters
 
 import com.robotutor.iot.exceptions.UnAuthorizedException
-import com.robotutor.loggingstarter.LogDetails
-import com.robotutor.loggingstarter.Logger
-import com.robotutor.loggingstarter.models.RequestDetails
-import com.robotutor.loggingstarter.models.ResponseDetails
-import com.robotutor.loggingstarter.models.ServerWebExchangeDTO
-import com.robotutor.loggingstarter.serializer.DefaultSerializer.serialize
+import com.robotutor.nexora.logger.LogDetails
+import com.robotutor.nexora.logger.Logger
+import com.robotutor.nexora.logger.logOnError
+import com.robotutor.nexora.logger.models.RequestDetails
+import com.robotutor.nexora.logger.models.ResponseDetails
+import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
+import com.robotutor.nexora.logger.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.security.config.AppConfig
+import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.exceptions.NexoraError
 import com.robotutor.nexora.security.gateway.AuthGateway
-import com.robotutor.nexora.utils.createMono
-import com.robotutor.nexora.utils.getTraceId
-import com.robotutor.nexora.utils.models.UserData
+import com.robotutor.nexora.security.getTraceId
+import com.robotutor.nexora.security.models.UserData
+import com.robotutor.nexora.security.models.UserPremisesData
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -24,7 +26,6 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
-import reactor.core.scheduler.Schedulers
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -40,11 +41,18 @@ class ApiFilter(
         val startTime = LocalDateTime.now()
         val additionalDetails = mapOf("method" to exchange.request.method, "path" to exchange.request.uri.path)
         return authorize(exchange)
-            .flatMap { userData ->
-                val authenticationToken = UsernamePasswordAuthenticationToken(userData.userId, null, listOf())
+            .flatMap { pair ->
+                val authenticationToken = UsernamePasswordAuthenticationToken(pair.first.userId, null, listOf())
                 val content = SecurityContextImpl(authenticationToken)
                 chain.filter(exchange)
-                    .contextWrite { it.put(UserData::class.java, userData) }
+                    .contextWrite { it.put(UserData::class.java, pair.first) }
+                    .contextWrite {
+                        if (pair.second != null) {
+                            it.put(UserPremisesData::class.java, pair.second!!)
+                        } else it
+                    }
+                    .contextWrite { it.put("startTime", startTime) }
+                    .contextWrite { it.put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange)) }
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
             }
             .onErrorResume {
@@ -57,11 +65,8 @@ class ApiFilter(
                     .wrap(serialize(unAuthorizedException.errorResponse()).toByteArray())
                 response.writeWith(createMono(content))
             }
-            .publishOn(Schedulers.boundedElastic())
-            .contextWrite {
-                it.put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
-                    .put("startTime", startTime)
-            }
+            .contextWrite { it.put("startTime", startTime) }
+            .contextWrite { it.put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange)) }
             .doFinally {
                 val logDetails = LogDetails.create(
                     message = "Successfully send api response",
@@ -85,26 +90,24 @@ class ApiFilter(
             }
     }
 
-    private fun authorize(exchange: ServerWebExchange): Mono<UserData> {
+    private fun authorize(exchange: ServerWebExchange): Mono<Pair<UserData, UserPremisesData?>> {
         return Mono.deferContextual { context ->
             try {
-                createMono(context.get(UserData::class.java))
+                val userData = context.get(UserData::class.java)
+                val premisesData = context.getOrEmpty<UserPremisesData>(UserPremisesData::class.java)
+                val userPremisesData = if (premisesData.isPresent) premisesData.get() else null
+                createMono(Pair(userData, userPremisesData))
             } catch (ex: Exception) {
                 authorizeUser(exchange)
             }
         }
     }
 
-    private fun authorizeUser(exchange: ServerWebExchange): Mono<UserData> {
-        if (routeValidator.isUnsecured(exchange.request)) {
-            return createMono(UserData("partially secured user"))
-        }
+    private fun authorizeUser(exchange: ServerWebExchange): Mono<out Pair<UserData, UserPremisesData?>> {
         val authHeader = exchange.request.headers.getFirst(AUTHORIZATION)
-
-        if (authHeader == appConfig.internalAccessToken) {
-            return createMono(UserData("Internal access token"))
+        if (routeValidator.isUnsecured(exchange.request) || authHeader == appConfig.internalAccessToken) {
+            return createMono(Pair(UserData("00000000"), null))
         }
-
         val fullSecured = routeValidator.isSecured(exchange.request)
         return authGateway.validate(exchange, fullSecured)
     }

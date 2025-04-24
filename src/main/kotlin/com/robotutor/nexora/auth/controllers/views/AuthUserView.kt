@@ -1,8 +1,10 @@
 package com.robotutor.nexora.auth.controllers.views
 
+import com.robotutor.nexora.auth.models.Invitation
+import com.robotutor.nexora.auth.models.InvitationId
 import com.robotutor.nexora.auth.models.Token
 import com.robotutor.nexora.premises.models.PremisesId
-import com.robotutor.nexora.utils.models.UserId
+import com.robotutor.nexora.security.models.UserId
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
@@ -29,6 +31,17 @@ data class AuthLoginRequest(
     val password: String
 )
 
+data class TokenRequest(
+    @field:Pattern(regexp = "^\\d{8}$", message = "PremisesId should be valid")
+    val premisesId: PremisesId,
+)
+
+data class DeviceRequest(
+    @field:NotBlank(message = "Model No is required")
+    val modelNo: String,
+    @field:NotBlank(message = "Device Name is required")
+    val name: String,
+)
 
 data class TokenView(val token: String) {
     companion object {
@@ -42,6 +55,24 @@ data class AuthValidationView(val userId: UserId, val premisesId: PremisesId?) {
     companion object {
         fun from(token: Token): AuthValidationView {
             return AuthValidationView(userId = token.userId, premisesId = token.premisesId)
+        }
+    }
+}
+
+data class InvitationView(
+    val invitationId: InvitationId,
+    val name: String,
+    val modelNo: String,
+    val token: String,
+) {
+    companion object {
+        fun from(token: Token, invitation: Invitation): InvitationView {
+            return InvitationView(
+                invitationId = invitation.invitationId,
+                name = invitation.name,
+                modelNo = invitation.modelNo,
+                token = token.value,
+            )
         }
     }
 }
