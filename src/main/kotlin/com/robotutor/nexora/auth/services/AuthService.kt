@@ -6,11 +6,11 @@ import com.robotutor.nexora.auth.controllers.views.AuthLoginRequest
 import com.robotutor.nexora.auth.controllers.views.AuthUserRequest
 import com.robotutor.nexora.auth.exceptions.NexoraError
 import com.robotutor.nexora.auth.models.AuthUser
-import com.robotutor.nexora.auth.models.Token
 import com.robotutor.nexora.auth.repositories.AuthRepository
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
+import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.createMonoError
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -20,7 +20,6 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 @Service
 class AuthService(
     val authRepository: AuthRepository,
-    val tokenService: TokenService,
     val passwordEncoder: PasswordEncoder
 ) {
     val logger = Logger(this::class.java)
@@ -40,18 +39,16 @@ class AuthService(
             .logOnError(logger, "", "Successfully registered user ${authUserRequest.userId}")
     }
 
-    fun login(authLoginRequest: AuthLoginRequest): Mono<Token> {
+    fun login(authLoginRequest: AuthLoginRequest): Mono<AuthUser> {
         return authRepository.findByEmail(authLoginRequest.email)
+            .switchIfEmpty { createMonoError(BadDataException(NexoraError.NEXORA0202)) }
             .flatMap {
                 val matches = passwordEncoder.matches(authLoginRequest.password, it.password)
                 if (!matches) {
                     createMonoError(BadDataException(NexoraError.NEXORA0202))
                 } else {
-                    tokenService.generateToken(it)
+                    createMono(it)
                 }
-            }
-            .switchIfEmpty {
-                createMonoError(BadDataException(NexoraError.NEXORA0202))
             }
     }
 

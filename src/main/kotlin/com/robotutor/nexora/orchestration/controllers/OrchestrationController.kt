@@ -6,10 +6,8 @@ import com.robotutor.nexora.orchestration.gateway.view.PremisesView
 import com.robotutor.nexora.orchestration.gateway.view.UserView
 import com.robotutor.nexora.orchestration.services.OrchestratorService
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
@@ -25,4 +23,14 @@ class OrchestrationController(private val orchestratorService: OrchestratorServi
     fun registerPremises(@RequestBody @Validated request: PremisesRegistrationRequest): Mono<PremisesView> {
         return orchestratorService.registerPremises(request)
     }
+
+    @GetMapping("/premises")
+    fun registerPremises(): Flux<PremisesView> {
+        return orchestratorService.getAllPremises()
+    }
+
+//    @PostMapping("/devices/register")
+//    fun registerDevice(@RequestBody @Validated request: DeviceRegistrationRequest) {
+//        return orchestratorService.registerDevice(request)
+//    }
 }

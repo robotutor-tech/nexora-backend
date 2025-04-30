@@ -1,9 +1,11 @@
 package com.robotutor.nexora.auth.models
 
-import com.robotutor.nexora.auth.controllers.views.TokenRequest
+import com.robotutor.nexora.auth.controllers.views.PremisesActorRequest
+import com.robotutor.nexora.auth.models.TokenIdentifierType.*
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.gateway.view.ActorType
+import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.models.UserId
-import com.robotutor.nexora.security.models.UserPremisesData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -23,50 +25,68 @@ data class Token(
     val tokenId: TokenId,
     @Indexed(unique = true)
     val value: String,
-    val userId: UserId,
-    val premisesId: PremisesId? = null,
-    val type: TokenType = TokenType.PARTIAL,
+    val metadata: TokenMetaData,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val expiresOn: LocalDateTime = LocalDateTime.now().plusDays(7)
+    val expiresOn: LocalDateTime
 ) {
-    fun generateToken(tokenId: TokenId, tokenRequest: TokenRequest): Token {
+    fun generatePremisesActorToken(tokenId: TokenId, premisesActorRequest: PremisesActorRequest): Token {
         return Token(
             tokenId = tokenId,
             value = generateTokenValue(),
-            userId = userId,
-            premisesId = tokenRequest.premisesId,
-            type = TokenType.FULL,
-            expiresOn = expiresOn,
+            metadata = TokenMetaData(
+                identifier = premisesActorRequest.actorId,
+                identifierType = PREMISES_ACTOR,
+                premisesId = premisesActorRequest.premisesId
+            ),
+            expiresOn = expiresOn
         )
     }
 
     companion object {
-        fun from(tokenId: TokenId, userId: UserId): Token {
+        fun generateAuthUser(tokenId: TokenId, userId: UserId): Token {
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(),
-                userId = userId,
+                metadata = TokenMetaData(identifier = userId, identifierType = AUTH_USER),
+                expiresOn = LocalDateTime.now().plusDays(7),
             )
         }
 
-        fun generateInvitationToken(tokenId: TokenId, userData: UserPremisesData): Token {
+        fun generateInvitationToken(tokenId: TokenId, invitation: Invitation, userData: PremisesActorData): Token {
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(),
-                userId = userData.userId,
-                premisesId = userData.premisesId,
-                type = TokenType.FULL,
+                metadata = TokenMetaData(
+                    identifier = invitation.invitationId,
+                    identifierType = INVITATION,
+                    premisesId = userData.premisesId
+                ),
                 expiresOn = LocalDateTime.now().plusDays(1)
             )
         }
-
-
     }
 }
 
-enum class TokenType {
-    PARTIAL,
-    FULL
+data class TokenMetaData(
+    val identifier: String,
+    val identifierType: TokenIdentifierType,
+    val premisesId: PremisesId? = null,
+    val actor: ActorData? = null
+)
+
+data class ActorData(val actorId: String, val premisesId: String, val type: ActorType)
+
+enum class ActorType {
+    HUMAN,
+    DEVICE,
+    LOCAL_SERVER,
+    SERVER
+}
+
+enum class TokenIdentifierType {
+    AUTH_USER,
+    PREMISES_ACTOR,
+    INVITATION;
 }
 
 private fun generateTokenValue(length: Int = 120): String {

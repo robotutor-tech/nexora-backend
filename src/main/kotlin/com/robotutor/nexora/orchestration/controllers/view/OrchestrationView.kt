@@ -25,3 +25,10 @@ data class PremisesRegistrationRequest(
     @field:Size(min = 2, max = 30, message = "Name should not be less than 2 char or more than 30 char")
     val name: String,
 )
+
+data class DeviceRegistrationRequest(
+    @field:NotBlank(message = "Model no is required")
+    val modelNo: String,
+    @field:NotBlank(message = "Serial no is required")
+    val serialNo: String,
+)

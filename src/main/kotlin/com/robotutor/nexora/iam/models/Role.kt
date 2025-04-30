@@ -1,5 +1,6 @@
 package com.robotutor.nexora.iam.models
 
+import com.robotutor.nexora.iam.controllers.view.RoleRequest
 import com.robotutor.nexora.premises.models.PremisesId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -24,15 +25,30 @@ data class Role(
     val policies: List<PolicyId> = emptyList(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
-)
+) {
+    companion object {
+        fun from(
+            roleId: RoleId,
+            premisesId: PremisesId,
+            roleRequest: RoleRequest,
+        ): Role {
+            return Role(
+                roleId = roleId,
+                premisesId = premisesId,
+                name = roleRequest.name,
+                role = roleRequest.roleType,
+            )
+        }
+    }
+}
 
 enum class RoleType {
     BOT,
-    OWNER
-    //    CUSTOM,
-    //    GUEST,
-    //    USER,
-    //    ADMIN,
+    CUSTOM,
+    GUEST,
+    USER,
+    ADMIN,
+    OWNER,
 }
 
 typealias RoleId = String

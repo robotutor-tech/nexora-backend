@@ -9,5 +9,5 @@ data class AppConfig(
     val internalAccessToken: String,
     val unSecuredPath: List<String> = emptyList(),
     val partiallySecuredPath: List<String> = emptyList(),
-    val validatePath: String = "/auth/validate"
+    val validatePath: String = "/auth/tokens/validate"
 )

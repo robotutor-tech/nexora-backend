@@ -2,8 +2,9 @@ package com.robotutor.nexora.premises.controllers
 
 import com.robotutor.nexora.premises.controllers.view.PremisesCreateRequest
 import com.robotutor.nexora.premises.controllers.view.PremisesView
+import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.premises.services.PremisesService
-import com.robotutor.nexora.security.models.UserData
+import com.robotutor.nexora.security.models.AuthUserData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -16,13 +17,14 @@ class PremisesController(private val premisesService: PremisesService) {
     @PostMapping
     fun createPremises(
         @RequestBody @Validated premisesRequest: PremisesCreateRequest,
-        userData: UserData
+        authUserData: AuthUserData
     ): Mono<PremisesView> {
-        return premisesService.createPremises(premisesRequest, userData).map { PremisesView.from(it) }
+        return premisesService.createPremises(premisesRequest, authUserData).map { PremisesView.from(it) }
     }
 
+
     @GetMapping
-    fun getPremises(userData: UserData): Flux<PremisesView> {
-        return premisesService.getPremises(userData).map { PremisesView.from(it) }
+    fun getPremises(@RequestParam premisesIds: List<PremisesId>): Flux<PremisesView> {
+        return premisesService.getPremises(premisesIds).map { PremisesView.from(it) }
     }
 }

@@ -7,4 +7,5 @@ enum class NexoraError(override val errorCode: String, override val message: Str
     NEXORA0201("NEXORA-0201", "User already exists with this user id"),
     NEXORA0202("NEXORA-0202", "Invalid credentials"),
     NEXORA0203("NEXORA-0203", "Invalid token"),
+    NEXORA0204("NEXORA-0204", "UnAuthorized user"),
 }
