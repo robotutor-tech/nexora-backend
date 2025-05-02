@@ -5,7 +5,6 @@ import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.Identifier
 import com.robotutor.nexora.security.models.TokenIdentifier
-import com.robotutor.nexora.security.models.UserId
 import com.robotutor.nexora.zone.models.ZoneId
 
 data class AuthenticationResponseData(

@@ -1,7 +1,6 @@
 package com.robotutor.nexora.zone.repositories
 
 import com.robotutor.nexora.premises.models.PremisesId
-import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.zone.models.Zone
 import com.robotutor.nexora.zone.models.ZoneId
 import org.springframework.data.repository.reactive.ReactiveCrudRepository

@@ -103,7 +103,6 @@ data class UserInvitation(
 enum class InvitationStatus {
     INVITED,
     ACCEPTED,
-    EXPIRED,
 }
 
 typealias InvitationId = String

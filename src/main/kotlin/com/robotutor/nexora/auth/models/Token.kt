@@ -2,10 +2,7 @@ package com.robotutor.nexora.auth.models
 
 import com.robotutor.nexora.auth.controllers.views.PremisesActorRequest
 import com.robotutor.nexora.auth.gateways.view.ActorView
-import com.robotutor.nexora.security.models.ActorIdentifier
 import com.robotutor.nexora.security.models.Identifier
-import com.robotutor.nexora.security.models.InvitationData
-import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.models.TokenIdentifier
 import com.robotutor.nexora.security.models.UserId
 import org.bson.types.ObjectId

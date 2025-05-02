@@ -1,6 +1,5 @@
 package com.robotutor.nexora.security.filters
 
-import com.robotutor.nexora.security.config.AppConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
@@ -10,7 +9,7 @@ import org.springframework.web.reactive.result.method.annotation.RequestMappingH
 
 @EnableWebFluxSecurity
 @Configuration
-class WebConfig(private val appConfig: AppConfig) {
+class WebConfig {
     @Bean
     fun handlerMapping(): RequestMappingHandlerMapping {
         return RequestMappingHandlerMapping()

@@ -2,8 +2,6 @@ package com.robotutor.nexora.auth.gateways
 
 import com.robotutor.nexora.auth.config.IAMConfig
 import com.robotutor.nexora.auth.gateways.view.ActorView
-import com.robotutor.nexora.orchestration.config.AuthConfig
-import com.robotutor.nexora.security.config.AppConfig
 import com.robotutor.nexora.webClient.WebClientWrapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders.AUTHORIZATION

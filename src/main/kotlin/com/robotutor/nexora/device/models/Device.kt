@@ -4,7 +4,6 @@ import com.robotutor.nexora.device.controllers.view.DeviceRequest
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.InvitationData
-import com.robotutor.nexora.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
