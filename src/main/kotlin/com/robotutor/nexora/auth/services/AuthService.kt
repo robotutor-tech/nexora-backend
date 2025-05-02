@@ -1,7 +1,7 @@
 package com.robotutor.nexora.auth.services
 
-import com.robotutor.iot.exceptions.BadDataException
-import com.robotutor.iot.exceptions.DuplicateDataException
+import com.robotutor.nexora.webClient.exceptions.BadDataException
+import com.robotutor.nexora.webClient.exceptions.DuplicateDataException
 import com.robotutor.nexora.auth.controllers.views.AuthLoginRequest
 import com.robotutor.nexora.auth.controllers.views.AuthUserRequest
 import com.robotutor.nexora.auth.exceptions.NexoraError

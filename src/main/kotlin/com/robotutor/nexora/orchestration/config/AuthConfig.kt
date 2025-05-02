@@ -6,5 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class AuthConfig(
     val baseUrl: String,
     val register: String = "/auth/register",
-    val validateInvitation: String = "/auth/validate/invitation",
+    val validateInvitation: String = "/auth/invitations/validate",
+    val deviceToken: String = "/auth/tokens/device",
 )

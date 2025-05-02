@@ -1,28 +1,21 @@
 package com.robotutor.nexora.security.gateway.view
 
+import com.robotutor.nexora.auth.models.InvitationId
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.models.ActorId
+import com.robotutor.nexora.security.models.Identifier
+import com.robotutor.nexora.security.models.TokenIdentifier
+import com.robotutor.nexora.security.models.UserId
+import com.robotutor.nexora.zone.models.ZoneId
 
 data class AuthenticationResponseData(
-    val identifier: String,
-    val identifierType: IdentifierType,
-    val premisesId: PremisesId? = null,
-    val actor: ActorData? = null
+    val tokenIdentifier: Identifier<TokenIdentifier>
 )
 
-data class ActorData(
-    val type: ActorType,
-    val identifier: String,
+data class InvitationResponseData(
+    val invitationId: InvitationId,
+    val premisesId: PremisesId,
+    val invitedBy: ActorId,
+    val name: String,
+    val zoneId: ZoneId,
 )
-
-enum class ActorType {
-    HUMAN,
-    DEVICE,
-    LOCAL_SERVER,
-    SERVER
-}
-
-enum class IdentifierType {
-    AUTH_USER,
-    PREMISES_ACTOR,
-    INVITATION;
-}

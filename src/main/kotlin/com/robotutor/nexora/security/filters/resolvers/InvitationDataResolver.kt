@@ -4,19 +4,18 @@ import com.robotutor.nexora.webClient.exceptions.UnAuthorizedException
 import com.robotutor.nexora.security.exceptions.NexoraError
 import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.createMonoError
-import com.robotutor.nexora.security.models.AuthUserData
-import com.robotutor.nexora.security.models.PremisesActorData
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
+import com.robotutor.nexora.security.models.InvitationData
 import org.springframework.web.reactive.BindingContext
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
 @Component
-class UserPremisesDataResolver : HandlerMethodArgumentResolver {
+class InvitationDataResolver : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        return parameter.parameterType == PremisesActorData::class.java
+        return parameter.parameterType == InvitationData::class.java
     }
 
     override fun resolveArgument(
@@ -25,11 +24,11 @@ class UserPremisesDataResolver : HandlerMethodArgumentResolver {
         exchange: ServerWebExchange
     ): Mono<Any> {
         return Mono.deferContextual { context ->
-            val authUserData = context.getOrEmpty<AuthUserData>(PremisesActorData::class.java)
-            if (authUserData.isPresent) {
-                createMono(authUserData.get())
+            val invitationData = context.getOrEmpty<InvitationData>(InvitationData::class.java)
+            if (invitationData.isPresent) {
+                createMono(invitationData.get())
             } else {
-                createMonoError(UnAuthorizedException(NexoraError.NEXORA0102))
+                createMonoError(UnAuthorizedException(NexoraError.NEXORA0104))
             }
         }
     }

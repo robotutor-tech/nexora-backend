@@ -11,18 +11,13 @@ server:
 app:
   security:
     auth-service-base-url: "http://localhost:9001"
+    iam-service-base-url: "http://localhost:9001"
     internal-access-token: "internalAccessToken"
     un-secured-path:
       - "/auth/login"
       - "/auth/tokens/validate"
       - "/orchestration/users/register"
-    partially-secured-path:
-      - "/orchestration/premises/register"
-      - "/orchestration/premises"
-      - "/premises"
-      - "/iam/premises/register"
-      - "/iam/actors"
-      - "/auth/tokens"
+      - "/iam/actors/*"
   orchestration:
     internal-access-token: ${app.security.internal-access-token}
     auth-service:
@@ -36,4 +31,9 @@ app:
     premises-service:
       base-url: "http://localhost:9001"
     user-service:
+      base-url: "http://localhost:9001"
+    widget-service:
+      base-url: "http://localhost:9001"
+  auth:
+    iam-service:
       base-url: "http://localhost:9001"

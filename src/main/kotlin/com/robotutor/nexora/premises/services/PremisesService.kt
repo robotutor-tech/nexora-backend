@@ -9,6 +9,7 @@ import com.robotutor.nexora.premises.models.Premises
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.premises.repositories.PremisesRepository
 import com.robotutor.nexora.security.models.AuthUserData
+import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -31,5 +32,9 @@ class PremisesService(
 
     fun getPremises(premisesIds: List<PremisesId>): Flux<Premises> {
         return premisesRepository.findAllByPremisesIdIn(premisesIds)
+    }
+
+    fun getPremisesDetails(premisesActorData: PremisesActorData): Mono<Premises> {
+        return premisesRepository.findByPremisesId(premisesActorData.premisesId)
     }
 }

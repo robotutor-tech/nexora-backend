@@ -92,7 +92,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                     headers.map {
                         h.set(it.key, it.value)
                     }
-                }.bodyValue(body)
+                }
+                .bodyValue(body)
                 .retrieve()
                 .bodyToMono(returnType)
                 .logOnSuccess(
@@ -195,7 +196,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                     headers.map {
                         h.set(it.key, it.value)
                     }
-                }.bodyValue(body)
+                }
+                .bodyValue(body)
                 .retrieve()
                 .bodyToFlux(returnType)
                 .logOnSuccess(

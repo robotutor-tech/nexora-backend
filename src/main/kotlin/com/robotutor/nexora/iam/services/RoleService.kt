@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 class RoleService(private val idGeneratorService: IdGeneratorService, private val roleRepository: RoleRepository) {
     private val logger = Logger(this::class.java)
 
-    fun createRole(roleRequest: RoleRequest, premisesId: PremisesId): Mono<Role?> {
+    fun createRole(roleRequest: RoleRequest, premisesId: PremisesId): Mono<Role> {
         return idGeneratorService.generateId(IdType.ROLE_ID)
             .map { roleId -> Role.from(roleId, premisesId, roleRequest) }
             .flatMap { roleRepository.save(it) }

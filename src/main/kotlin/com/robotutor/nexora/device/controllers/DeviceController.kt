@@ -3,7 +3,7 @@ package com.robotutor.nexora.device.controllers
 import com.robotutor.nexora.device.controllers.view.DeviceRequest
 import com.robotutor.nexora.device.controllers.view.DeviceView
 import com.robotutor.nexora.device.services.DeviceService
-import com.robotutor.nexora.security.models.PremisesActorData
+import com.robotutor.nexora.security.models.InvitationData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -18,8 +18,8 @@ class DeviceController(private val deviceService: DeviceService) {
     @PostMapping("/register")
     fun registerDevice(
         @RequestBody @Validated deviceRequest: DeviceRequest,
-        premisesActorData: PremisesActorData
+        invitationData: InvitationData
     ): Mono<DeviceView> {
-        return deviceService.register(deviceRequest, premisesActorData).map { DeviceView.from(it) }
+        return deviceService.register(deviceRequest, invitationData).map { DeviceView.from(it) }
     }
 }

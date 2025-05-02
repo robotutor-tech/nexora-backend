@@ -1,7 +1,4 @@
-package com.robotutor.iot.exceptions
-
-import com.robotutor.nexora.webClient.exceptions.BaseException
-import com.robotutor.nexora.webClient.exceptions.ServiceError
+package com.robotutor.nexora.webClient.exceptions
 
 class DuplicateDataException(
     serviceError: ServiceError,

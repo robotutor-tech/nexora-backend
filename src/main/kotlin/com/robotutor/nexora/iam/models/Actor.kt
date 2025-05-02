@@ -1,7 +1,9 @@
 package com.robotutor.nexora.iam.models
 
-import com.robotutor.nexora.iam.controllers.view.RegisterActorRequest
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.models.ActorId
+import com.robotutor.nexora.security.models.ActorIdentifier
+import com.robotutor.nexora.security.models.Identifier
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -20,8 +22,7 @@ data class Actor(
     val actorId: ActorId,
     @Indexed
     val premisesId: PremisesId,
-    val type: ActorType,
-    val identifier: String,
+    val actorIdentifier: Identifier<ActorIdentifier>,
     val roleId: RoleId,
     val state: ActorState,
     val policies: List<PolicyId> = emptyList(),
@@ -29,12 +30,11 @@ data class Actor(
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
     companion object {
-        fun from(actorId: String, request: RegisterActorRequest, roleId: RoleId): Actor {
+        fun from(actorId: ActorId, premisesId: PremisesId, id: String, type: ActorIdentifier, roleId: RoleId): Actor {
             return Actor(
                 actorId = actorId,
-                premisesId = request.premisesId,
-                type = request.type,
-                identifier = request.identifier,
+                premisesId = premisesId,
+                actorIdentifier = Identifier(id, type),
                 roleId = roleId,
                 state = ActorState.ACTIVE,
             )
@@ -42,16 +42,8 @@ data class Actor(
     }
 }
 
-enum class ActorType {
-    HUMAN,
-    DEVICE,
-    LOCAL_SERVER,
-    SERVER
-}
-
 enum class ActorState {
     ACTIVE,
     INACTIVE,
 }
 
-typealias ActorId = String

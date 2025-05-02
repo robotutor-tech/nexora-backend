@@ -1,6 +1,10 @@
 package com.robotutor.nexora.auth.controllers
 
-import com.robotutor.nexora.auth.controllers.views.*
+import com.robotutor.nexora.auth.controllers.views.DeviceInvitationRequest
+import com.robotutor.nexora.auth.controllers.views.DeviceInvitationView
+import com.robotutor.nexora.auth.controllers.views.UserInvitationRequest
+import com.robotutor.nexora.auth.controllers.views.UserInvitationView
+import com.robotutor.nexora.auth.models.InvitationId
 import com.robotutor.nexora.auth.services.InvitationService
 import com.robotutor.nexora.auth.services.TokenService
 import com.robotutor.nexora.security.models.PremisesActorData
@@ -16,42 +20,36 @@ class InvitationController(private val invitationService: InvitationService, pri
     @PostMapping("/devices")
     fun deviceInvitation(
         @RequestBody @Validated deviceInvitationRequest: DeviceInvitationRequest,
-        userData: PremisesActorData
-    ): Mono<InvitationView> {
-        return invitationService.crateDeviceInvitation(deviceInvitationRequest, userData)
+        premisesActorData: PremisesActorData
+    ): Mono<DeviceInvitationView> {
+        return invitationService.crateDeviceInvitation(deviceInvitationRequest, premisesActorData)
             .flatMap { invitation ->
-                tokenService.generateInvitationToken(invitation, userData)
-                    .map { token -> InvitationView.from(token, invitation) }
+                tokenService.generateInvitationToken(invitation)
+                    .map { token -> DeviceInvitationView.from(invitation, token) }
             }
     }
 
     @GetMapping("/devices")
-    fun getDeviceInvitation(userData: PremisesActorData): Flux<InvitationView> {
-        return invitationService.getInvitation(userData)
+    fun getDeviceInvitations(premisesActorData: PremisesActorData): Flux<DeviceInvitationView> {
+        return invitationService.getDeviceInvitations(premisesActorData)
             .flatMap { invitation ->
                 tokenService.getInvitationToken(invitation)
-                    .map { token -> InvitationView.from(token, invitation) }
+                    .map { token -> DeviceInvitationView.from(invitation, token) }
             }
+    }
+
+    @GetMapping("/{invitationId}/devices")
+    fun getDeviceInvitation(@PathVariable invitationId: InvitationId): Mono<DeviceInvitationView> {
+        return invitationService.getDeviceInvitation(invitationId)
+            .map { DeviceInvitationView.from(it, null) }
     }
 
     @PostMapping("/users")
     fun userInvitation(
         @RequestBody @Validated userInvitationRequest: UserInvitationRequest,
         userData: PremisesActorData
-    ): Mono<InvitationView> {
+    ): Mono<UserInvitationView> {
         return invitationService.crateUserInvitation(userInvitationRequest, userData)
-            .flatMap { invitation ->
-                tokenService.generateInvitationToken(invitation, userData)
-                    .map { token -> InvitationView.from(token, invitation) }
-            }
-    }
-
-    @GetMapping("/users")
-    fun getUserInvitation(userData: PremisesActorData): Flux<InvitationView> {
-        return invitationService.getInvitation(userData)
-            .flatMap { invitation ->
-                tokenService.getInvitationToken(invitation)
-                    .map { token -> InvitationView.from(token, invitation) }
-            }
+            .map { invitation -> UserInvitationView.from(invitation) }
     }
 }

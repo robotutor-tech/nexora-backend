@@ -1,29 +1,23 @@
 package com.robotutor.nexora.orchestration.models
 
-import com.robotutor.nexora.orchestration.gateway.view.FeedView
+import com.robotutor.nexora.device.models.DeviceType
+import com.robotutor.nexora.widget.models.WidgetType
 
-data class Board(
+data class Device(
     val modelNo: String,
+    val type: DeviceType,
     val feeds: List<Feed>,
     val widgets: List<Widget>,
     val rules: List<Rule>
 )
 
-data class Feed(val name: String, val type: FeedType, var feedView: FeedView? = null) {
-    fun updateFeedView(feedView: FeedView): Feed {
-        this.feedView = feedView
-        return this
-    }
-}
-
+data class Feed(val name: String, val type: FeedType)
 enum class FeedType {
     SENSOR,
     ACTUATOR
 }
 
-data class Widget(val name: String, val type: WidgetType, val feed: String, val data: Map<String, Any>)
-enum class WidgetType {
-    TOGGLE
+data class Widget(val name: String, val type: WidgetType, val data: Map<String, Any> = mapOf()) {
 }
 
 data class Rule(val triggers: List<Trigger>, val conditions: List<Condition>, val actions: List<Action>)

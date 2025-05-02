@@ -6,5 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class IAMConfig(
     val baseUrl: String,
     val registerPremises: String = "/iam/premises/register",
-    val actors: String = "/iam/actors"
+    val registerDevice: String = "/iam/premises/register/device",
+    val actorsPath: String = "/iam/actors"
 )

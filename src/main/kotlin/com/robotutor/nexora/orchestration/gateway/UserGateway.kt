@@ -4,6 +4,7 @@ import com.robotutor.nexora.orchestration.config.InternalAccessTokenConfig
 import com.robotutor.nexora.orchestration.config.UserConfig
 import com.robotutor.nexora.orchestration.gateway.view.UserView
 import com.robotutor.nexora.webClient.WebClientWrapper
+import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
@@ -19,7 +20,7 @@ class UserGateway(
             baseUrl = userConfig.baseUrl,
             path = userConfig.register,
             body = mapOf("name" to name, "email" to email),
-            headers = mapOf("Authorization" to internalAccessTokenConfig.internalAccessToken),
+            headers = mapOf(AUTHORIZATION to internalAccessTokenConfig.internalAccessToken),
             returnType = UserView::class.java
         )
     }

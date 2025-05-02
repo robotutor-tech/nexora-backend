@@ -2,13 +2,15 @@ package com.robotutor.nexora.auth.controllers.views
 
 import com.robotutor.nexora.auth.models.*
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.UserId
+import com.robotutor.nexora.zone.models.ZoneId
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
 data class DeviceInvitationRequest(
-    @field:NotBlank(message = "Model No is required")
-    val modelNo: String,
+    @field:NotBlank(message = "Zone is required")
+    val zoneId: ZoneId,
     @field:NotBlank(message = "Device Name is required")
     val name: String,
 )
@@ -21,35 +23,41 @@ data class UserInvitationRequest(
     val roles: List<String>,
 )
 
-data class InvitationView(
+data class DeviceInvitationView(
     val invitationId: InvitationId,
     val premisesId: PremisesId,
-    val invitationType: InvitationType,
-    val metaData: InvitationMetaDataView,
-    val token: String?,
-    val createdBy: UserId,
+    val name: String,
+    val token: String,
+    val invitedBy: ActorId,
+    val zoneId: ZoneId
 ) {
     companion object {
-        fun from(token: Token, invitation: Invitation): InvitationView {
-            return InvitationView(
-                invitationId = invitation.invitationId,
-                createdBy = invitation.createdBy,
-                premisesId = invitation.premisesId,
-                metaData = InvitationMetaDataView.from(invitation.metaData),
-                invitationType = invitation.invitationType,
-                token = if (invitation.invitationType == InvitationType.DEVICE) token.value else null
+        fun from(deviceInvitation: DeviceInvitation, token: Token?): DeviceInvitationView {
+            return DeviceInvitationView(
+                invitationId = deviceInvitation.invitationId,
+                premisesId = deviceInvitation.premisesId,
+                invitedBy = deviceInvitation.invitedBy,
+                token = token?.value ?: "",
+                name = deviceInvitation.name,
+                zoneId = deviceInvitation.zoneId
             )
         }
     }
 }
 
-data class InvitationMetaDataView(val name: String?, val modelNo: String?, val authUserId: String?) {
+data class UserInvitationView(
+    val invitationId: InvitationId,
+    val premisesId: PremisesId,
+    val userId: UserId,
+    val createdBy: UserId
+) {
     companion object {
-        fun from(metaData: InvitationMetaData): InvitationMetaDataView {
-            return InvitationMetaDataView(
-                name = metaData.name,
-                modelNo = metaData.modelNo,
-                authUserId = metaData.authUserId
+        fun from(userInvitation: UserInvitation): UserInvitationView {
+            return UserInvitationView(
+                invitationId = userInvitation.invitationId,
+                premisesId = userInvitation.premisesId,
+                createdBy = userInvitation.invitedBy,
+                userId = userInvitation.userId
             )
         }
     }

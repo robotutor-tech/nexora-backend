@@ -1,6 +1,6 @@
 package com.robotutor.nexora.user.services
 
-import com.robotutor.iot.exceptions.DuplicateDataException
+import com.robotutor.nexora.webClient.exceptions.DuplicateDataException
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess

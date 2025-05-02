@@ -7,7 +7,7 @@ import com.robotutor.nexora.device.repositories.DeviceRepository
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
-import com.robotutor.nexora.security.models.PremisesActorData
+import com.robotutor.nexora.security.models.InvitationData
 import com.robotutor.nexora.security.services.IdGeneratorService
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -19,11 +19,10 @@ class DeviceService(
 ) {
     val logger = Logger(this::class.java)
 
-    fun register(deviceRequest: DeviceRequest, premisesActorData: PremisesActorData): Mono<Device> {
+    fun register(deviceRequest: DeviceRequest, invitationData: InvitationData): Mono<Device> {
         return idGeneratorService.generateId(IdType.DEVICE_ID)
-            .flatMap { deviceId ->
-                deviceRepository.save(Device.from(deviceId, deviceRequest, premisesActorData))
-            }
+            .map{deviceId -> Device.from(deviceId, deviceRequest, invitationData) }
+            .flatMap { deviceRepository.save(it) }
             .logOnSuccess(logger, "Successfully registered device")
             .logOnError(logger, "", "Error registering device")
     }
