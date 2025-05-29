@@ -1,11 +1,15 @@
 package com.robotutor.nexora.widget.repositories
 
+import com.robotutor.nexora.feed.models.FeedId
+import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.widget.models.Widget
 import com.robotutor.nexora.widget.models.WidgetId
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
 
 @Repository
 interface WidgetRepository : ReactiveCrudRepository<Widget, WidgetId> {
+    fun findAllByPremisesIdAndFeedIdIn(premisesId: PremisesId, feedIds: List<FeedId>): Flux<Widget>
 
 }

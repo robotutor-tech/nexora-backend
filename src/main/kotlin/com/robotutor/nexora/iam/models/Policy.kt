@@ -1,6 +1,8 @@
 package com.robotutor.nexora.iam.models
 
+import com.robotutor.nexora.iam.controllers.view.PolicyRequest
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.models.PremisesActorData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -23,16 +25,29 @@ data class Policy(
     val name: String,
     val type: PolicyType,
     val feedId: String,
-    val permission: PermissionType,
+    val access: AccessType,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-)
+) {
+    companion object {
+        fun from(policyId: String, request: PolicyRequest, premisesActorData: PremisesActorData): Policy {
+            return Policy(
+                policyId = policyId,
+                premisesId = premisesActorData.premisesId,
+                name = request.name,
+                type = request.type,
+                feedId = request.feedId,
+                access = request.access
+            )
+        }
+    }
+}
 
 enum class PolicyType {
     GLOBAL,
     LOCAL
 }
 
-enum class PermissionType {
+enum class AccessType {
     READ,
     UPDATE
 }

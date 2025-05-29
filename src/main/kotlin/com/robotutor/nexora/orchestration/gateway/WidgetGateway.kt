@@ -17,15 +17,23 @@ class WidgetGateway(
     private val widgetConfig: WidgetConfig,
 ) {
 
-    fun createWidget(widget: Widget, feed: FeedView, zoneId: ZoneId, tokenView: TokenView): Mono<WidgetView> {
-        val body = mapOf("name" to widget.name, "type" to widget.type, "feed" to feed.feedId, "zoneId" to zoneId)
+    fun createWidgets(
+        widgets: List<Widget>,
+        feeds: List<FeedView>,
+        zoneId: ZoneId,
+        tokenView: TokenView
+    ): Mono<List<WidgetView>> {
+        val data = widgets.map { widget ->
+            val feed = feeds.find { widget.name == it.name }!!
+            mapOf("name" to widget.name, "type" to widget.type, "feed" to feed.feedId, "zoneId" to zoneId)
+        }
 
-        return webClient.post(
+        return webClient.postFlux(
             baseUrl = widgetConfig.baseUrl,
-            path = widgetConfig.widgets,
-            body = body,
+            path = widgetConfig.widgetsBatch,
+            body = data,
             returnType = WidgetView::class.java,
             headers = mapOf(AUTHORIZATION to tokenView.token)
-        )
+        ).collectList()
     }
 }

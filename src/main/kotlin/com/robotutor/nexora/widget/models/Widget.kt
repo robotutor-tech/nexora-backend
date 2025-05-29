@@ -21,9 +21,10 @@ data class Widget(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     val widgetId: WidgetId,
+    @Indexed
     val premisesId: PremisesId,
     val name: String,
-    val feed: FeedId,
+    val feedId: FeedId,
     val zoneId: ZoneId,
     val type: WidgetType,
     val createdAt: LocalDateTime = LocalDateTime.now(),
@@ -35,7 +36,7 @@ data class Widget(
                 widgetId = widgetId,
                 premisesId = premisesActorData.premisesId,
                 name = widgetRequest.name,
-                feed = widgetRequest.feed,
+                feedId = widgetRequest.feed,
                 type = widgetRequest.type,
                 zoneId = widgetRequest.zoneId
             )

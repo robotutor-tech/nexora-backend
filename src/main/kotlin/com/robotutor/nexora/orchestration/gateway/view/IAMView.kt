@@ -1,6 +1,7 @@
 package com.robotutor.nexora.orchestration.gateway.view
 
 import com.robotutor.nexora.iam.models.ActorState
+import com.robotutor.nexora.iam.models.PolicyId
 import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.iam.models.RoleType
 import com.robotutor.nexora.premises.models.PremisesId
@@ -21,4 +22,10 @@ data class RoleView(
     val premisesId: PremisesId,
     val name: String,
     val role: RoleType,
+)
+
+data class PolicyView(
+    val policyId: PolicyId,
+    val premisesId: PremisesId,
+    val name: String,
 )

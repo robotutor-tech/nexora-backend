@@ -25,7 +25,7 @@ data class Actor(
     val actorIdentifier: Identifier<ActorIdentifier>,
     val roleId: RoleId,
     val state: ActorState,
-    val policies: List<PolicyId> = emptyList(),
+    val policies: MutableSet<PolicyId> = mutableSetOf(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {

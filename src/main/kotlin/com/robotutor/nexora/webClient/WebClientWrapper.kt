@@ -183,9 +183,7 @@ class WebClientWrapper(private val webClient: WebClient) {
         skipLoggingAdditionalDetails: Boolean = false,
         skipLoggingResponseBody: Boolean = true
     ): Flux<T> {
-
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
-
         return Flux.deferContextual { ctx ->
             val exchange = ctx.get(ServerWebExchangeDTO::class.java)
             webClient

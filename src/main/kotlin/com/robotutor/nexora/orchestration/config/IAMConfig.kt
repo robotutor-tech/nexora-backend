@@ -7,5 +7,6 @@ data class IAMConfig(
     val baseUrl: String,
     val registerPremises: String = "/iam/premises/register",
     val registerDevice: String = "/iam/premises/register/device",
+    val policyBatchPath: String = "/iam/policies/batch",
     val actorsPath: String = "/iam/actors"
 )

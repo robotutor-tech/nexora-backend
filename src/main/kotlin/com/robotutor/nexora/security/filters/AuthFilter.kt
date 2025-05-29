@@ -7,7 +7,7 @@ import com.robotutor.nexora.security.config.AppConfig
 import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.gateway.AuthGateway
 import com.robotutor.nexora.security.models.*
-import com.robotutor.nexora.webClient.exceptions.BaseException
+import com.robotutor.nexora.webClient.controllers.ExceptionHandlerRegistry
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -26,7 +26,8 @@ import java.time.LocalDateTime
 class AuthFilter(
     private val routeValidator: RouteValidator,
     private val authGateway: AuthGateway,
-    private val appConfig: AppConfig
+    private val appConfig: AppConfig,
+    private val exceptionHandlerRegistry: ExceptionHandlerRegistry
 ) : WebFilter {
     val logger = Logger(this::class.java)
 
@@ -43,13 +44,10 @@ class AuthFilter(
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
             }
             .onErrorResume {
+                val responseEntity = exceptionHandlerRegistry.handle(it)
                 val response = exchange.response
-                val error = try {
-                    (it as BaseException).errorResponse()
-                } catch (_: Exception) {
-                    mapOf("errorCode" to "", "message" to it.message)
-                }
-                val content = response.bufferFactory().wrap(serialize(error).toByteArray())
+                exchange.response.statusCode = responseEntity.statusCode
+                val content = response.bufferFactory().wrap(serialize(responseEntity.body).toByteArray())
                 response.writeWith(createMono(content))
             }
             .contextWrite { it.put("startTime", startTime) }

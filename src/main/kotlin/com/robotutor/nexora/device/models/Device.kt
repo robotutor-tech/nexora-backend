@@ -1,6 +1,7 @@
 package com.robotutor.nexora.device.models
 
 import com.robotutor.nexora.device.controllers.view.DeviceRequest
+import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.InvitationData
@@ -27,6 +28,7 @@ class Device(
     val modelNo: String,
     val serialNo: String,
     val type: DeviceType,
+    val feeds: Set<FeedId> = mutableSetOf(),
     val state: DeviceState = DeviceState.ACTIVE,
     val health: DeviceHealth = DeviceHealth.OFFLINE,
     val os: DeviceOS? = null,

@@ -13,6 +13,7 @@ data class ServerWebExchangeDTO(
     companion object {
         fun from(exchange: ServerWebExchange): ServerWebExchangeDTO {
             val request = exchange.request
+            exchange.request.headers.remove(HttpHeaders.CONTENT_LENGTH)
             val response = exchange.response
             return ServerWebExchangeDTO(
                 requestDetails = RequestDetails(

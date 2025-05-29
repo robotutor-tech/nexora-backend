@@ -34,7 +34,7 @@ class ApiExceptionHandler {
     }
 
     @ExceptionHandler(TooManyRequestsException::class)
-    fun handleException(ex: TooManyRequestsException): ResponseEntity<ErrorResponse> {
+    fun handleTooManyRequestException(ex: TooManyRequestsException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(ex.errorResponse())
     }
 
@@ -69,7 +69,7 @@ class ApiExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException::class)
-    fun handleException(ex: AccessDeniedException): ResponseEntity<ErrorResponse> {
+    fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
             .body(ErrorResponse(errorCode = "NEXORA-0005", message = ex.reason ?: ""))
     }

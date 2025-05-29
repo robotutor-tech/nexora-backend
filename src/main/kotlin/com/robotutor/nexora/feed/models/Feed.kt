@@ -21,11 +21,22 @@ data class Feed(
     val feedId: FeedId,
     val premisesId: PremisesId,
     val name: String,
-    val value: Number = 0,
+    var value: Number = 0,
     val type: FeedType,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
+
+    fun updateValue(value: Number): Feed {
+        this.value = value
+        return updateUpdatedAt()
+    }
+
+    private fun updateUpdatedAt(): Feed {
+        this.updatedAt = LocalDateTime.now()
+        return this
+    }
+
     companion object {
         fun from(feedId: FeedId, feedRequest: FeedRequest, premisesActorData: PremisesActorData): Feed {
             return Feed(

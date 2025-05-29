@@ -33,12 +33,12 @@ data class ActorView(
     val state: ActorState,
 ) {
     companion object {
-        fun from(actor: Actor, role: Role): ActorView {
+        fun from(actor: Actor, role: Role, policies: List<Policy>): ActorView {
             return ActorView(
                 actorId = actor.actorId,
                 premisesId = actor.premisesId,
                 actorIdentifier = actor.actorIdentifier,
-                role = RoleView.from(role),
+                role = RoleView.from(role, policies),
                 state = actor.state,
             )
         }

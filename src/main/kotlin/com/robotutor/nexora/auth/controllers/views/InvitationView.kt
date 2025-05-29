@@ -37,7 +37,7 @@ data class DeviceInvitationView(
                 invitationId = deviceInvitation.invitationId,
                 premisesId = deviceInvitation.premisesId,
                 invitedBy = deviceInvitation.invitedBy,
-                token = token?.value ?: "",
+                token = token?.value?.let { "Bearer $it" } ?: "",
                 name = deviceInvitation.name,
                 zoneId = deviceInvitation.zoneId
             )

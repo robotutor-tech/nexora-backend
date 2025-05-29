@@ -40,6 +40,5 @@ class TokenController(
     @GetMapping("/validate")
     fun validate(@RequestHeader("authorization") token: String = ""): Mono<AuthValidationView> {
         return tokenService.validate(token.removePrefix("Bearer").trim()).map { AuthValidationView.from(it) }
-
     }
 }

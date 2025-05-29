@@ -7,9 +7,16 @@ data class Device(
     val modelNo: String,
     val type: DeviceType,
     val feeds: List<Feed>,
+    val policies: List<Policy>,
     val widgets: List<Widget>,
     val rules: List<Rule>
 )
+
+data class Policy(val name: String, val access: AccessType)
+enum class AccessType {
+    READ,
+    UPDATE
+}
 
 data class Feed(val name: String, val type: FeedType)
 enum class FeedType {

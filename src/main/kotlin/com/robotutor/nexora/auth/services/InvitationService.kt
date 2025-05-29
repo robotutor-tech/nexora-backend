@@ -8,12 +8,15 @@ import com.robotutor.nexora.auth.models.InvitationId
 import com.robotutor.nexora.auth.models.UserInvitation
 import com.robotutor.nexora.auth.repositories.DeviceInvitationRepository
 import com.robotutor.nexora.auth.repositories.UserInvitationRepository
+import com.robotutor.nexora.auth.exceptions.NexoraError
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
+import com.robotutor.nexora.security.createMonoError
 import com.robotutor.nexora.security.models.InvitationData
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
+import com.robotutor.nexora.webClient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -62,6 +65,7 @@ class InvitationService(
 
     fun getDeviceInvitation(invitationId: InvitationId): Mono<DeviceInvitation> {
         return deviceInvitationRepository.findByInvitationIdAndStatus(invitationId)
+            .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0204)))
     }
 
     fun markAsAccepted(invitationData: InvitationData): Mono<DeviceInvitation> {

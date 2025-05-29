@@ -23,7 +23,7 @@ data class WidgetView(
     val widgetId: WidgetId,
     val premisesId: PremisesId,
     val name: String,
-    val feed: FeedId,
+    val feedId: FeedId,
     val type: WidgetType,
     val zoneId: ZoneId,
 ) {
@@ -33,7 +33,7 @@ data class WidgetView(
                 widgetId = widget.widgetId,
                 premisesId = widget.premisesId,
                 name = widget.name,
-                feed = widget.feed,
+                feedId = widget.feedId,
                 type = widget.type,
                 zoneId = widget.zoneId,
             )

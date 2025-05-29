@@ -3,6 +3,8 @@ package com.robotutor.nexora.iam.controllers
 import com.robotutor.nexora.iam.controllers.view.ActorView
 import com.robotutor.nexora.iam.controllers.view.PremisesRequest
 import com.robotutor.nexora.iam.controllers.view.RegisterDeviceRequest
+import com.robotutor.nexora.iam.models.Actor
+import com.robotutor.nexora.iam.services.PolicyService
 import com.robotutor.nexora.iam.services.PremisesService
 import com.robotutor.nexora.iam.services.RoleService
 import com.robotutor.nexora.security.models.AuthUserData
@@ -19,7 +21,8 @@ import reactor.core.publisher.Mono
 @RequestMapping("/iam/premises")
 class PremisesController(
     private val premisesService: PremisesService,
-    private val roleService: RoleService
+    private val roleService: RoleService,
+    private val policyService: PolicyService
 ) {
 
     @PostMapping("/register")
@@ -28,7 +31,7 @@ class PremisesController(
         authUserData: AuthUserData
     ): Flux<ActorView> {
         return premisesService.registerPremises(request, authUserData)
-            .flatMap { actor -> roleService.getRoleByRoleId(actor.roleId).map { ActorView.from(actor, it) } }
+            .flatMap { createActorView(it) }
     }
 
     @PostMapping("/register/device")
@@ -37,6 +40,15 @@ class PremisesController(
         invitationData: InvitationData
     ): Mono<ActorView> {
         return premisesService.registerDevice(request, invitationData)
-            .flatMap { actor -> roleService.getRoleByRoleId(actor.roleId).map { ActorView.from(actor, it) } }
+            .flatMap { createActorView(it) }
+    }
+
+    private fun createActorView(actor: Actor): Mono<ActorView> {
+        return roleService.getRoleByRoleId(actor.roleId)
+            .flatMap { role ->
+                policyService.getPolicies((role.policies + actor.policies).toList())
+                    .collectList()
+                    .map { policies -> ActorView.from(actor, role, policies) }
+            }
     }
 }

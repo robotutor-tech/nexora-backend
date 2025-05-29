@@ -22,7 +22,7 @@ data class Role(
     val premisesId: PremisesId,
     val name: String,
     val role: RoleType,
-    val policies: List<PolicyId> = emptyList(),
+    val policies: MutableSet<PolicyId> = mutableSetOf(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -39,6 +39,11 @@ data class Role(
                 role = roleRequest.roleType,
             )
         }
+    }
+
+    fun addPolicy(policies: List<Policy>): Role {
+        this.policies.addAll(policies.map { it.policyId })
+        return this
     }
 }
 

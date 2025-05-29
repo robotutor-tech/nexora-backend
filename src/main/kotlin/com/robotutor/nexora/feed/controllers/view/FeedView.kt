@@ -12,6 +12,8 @@ data class FeedRequest(
     val type: FeedType,
 )
 
+data class FeedValueRequest(val value: Number)
+
 data class FeedView(
     val feedId: FeedId,
     val premisesId: PremisesId,

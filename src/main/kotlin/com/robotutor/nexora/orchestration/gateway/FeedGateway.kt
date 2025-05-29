@@ -7,6 +7,7 @@ import com.robotutor.nexora.orchestration.models.Feed
 import com.robotutor.nexora.webClient.WebClientWrapper
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
@@ -15,15 +16,16 @@ class FeedGateway(
     private val feedConfig: FeedConfig,
 ) {
 
-    fun createFeed(feed: Feed, tokenView: TokenView): Mono<FeedView> {
-        val body = mapOf("name" to feed.name, "type" to feed.type)
+    fun createFeed(feed: List<Feed>, tokenView: TokenView): Mono<List<FeedView>> {
+        val body = feed.map { mapOf("name" to it.name, "type" to it.type) }
 
-        return webClient.post(
+        return webClient.postFlux(
             baseUrl = feedConfig.baseUrl,
-            path = feedConfig.feeds,
+            path = feedConfig.feedsBatch,
             body = body,
             returnType = FeedView::class.java,
             headers = mapOf(AUTHORIZATION to tokenView.token)
         )
+            .collectList()
     }
 }

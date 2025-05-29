@@ -1,16 +1,25 @@
 package com.robotutor.nexora.feed.services
 
 import com.robotutor.nexora.feed.controllers.view.FeedRequest
+import com.robotutor.nexora.feed.controllers.view.FeedValueRequest
+import com.robotutor.nexora.feed.exceptions.NexoraError
 import com.robotutor.nexora.feed.models.Feed
+import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.feed.models.IdType
 import com.robotutor.nexora.feed.repositories.FeedRepository
+import com.robotutor.nexora.iam.controllers.view.PolicyView
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
+import com.robotutor.nexora.security.createFlux
+import com.robotutor.nexora.security.createMonoError
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
+import com.robotutor.nexora.webClient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Service
 class FeedService(private val idGeneratorService: IdGeneratorService, private val feedRepository: FeedRepository) {
@@ -25,4 +34,20 @@ class FeedService(private val idGeneratorService: IdGeneratorService, private va
             .logOnError(logger, "", "Failed to create new feed")
     }
 
+    fun createFeeds(feedRequest: List<FeedRequest>, premisesActorData: PremisesActorData): Flux<Feed> {
+        return createFlux(feedRequest).flatMapSequential { createFeed(it, premisesActorData) }
+    }
+
+    fun getFeeds(premisesActorData: PremisesActorData): Flux<Feed> {
+        return feedRepository.findAllByPremisesIdAndFeedIdIn(premisesActorData.premisesId, premisesActorData.role.feeds)
+    }
+
+    fun updateFeedValue(feedId: FeedId, feedRequest: FeedValueRequest, actorData: PremisesActorData): Mono<Feed> {
+        return feedRepository.findByFeedIdAndPremisesId(feedId, actorData.premisesId)
+            .switchIfEmpty { createMonoError(DataNotFoundException(NexoraError.NEXORA0301)) }
+            .map { it.updateValue(feedRequest.value) }
+            .flatMap { feedRepository.save(it) }
+            .logOnSuccess(logger, "Successfully updated feed value")
+            .logOnError(logger, "", "Failed to update feed value")
+    }
 }

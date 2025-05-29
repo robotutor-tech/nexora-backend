@@ -12,17 +12,16 @@ import com.robotutor.nexora.orchestration.gateway.IAMGateway
 import com.robotutor.nexora.orchestration.gateway.PremisesGateway
 import com.robotutor.nexora.orchestration.gateway.UserGateway
 import com.robotutor.nexora.orchestration.gateway.WidgetGateway
-import com.robotutor.nexora.orchestration.gateway.view.FeedView
 import com.robotutor.nexora.orchestration.gateway.view.PremisesView
 import com.robotutor.nexora.orchestration.gateway.view.UserView
+import com.robotutor.nexora.orchestration.models.AccessType
 import com.robotutor.nexora.orchestration.models.Device
 import com.robotutor.nexora.orchestration.models.Feed
 import com.robotutor.nexora.orchestration.models.FeedType
+import com.robotutor.nexora.orchestration.models.Policy
 import com.robotutor.nexora.orchestration.models.Widget
-import com.robotutor.nexora.security.createFlux
 import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.models.InvitationData
-import com.robotutor.nexora.widget.controllers.view.WidgetView
 import com.robotutor.nexora.widget.models.WidgetType
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -62,32 +61,23 @@ class OrchestratorService(
                 deviceGateway.registerDevice(request, seed.type)
                     .flatMap { iamGateway.registerActorAsBot(it) }
                     .flatMap { authGateway.createDeviceActorToken(it) }
+                    // TODO: Move this outside as a kafka event
                     .flatMap { tokenView ->
-                        createFeeds(seed.feeds, tokenView)
-                            .collectList()
-                            .flatMapMany { createWidgets(seed.widgets, it, invitationData, tokenView) }
-                            .collectList()
+                        feedGateway.createFeed(seed.feeds, tokenView)
+                            .flatMap { feeds ->
+                                iamGateway.createPolicies(seed.policies, feeds, tokenView)
+                                    .flatMap {
+                                        widgetGateway.createWidgets(
+                                            seed.widgets,
+                                            feeds,
+                                            invitationData.zoneId,
+                                            tokenView
+                                        )
+                                    }
+                            }
                             .map { tokenView }
                     }
             }
-    }
-
-    private fun createWidgets(
-        widgets: List<Widget>,
-        feeds: List<FeedView>,
-        invitationData: InvitationData,
-        tokenView: TokenView
-    ): Flux<WidgetView> {
-        return createFlux(widgets)
-            .flatMapSequential { widget ->
-                val feed = feeds.find { it.name == widget.name }!!
-                widgetGateway.createWidget(widget, feed, invitationData.zoneId, tokenView)
-            }
-    }
-
-    private fun createFeeds(feeds: List<Feed>, tokenView: TokenView): Flux<FeedView> {
-        return createFlux(feeds)
-            .flatMapSequential { feed -> feedGateway.createFeed(feed, tokenView) }
     }
 
     fun getAllPremises(): Flux<PremisesView> {
@@ -114,12 +104,30 @@ fun getDeviceSeedData(): Device {
             Feed(name = "Light 2", type = FeedType.ACTUATOR),
             Feed(name = "Light 3", type = FeedType.ACTUATOR),
             Feed(name = "Light 4", type = FeedType.ACTUATOR),
+            Feed(name = "Light 5", type = FeedType.ACTUATOR),
+            Feed(name = "Light 6", type = FeedType.ACTUATOR),
+            Feed(name = "Light 7", type = FeedType.ACTUATOR),
+            Feed(name = "Light 8", type = FeedType.ACTUATOR),
         ),
         widgets = listOf(
             Widget(name = "Light 1", type = WidgetType.TOGGLE),
             Widget(name = "Light 2", type = WidgetType.TOGGLE),
             Widget(name = "Light 3", type = WidgetType.TOGGLE),
             Widget(name = "Light 4", type = WidgetType.TOGGLE),
+            Widget(name = "Light 5", type = WidgetType.TOGGLE),
+            Widget(name = "Light 6", type = WidgetType.TOGGLE),
+            Widget(name = "Light 7", type = WidgetType.TOGGLE),
+            Widget(name = "Light 8", type = WidgetType.TOGGLE),
+        ),
+        policies = listOf(
+            Policy(name = "Light 1", access = AccessType.UPDATE),
+            Policy(name = "Light 2", access = AccessType.UPDATE),
+            Policy(name = "Light 3", access = AccessType.UPDATE),
+            Policy(name = "Light 4", access = AccessType.UPDATE),
+            Policy(name = "Light 5", access = AccessType.UPDATE),
+            Policy(name = "Light 6", access = AccessType.UPDATE),
+            Policy(name = "Light 7", access = AccessType.UPDATE),
+            Policy(name = "Light 8", access = AccessType.UPDATE),
         ),
         rules = emptyList(),
         type = DeviceType.DEVICE

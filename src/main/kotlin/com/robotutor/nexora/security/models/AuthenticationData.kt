@@ -1,6 +1,8 @@
 package com.robotutor.nexora.security.models
 
 import com.robotutor.nexora.auth.models.InvitationId
+import com.robotutor.nexora.iam.controllers.view.RoleView
+import com.robotutor.nexora.iam.models.PolicyId
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.gateway.view.ActorResponseData
 import com.robotutor.nexora.security.gateway.view.AuthenticationResponseData
@@ -45,6 +47,7 @@ data class ServerData(val serverId: String) : IAuthenticationData, IPremisesActo
 
 data class PremisesActorData(
     val actorId: ActorId,
+    val role: RoleView,
     val premisesId: PremisesId,
     val authenticationData: IPremisesActorData
 ) : IAuthenticationData {
@@ -53,6 +56,7 @@ data class PremisesActorData(
             return PremisesActorData(
                 actorId = actorData.actorId,
                 premisesId = actorData.premisesId,
+                role = actorData.role,
                 authenticationData = when (actorData.actorIdentifier.type) {
                     ActorIdentifier.HUMAN -> AuthUserData(actorData.actorIdentifier.id)
                     ActorIdentifier.DEVICE -> DeviceData(actorData.actorIdentifier.id)

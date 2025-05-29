@@ -14,6 +14,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 const val TOKEN_COLLECTION = "tokens"
+const val DEVICE_TOKEN_LENGTH = 52
 
 @TypeAlias("Token")
 @Document(TOKEN_COLLECTION)
@@ -50,7 +51,7 @@ data class Token(
         fun generateInvitationToken(tokenId: String, invitation: Invitation): Token {
             return Token(
                 tokenId = tokenId,
-                value = generateTokenValue(),
+                value = generateTokenValue(DEVICE_TOKEN_LENGTH),
                 tokenIdentifier = Identifier(invitation.invitationId, TokenIdentifier.INVITATION),
                 expiresOn = LocalDateTime.now().plusHours(6),
             )
@@ -59,7 +60,7 @@ data class Token(
         fun generateDeviceActorToken(tokenId: TokenId, actorRequest: PremisesActorRequest): Token {
             return Token(
                 tokenId = tokenId,
-                value = generateTokenValue(60),
+                value = generateTokenValue(DEVICE_TOKEN_LENGTH),
                 tokenIdentifier = Identifier(actorRequest.actorId, TokenIdentifier.PREMISES_ACTOR),
                 expiresOn = LocalDateTime.now().plusYears(100),
             )
@@ -69,8 +70,9 @@ data class Token(
 
 private fun generateTokenValue(length: Int = 120): String {
     val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9') + "_-".split("")
-    val token = List(length + 10) { chars.random() }.joinToString("").substring(0, length)
-    return token + LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
+    val token = List(length) { chars.random() }.joinToString("").substring(0)
+    val fullToken = token + LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
+    return fullToken.substring(fullToken.length - length)
 }
 
 typealias TokenId = String

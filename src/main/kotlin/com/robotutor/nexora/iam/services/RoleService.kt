@@ -2,15 +2,19 @@ package com.robotutor.nexora.iam.services
 
 import com.robotutor.nexora.iam.controllers.view.RoleRequest
 import com.robotutor.nexora.iam.models.IdType
+import com.robotutor.nexora.iam.models.Policy
 import com.robotutor.nexora.iam.models.Role
 import com.robotutor.nexora.iam.models.RoleId
+import com.robotutor.nexora.iam.models.RoleType
 import com.robotutor.nexora.iam.repositories.RoleRepository
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
@@ -29,4 +33,16 @@ class RoleService(private val idGeneratorService: IdGeneratorService, private va
         return roleRepository.findByRoleId(roleId)
     }
 
+    fun assignPolicyToHumanRole(policies: List<Policy>, premisesActorData: PremisesActorData): Flux<Role> {
+        val humanRoles = listOf(RoleType.USER, RoleType.ADMIN, RoleType.OWNER)
+        return roleRepository.findAllByPremisesIdAndRoleIn(premisesActorData.premisesId, humanRoles)
+            .map { it.addPolicy(policies) }
+            .flatMap { roleRepository.save(it) }
+    }
+
+    fun assignPolicyToCurrentActor(policies: List<Policy>, premisesActorData: PremisesActorData): Mono<Role> {
+        return roleRepository.findByRoleId(premisesActorData.role.roleId)
+            .map { it.addPolicy(policies) }
+            .flatMap { roleRepository.save(it) }
+    }
 }
