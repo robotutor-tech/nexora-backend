@@ -7,6 +7,7 @@ import com.robotutor.nexora.security.models.Identifier
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -22,19 +23,21 @@ data class Actor(
     val actorId: ActorId,
     @Indexed
     val premisesId: PremisesId,
-    val actorIdentifier: Identifier<ActorIdentifier>,
+    val identifier: Identifier<ActorIdentifier>,
     val roleId: RoleId,
     val state: ActorState,
     val policies: MutableSet<PolicyId> = mutableSetOf(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    @Version
+    val version: Long? = null
 ) {
     companion object {
         fun from(actorId: ActorId, premisesId: PremisesId, id: String, type: ActorIdentifier, roleId: RoleId): Actor {
             return Actor(
                 actorId = actorId,
                 premisesId = premisesId,
-                actorIdentifier = Identifier(id, type),
+                identifier = Identifier(id, type),
                 roleId = roleId,
                 state = ActorState.ACTIVE,
             )

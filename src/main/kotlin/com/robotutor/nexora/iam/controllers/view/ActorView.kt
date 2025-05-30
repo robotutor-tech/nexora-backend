@@ -28,7 +28,7 @@ data class RegisterActorRequest(
 data class ActorView(
     val actorId: ActorId,
     val premisesId: PremisesId,
-    val actorIdentifier: Identifier<ActorIdentifier>,
+    val identifier: Identifier<ActorIdentifier>,
     val role: RoleView,
     val state: ActorState,
 ) {
@@ -37,7 +37,7 @@ data class ActorView(
             return ActorView(
                 actorId = actor.actorId,
                 premisesId = actor.premisesId,
-                actorIdentifier = actor.actorIdentifier,
+                identifier = actor.identifier,
                 role = RoleView.from(role, policies),
                 state = actor.state,
             )

@@ -31,7 +31,7 @@ class TokenController(
         @RequestBody @Validated premisesActorRequest: PremisesActorRequest,
         invitationData: InvitationData
     ): Mono<TokenView> {
-        return tokenService.generateDevicePremisesActorToken(premisesActorRequest)
+        return tokenService.generateDevicePremisesActorToken(premisesActorRequest, invitationData)
             .flatMap { token ->
                 invitationService.markAsAccepted(invitationData).map { TokenView.from(token) }
             }

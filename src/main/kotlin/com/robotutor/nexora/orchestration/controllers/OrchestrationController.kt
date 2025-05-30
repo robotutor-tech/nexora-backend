@@ -28,12 +28,15 @@ class OrchestrationController(private val orchestratorService: OrchestratorServi
     }
 
     @GetMapping("/premises")
-    fun registerPremises(): Flux<PremisesView> {
+    fun getAllPremises(): Flux<PremisesView> {
         return orchestratorService.getAllPremises()
     }
 
     @PostMapping("/devices/register")
-    fun registerDevice(@RequestBody @Validated request: DeviceRegistrationRequest, invitationData: InvitationData): Mono<TokenView> {
+    fun registerDevice(
+        @RequestBody @Validated request: DeviceRegistrationRequest,
+        invitationData: InvitationData
+    ): Mono<TokenView> {
         return orchestratorService.registerDevice(request, invitationData)
     }
 }

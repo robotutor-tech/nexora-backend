@@ -9,6 +9,7 @@ import com.robotutor.nexora.auth.models.UserInvitation
 import com.robotutor.nexora.auth.repositories.DeviceInvitationRepository
 import com.robotutor.nexora.auth.repositories.UserInvitationRepository
 import com.robotutor.nexora.auth.exceptions.NexoraError
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
@@ -37,7 +38,13 @@ class InvitationService(
             .map { invitationId ->
                 DeviceInvitation.from(invitationId, invitationRequest, userData)
             }
-            .flatMap { deviceInvitationRepository.save(it) }
+            .flatMap {
+                deviceInvitationRepository.save(it)
+                    .auditOnSuccess(
+                        "DEVICE_INVITATION_CREATED",
+                        mapOf("invitationId" to it.invitationId, "zoneId" to it.zoneId, "name" to it.name)
+                    )
+            }
             .logOnSuccess(logger, "Successfully created device invitation")
             .logOnError(logger, "", "Failed to create device invitation")
     }

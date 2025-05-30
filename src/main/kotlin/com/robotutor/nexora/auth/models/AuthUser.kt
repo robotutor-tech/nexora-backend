@@ -5,6 +5,7 @@ import com.robotutor.nexora.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -21,7 +22,9 @@ data class AuthUser(
     @Indexed(unique = true)
     val email: String,
     val password: String,
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    @Version
+    val version: Long? = null
 ) {
     companion object {
         fun from(authUserRequest: AuthUserRequest, password: String): AuthUser {

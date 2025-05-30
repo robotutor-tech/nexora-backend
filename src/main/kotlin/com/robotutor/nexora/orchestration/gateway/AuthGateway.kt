@@ -3,7 +3,7 @@ package com.robotutor.nexora.orchestration.gateway
 import com.robotutor.nexora.auth.controllers.views.TokenView
 import com.robotutor.nexora.orchestration.config.AuthConfig
 import com.robotutor.nexora.orchestration.config.InternalAccessTokenConfig
-import com.robotutor.nexora.orchestration.gateway.view.PremisesActorView
+import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.models.UserId
 import com.robotutor.nexora.webClient.WebClientWrapper
 import org.springframework.stereotype.Component
@@ -27,7 +27,7 @@ class AuthGateway(
     }
 
 
-    fun createDeviceActorToken(actor: PremisesActorView): Mono<TokenView> {
+    fun createDeviceActorToken(actor: PremisesActorData): Mono<TokenView> {
         return webClient.post(
             baseUrl = authConfig.baseUrl,
             path = authConfig.deviceToken,

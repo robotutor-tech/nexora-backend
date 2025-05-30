@@ -11,6 +11,7 @@ import com.robotutor.nexora.zone.models.ZoneId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -40,6 +41,8 @@ data class DeviceInvitation(
     override val invitedBy: ActorId,
     override val createdAt: LocalDateTime = LocalDateTime.now(),
     override var status: InvitationStatus = InvitationStatus.INVITED,
+    @Version
+    val version: Long? = null
 ) : Invitation {
     override fun markAsAccepted(): Invitation {
         this.status = InvitationStatus.ACCEPTED
@@ -77,6 +80,8 @@ data class UserInvitation(
     override val invitedBy: ActorId,
     override val createdAt: LocalDateTime = LocalDateTime.now(),
     override var status: InvitationStatus = InvitationStatus.INVITED,
+    @Version
+    val version: Long? = null
 ) : Invitation {
     override fun markAsAccepted(): Invitation {
         this.status = InvitationStatus.ACCEPTED

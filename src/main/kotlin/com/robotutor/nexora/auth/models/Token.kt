@@ -8,6 +8,7 @@ import com.robotutor.nexora.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -25,15 +26,17 @@ data class Token(
     val tokenId: TokenId,
     @Indexed(unique = true)
     val value: String,
-    val tokenIdentifier: Identifier<TokenIdentifier>,
+    val identifier: Identifier<TokenIdentifier>,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val expiresOn: LocalDateTime
+    val expiresOn: LocalDateTime,
+    @Version
+    val version: Long? = null
 ) {
     fun generatePremisesActorToken(tokenId: TokenId, actor: ActorView): Token {
         return Token(
             tokenId = tokenId,
             value = generateTokenValue(),
-            tokenIdentifier = Identifier(actor.actorId, TokenIdentifier.PREMISES_ACTOR),
+            identifier = Identifier(actor.actorId, TokenIdentifier.PREMISES_ACTOR),
             expiresOn = expiresOn
         )
     }
@@ -43,7 +46,7 @@ data class Token(
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(),
-                tokenIdentifier = Identifier(userId, TokenIdentifier.AUTH_USER),
+                identifier = Identifier(userId, TokenIdentifier.AUTH_USER),
                 expiresOn = LocalDateTime.now().plusDays(7),
             )
         }
@@ -52,7 +55,7 @@ data class Token(
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(DEVICE_TOKEN_LENGTH),
-                tokenIdentifier = Identifier(invitation.invitationId, TokenIdentifier.INVITATION),
+                identifier = Identifier(invitation.invitationId, TokenIdentifier.INVITATION),
                 expiresOn = LocalDateTime.now().plusHours(6),
             )
         }
@@ -61,7 +64,7 @@ data class Token(
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(DEVICE_TOKEN_LENGTH),
-                tokenIdentifier = Identifier(actorRequest.actorId, TokenIdentifier.PREMISES_ACTOR),
+                identifier = Identifier(actorRequest.actorId, TokenIdentifier.PREMISES_ACTOR),
                 expiresOn = LocalDateTime.now().plusYears(100),
             )
         }

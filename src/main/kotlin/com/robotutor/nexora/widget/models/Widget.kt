@@ -8,6 +8,7 @@ import com.robotutor.nexora.zone.models.ZoneId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -29,6 +30,8 @@ data class Widget(
     val type: WidgetType,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
+    @Version
+    val version: Long? = null
 ) {
     companion object {
         fun from(widgetId: WidgetId, widgetRequest: WidgetRequest, premisesActorData: PremisesActorData): Widget {

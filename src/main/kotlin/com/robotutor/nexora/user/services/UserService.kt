@@ -1,5 +1,6 @@
 package com.robotutor.nexora.user.services
 
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.webClient.exceptions.DuplicateDataException
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
@@ -10,6 +11,8 @@ import com.robotutor.nexora.user.models.IdType
 import com.robotutor.nexora.user.models.UserDetails
 import com.robotutor.nexora.user.repositories.UserRepository
 import com.robotutor.nexora.security.createMonoError
+import com.robotutor.nexora.security.models.ActorIdentifier
+import com.robotutor.nexora.security.models.Identifier
 import com.robotutor.nexora.security.services.IdGeneratorService
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -26,6 +29,11 @@ class UserService(val userRepository: UserRepository, val idGeneratorService: Id
                     idGeneratorService.generateId(IdType.USER_ID)
                         .flatMap { userId ->
                             userRepository.save(UserDetails.from(userId, userRequest))
+                                .auditOnSuccess(
+                                    "USER_REGISTRATION",
+                                    mapOf("email" to userRequest.email),
+                                    Identifier(userId, ActorIdentifier.USER)
+                                )
                         }
                         .logOnSuccess(logger, "Successfully registered user")
                 else {

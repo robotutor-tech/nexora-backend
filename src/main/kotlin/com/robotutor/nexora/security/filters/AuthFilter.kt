@@ -66,12 +66,12 @@ class AuthFilter(
     private fun writeContext(authenticationData: IAuthenticationData, context: Context): Context {
         return when (authenticationData) {
             is PremisesActorData -> {
-                val premisesActorData = authenticationData.authenticationData
-                val premisesContext = when (authenticationData.authenticationData) {
-                    is AuthUserData -> context.put(AuthUserData::class.java, premisesActorData)
-                    is DeviceData -> context.put(DeviceData::class.java, premisesActorData)
-                    is ServerData -> context.put(ServerData::class.java, premisesActorData)
-                    else -> context
+                val identifier = authenticationData.identifier
+                val premisesContext = when (identifier.type) {
+                    ActorIdentifier.USER -> context.put(AuthUserData::class.java, AuthUserData(identifier.id))
+                    ActorIdentifier.DEVICE -> context.put(DeviceData::class.java, DeviceData(identifier.id))
+                    ActorIdentifier.SERVER -> context.put(ServerData::class.java, ServerData(identifier.id))
+                    ActorIdentifier.LOCAL_SERVER -> context.put(DeviceData::class.java, DeviceData(identifier.id))
                 }
                 premisesContext.put(PremisesActorData::class.java, authenticationData)
             }

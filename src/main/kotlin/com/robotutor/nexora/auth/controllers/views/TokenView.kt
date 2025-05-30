@@ -18,10 +18,10 @@ data class TokenView(val token: String) {
     }
 }
 
-data class AuthValidationView(val tokenIdentifier: Identifier<TokenIdentifier>) {
+data class AuthValidationView(val identifier: Identifier<TokenIdentifier>) {
     companion object {
         fun from(token: Token): AuthValidationView {
-            return AuthValidationView(tokenIdentifier = token.tokenIdentifier)
+            return AuthValidationView(identifier = token.identifier)
         }
     }
 }

@@ -8,7 +8,7 @@ import com.robotutor.nexora.security.models.TokenIdentifier
 import com.robotutor.nexora.zone.models.ZoneId
 
 data class AuthenticationResponseData(
-    val tokenIdentifier: Identifier<TokenIdentifier>
+    val identifier: Identifier<TokenIdentifier>
 )
 
 data class InvitationResponseData(

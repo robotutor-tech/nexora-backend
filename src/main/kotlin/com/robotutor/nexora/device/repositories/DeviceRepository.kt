@@ -6,8 +6,11 @@ import com.robotutor.nexora.premises.models.PremisesId
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @Repository
 interface DeviceRepository : ReactiveCrudRepository<Device, DeviceId> {
     fun findAllByPremisesId(premisesId: PremisesId): Flux<Device>
+    fun findByDeviceId(deviceId: DeviceId): Mono<Device>
+    fun findByDeviceIdAndPremisesId(deviceId: DeviceId, premisesId: PremisesId): Mono<Device>
 }

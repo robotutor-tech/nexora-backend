@@ -1,8 +1,7 @@
 package com.robotutor.nexora.security.models
 
+import com.robotutor.nexora.auth.gateways.view.RoleView
 import com.robotutor.nexora.auth.models.InvitationId
-import com.robotutor.nexora.iam.controllers.view.RoleView
-import com.robotutor.nexora.iam.models.PolicyId
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.gateway.view.ActorResponseData
 import com.robotutor.nexora.security.gateway.view.AuthenticationResponseData
@@ -15,7 +14,7 @@ interface IPremisesActorData
 data class AuthUserData(val userId: UserId) : IAuthenticationData, IPremisesActorData {
     companion object {
         fun from(authenticationResponseData: AuthenticationResponseData): AuthUserData {
-            return AuthUserData(userId = authenticationResponseData.tokenIdentifier.id)
+            return AuthUserData(userId = authenticationResponseData.identifier.id)
         }
     }
 }
@@ -49,20 +48,16 @@ data class PremisesActorData(
     val actorId: ActorId,
     val role: RoleView,
     val premisesId: PremisesId,
-    val authenticationData: IPremisesActorData
+    val identifier: Identifier<ActorIdentifier>
 ) : IAuthenticationData {
+
     companion object {
         fun from(actorData: ActorResponseData): PremisesActorData {
             return PremisesActorData(
                 actorId = actorData.actorId,
                 premisesId = actorData.premisesId,
                 role = actorData.role,
-                authenticationData = when (actorData.actorIdentifier.type) {
-                    ActorIdentifier.HUMAN -> AuthUserData(actorData.actorIdentifier.id)
-                    ActorIdentifier.DEVICE -> DeviceData(actorData.actorIdentifier.id)
-                    ActorIdentifier.LOCAL_SERVER -> DeviceData(actorData.actorIdentifier.id)
-                    ActorIdentifier.SERVER -> ServerData(actorData.actorIdentifier.id)
-                },
+                identifier = actorData.identifier,
             )
         }
     }

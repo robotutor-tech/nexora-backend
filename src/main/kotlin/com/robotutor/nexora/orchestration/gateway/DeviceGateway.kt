@@ -14,11 +14,12 @@ class DeviceGateway(
     private val deviceConfig: DeviceConfig,
 ) {
 
-    fun registerDevice(request: DeviceRegistrationRequest, deviceType: DeviceType): Mono<DeviceView> {
+    fun registerDevice(request: DeviceRegistrationRequest, deviceType: DeviceType, feedCount: Int): Mono<DeviceView> {
         val body = mapOf(
             "modelNo" to request.modelNo,
             "serialNo" to request.serialNo,
-            "deviceType" to deviceType
+            "deviceType" to deviceType,
+            "feedCount" to feedCount,
         )
 
         return webClient.post(

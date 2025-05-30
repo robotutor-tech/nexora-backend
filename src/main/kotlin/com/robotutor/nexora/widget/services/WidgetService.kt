@@ -1,5 +1,6 @@
 package com.robotutor.nexora.widget.services
 
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
@@ -24,21 +25,17 @@ class WidgetService(
     fun createWidget(widgetRequest: WidgetRequest, premisesActorData: PremisesActorData): Mono<Widget> {
         return idGeneratorService.generateId(IdType.WIDGET_ID)
             .map { widgetId -> Widget.from(widgetId, widgetRequest, premisesActorData) }
-            .flatMap { widget -> widgetRepository.save(widget) }
+            .flatMap { widget ->
+                widgetRepository.save(widget)
+                    .auditOnSuccess("WIDGET_CREATE", mapOf("widgetId" to widget.widgetId, "name" to widget.name))
+            }
             .logOnSuccess(logger, "Successfully created new widget")
             .logOnError(logger, "", "Failed to create new widget")
     }
 
     fun getWidgets(premisesActorData: PremisesActorData): Flux<Widget> {
-        return widgetRepository.findAllByPremisesIdAndFeedIdIn(
-            premisesActorData.premisesId,
-            premisesActorData.role.feeds
-        )
+        val feedIds = premisesActorData.role.policies.map { it.feedId }
+        return widgetRepository.findAllByPremisesIdAndFeedIdIn(premisesActorData.premisesId, feedIds)
     }
-
-    fun createWidgets(widgetRequest: List<WidgetRequest>, premisesActorData: PremisesActorData): Flux<Widget> {
-        return createFlux(widgetRequest).flatMapSequential { createWidget(it, premisesActorData) }
-    }
-
 }
 

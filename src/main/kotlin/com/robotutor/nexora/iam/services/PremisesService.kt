@@ -21,7 +21,7 @@ class PremisesService(private val roleService: RoleService, private val actorSer
 
     fun registerPremises(request: PremisesRequest, authUserData: AuthUserData): Flux<Actor> {
         // TODO: create global policies
-        return registerRoles(request)
+        return registerRoles(request, authUserData)
             .collectList()
             // TODO: Assign policies to respective roles
             .flatMapMany {
@@ -38,15 +38,19 @@ class PremisesService(private val roleService: RoleService, private val actorSer
         )
     }
 
-    private fun registerRoles(request: PremisesRequest): Flux<Role> {
+    private fun registerRoles(request: PremisesRequest, authUserData: AuthUserData): Flux<Role> {
         return createFlux(listOf(RoleType.GUEST, RoleType.USER, RoleType.ADMIN, RoleType.OWNER))
             .flatMapSequential {
-                roleService.createRole(RoleRequest(it.toString(), it), request.premisesId)
+                roleService.createRole(RoleRequest(it.toString(), it), request.premisesId, authUserData)
             }
     }
 
     fun registerDevice(request: RegisterDeviceRequest, invitationData: InvitationData): Mono<Actor> {
-        return roleService.createRole(RoleRequest("Role_${request.deviceId}", RoleType.BOT), invitationData.premisesId)
+        return roleService.createRole(
+            RoleRequest("Role_${request.deviceId}", RoleType.BOT),
+            invitationData.premisesId,
+            AuthUserData(invitationData.invitedBy)
+        )
             .flatMap {
                 val actorRequest = RegisterActorRequest(
                     role = it.roleId,

@@ -29,14 +29,6 @@ class FeedController(private val feedService: FeedService) {
         return feedService.createFeed(feedRequest, premisesActorData).map { FeedView.from(it) }
     }
 
-    @PostMapping("/batch")
-    fun createFeedBatch(
-        @RequestBody @Validated feedRequest: List<FeedRequest>,
-        premisesActorData: PremisesActorData
-    ): Flux<FeedView> {
-        return feedService.createFeeds(feedRequest, premisesActorData).map { FeedView.from(it) }
-    }
-
     @GetMapping
     fun getFeeds(premisesActorData: PremisesActorData): Flux<FeedView> {
         return feedService.getFeeds(premisesActorData).map { FeedView.from(it) }

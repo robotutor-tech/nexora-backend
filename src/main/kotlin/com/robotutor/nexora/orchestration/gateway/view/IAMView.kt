@@ -12,7 +12,7 @@ import com.robotutor.nexora.security.models.Identifier
 data class PremisesActorView(
     val actorId: ActorId,
     val premisesId: PremisesId,
-    val actorIdentifier: Identifier<ActorIdentifier>,
+    val identifier: Identifier<ActorIdentifier>,
     val role: RoleView,
     val state: ActorState,
 )

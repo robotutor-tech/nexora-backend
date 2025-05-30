@@ -1,5 +1,6 @@
 package com.robotutor.nexora.zone.services
 
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
@@ -24,7 +25,10 @@ class ZoneService(
     fun createZone(request: ZoneCreateRequest, actorData: PremisesActorData): Mono<Zone> {
         return idGeneratorService.generateId(IdType.ZONE_ID)
             .map { zoneId -> Zone.from(zoneId, request.name, actorData) }
-            .flatMap { zone -> zoneRepository.save(zone) }
+            .flatMap { zone ->
+                zoneRepository.save(zone)
+                    .auditOnSuccess("ZONE_CREATED", mapOf("zoneId" to zone.zoneId, "name" to zone.name))
+            }
             .logOnSuccess(logger, "Successfully created zone")
             .logOnError(logger, "", "Failed to create zone")
     }

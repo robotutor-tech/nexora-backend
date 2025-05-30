@@ -5,6 +5,7 @@ import com.robotutor.nexora.device.models.DeviceHealth
 import com.robotutor.nexora.device.models.DeviceId
 import com.robotutor.nexora.device.models.DeviceState
 import com.robotutor.nexora.device.models.DeviceType
+import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.premises.models.PremisesId
 import jakarta.validation.constraints.NotBlank
 
@@ -14,6 +15,7 @@ data class DeviceRequest(
     @field:NotBlank(message = "Serial no is required")
     val serialNo: String,
     val deviceType: DeviceType,
+    val feedCount: Int,
 )
 
 data class DeviceView(
@@ -25,6 +27,7 @@ data class DeviceView(
     val type: DeviceType,
     val state: DeviceState,
     val health: DeviceHealth,
+    val feeds: List<FeedId>,
 ) {
     companion object {
         fun from(device: Device): DeviceView {
@@ -37,6 +40,7 @@ data class DeviceView(
                 state = device.state,
                 health = device.health,
                 type = device.type,
+                feeds = device.feeds,
             )
         }
     }

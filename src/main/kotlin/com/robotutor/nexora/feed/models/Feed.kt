@@ -6,6 +6,7 @@ import com.robotutor.nexora.security.models.PremisesActorData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -24,7 +25,9 @@ data class Feed(
     var value: Number = 0,
     val type: FeedType,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    var updatedAt: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    @Version
+    val version: Long? = null
 ) {
 
     fun updateValue(value: Number): Feed {

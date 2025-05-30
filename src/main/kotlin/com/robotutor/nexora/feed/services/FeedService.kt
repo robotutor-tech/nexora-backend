@@ -7,14 +7,14 @@ import com.robotutor.nexora.feed.models.Feed
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.feed.models.IdType
 import com.robotutor.nexora.feed.repositories.FeedRepository
-import com.robotutor.nexora.iam.controllers.view.PolicyView
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
-import com.robotutor.nexora.security.createFlux
 import com.robotutor.nexora.security.createMonoError
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
+import com.robotutor.nexora.utils.retryOptimisticLockingFailure
 import com.robotutor.nexora.webClient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -27,19 +27,18 @@ class FeedService(private val idGeneratorService: IdGeneratorService, private va
 
     fun createFeed(feedRequest: FeedRequest, premisesActorData: PremisesActorData): Mono<Feed> {
         return idGeneratorService.generateId(IdType.FEED_ID)
-            .flatMap { feedId ->
-                feedRepository.save(Feed.from(feedId, feedRequest, premisesActorData))
+            .map { feedId -> Feed.from(feedId, feedRequest, premisesActorData) }
+            .flatMap {
+                feedRepository.save(it)
+                    .auditOnSuccess("FEED_CREATED", mapOf("feedId" to it.feedId, "name" to it.name))
             }
             .logOnSuccess(logger, "Successfully created new feed")
             .logOnError(logger, "", "Failed to create new feed")
     }
 
-    fun createFeeds(feedRequest: List<FeedRequest>, premisesActorData: PremisesActorData): Flux<Feed> {
-        return createFlux(feedRequest).flatMapSequential { createFeed(it, premisesActorData) }
-    }
-
     fun getFeeds(premisesActorData: PremisesActorData): Flux<Feed> {
-        return feedRepository.findAllByPremisesIdAndFeedIdIn(premisesActorData.premisesId, premisesActorData.role.feeds)
+        val feedIds = premisesActorData.role.policies.map { it.feedId }
+        return feedRepository.findAllByPremisesIdAndFeedIdIn(premisesActorData.premisesId, feedIds)
     }
 
     fun updateFeedValue(feedId: FeedId, feedRequest: FeedValueRequest, actorData: PremisesActorData): Mono<Feed> {
@@ -47,6 +46,7 @@ class FeedService(private val idGeneratorService: IdGeneratorService, private va
             .switchIfEmpty { createMonoError(DataNotFoundException(NexoraError.NEXORA0301)) }
             .map { it.updateValue(feedRequest.value) }
             .flatMap { feedRepository.save(it) }
+            .retryOptimisticLockingFailure()
             .logOnSuccess(logger, "Successfully updated feed value")
             .logOnError(logger, "", "Failed to update feed value")
     }

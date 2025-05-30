@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank
 data class FeedRequest(
     @field:NotBlank(message = "Name is required")
     val name: String,
-    val type: FeedType,
+    val type: FeedType
 )
 
 data class FeedValueRequest(val value: Number)

@@ -6,6 +6,7 @@ import com.robotutor.nexora.security.models.PremisesActorData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -22,7 +23,9 @@ data class Zone(
     val premisesId: PremisesId,
     val name: String,
     val createdBy: ActorId,
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    @Version
+    val version: Long? = null
 ) {
     companion object {
         fun from(zoneId: ZoneId, name: String, actor: PremisesActorData): Zone {

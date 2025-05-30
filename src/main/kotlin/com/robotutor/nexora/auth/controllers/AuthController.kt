@@ -3,14 +3,15 @@ package com.robotutor.nexora.auth.controllers
 import com.robotutor.nexora.auth.controllers.views.AuthLoginRequest
 import com.robotutor.nexora.auth.controllers.views.AuthUserRequest
 import com.robotutor.nexora.auth.controllers.views.TokenView
+import com.robotutor.nexora.auth.exceptions.NexoraError
 import com.robotutor.nexora.auth.services.AuthService
 import com.robotutor.nexora.auth.services.TokenService
-import com.robotutor.nexora.security.models.UserId
+import com.robotutor.nexora.security.createMono
+import com.robotutor.nexora.security.createMonoError
+import com.robotutor.nexora.security.models.*
+import com.robotutor.nexora.webClient.exceptions.UnAuthorizedException
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
 @RestController
@@ -27,5 +28,20 @@ class AuthController(private val authService: AuthService, private val tokenServ
         return authService.login(authLoginRequest)
             .flatMap { tokenService.generateAuthUserToken(it) }
             .map { TokenView.from(it) }
+    }
+
+    @GetMapping("/validate")
+    fun validate(): Mono<IAuthenticationData> {
+        return Mono.deferContextual { ctx ->
+            val premisesActorDataOptional = ctx.getOrEmpty<PremisesActorData>(PremisesActorData::class.java)
+            val authUserDataOptional = ctx.getOrEmpty<AuthUserData>(AuthUserData::class.java)
+            val invitationDataOptional = ctx.getOrEmpty<InvitationData>(InvitationData::class.java)
+            when {
+                premisesActorDataOptional.isPresent -> createMono(premisesActorDataOptional.get())
+                authUserDataOptional.isPresent -> createMono(authUserDataOptional.get())
+                invitationDataOptional.isPresent -> createMono(invitationDataOptional.get())
+                else -> createMonoError(UnAuthorizedException(NexoraError.NEXORA0203))
+            }
+        }
     }
 }

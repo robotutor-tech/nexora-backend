@@ -5,10 +5,10 @@ import com.robotutor.nexora.iam.models.IdType
 import com.robotutor.nexora.iam.models.Policy
 import com.robotutor.nexora.iam.models.PolicyId
 import com.robotutor.nexora.iam.repositories.PolicyRepository
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
-import com.robotutor.nexora.security.createFlux
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
 import org.springframework.stereotype.Service
@@ -26,13 +26,12 @@ class PolicyService(
     fun createPolicy(request: PolicyRequest, premisesActorData: PremisesActorData): Mono<Policy> {
         return idGeneratorService.generateId(IdType.POLICY_ID)
             .map { policyId -> Policy.from(policyId, request, premisesActorData) }
-            .flatMap { policyRepository.save(it) }
+            .flatMap {
+                policyRepository.save(it)
+                    .auditOnSuccess("POLICY_CREATED", mapOf("policyId" to it.policyId, "name" to it.name))
+            }
             .logOnSuccess(logger, "Successfully created policy")
             .logOnError(logger, "", "Failed to create policy")
-    }
-
-    fun createPolicies(request: List<PolicyRequest>, premisesActorData: PremisesActorData): Flux<Policy> {
-        return createFlux(request).flatMap { createPolicy(it, premisesActorData) }
     }
 
     fun getPolicies(policyIds: List<PolicyId>): Flux<Policy> {

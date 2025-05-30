@@ -1,5 +1,6 @@
 package com.robotutor.nexora.premises.services
 
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
@@ -25,7 +26,14 @@ class PremisesService(
     fun createPremises(premisesRequest: PremisesCreateRequest, authUserData: AuthUserData): Mono<Premises> {
         return idGeneratorService.generateId(IdType.PREMISE_ID)
             .map { premisesId -> Premises.from(premisesId, premisesRequest.name, authUserData.userId) }
-            .flatMap { premises -> premisesRepository.save(premises) }
+            .flatMap { premises ->
+                premisesRepository.save(premises)
+                    .auditOnSuccess(
+                        "PREMISES_REGISTRATION",
+                        mapOf("premisesId" to premises.premisesId, "name" to premises.name),
+                        premisesId = premises.premisesId
+                    )
+            }
             .logOnSuccess(logger, "Successfully created premise")
             .logOnError(logger, "", "Failed to create premise")
     }

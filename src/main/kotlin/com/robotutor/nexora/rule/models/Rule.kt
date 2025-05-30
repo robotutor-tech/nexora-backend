@@ -3,6 +3,7 @@ package com.robotutor.nexora.rule.models
 import com.robotutor.nexora.premises.models.PremisesId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 
@@ -17,6 +18,8 @@ data class Rule(
     val premisesId: PremisesId,
     val name: String,
     val state: RuleState,
+    @Version
+    val version: Long? = null
 )
 
 enum class RuleState {

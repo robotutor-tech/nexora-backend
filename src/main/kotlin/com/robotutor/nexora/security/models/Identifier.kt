@@ -3,7 +3,7 @@ package com.robotutor.nexora.security.models
 data class Identifier<T>(val id: String, val type: T)
 
 enum class ActorIdentifier {
-    HUMAN,
+    USER,
     DEVICE,
     LOCAL_SERVER,
     SERVER

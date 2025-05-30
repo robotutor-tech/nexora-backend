@@ -6,15 +6,13 @@ import com.robotutor.nexora.iam.exceptions.NexoraError
 import com.robotutor.nexora.iam.models.Actor
 import com.robotutor.nexora.iam.models.IdType
 import com.robotutor.nexora.iam.repositories.ActorRepository
+import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.security.createFlux
 import com.robotutor.nexora.security.createMonoError
-import com.robotutor.nexora.security.models.ActorId
-import com.robotutor.nexora.security.models.ActorIdentifier
-import com.robotutor.nexora.security.models.AuthUserData
-import com.robotutor.nexora.security.models.InvitationData
+import com.robotutor.nexora.security.models.*
 import com.robotutor.nexora.security.services.IdGeneratorService
 import com.robotutor.nexora.webClient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
@@ -34,10 +32,18 @@ class ActorService(
             .flatMap { roleId ->
                 idGeneratorService.generateId(IdType.ACTOR_ID)
                     .map { actorId ->
-                        Actor.from(actorId, request.premisesId, authUserData.userId, ActorIdentifier.HUMAN, roleId)
+                        Actor.from(actorId, request.premisesId, authUserData.userId, ActorIdentifier.USER, roleId)
                     }
             }
-            .flatMap { actor -> actorRepository.save(actor) }
+            .flatMap { actor ->
+                actorRepository.save(actor)
+                    .auditOnSuccess(
+                        "ACTOR_REGISTRATION",
+                        mapOf("actorId" to actor.actorId),
+                        identifier = Identifier(authUserData.userId, ActorIdentifier.USER),
+                        premisesId = actor.premisesId,
+                    )
+            }
             .logOnSuccess(logger, "Successfully created actor")
             .logOnError(logger, "", "Failed to create actor")
     }
@@ -53,7 +59,15 @@ class ActorService(
                     request.role
                 )
             }
-            .flatMap { actor -> actorRepository.save(actor) }
+            .flatMap { actor ->
+                actorRepository.save(actor)
+                    .auditOnSuccess(
+                        "ACTOR_REGISTRATION",
+                        mapOf("actorId" to actor.actorId),
+                        identifier = Identifier(invitationData.invitedBy, ActorIdentifier.USER),
+                        premisesId = actor.premisesId,
+                    )
+            }
             .logOnSuccess(logger, "Successfully created actor")
             .logOnError(logger, "", "Failed to create actor")
     }
@@ -67,7 +81,7 @@ class ActorService(
 
     fun getActors(authUserData: AuthUserData): Flux<Actor> {
         return actorRepository.findAllByActorIdentifier_TypeAndActorIdentifier_Id(
-            ActorIdentifier.HUMAN, authUserData.userId
+            ActorIdentifier.USER, authUserData.userId
         )
     }
 

@@ -1,6 +1,7 @@
 package com.robotutor.nexora.device.models
 
 import com.robotutor.nexora.device.controllers.view.DeviceRequest
+import com.robotutor.nexora.device.services.DeviceFeedMap
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.ActorId
@@ -8,10 +9,10 @@ import com.robotutor.nexora.security.models.InvitationData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
-
 
 const val DEVICE_COLLECTION = "device"
 
@@ -28,12 +29,14 @@ class Device(
     val modelNo: String,
     val serialNo: String,
     val type: DeviceType,
-    val feeds: Set<FeedId> = mutableSetOf(),
+    val feeds: MutableList<FeedId> = mutableListOf(),
     val state: DeviceState = DeviceState.ACTIVE,
     val health: DeviceHealth = DeviceHealth.OFFLINE,
     val os: DeviceOS? = null,
     val createdBy: ActorId,
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    @Version
+    val version: Long? = null
 ) {
     companion object {
         fun from(deviceId: DeviceId, deviceRequest: DeviceRequest, invitationData: InvitationData): Device {
@@ -45,8 +48,15 @@ class Device(
                 serialNo = deviceRequest.serialNo,
                 createdBy = invitationData.invitedBy,
                 type = deviceRequest.deviceType,
+                feeds = MutableList(deviceRequest.feedCount) { "" },
             )
         }
+    }
+
+    fun updateFeeds(deviceRequest: DeviceFeedMap): Device {
+        var index = 0
+        deviceRequest.feeds.forEach { feeds[index++] = it }
+        return this
     }
 }
 

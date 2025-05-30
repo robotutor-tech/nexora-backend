@@ -25,14 +25,6 @@ class WidgetController(private val widgetService: WidgetService) {
         return widgetService.createWidget(widgetRequest, premisesActorData).map { WidgetView.from(it) }
     }
 
-    @PostMapping("/batch")
-    fun createWidgets(
-        @RequestBody @Validated widgetRequest: List<WidgetRequest>,
-        premisesActorData: PremisesActorData
-    ): Flux<WidgetView> {
-        return widgetService.createWidgets(widgetRequest, premisesActorData).map { WidgetView.from(it) }
-    }
-
     @GetMapping
     fun getWidgets(premisesActorData: PremisesActorData): Flux<WidgetView> {
         return widgetService.getWidgets(premisesActorData).map { WidgetView.from(it) }
