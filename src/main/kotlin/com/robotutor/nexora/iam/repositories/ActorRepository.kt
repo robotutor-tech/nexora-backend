@@ -10,6 +10,6 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface ActorRepository : ReactiveCrudRepository<Actor, ActorId> {
-    fun findAllByActorIdentifier_TypeAndActorIdentifier_Id(actorIdentifier: ActorIdentifier, id: String): Flux<Actor>
+    fun findAllByIdentifier_TypeAndIdentifier_Id(identifier: ActorIdentifier, id: String): Flux<Actor>
     fun findByActorId(actorId: ActorId): Mono<Actor>
 }

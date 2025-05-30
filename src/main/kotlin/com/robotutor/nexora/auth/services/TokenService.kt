@@ -82,8 +82,9 @@ class TokenService(
     }
 
     fun getInvitationToken(invitation: Invitation): Mono<Token> {
-        return tokenRepository.findByTokenIdentifier_IdAndTokenIdentifier_TypeAndExpiresOnGreaterThan(
-            invitation.invitationId, TokenIdentifier.INVITATION, LocalDateTime.now()
+        return tokenRepository.findByIdentifier_IdAndIdentifier_TypeAndExpiresOnGreaterThan(
+            invitation.invitationId,
+            TokenIdentifier.INVITATION
         )
             .switchIfEmpty { createMonoError(DataNotFoundException(NexoraError.NEXORA0204)) }
     }

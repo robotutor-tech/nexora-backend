@@ -80,9 +80,6 @@ class ActorService(
     }
 
     fun getActors(authUserData: AuthUserData): Flux<Actor> {
-        return actorRepository.findAllByActorIdentifier_TypeAndActorIdentifier_Id(
-            ActorIdentifier.USER, authUserData.userId
-        )
+        return actorRepository.findAllByIdentifier_TypeAndIdentifier_Id(ActorIdentifier.USER, authUserData.userId)
     }
-
 }
