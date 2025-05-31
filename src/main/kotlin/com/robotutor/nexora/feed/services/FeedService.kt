@@ -7,6 +7,7 @@ import com.robotutor.nexora.feed.models.Feed
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.feed.models.IdType
 import com.robotutor.nexora.feed.repositories.FeedRepository
+import com.robotutor.nexora.iam.models.Permission
 import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
@@ -37,7 +38,9 @@ class FeedService(private val idGeneratorService: IdGeneratorService, private va
     }
 
     fun getFeeds(premisesActorData: PremisesActorData): Flux<Feed> {
-        val feedIds = premisesActorData.role.policies.map { it.feedId }
+        val feedIds = premisesActorData.role.policies
+            .filter { it.permission == Permission.FEED_READ }
+            .map { it.identifier!!.id }
         return feedRepository.findAllByPremisesIdAndFeedIdIn(premisesActorData.premisesId, feedIds)
     }
 

@@ -1,6 +1,7 @@
 package com.robotutor.nexora.iam.repositories
 
 import com.robotutor.nexora.iam.models.Actor
+import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.ActorIdentifier
 import org.springframework.data.repository.reactive.ReactiveCrudRepository

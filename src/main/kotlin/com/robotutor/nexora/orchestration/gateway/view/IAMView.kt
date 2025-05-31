@@ -1,5 +1,6 @@
 package com.robotutor.nexora.orchestration.gateway.view
 
+import com.robotutor.nexora.iam.controllers.view.RoleIdWithName
 import com.robotutor.nexora.iam.models.ActorState
 import com.robotutor.nexora.iam.models.PolicyId
 import com.robotutor.nexora.iam.models.RoleId
@@ -13,7 +14,7 @@ data class PremisesActorView(
     val actorId: ActorId,
     val premisesId: PremisesId,
     val identifier: Identifier<ActorIdentifier>,
-    val role: RoleView,
+    val roles: List<RoleIdWithName>,
     val state: ActorState,
 )
 

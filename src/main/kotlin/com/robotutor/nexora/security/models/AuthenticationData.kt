@@ -1,9 +1,12 @@
 package com.robotutor.nexora.security.models
 
-import com.robotutor.nexora.auth.gateways.view.RoleView
 import com.robotutor.nexora.auth.models.InvitationId
+import com.robotutor.nexora.iam.controllers.view.ActorWithRoleView
+import com.robotutor.nexora.iam.controllers.view.RoleView
+import com.robotutor.nexora.iam.models.Actor
+import com.robotutor.nexora.iam.models.Role
+import com.robotutor.nexora.iam.models.Policy
 import com.robotutor.nexora.premises.models.PremisesId
-import com.robotutor.nexora.security.gateway.view.ActorResponseData
 import com.robotutor.nexora.security.gateway.view.AuthenticationResponseData
 import com.robotutor.nexora.security.gateway.view.InvitationResponseData
 import com.robotutor.nexora.zone.models.ZoneId
@@ -50,9 +53,8 @@ data class PremisesActorData(
     val premisesId: PremisesId,
     val identifier: Identifier<ActorIdentifier>
 ) : IAuthenticationData {
-
     companion object {
-        fun from(actorData: ActorResponseData): PremisesActorData {
+        fun from(actorData: ActorWithRoleView): PremisesActorData {
             return PremisesActorData(
                 actorId = actorData.actorId,
                 premisesId = actorData.premisesId,
@@ -60,9 +62,17 @@ data class PremisesActorData(
                 identifier = actorData.identifier,
             )
         }
+
+        fun from(actor: Actor, role: Role, policies: List<Policy>): PremisesActorData {
+            return PremisesActorData(
+                actorId = actor.actorId,
+                premisesId = actor.premisesId,
+                role = RoleView.from(role, policies),
+                identifier = actor.identifier,
+            )
+        }
     }
 }
-
 
 typealias UserId = String
 typealias ActorId = String

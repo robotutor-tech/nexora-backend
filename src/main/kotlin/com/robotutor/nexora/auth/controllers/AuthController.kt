@@ -2,6 +2,7 @@ package com.robotutor.nexora.auth.controllers
 
 import com.robotutor.nexora.auth.controllers.views.AuthLoginRequest
 import com.robotutor.nexora.auth.controllers.views.AuthUserRequest
+import com.robotutor.nexora.auth.controllers.views.PremisesActorDataView
 import com.robotutor.nexora.auth.controllers.views.TokenView
 import com.robotutor.nexora.auth.exceptions.NexoraError
 import com.robotutor.nexora.auth.services.AuthService
@@ -38,6 +39,8 @@ class AuthController(private val authService: AuthService, private val tokenServ
             val invitationDataOptional = ctx.getOrEmpty<InvitationData>(InvitationData::class.java)
             when {
                 premisesActorDataOptional.isPresent -> createMono(premisesActorDataOptional.get())
+                    .map { PremisesActorDataView.from(it) }
+
                 authUserDataOptional.isPresent -> createMono(authUserDataOptional.get())
                 invitationDataOptional.isPresent -> createMono(invitationDataOptional.get())
                 else -> createMonoError(UnAuthorizedException(NexoraError.NEXORA0203))

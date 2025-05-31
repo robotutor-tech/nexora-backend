@@ -49,10 +49,10 @@ class TokenService(
             .switchIfEmpty { createMonoError(UnAuthorizedException(NexoraError.NEXORA0203)) }
     }
 
-    fun generatePremisesActorToken(tokenValue: String, premisesActorRequest: PremisesActorRequest): Mono<Token> {
+    fun generatePremisesActorToken(tokenValue: String, request: PremisesActorRequest): Mono<Token> {
         return validate(tokenValue)
             .flatMap { token ->
-                iamGateway.getActor(premisesActorRequest.actorId)
+                iamGateway.getActor(request.actorId, request.roleId)
                     .flatMap { actor ->
                         idGeneratorService.generateId(IdType.TOKEN_ID)
                             .map { tokenId -> token.generatePremisesActorToken(tokenId, actor) }

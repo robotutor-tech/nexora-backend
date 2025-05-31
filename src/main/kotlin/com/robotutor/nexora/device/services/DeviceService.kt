@@ -33,7 +33,7 @@ class DeviceService(
                 deviceRepository.save(it)
                     .retryOptimisticLockingFailure()
                     .auditOnSuccess(
-                        "DEVICE_REGISTRATION",
+                        "DEVICE_CREATED",
                         mapOf("deviceId" to it.deviceId, "invitedBy" to invitationData.invitedBy, "name" to it.name),
                         identifier = Identifier(it.deviceId, ActorIdentifier.DEVICE),
                         premisesId = it.premisesId

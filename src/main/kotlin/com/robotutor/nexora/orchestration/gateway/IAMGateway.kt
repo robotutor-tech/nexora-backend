@@ -1,8 +1,10 @@
 package com.robotutor.nexora.orchestration.gateway
 
 import com.robotutor.nexora.device.controllers.view.DeviceView
+import com.robotutor.nexora.iam.controllers.view.ActorWithRoleView
 import com.robotutor.nexora.orchestration.config.IAMConfig
 import com.robotutor.nexora.orchestration.gateway.view.PremisesActorView
+import com.robotutor.nexora.orchestration.gateway.view.PremisesWithActorView
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.webClient.WebClientWrapper
@@ -13,8 +15,8 @@ import reactor.core.publisher.Mono
 @Component
 class IAMGateway(private val webClient: WebClientWrapper, private val iamConfig: IAMConfig) {
 
-    fun registerPremises(premisesId: PremisesId): Flux<PremisesActorView> {
-        return webClient.postFlux(
+    fun registerPremises(premisesId: PremisesId): Mono<PremisesActorView> {
+        return webClient.post(
             baseUrl = iamConfig.baseUrl,
             path = iamConfig.registerPremises,
             body = mapOf("premisesId" to premisesId),
@@ -35,7 +37,8 @@ class IAMGateway(private val webClient: WebClientWrapper, private val iamConfig:
             baseUrl = iamConfig.baseUrl,
             path = iamConfig.registerDevice,
             body = mapOf("deviceId" to device.deviceId, "type" to device.type),
-            returnType = PremisesActorData::class.java
+            returnType = ActorWithRoleView::class.java
         )
+            .map { PremisesActorData.from(it) }
     }
 }

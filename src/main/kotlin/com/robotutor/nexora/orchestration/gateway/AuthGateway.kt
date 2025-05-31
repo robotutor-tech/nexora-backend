@@ -31,7 +31,7 @@ class AuthGateway(
         return webClient.post(
             baseUrl = authConfig.baseUrl,
             path = authConfig.deviceToken,
-            body = mapOf("actorId" to actor.actorId),
+            body = mapOf("actorId" to actor.actorId, "roleId" to actor.role.roleId),
             returnType = TokenView::class.java,
         )
     }

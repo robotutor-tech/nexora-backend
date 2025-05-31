@@ -40,7 +40,7 @@ class AuthGateway(
             .flatMap {
                 val identifier = it.identifier
                 when (identifier.type) {
-                    TokenIdentifier.PREMISES_ACTOR -> iamGateway.getPremisesActor(identifier.id)
+                    TokenIdentifier.PREMISES_ACTOR -> iamGateway.getPremisesActor(identifier.id, it.roleId!!)
                     TokenIdentifier.AUTH_USER -> createMono(AuthUserData.from(it))
                     TokenIdentifier.INVITATION -> getInvitation(identifier.id)
                 }

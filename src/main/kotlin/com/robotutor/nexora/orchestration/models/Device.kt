@@ -3,6 +3,7 @@ package com.robotutor.nexora.orchestration.models
 import com.robotutor.nexora.device.models.DeviceId
 import com.robotutor.nexora.device.models.DeviceType
 import com.robotutor.nexora.feed.models.FeedType
+import com.robotutor.nexora.iam.models.Permission
 import com.robotutor.nexora.widget.models.WidgetType
 import com.robotutor.nexora.zone.models.ZoneId
 
@@ -19,13 +20,9 @@ data class Device(
     }
 }
 
-data class Policy(val name: String, val access: AccessType)
-enum class AccessType {
-    READ,
-    UPDATE
-}
+data class Policy(val name: String, val permission: Permission)
 
-data class FeedCreationRequest(val feed: Feed, val widget: Widget, val policies: List<Policy>)
+data class FeedCreationRequest(val feed: Feed, val widget: Widget, val permissions: List<Permission>)
 
 data class Feed(val name: String, val type: FeedType, val index: Int)
 

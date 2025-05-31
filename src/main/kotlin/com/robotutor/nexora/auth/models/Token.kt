@@ -2,6 +2,7 @@ package com.robotutor.nexora.auth.models
 
 import com.robotutor.nexora.auth.controllers.views.PremisesActorRequest
 import com.robotutor.nexora.auth.gateways.view.ActorView
+import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.security.models.Identifier
 import com.robotutor.nexora.security.models.TokenIdentifier
 import com.robotutor.nexora.security.models.UserId
@@ -27,6 +28,7 @@ data class Token(
     @Indexed(unique = true)
     val value: String,
     val identifier: Identifier<TokenIdentifier>,
+    val role: RoleId? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val expiresOn: LocalDateTime,
     @Version
@@ -37,7 +39,8 @@ data class Token(
             tokenId = tokenId,
             value = generateTokenValue(),
             identifier = Identifier(actor.actorId, TokenIdentifier.PREMISES_ACTOR),
-            expiresOn = expiresOn
+            expiresOn = expiresOn,
+            role = actor.role.roleId,
         )
     }
 
@@ -66,6 +69,7 @@ data class Token(
                 value = generateTokenValue(DEVICE_TOKEN_LENGTH),
                 identifier = Identifier(actorRequest.actorId, TokenIdentifier.PREMISES_ACTOR),
                 expiresOn = LocalDateTime.now().plusYears(100),
+                role = actorRequest.roleId
             )
         }
     }

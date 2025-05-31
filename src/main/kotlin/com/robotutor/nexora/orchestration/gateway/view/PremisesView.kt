@@ -2,17 +2,26 @@ package com.robotutor.nexora.orchestration.gateway.view
 
 import java.time.LocalDateTime
 
-
 data class PremisesView(
     val premisesId: String,
     val name: String,
     val createdAt: LocalDateTime,
-    val actors: MutableList<PremisesActorView> = mutableListOf(),
+)
+
+data class PremisesWithActorView(
+    val premisesId: String,
+    val name: String,
+    val createdAt: LocalDateTime,
+    val actor: PremisesActorView,
 ) {
-    fun addActors(actors: List<PremisesActorView>): PremisesView {
-        this.actors.addAll(actors)
-        this.actors.distinct()
-        this.actors.sortBy { it.role.role }
-        return this
+    companion object {
+        fun from(premises: PremisesView, actorView: PremisesActorView): PremisesWithActorView {
+            return PremisesWithActorView(
+                premisesId = premises.premisesId,
+                name = premises.name,
+                createdAt = premises.createdAt,
+                actor = actorView
+            )
+        }
     }
 }

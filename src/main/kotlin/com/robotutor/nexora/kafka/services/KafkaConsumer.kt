@@ -30,7 +30,7 @@ class KafkaConsumer(
     ): Flux<R> {
         val kafkaReceiver = kafkaReceiverFactory(topics.map { it })
         return kafkaReceiver.receive()
-            .flatMap { receiverRecord ->
+            .flatMap({ receiverRecord ->
                 val message = DefaultSerializer.deserialize(receiverRecord.value(), messageType)
                 val topic = DefaultSerializer.deserialize(receiverRecord.topic(), KafkaTopicName::class.java)
                 createMono(KafkaTopicMessage(topic, message))
@@ -40,7 +40,7 @@ class KafkaConsumer(
                     .logOnSuccess(logger, "Successfully consumed kafka topic to $topic")
                     .logOnError(logger, "", "Failed to consume kafka topic to $topic")
                     .onErrorResume { Mono.empty() }
-            }
+            }, 8)
     }
 
     private fun writeContext(receiverHeaders: Headers, ctx: Context): Context {

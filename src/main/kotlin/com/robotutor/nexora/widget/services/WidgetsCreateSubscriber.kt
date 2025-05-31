@@ -1,6 +1,7 @@
 package com.robotutor.nexora.widget.services
 
 import com.robotutor.nexora.kafka.services.KafkaConsumer
+import com.robotutor.nexora.kafka.services.KafkaPublisher
 import com.robotutor.nexora.security.createFlux
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.widget.controllers.view.WidgetRequest

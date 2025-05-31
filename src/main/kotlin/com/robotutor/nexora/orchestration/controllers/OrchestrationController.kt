@@ -5,6 +5,7 @@ import com.robotutor.nexora.orchestration.controllers.view.DeviceRegistrationReq
 import com.robotutor.nexora.orchestration.controllers.view.PremisesRegistrationRequest
 import com.robotutor.nexora.orchestration.controllers.view.UserRegistrationRequest
 import com.robotutor.nexora.orchestration.gateway.view.PremisesView
+import com.robotutor.nexora.orchestration.gateway.view.PremisesWithActorView
 import com.robotutor.nexora.orchestration.gateway.view.UserView
 import com.robotutor.nexora.orchestration.services.OrchestratorService
 import com.robotutor.nexora.security.models.InvitationData
@@ -23,12 +24,12 @@ class OrchestrationController(private val orchestratorService: OrchestratorServi
     }
 
     @PostMapping("/premises/register")
-    fun registerPremises(@RequestBody @Validated request: PremisesRegistrationRequest): Mono<PremisesView> {
+    fun registerPremises(@RequestBody @Validated request: PremisesRegistrationRequest): Mono<PremisesWithActorView> {
         return orchestratorService.registerPremises(request)
     }
 
     @GetMapping("/premises")
-    fun getAllPremises(): Flux<PremisesView> {
+    fun getAllPremises(): Flux<PremisesWithActorView> {
         return orchestratorService.getAllPremises()
     }
 

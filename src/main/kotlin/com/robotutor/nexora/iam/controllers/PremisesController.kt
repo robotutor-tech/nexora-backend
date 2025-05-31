@@ -1,6 +1,7 @@
 package com.robotutor.nexora.iam.controllers
 
 import com.robotutor.nexora.iam.controllers.view.ActorView
+import com.robotutor.nexora.iam.controllers.view.ActorWithRoleView
 import com.robotutor.nexora.iam.controllers.view.PremisesRequest
 import com.robotutor.nexora.iam.controllers.view.RegisterDeviceRequest
 import com.robotutor.nexora.iam.models.Actor
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController(value = "IAMPremisesController")
@@ -29,26 +29,28 @@ class PremisesController(
     fun registerPremises(
         @RequestBody @Validated request: PremisesRequest,
         authUserData: AuthUserData
-    ): Flux<ActorView> {
+    ): Mono<ActorView> {
         return premisesService.registerPremises(request, authUserData)
-            .flatMap { createActorView(it) }
+            .flatMap { actor ->
+                roleService.getRolesByRoleIds(actor.roles.toList())
+                    .collectList()
+                    .map { ActorView.from(actor, it) }
+            }
     }
 
     @PostMapping("/register/device")
     fun registerDevice(
         @RequestBody @Validated request: RegisterDeviceRequest,
         invitationData: InvitationData
-    ): Mono<ActorView> {
+    ): Mono<ActorWithRoleView> {
         return premisesService.registerDevice(request, invitationData)
-            .flatMap { createActorView(it) }
-    }
-
-    private fun createActorView(actor: Actor): Mono<ActorView> {
-        return roleService.getRoleByRoleId(actor.roleId)
-            .flatMap { role ->
-                policyService.getPolicies((role.policies + actor.policies).toList())
-                    .collectList()
-                    .map { policies -> ActorView.from(actor, role, policies) }
+            .flatMap { actor ->
+                roleService.getRoleByRoleId(actor.roles.first())
+                    .flatMap { role ->
+                        policyService.getPolicies(role.policies.toList())
+                            .collectList()
+                            .map { ActorWithRoleView.from(actor, role, it) }
+                    }
             }
     }
 }

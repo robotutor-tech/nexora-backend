@@ -1,5 +1,6 @@
 package com.robotutor.nexora.iam.models
 
+import com.robotutor.nexora.iam.controllers.view.RegisterActorRequest
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.ActorIdentifier
@@ -24,21 +25,20 @@ data class Actor(
     @Indexed
     val premisesId: PremisesId,
     val identifier: Identifier<ActorIdentifier>,
-    val roleId: RoleId,
+    val roles: MutableList<RoleId>,
     val state: ActorState,
-    val policies: MutableSet<PolicyId> = mutableSetOf(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
     @Version
     val version: Long? = null
 ) {
     companion object {
-        fun from(actorId: ActorId, premisesId: PremisesId, id: String, type: ActorIdentifier, roleId: RoleId): Actor {
+        fun from(actorId: ActorId, request: RegisterActorRequest): Actor {
             return Actor(
                 actorId = actorId,
-                premisesId = premisesId,
-                identifier = Identifier(id, type),
-                roleId = roleId,
+                premisesId = request.premisesId,
+                identifier = request.identifier,
+                roles = request.roles.toMutableList(),
                 state = ActorState.ACTIVE,
             )
         }

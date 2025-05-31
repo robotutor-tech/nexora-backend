@@ -1,6 +1,7 @@
 package com.robotutor.nexora.security.gateway.view
 
 import com.robotutor.nexora.auth.models.InvitationId
+import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.Identifier
@@ -8,7 +9,8 @@ import com.robotutor.nexora.security.models.TokenIdentifier
 import com.robotutor.nexora.zone.models.ZoneId
 
 data class AuthenticationResponseData(
-    val identifier: Identifier<TokenIdentifier>
+    val identifier: Identifier<TokenIdentifier>,
+    val roleId: RoleId?,
 )
 
 data class InvitationResponseData(

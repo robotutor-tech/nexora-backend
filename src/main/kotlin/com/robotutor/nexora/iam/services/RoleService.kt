@@ -32,7 +32,7 @@ class RoleService(private val idGeneratorService: IdGeneratorService, private va
             .flatMap {
                 roleRepository.save(it)
                     .auditOnSuccess(
-                        "ROLE_REGISTRATION",
+                        "ROLE_CREATED",
                         mapOf("roleId" to it.roleId),
                         identifier = Identifier(authUserData.userId, ActorIdentifier.USER),
                         premisesId = premisesId
@@ -44,6 +44,10 @@ class RoleService(private val idGeneratorService: IdGeneratorService, private va
 
     fun getRoleByRoleId(roleId: RoleId): Mono<Role> {
         return roleRepository.findByRoleId(roleId)
+    }
+
+    fun getRolesByRoleIds(roleIds: List<RoleId>): Flux<Role> {
+        return roleRepository.findAllByRoleIdIn(roleIds)
     }
 
     fun assignPolicyToHumanRole(policies: List<Policy>, premisesActorData: PremisesActorData): Flux<Role> {

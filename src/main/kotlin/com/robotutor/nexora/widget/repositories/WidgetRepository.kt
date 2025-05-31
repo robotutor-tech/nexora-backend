@@ -1,6 +1,5 @@
 package com.robotutor.nexora.widget.repositories
 
-import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.widget.models.Widget
 import com.robotutor.nexora.widget.models.WidgetId
@@ -10,6 +9,5 @@ import reactor.core.publisher.Flux
 
 @Repository
 interface WidgetRepository : ReactiveCrudRepository<Widget, WidgetId> {
-    fun findAllByPremisesIdAndFeedIdIn(premisesId: PremisesId, feedIds: List<FeedId>): Flux<Widget>
-
+    fun findAllByPremisesIdAndWidgetIdIn(premisesId: PremisesId, widgetIds: List<WidgetId>): Flux<Widget>
 }

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.kafka
 
-import com.robotutor.nexora.auth.gateways.view.RoleView
+import com.robotutor.nexora.iam.controllers.view.RoleView
 import com.robotutor.nexora.iam.models.RoleType
 import com.robotutor.nexora.kafka.models.AuditMessage
 import com.robotutor.nexora.kafka.models.AuditStatus
@@ -50,7 +50,7 @@ fun getPremisesActorData(contextView: ContextView): PremisesActorData {
             premisesId = "missing-premises-id",
             name = "missing-role-name",
             role = RoleType.CUSTOM,
-            policies = emptyList(),
+            policies = emptySet(),
         ),
         premisesId = "missing-premises-id",
         identifier = Identifier("missing-identifier", ActorIdentifier.USER),

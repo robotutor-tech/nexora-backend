@@ -29,7 +29,7 @@ class PremisesService(
             .flatMap { premises ->
                 premisesRepository.save(premises)
                     .auditOnSuccess(
-                        "PREMISES_REGISTRATION",
+                        "PREMISES_CREATED",
                         mapOf("premisesId" to premises.premisesId, "name" to premises.name),
                         premisesId = premises.premisesId
                     )

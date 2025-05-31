@@ -39,7 +39,7 @@ class AuthService(
                     authRepository.save(authUser)
                         .logOnSuccess(logger, "Successfully registered user ${authUserRequest.userId}")
                         .auditOnSuccess(
-                            "AUTH_USER_REGISTRATION", identifier = Identifier(
+                            "AUTH_USER_CREATED", identifier = Identifier(
                                 authUserRequest.userId,
                                 ActorIdentifier.USER
                             )

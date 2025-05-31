@@ -30,7 +30,7 @@ class UserService(val userRepository: UserRepository, val idGeneratorService: Id
                         .flatMap { userId ->
                             userRepository.save(UserDetails.from(userId, userRequest))
                                 .auditOnSuccess(
-                                    "USER_REGISTRATION",
+                                    "USER_CREATED",
                                     mapOf("email" to userRequest.email),
                                     Identifier(userId, ActorIdentifier.USER)
                                 )

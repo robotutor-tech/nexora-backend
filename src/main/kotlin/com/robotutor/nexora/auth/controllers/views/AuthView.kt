@@ -1,6 +1,13 @@
 package com.robotutor.nexora.auth.controllers.views
 
-import com.robotutor.nexora.security.models.UserId
+import com.robotutor.nexora.iam.controllers.view.RoleView
+import com.robotutor.nexora.iam.models.Permission
+import com.robotutor.nexora.iam.models.PolicyId
+import com.robotutor.nexora.iam.models.Resource
+import com.robotutor.nexora.iam.models.RoleId
+import com.robotutor.nexora.iam.models.RoleType
+import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.models.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
@@ -26,3 +33,55 @@ data class AuthLoginRequest(
     @field:NotBlank(message = "Password is required")
     val password: String
 )
+
+data class PremisesActorDataView(
+    val actorId: ActorId,
+    val role: RoleWithPolicyTypeView,
+    val premisesId: PremisesId,
+    val identifier: Identifier<ActorIdentifier>
+) : IAuthenticationData {
+    companion object {
+        fun from(premisesActorData: PremisesActorData): PremisesActorDataView {
+            return PremisesActorDataView(
+                actorId = premisesActorData.actorId,
+                role = RoleWithPolicyTypeView.from(premisesActorData.role),
+                premisesId = premisesActorData.premisesId,
+                identifier = premisesActorData.identifier
+            )
+        }
+    }
+}
+
+data class RoleWithPolicyTypeView(
+    val roleId: RoleId,
+    val premisesId: PremisesId,
+    val name: String,
+    val role: RoleType,
+    val policies: List<PolicyView>,
+) {
+    companion object {
+        fun from(role: RoleView): RoleWithPolicyTypeView {
+            return RoleWithPolicyTypeView(
+                roleId = role.roleId,
+                premisesId = role.premisesId,
+                name = role.name,
+                role = role.role,
+                policies = role.policies.map { PolicyView.from(it) },
+            )
+        }
+    }
+}
+
+data class PolicyView(
+    val permission: Permission,
+    val identifier: Identifier<Resource>?,
+) {
+    companion object {
+        fun from(policyView: com.robotutor.nexora.iam.controllers.view.PolicyView): PolicyView {
+            return PolicyView(
+                permission = policyView.permission,
+                identifier = policyView.identifier,
+            )
+        }
+    }
+}

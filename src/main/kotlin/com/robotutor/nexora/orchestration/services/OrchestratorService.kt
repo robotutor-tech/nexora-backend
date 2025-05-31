@@ -3,12 +3,13 @@ package com.robotutor.nexora.orchestration.services
 import com.robotutor.nexora.auth.controllers.views.TokenView
 import com.robotutor.nexora.device.models.DeviceType
 import com.robotutor.nexora.feed.models.FeedType
+import com.robotutor.nexora.iam.models.Permission
 import com.robotutor.nexora.kafka.services.KafkaPublisher
 import com.robotutor.nexora.orchestration.controllers.view.DeviceRegistrationRequest
 import com.robotutor.nexora.orchestration.controllers.view.PremisesRegistrationRequest
 import com.robotutor.nexora.orchestration.controllers.view.UserRegistrationRequest
 import com.robotutor.nexora.orchestration.gateway.*
-import com.robotutor.nexora.orchestration.gateway.view.PremisesView
+import com.robotutor.nexora.orchestration.gateway.view.PremisesWithActorView
 import com.robotutor.nexora.orchestration.gateway.view.UserView
 import com.robotutor.nexora.orchestration.models.*
 import com.robotutor.nexora.security.createMono
@@ -37,12 +38,11 @@ class OrchestratorService(
             }
     }
 
-    fun registerPremises(request: PremisesRegistrationRequest): Mono<PremisesView> {
+    fun registerPremises(request: PremisesRegistrationRequest): Mono<PremisesWithActorView> {
         return premisesGateway.registerPremises(request.name)
             .flatMap { premises ->
                 iamGateway.registerPremises(premises.premisesId)
-                    .collectList()
-                    .map { premises.addActors(it) }
+                    .map { PremisesWithActorView.from(premises, it) }
             }
     }
 
@@ -57,21 +57,21 @@ class OrchestratorService(
                     .flatMap { iamGateway.registerActorAsBot(it) }
                     .flatMap { premisesActorData ->
                         authGateway.createDeviceActorToken(premisesActorData)
-                            .flatMap { kafkaPublisher.publish("feed.create", seed) { it } }
+                            .flatMap { kafkaPublisher.publish("feeds.create", seed) { it } }
                             .contextWrite { it.put(PremisesActorData::class.java, premisesActorData) }
                     }
             }
     }
 
-
-    fun getAllPremises(): Flux<PremisesView> {
+    fun getAllPremises(): Flux<PremisesWithActorView> {
         return iamGateway.getActors().collectList().flatMapMany { actors ->
             val premisesIds = actors.map { it.premisesId }.distinct()
             if (premisesIds.isEmpty()) Mono.empty()
             else {
-                premisesGateway.getPremises(premisesIds).map { premises ->
-                    premises.addActors(actors.filter { actor -> actor.premisesId == premises.premisesId })
-                }
+                premisesGateway.getPremises(premisesIds)
+                    .map { premises ->
+                        PremisesWithActorView.from(premises, actors.find { it.premisesId == premises.premisesId }!!)
+                    }
             }
         }
     }
@@ -85,42 +85,42 @@ fun getDeviceSeedData(invitationData: InvitationData): Device {
             FeedCreationRequest(
                 Feed(name = "Light 1", type = FeedType.ACTUATOR, index = 0),
                 Widget(name = "Light 1", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 1", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
             FeedCreationRequest(
                 Feed(name = "Light 2", type = FeedType.ACTUATOR, index = 1),
                 Widget(name = "Light 2", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 2", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
             FeedCreationRequest(
                 Feed(name = "Light 3", type = FeedType.ACTUATOR, index = 2),
                 Widget(name = "Light 3", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 3", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
             FeedCreationRequest(
                 Feed(name = "Light 4", type = FeedType.ACTUATOR, index = 3),
                 Widget(name = "Light 4", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 4", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
             FeedCreationRequest(
                 Feed(name = "Light 5", type = FeedType.ACTUATOR, index = 4),
                 Widget(name = "Light 5", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 5", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
             FeedCreationRequest(
                 Feed(name = "Light 6", type = FeedType.ACTUATOR, index = 5),
                 Widget(name = "Light 6", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 6", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
             FeedCreationRequest(
                 Feed(name = "Light 7", type = FeedType.ACTUATOR, index = 6),
                 Widget(name = "Light 7", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 7", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
             FeedCreationRequest(
                 Feed(name = "Light 8", type = FeedType.ACTUATOR, index = 7),
                 Widget(name = "Light 8", type = WidgetType.TOGGLE, zoneId = invitationData.zoneId),
-                listOf(Policy(name = "Light 8", access = AccessType.UPDATE))
+                listOf(Permission.FEED_READ, Permission.FEED_UPDATE)
             ),
         ),
         type = DeviceType.DEVICE
