@@ -11,7 +11,8 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 const val WIDGET_COLLECTION = "widgets"
 
@@ -28,8 +29,8 @@ data class Widget(
     val feedId: FeedId,
     val zoneId: ZoneId,
     val type: WidgetType,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: Instant = Instant.now(),
+    val updatedAt: Instant = Instant.now(),
     @Version
     val version: Long? = null
 ) {

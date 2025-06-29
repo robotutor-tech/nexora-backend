@@ -8,8 +8,10 @@ data class AppConfig(
     val authServiceBaseUrl: String,
     val iamServiceBaseUrl: String,
     val internalAccessToken: String,
+    val opaBaseUrl: String,
     val unSecuredPath: List<String> = emptyList(),
     val validatePath: String = "/auth/tokens/validate",
     val invitationDevicesPath: String = "/auth/invitations/{invitationId}/devices",
     val actorPath: String = "/iam/actors/{actorId}",
+    val opaPath: String = "/v1/data/authz/allow"
 )

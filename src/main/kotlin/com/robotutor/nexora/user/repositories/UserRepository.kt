@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono
 @Repository
 interface UserRepository : ReactiveCrudRepository<UserDetails, UserId> {
     fun existsByEmail(email: String): Mono<Boolean>
+    fun deleteByUserId(userId: UserId): Mono<UserDetails>
 }

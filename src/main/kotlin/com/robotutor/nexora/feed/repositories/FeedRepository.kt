@@ -10,6 +10,6 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface FeedRepository : ReactiveCrudRepository<Feed, FeedId> {
-    fun findAllByPremisesIdAndFeedIdIn(premisesId: PremisesId, feedIds: List<FeedId>): Flux<Feed>
     fun findByFeedIdAndPremisesId(feedId: FeedId, premisesId: PremisesId): Mono<Feed>
+    fun findAllByPremisesIdAndFeedIdIn(premisesId: PremisesId, feedIds: List<FeedId>): Flux<Feed>
 }

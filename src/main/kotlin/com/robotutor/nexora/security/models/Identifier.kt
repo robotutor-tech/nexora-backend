@@ -1,6 +1,8 @@
 package com.robotutor.nexora.security.models
 
-data class Identifier<T>(val id: String, val type: T)
+data class Identifier<T>(val id: String, val type: T) {
+    fun isValid(id: String?, type: T) = this.type == type && this.id == id
+}
 
 enum class ActorIdentifier {
     USER,

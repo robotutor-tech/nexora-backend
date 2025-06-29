@@ -9,7 +9,8 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 const val ZONE_COLLECTION = "zones"
 
@@ -23,7 +24,7 @@ data class Zone(
     val premisesId: PremisesId,
     val name: String,
     val createdBy: ActorId,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: Instant = Instant.now(),
     @Version
     val version: Long? = null
 ) {

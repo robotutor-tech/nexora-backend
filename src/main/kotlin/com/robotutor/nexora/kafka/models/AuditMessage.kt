@@ -3,7 +3,8 @@ package com.robotutor.nexora.kafka.models
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.ActorIdentifier
 import com.robotutor.nexora.security.models.Identifier
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 
 data class AuditMessage(
@@ -14,7 +15,7 @@ data class AuditMessage(
     val event: String,
     val accountId: String? = null,
     val premisesId: String? = null,
-    val timestamp: LocalDateTime = LocalDateTime.now()
+    val timestamp: Instant = Instant.now()
 )
 
 enum class AuditStatus {

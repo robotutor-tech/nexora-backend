@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Signal
 import reactor.util.context.ContextView
-import java.time.LocalDateTime
+import java.time.Instant
 import java.time.ZoneOffset
 
 fun <T> Mono<T>.logOnError(
@@ -105,8 +105,8 @@ fun <T> Mono<T>.logOnSuccess(
 }
 
 fun getResponseTime(context: ContextView): Long {
-    return context.getOrEmpty<LocalDateTime>(LogConstants.API_CALL_START_TIME)
-        .map { (LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - it.toEpochSecond(ZoneOffset.UTC)) * 1000 }
+    return context.getOrEmpty<Instant>(LogConstants.API_CALL_START_TIME)
+        .map { (Instant.now().epochSecond - it.epochSecond) * 1000 }
         .orElseGet { -1 }
 }
 

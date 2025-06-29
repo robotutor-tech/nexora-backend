@@ -8,7 +8,8 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 const val AUTH_USER_COLLECTION = "authUsers"
 
@@ -22,7 +23,7 @@ data class AuthUser(
     @Indexed(unique = true)
     val email: String,
     val password: String,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: Instant = Instant.now(),
     @Version
     val version: Long? = null
 ) {

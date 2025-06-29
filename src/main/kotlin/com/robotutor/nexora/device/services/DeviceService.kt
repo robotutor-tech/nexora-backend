@@ -50,8 +50,8 @@ class DeviceService(
             .retryOptimisticLockingFailure()
     }
 
-    fun getDevices(premisesActorData: PremisesActorData): Flux<Device> {
-        return deviceRepository.findAllByPremisesId(premisesActorData.premisesId)
+    fun getDevices(premisesActorData: PremisesActorData, deviceIds: List<DeviceId>): Flux<Device> {
+        return deviceRepository.findAllByPremisesIdAndDeviceIdIn(premisesActorData.premisesId, deviceIds)
     }
 
     fun getDevice(deviceId: DeviceId, premisesActorData: PremisesActorData): Mono<Device> {

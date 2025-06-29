@@ -5,7 +5,7 @@ import com.robotutor.nexora.zone.models.Zone
 import com.robotutor.nexora.zone.models.ZoneId
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class ZoneCreateRequest(
     @field:NotBlank(message = "Name is required")
@@ -17,7 +17,7 @@ data class ZoneView(
     val zoneId: ZoneId,
     val premisesId: PremisesId,
     val name: String,
-    val createdAt: LocalDateTime
+    val createdAt: Instant
 ) {
     companion object {
         fun from(zone: Zone): ZoneView {

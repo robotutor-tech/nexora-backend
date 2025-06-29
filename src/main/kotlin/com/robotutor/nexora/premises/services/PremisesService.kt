@@ -45,4 +45,11 @@ class PremisesService(
     fun getPremisesDetails(premisesActorData: PremisesActorData): Mono<Premises> {
         return premisesRepository.findByPremisesId(premisesActorData.premisesId)
     }
+
+    fun deletePremises(premisesId: PremisesId): Mono<Premises> {
+        return premisesRepository.deleteByPremisesId(premisesId)
+            .auditOnSuccess("PREMISES_DELETED", mapOf("premisesId" to premisesId), premisesId = premisesId)
+            .logOnSuccess(logger, "Successfully deleted premise")
+            .logOnError(logger, "", "Failed to delete premise")
+    }
 }

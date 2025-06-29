@@ -2,6 +2,7 @@ package com.robotutor.nexora.iam.controllers.view
 
 import com.robotutor.nexora.iam.models.*
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.filters.ResourceEntitlement
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.ActorIdentifier
 import com.robotutor.nexora.security.models.Identifier
@@ -24,15 +25,17 @@ data class ActorWithRoleView(
     val identifier: Identifier<ActorIdentifier>,
     val role: RoleView,
     val state: ActorState,
+    val entitlement: List<ResourceEntitlement>,
 ) {
     companion object {
-        fun from(actor: Actor, role: Role, policies: List<Policy>): ActorWithRoleView {
+        fun from(actor: Actor, role: Role, entitlements: List<ResourceEntitlement>): ActorWithRoleView {
             return ActorWithRoleView(
                 actorId = actor.actorId,
                 premisesId = actor.premisesId,
                 identifier = actor.identifier,
-                role = RoleView.from(role, policies),
+                role = RoleView.from(role),
                 state = actor.state,
+                entitlement = entitlements,
             )
         }
     }

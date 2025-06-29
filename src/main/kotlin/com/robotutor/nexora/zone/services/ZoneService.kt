@@ -33,8 +33,8 @@ class ZoneService(
             .logOnError(logger, "", "Failed to create zone")
     }
 
-    fun getAllZones(actorData: PremisesActorData): Flux<Zone> {
-        return zoneRepository.findAllByPremisesId(actorData.premisesId)
+    fun getAllZones(actorData: PremisesActorData, zoneIds: List<ZoneId>): Flux<Zone> {
+        return zoneRepository.findAllByPremisesIdAndZoneIdIn(actorData.premisesId, zoneIds)
     }
 
     fun getZone(zoneId: ZoneId, premisesActorData: PremisesActorData): Mono<Zone> {

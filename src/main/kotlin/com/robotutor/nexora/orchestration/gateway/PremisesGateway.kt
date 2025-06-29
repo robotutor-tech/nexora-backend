@@ -15,7 +15,7 @@ class PremisesGateway(private val webClient: WebClientWrapper, private val premi
     fun registerPremises(name: String): Mono<PremisesView> {
         return webClient.post(
             baseUrl = premisesConfig.baseUrl,
-            path = premisesConfig.register,
+            path = premisesConfig.premises,
             body = mapOf("name" to name),
             returnType = PremisesView::class.java
         )
@@ -24,7 +24,7 @@ class PremisesGateway(private val webClient: WebClientWrapper, private val premi
     fun getPremises(premisesIds: List<PremisesId>): Flux<PremisesView> {
         return webClient.getFlux(
             baseUrl = premisesConfig.baseUrl,
-            path = premisesConfig.register,
+            path = premisesConfig.premises,
             queryParams = LinkedMultiValueMap(mapOf("premisesIds" to premisesIds)),
             returnType = PremisesView::class.java
         )

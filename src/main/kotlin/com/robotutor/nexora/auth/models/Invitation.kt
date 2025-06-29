@@ -14,7 +14,8 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 interface Invitation {
     fun markAsAccepted(): Invitation
@@ -22,7 +23,7 @@ interface Invitation {
     val invitationId: InvitationId
     val premisesId: PremisesId
     val invitedBy: ActorId
-    val createdAt: LocalDateTime
+    val createdAt: Instant
     var status: InvitationStatus
 }
 
@@ -39,7 +40,7 @@ data class DeviceInvitation(
     val name: String,
     val zoneId: ZoneId,
     override val invitedBy: ActorId,
-    override val createdAt: LocalDateTime = LocalDateTime.now(),
+    override val createdAt: Instant = Instant.now(),
     override var status: InvitationStatus = InvitationStatus.INVITED,
     @Version
     val version: Long? = null
@@ -78,7 +79,7 @@ data class UserInvitation(
     val userId: UserId,
     val roles: List<RoleId> = emptyList(),
     override val invitedBy: ActorId,
-    override val createdAt: LocalDateTime = LocalDateTime.now(),
+    override val createdAt: Instant = Instant.now(),
     override var status: InvitationStatus = InvitationStatus.INVITED,
     @Version
     val version: Long? = null

@@ -12,7 +12,7 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
 
 const val AUDIT_COLLECTION = "audit"
 
@@ -29,7 +29,7 @@ data class Audit(
     val premisesId: PremisesId? = null,
     val status: AuditStatus,
     val metadata: Map<String, Any?>,
-    val timestamp: LocalDateTime,
+    val timestamp: Instant,
     @Version
     val version: Long? = null
 ) {

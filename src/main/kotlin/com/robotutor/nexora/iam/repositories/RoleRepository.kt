@@ -13,5 +13,4 @@ import reactor.core.publisher.Mono
 interface RoleRepository : ReactiveCrudRepository<Role, RoleId> {
     fun findByRoleId(roleId: RoleId): Mono<Role>
     fun findAllByRoleIdIn(roleIds: List<RoleId>): Flux<Role>
-    fun findAllByPremisesIdAndRoleIn(premisesId: PremisesId, humanRoles: List<RoleType>): Flux<Role>
 }

@@ -4,6 +4,7 @@ import com.robotutor.nexora.premises.controllers.view.PremisesCreateRequest
 import com.robotutor.nexora.premises.controllers.view.PremisesView
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.premises.services.PremisesService
+import com.robotutor.nexora.security.filters.annotations.*
 import com.robotutor.nexora.security.models.AuthUserData
 import com.robotutor.nexora.security.models.PremisesActorData
 import org.springframework.validation.annotation.Validated
@@ -23,14 +24,17 @@ class PremisesController(private val premisesService: PremisesService) {
         return premisesService.createPremises(premisesRequest, authUserData).map { PremisesView.from(it) }
     }
 
-
     @GetMapping
     fun getPremises(@RequestParam premisesIds: List<PremisesId>): Flux<PremisesView> {
         return premisesService.getPremises(premisesIds).map { PremisesView.from(it) }
     }
 
-    @GetMapping("/details")
-    fun getPremisesDetails(premisesActorData: PremisesActorData): Mono<PremisesView> {
+    @RequireAccess(ActionType.READ, ResourceType.PREMISES, "premisesId")
+    @GetMapping("/{premisesId}")
+    fun getPremisesDetails(
+        @PathVariable premisesId: PremisesId,
+        premisesActorData: PremisesActorData
+    ): Mono<PremisesView> {
         return premisesService.getPremisesDetails(premisesActorData).map { PremisesView.from(it) }
     }
 }

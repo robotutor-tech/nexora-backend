@@ -38,6 +38,16 @@ class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(ex.errorResponse())
     }
 
+    @ExceptionHandler(ClientException::class)
+    fun handleClientException(ex: ClientException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.errorResponse())
+    }
+
+    @ExceptionHandler(ServerException::class)
+    fun handleServerException(ex: ServerException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.errorResponse())
+    }
+
     @ExceptionHandler(WebExchangeBindException::class)
     fun handleValidationException(ex: WebExchangeBindException): ResponseEntity<ErrorResponse> {
         val errors = ex.bindingResult.fieldErrors.map { it.defaultMessage!! }

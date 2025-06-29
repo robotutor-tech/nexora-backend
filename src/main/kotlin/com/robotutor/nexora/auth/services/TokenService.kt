@@ -24,7 +24,8 @@ import com.robotutor.nexora.webClient.exceptions.UnAuthorizedException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 @Service
 class TokenService(
@@ -45,7 +46,7 @@ class TokenService(
     }
 
     fun validate(tokenValue: String): Mono<Token> {
-        return tokenRepository.findByValueAndExpiresOnGreaterThan(tokenValue, LocalDateTime.now())
+        return tokenRepository.findByValueAndExpiresOnGreaterThan(tokenValue, Instant.now())
             .switchIfEmpty { createMonoError(UnAuthorizedException(NexoraError.NEXORA0203)) }
     }
 

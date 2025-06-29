@@ -5,7 +5,7 @@ import com.robotutor.nexora.security.models.UserId
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class UserRequest(
     @field:NotBlank(message = "Name is required")
@@ -19,7 +19,7 @@ data class UserView(
     val userId: UserId,
     val name: String,
     val email: String,
-    val registeredAt: LocalDateTime
+    val registeredAt: Instant
 ) {
     companion object {
         fun from(userDetails: UserDetails): UserView {

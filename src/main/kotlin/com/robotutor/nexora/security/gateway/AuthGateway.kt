@@ -5,7 +5,6 @@ import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.redis.services.CacheService
-import com.robotutor.nexora.redis.services.getRedisKey
 import com.robotutor.nexora.security.config.AppConfig
 import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.gateway.view.AuthenticationResponseData
@@ -17,7 +16,6 @@ import com.robotutor.nexora.security.models.TokenIdentifier
 import com.robotutor.nexora.webClient.WebClientWrapper
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.stereotype.Component
-import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
 @Component("SecurityAuthGateway")
@@ -29,8 +27,8 @@ class AuthGateway(
 ) {
     private val logger = Logger(this::class.java)
 
-    fun validate(exchange: ServerWebExchange): Mono<IAuthenticationData> {
-        return cacheService.retrieve(getRedisKey(exchange), AuthenticationResponseData::class.java) {
+    fun validate(): Mono<IAuthenticationData> {
+        return cacheService.retrieve(AuthenticationResponseData::class.java) {
             webClient.get(
                 baseUrl = appConfig.authServiceBaseUrl,
                 path = appConfig.validatePath,
@@ -50,7 +48,7 @@ class AuthGateway(
     }
 
     private fun getInvitation(invitationId: InvitationId): Mono<InvitationData> {
-        return cacheService.retrieve("${getRedisKey()}:$invitationId", InvitationData::class.java) {
+        return cacheService.retrieve(InvitationData::class.java) {
             webClient.get(
                 baseUrl = appConfig.authServiceBaseUrl,
                 path = appConfig.invitationDevicesPath,

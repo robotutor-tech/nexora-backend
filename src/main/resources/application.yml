@@ -27,6 +27,7 @@ app:
   security:
     auth-service-base-url: "http://localhost:9001"
     iam-service-base-url: "http://localhost:9001"
+    opa-base-url: "http://localhost:8181"
     internal-access-token: "internalAccessToken"
     un-secured-path:
       - "/auth/login"

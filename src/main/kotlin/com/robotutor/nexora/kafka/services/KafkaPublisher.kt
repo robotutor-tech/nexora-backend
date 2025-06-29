@@ -2,6 +2,7 @@ package com.robotutor.nexora.kafka.services
 
 import com.robotutor.nexora.kafka.models.KafkaTopicName
 import com.robotutor.nexora.logger.Logger
+import com.robotutor.nexora.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
@@ -56,11 +57,13 @@ class KafkaPublisher(
     }
 
     private fun createHeadersRecord(ctx: ContextView): MutableList<RecordHeader> {
+        val traceId = getTraceId(ctx)
         val exchangeDTO = ctx.get(ServerWebExchangeDTO::class.java)
         val premisesData = ctx.getOrEmpty<PremisesActorData>(PremisesActorData::class.java)
 
         val headers = mutableListOf<RecordHeader>()
         headers.add(RecordHeader("exchange", DefaultSerializer.serialize(exchangeDTO).toByteArray()))
+        headers.add(RecordHeader("x-trace-id", traceId.toByteArray()))
         if (premisesData.isPresent) {
             headers.add(
                 RecordHeader(

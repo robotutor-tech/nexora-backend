@@ -1,5 +1,6 @@
 package com.robotutor.nexora.user.services
 
+import com.robotutor.nexora.kafka.auditOnError
 import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.webClient.exceptions.DuplicateDataException
 import com.robotutor.nexora.logger.Logger
@@ -13,7 +14,9 @@ import com.robotutor.nexora.user.repositories.UserRepository
 import com.robotutor.nexora.security.createMonoError
 import com.robotutor.nexora.security.models.ActorIdentifier
 import com.robotutor.nexora.security.models.Identifier
+import com.robotutor.nexora.security.models.UserId
 import com.robotutor.nexora.security.services.IdGeneratorService
+import io.lettuce.core.KillArgs.Builder.user
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -41,5 +44,13 @@ class UserService(val userRepository: UserRepository, val idGeneratorService: Id
                 }
             }
             .logOnError(logger, "", "Failed to registered user")
+    }
+
+    fun deleteUserByUserId(userId: UserId): Mono<UserDetails> {
+        return userRepository.deleteByUserId(userId)
+            .auditOnSuccess("USER_DELETED", identifier = Identifier(userId, ActorIdentifier.USER))
+            .auditOnError("USER_DELETED", identifier = Identifier(userId, ActorIdentifier.USER))
+            .logOnSuccess(logger, "Successfully deleted user", mapOf("userId" to userId))
+            .logOnError(logger, "", "Failed to delete user", mapOf("userId" to userId))
     }
 }

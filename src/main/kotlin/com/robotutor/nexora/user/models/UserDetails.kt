@@ -1,14 +1,14 @@
 package com.robotutor.nexora.user.models
 
-import com.robotutor.nexora.user.conrollers.views.UserRequest
 import com.robotutor.nexora.security.models.UserId
+import com.robotutor.nexora.user.conrollers.views.UserRequest
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
 
 const val USER_COLLECTION = "users"
 
@@ -22,7 +22,7 @@ data class UserDetails(
     val name: String,
     @Indexed(unique = true)
     val email: String,
-    val registeredAt: LocalDateTime = LocalDateTime.now(),
+    val registeredAt: Instant = Instant.now(),
     @Version
     val version: Long? = null
 ) {

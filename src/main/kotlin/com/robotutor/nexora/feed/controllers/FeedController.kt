@@ -5,6 +5,9 @@ import com.robotutor.nexora.feed.controllers.view.FeedValueRequest
 import com.robotutor.nexora.feed.controllers.view.FeedView
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.feed.services.FeedService
+import com.robotutor.nexora.security.filters.annotations.ActionType
+import com.robotutor.nexora.security.filters.annotations.RequireAccess
+import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.PremisesActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,6 +24,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/feeds")
 class FeedController(private val feedService: FeedService) {
 
+    @RequireAccess(ActionType.CREATE, ResourceType.FEED)
     @PostMapping
     fun createFeed(
         @RequestBody @Validated feedRequest: FeedRequest,
@@ -29,11 +33,14 @@ class FeedController(private val feedService: FeedService) {
         return feedService.createFeed(feedRequest, premisesActorData).map { FeedView.from(it) }
     }
 
+    @RequireAccess(ActionType.LIST, ResourceType.FEED)
     @GetMapping
     fun getFeeds(premisesActorData: PremisesActorData): Flux<FeedView> {
-        return feedService.getFeeds(premisesActorData).map { FeedView.from(it) }
+        val feedIds = premisesActorData.getResourceIds(ActionType.READ, ResourceType.FEED)
+        return feedService.getFeeds(premisesActorData, feedIds).map { FeedView.from(it) }
     }
 
+    @RequireAccess(ActionType.CONTROL, ResourceType.FEED, "feedId")
     @PatchMapping("/{feedId}/value")
     fun updateFeedValue(
         @PathVariable feedId: FeedId,

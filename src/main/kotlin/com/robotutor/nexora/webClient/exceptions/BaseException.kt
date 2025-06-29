@@ -27,4 +27,4 @@ open class BaseException(
     }
 }
 
-data class ErrorResponse(val errorCode: String, val message: String)
+data class ErrorResponse(override val errorCode: String, override val message: String): ServiceError

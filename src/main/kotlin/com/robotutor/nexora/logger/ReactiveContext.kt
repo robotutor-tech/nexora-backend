@@ -2,15 +2,28 @@ package com.robotutor.nexora.logger
 
 import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
 import org.springframework.http.HttpHeaders
+import reactor.util.context.Context
 import reactor.util.context.ContextView
+import java.util.UUID
 
 internal object ReactiveContext {
 
     private const val TRACE_ID_HEADER_KEY = "x-trace-id"
     private const val PREMISES_ID_HEADER_KEY = "x-premises-id"
 
-    fun getTraceId(context: ContextView): String = getValueFromRequestHeader(context, TRACE_ID_HEADER_KEY)
-        ?: "missing-trace-id"
+    fun getTraceId(context: ContextView): String {
+        val traceId = context.getOrEmpty<String>(TRACE_ID_HEADER_KEY)
+        if (traceId.isEmpty || traceId.get().isBlank()) {
+            return generateTraceId()
+        }
+        return traceId.get()
+    }
+
+    fun putTraceId(context: Context, traceId: String): Context {
+        return context.put(TRACE_ID_HEADER_KEY, traceId)
+    }
+
+    private fun generateTraceId(): String = UUID.randomUUID().toString()
 
     fun getPremisesId(context: ContextView): String = getValueFromRequestHeader(context, PREMISES_ID_HEADER_KEY)
         ?: "missing-premises-id"

@@ -11,8 +11,7 @@ import com.robotutor.nexora.security.models.Identifier
 import com.robotutor.nexora.security.models.PremisesActorData
 import reactor.core.publisher.Mono
 import reactor.util.context.ContextView
-import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.Instant
 
 fun <T : Any> Mono<T>.auditOnError(
     event: String,
@@ -50,10 +49,10 @@ fun getPremisesActorData(contextView: ContextView): PremisesActorData {
             premisesId = "missing-premises-id",
             name = "missing-role-name",
             role = RoleType.CUSTOM,
-            policies = emptySet(),
         ),
         premisesId = "missing-premises-id",
         identifier = Identifier("missing-identifier", ActorIdentifier.USER),
+        entitlements = emptyList()
     )
 }
 
@@ -75,7 +74,7 @@ fun <T : Any> auditOnError(
         metadata = metadata,
         event = event,
         premisesId = premisesId ?: premisesActorData.premisesId,
-        timestamp = LocalDateTime.now(ZoneId.of("UTC"))
+        timestamp = Instant.now()
     )
     return kafkaPublisher.publish("AUDIT", auditMessage, "audit")
         .flatMap { Mono.error { error } }
@@ -99,7 +98,7 @@ fun <T : Any> auditOnSuccess(
         event = event,
         actorId = premisesActorData.actorId,
         premisesId = premisesId ?: premisesActorData.premisesId,
-        timestamp = LocalDateTime.now(ZoneId.of("UTC"))
+        timestamp = Instant.now()
     )
     return kafkaPublisher.publish("AUDIT", auditMessage, "audit") { result }
 }

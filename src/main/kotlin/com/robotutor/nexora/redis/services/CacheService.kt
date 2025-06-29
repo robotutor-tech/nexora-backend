@@ -15,20 +15,22 @@ import java.time.Duration
 class CacheService(private val reactiveRedisTemplate: ReactiveRedisTemplate<String, String>) {
     val logger = Logger(this::class.java)
     fun <T : Any> retrieve(
-        key: String,
         clazz: Class<T>,
+        key: String = "key",
         ttlInSeconds: Long = 60,
         switchIfAbsent: () -> Mono<T>
     ): Mono<T> {
-        return getValue(key, clazz)
-            .logOnSuccess(logger, "Successfully get value for $key")
-            .logOnError(logger, "", "Failed to get value for $key")
-            .switchIfEmpty(
-                switchIfAbsent()
-                    .flatMap { setValue(key, it, ttlInSeconds) }
-                    .logOnSuccess(logger, "Successfully set value for $key")
-                    .logOnError(logger, "", "Failed to set value for $key")
-            )
+        return getRedisKey(key).flatMap { keyName ->
+            getValue(keyName, clazz)
+                .logOnSuccess(logger, "Successfully get value for $keyName")
+                .logOnError(logger, "", "Failed to get value for $keyName")
+                .switchIfEmpty(
+                    switchIfAbsent()
+                        .flatMap { setValue(keyName, it, ttlInSeconds) }
+                        .logOnSuccess(logger, "Successfully set value for $keyName")
+                        .logOnError(logger, "", "Failed to set value for $keyName")
+                )
+        }
     }
 
     fun <T : Any> retrieves(

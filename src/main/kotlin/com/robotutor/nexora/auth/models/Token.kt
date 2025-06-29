@@ -12,7 +12,7 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
 import java.time.ZoneOffset
 
 const val TOKEN_COLLECTION = "tokens"
@@ -29,8 +29,8 @@ data class Token(
     val value: String,
     val identifier: Identifier<TokenIdentifier>,
     val role: RoleId? = null,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val expiresOn: LocalDateTime,
+    val createdAt: Instant = Instant.now(),
+    val expiresOn: Instant,
     @Version
     val version: Long? = null
 ) {
@@ -50,7 +50,7 @@ data class Token(
                 tokenId = tokenId,
                 value = generateTokenValue(),
                 identifier = Identifier(userId, TokenIdentifier.AUTH_USER),
-                expiresOn = LocalDateTime.now().plusDays(7),
+                expiresOn = Instant.now().plusSeconds(7 * 24 * 60 * 60),
             )
         }
 
@@ -59,7 +59,7 @@ data class Token(
                 tokenId = tokenId,
                 value = generateTokenValue(DEVICE_TOKEN_LENGTH),
                 identifier = Identifier(invitation.invitationId, TokenIdentifier.INVITATION),
-                expiresOn = LocalDateTime.now().plusHours(6),
+                expiresOn = Instant.now().plusSeconds(6 * 60 * 60),
             )
         }
 
@@ -68,7 +68,7 @@ data class Token(
                 tokenId = tokenId,
                 value = generateTokenValue(DEVICE_TOKEN_LENGTH),
                 identifier = Identifier(actorRequest.actorId, TokenIdentifier.PREMISES_ACTOR),
-                expiresOn = LocalDateTime.now().plusYears(100),
+                expiresOn = Instant.parse("9999-12-31T00:00:00.00Z"),
                 role = actorRequest.roleId
             )
         }
@@ -78,7 +78,7 @@ data class Token(
 private fun generateTokenValue(length: Int = 120): String {
     val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9') + "_-".split("")
     val token = List(length) { chars.random() }.joinToString("").substring(0)
-    val fullToken = token + LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
+    val fullToken = token + Instant.now().epochSecond.toString()
     return fullToken.substring(fullToken.length - length)
 }
 

@@ -8,7 +8,8 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 const val ROLE_COLLECTION = "roles"
 
@@ -23,9 +24,8 @@ data class Role(
     val premisesId: PremisesId,
     val name: String,
     val role: RoleType,
-    val policies: MutableSet<PolicyId> = mutableSetOf(),
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: Instant = Instant.now(),
+    val updatedAt: Instant = Instant.now(),
     @Version
     val version: Long? = null
 ) {
@@ -42,11 +42,6 @@ data class Role(
                 role = roleRequest.roleType,
             )
         }
-    }
-
-    fun addPolicies(policies: List<Policy>): Role {
-        this.policies.addAll(policies.map { it.policyId })
-        return this
     }
 }
 

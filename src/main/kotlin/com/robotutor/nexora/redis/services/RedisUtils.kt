@@ -1,11 +1,13 @@
 package com.robotutor.nexora.redis.services
 
-import com.robotutor.nexora.security.getTraceId
-import org.springframework.web.server.ServerWebExchange
+import com.robotutor.nexora.logger.ReactiveContext.getTraceId
+import com.robotutor.nexora.security.createMono
+import reactor.core.publisher.Mono
 
-fun getRedisKey(exchange: ServerWebExchange? = null): String {
-    val suffix = exchange?.let { ":${getTraceId(it)}" } ?: ""
-    val stackTrace = Throwable().stackTrace
-    val caller = stackTrace[1]
-    return "${caller.className}.${caller.methodName}${suffix}"
+fun getRedisKey(key: String): Mono<String> {
+    val stack = Throwable().stackTrace[3]
+    return Mono.deferContextual { ctx ->
+        val traceId = getTraceId(ctx)
+        createMono("${stack.className}.${stack.methodName}:${key}::$traceId")
+    }
 }

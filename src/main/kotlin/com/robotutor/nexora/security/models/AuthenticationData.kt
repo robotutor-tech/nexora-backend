@@ -5,8 +5,10 @@ import com.robotutor.nexora.iam.controllers.view.ActorWithRoleView
 import com.robotutor.nexora.iam.controllers.view.RoleView
 import com.robotutor.nexora.iam.models.Actor
 import com.robotutor.nexora.iam.models.Role
-import com.robotutor.nexora.iam.models.Policy
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.filters.ResourceEntitlement
+import com.robotutor.nexora.security.filters.annotations.ActionType
+import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.gateway.view.AuthenticationResponseData
 import com.robotutor.nexora.security.gateway.view.InvitationResponseData
 import com.robotutor.nexora.zone.models.ZoneId
@@ -51,8 +53,16 @@ data class PremisesActorData(
     val actorId: ActorId,
     val role: RoleView,
     val premisesId: PremisesId,
-    val identifier: Identifier<ActorIdentifier>
+    val identifier: Identifier<ActorIdentifier>,
+    val entitlements: List<ResourceEntitlement>
 ) : IAuthenticationData {
+
+    fun getResourceIds(actionType: ActionType, resourceType: ResourceType): List<String> {
+        return entitlements
+            .filter { it.action == actionType && it.resourceType == resourceType && it.resourceId != "*" }
+            .map { it.resourceId }
+    }
+
     companion object {
         fun from(actorData: ActorWithRoleView): PremisesActorData {
             return PremisesActorData(
@@ -60,15 +70,17 @@ data class PremisesActorData(
                 premisesId = actorData.premisesId,
                 role = actorData.role,
                 identifier = actorData.identifier,
+                entitlements = actorData.entitlement
             )
         }
 
-        fun from(actor: Actor, role: Role, policies: List<Policy>): PremisesActorData {
+        fun from(actor: Actor, role: Role): PremisesActorData {
             return PremisesActorData(
                 actorId = actor.actorId,
                 premisesId = actor.premisesId,
-                role = RoleView.from(role, policies),
+                role = RoleView.from(role),
                 identifier = actor.identifier,
+                entitlements = emptyList()
             )
         }
     }

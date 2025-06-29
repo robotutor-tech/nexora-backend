@@ -12,7 +12,8 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 const val DEVICE_COLLECTION = "device"
 
@@ -34,7 +35,7 @@ class Device(
     val health: DeviceHealth = DeviceHealth.OFFLINE,
     val os: DeviceOS? = null,
     val createdBy: ActorId,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: Instant = Instant.now(),
     @Version
     val version: Long? = null
 ) {

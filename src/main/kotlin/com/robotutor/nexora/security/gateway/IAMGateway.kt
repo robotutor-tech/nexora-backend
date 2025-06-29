@@ -20,7 +20,7 @@ class IAMGateway(
     private val cacheService: CacheService
 ) {
     fun getPremisesActor(actorId: ActorId, roleId: RoleId): Mono<PremisesActorData> {
-        return cacheService.retrieve("${getRedisKey()}:$actorId", PremisesActorData::class.java) {
+        return cacheService.retrieve(PremisesActorData::class.java, "Actor:$actorId:$roleId") {
             webClient.get(
                 baseUrl = appConfig.iamServiceBaseUrl,
                 path = appConfig.actorPath,

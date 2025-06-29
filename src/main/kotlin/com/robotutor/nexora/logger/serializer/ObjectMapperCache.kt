@@ -2,10 +2,10 @@ package com.robotutor.nexora.logger.serializer
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import java.time.LocalDateTime
+import java.time.Instant
 
 object ObjectMapperCache {
     val objectMapper: Gson = GsonBuilder()
-        .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+        .registerTypeAdapter(Instant::class.java, InstantAdapter())
         .create()
 }

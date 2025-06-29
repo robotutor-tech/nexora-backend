@@ -4,7 +4,7 @@ import com.robotutor.nexora.premises.models.Premises
 import com.robotutor.nexora.premises.models.PremisesId
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class PremisesCreateRequest(
     @field:NotBlank(message = "Name is required")
@@ -15,7 +15,7 @@ data class PremisesCreateRequest(
 data class PremisesView(
     val premisesId: PremisesId,
     val name: String,
-    val createdAt: LocalDateTime
+    val createdAt: Instant
 ) {
     companion object {
         fun from(premises: Premises): PremisesView {

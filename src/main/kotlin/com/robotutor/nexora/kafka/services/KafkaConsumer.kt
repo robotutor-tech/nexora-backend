@@ -48,7 +48,9 @@ class KafkaConsumer(
             .map { KafkaHeader(it.key(), it.value().toString(StandardCharsets.UTF_8)) }
         val premisesData = headers.find { it.key == "premisesActorData" }?.value
         val exchangeDTO = headers.find { it.key == "exchange" }?.value
+        val traceId = headers.find { it.key == "x-trace-id" }!!.value
         var newCtx = ctx
+        newCtx = newCtx.put("x-trace-id", traceId)
         premisesData?.let {
             newCtx = newCtx.put(
                 PremisesActorData::class.java,

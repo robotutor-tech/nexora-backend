@@ -26,7 +26,6 @@ class AuthGateway(
         )
     }
 
-
     fun createDeviceActorToken(actor: PremisesActorData): Mono<TokenView> {
         return webClient.post(
             baseUrl = authConfig.baseUrl,

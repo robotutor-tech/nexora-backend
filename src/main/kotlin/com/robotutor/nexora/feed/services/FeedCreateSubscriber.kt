@@ -2,12 +2,10 @@ package com.robotutor.nexora.feed.services
 
 import com.robotutor.nexora.feed.controllers.view.FeedRequest
 import com.robotutor.nexora.feed.models.FeedId
-import com.robotutor.nexora.iam.models.Resource
 import com.robotutor.nexora.kafka.services.KafkaConsumer
 import com.robotutor.nexora.kafka.services.KafkaPublisher
 import com.robotutor.nexora.orchestration.models.Device
 import com.robotutor.nexora.security.createFlux
-import com.robotutor.nexora.security.models.Identifier
 import com.robotutor.nexora.security.models.PremisesActorData
 import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Service
@@ -48,18 +46,6 @@ class FeedCreateSubscriber(
                             )
                         }
                         kafkaPublisher.publish("widgets.create", mapOf("widgets" to widgets)) { feeds }
-                    }
-                    .flatMap { feeds ->
-                        val allPolicies: List<Map<String, Any>> = feeds.flatMap { feed ->
-                            device.feeds.find { it.feed.name == feed.name }!!.permissions
-                                .map { permission ->
-                                    mapOf(
-                                        "permission" to permission,
-                                        "identifier" to Identifier(feed.feedId, Resource.FEED)
-                                    )
-                                }
-                        }
-                        kafkaPublisher.publish("policies.create", mapOf("policies" to allPolicies))
                     }
             }
         }

@@ -1,9 +1,6 @@
 package com.robotutor.nexora.auth.controllers.views
 
 import com.robotutor.nexora.iam.controllers.view.RoleView
-import com.robotutor.nexora.iam.models.Permission
-import com.robotutor.nexora.iam.models.PolicyId
-import com.robotutor.nexora.iam.models.Resource
 import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.iam.models.RoleType
 import com.robotutor.nexora.premises.models.PremisesId
@@ -57,7 +54,6 @@ data class RoleWithPolicyTypeView(
     val premisesId: PremisesId,
     val name: String,
     val role: RoleType,
-    val policies: List<PolicyView>,
 ) {
     companion object {
         fun from(role: RoleView): RoleWithPolicyTypeView {
@@ -66,21 +62,6 @@ data class RoleWithPolicyTypeView(
                 premisesId = role.premisesId,
                 name = role.name,
                 role = role.role,
-                policies = role.policies.map { PolicyView.from(it) },
-            )
-        }
-    }
-}
-
-data class PolicyView(
-    val permission: Permission,
-    val identifier: Identifier<Resource>?,
-) {
-    companion object {
-        fun from(policyView: com.robotutor.nexora.iam.controllers.view.PolicyView): PolicyView {
-            return PolicyView(
-                permission = policyView.permission,
-                identifier = policyView.identifier,
             )
         }
     }

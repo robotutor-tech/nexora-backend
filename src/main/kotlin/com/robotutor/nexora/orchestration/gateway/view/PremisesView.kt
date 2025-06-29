@@ -1,17 +1,17 @@
 package com.robotutor.nexora.orchestration.gateway.view
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class PremisesView(
     val premisesId: String,
     val name: String,
-    val createdAt: LocalDateTime,
+    val createdAt: Instant,
 )
 
 data class PremisesWithActorView(
     val premisesId: String,
     val name: String,
-    val createdAt: LocalDateTime,
+    val createdAt: Instant,
     val actor: PremisesActorView,
 ) {
     companion object {

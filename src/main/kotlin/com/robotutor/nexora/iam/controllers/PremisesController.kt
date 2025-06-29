@@ -4,8 +4,6 @@ import com.robotutor.nexora.iam.controllers.view.ActorView
 import com.robotutor.nexora.iam.controllers.view.ActorWithRoleView
 import com.robotutor.nexora.iam.controllers.view.PremisesRequest
 import com.robotutor.nexora.iam.controllers.view.RegisterDeviceRequest
-import com.robotutor.nexora.iam.models.Actor
-import com.robotutor.nexora.iam.services.PolicyService
 import com.robotutor.nexora.iam.services.PremisesService
 import com.robotutor.nexora.iam.services.RoleService
 import com.robotutor.nexora.security.models.AuthUserData
@@ -22,7 +20,6 @@ import reactor.core.publisher.Mono
 class PremisesController(
     private val premisesService: PremisesService,
     private val roleService: RoleService,
-    private val policyService: PolicyService
 ) {
 
     @PostMapping("/register")
@@ -46,11 +43,7 @@ class PremisesController(
         return premisesService.registerDevice(request, invitationData)
             .flatMap { actor ->
                 roleService.getRoleByRoleId(actor.roles.first())
-                    .flatMap { role ->
-                        policyService.getPolicies(role.policies.toList())
-                            .collectList()
-                            .map { ActorWithRoleView.from(actor, role, it) }
-                    }
+                    .map { ActorWithRoleView.from(actor, it, emptyList()) }
             }
     }
 }

@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface DeviceRepository : ReactiveCrudRepository<Device, DeviceId> {
-    fun findAllByPremisesId(premisesId: PremisesId): Flux<Device>
     fun findByDeviceId(deviceId: DeviceId): Mono<Device>
     fun findByDeviceIdAndPremisesId(deviceId: DeviceId, premisesId: PremisesId): Mono<Device>
+    fun findAllByPremisesIdAndDeviceIdIn(premisesId: PremisesId, deviceIds: List<DeviceId>): Flux<Device>
 }

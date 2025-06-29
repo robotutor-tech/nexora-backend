@@ -5,28 +5,26 @@ import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
 import java.io.IOException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.Instant
 
-class LocalDateTimeAdapter : TypeAdapter<LocalDateTime>() {
-    private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+class InstantAdapter : TypeAdapter<Instant>() {
 
     @Throws(IOException::class)
-    override fun write(out: JsonWriter, value: LocalDateTime?) {
+    override fun write(out: JsonWriter, value: Instant?) {
         if (value == null) {
             out.nullValue()
         } else {
-            out.value(formatter.format(value))
+            out.value(value.toString())
         }
     }
 
     @Throws(IOException::class)
-    override fun read(jsonReader: JsonReader): LocalDateTime? {
+    override fun read(jsonReader: JsonReader): Instant? {
         if (jsonReader.peek() == JsonToken.NULL) {
             jsonReader.nextNull()
             return null
         }
         val dateString = jsonReader.nextString()
-        return LocalDateTime.parse(dateString, formatter)
+        return Instant.parse(dateString)
     }
 }

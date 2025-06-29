@@ -11,4 +11,5 @@ import reactor.core.publisher.Mono
 interface PremisesRepository : ReactiveCrudRepository<Premises, PremisesId> {
     fun findAllByPremisesIdIn(premisesIds: List<PremisesId>): Flux<Premises>
     fun findByPremisesId(premisesId: PremisesId): Mono<Premises>
+    fun deleteByPremisesId(premisesId: PremisesId): Mono<Premises>
 }

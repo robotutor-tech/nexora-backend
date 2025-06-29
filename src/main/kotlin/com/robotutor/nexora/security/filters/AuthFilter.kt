@@ -19,7 +19,8 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import reactor.util.context.Context
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 @Component
 @Order(2)
@@ -32,7 +33,7 @@ class AuthFilter(
     val logger = Logger(this::class.java)
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        val startTime = LocalDateTime.now()
+        val startTime = Instant.now()
         return authorize(exchange)
             .flatMap { authenticationData ->
                 val authenticationToken = UsernamePasswordAuthenticationToken("authenticationData", null, listOf())
@@ -60,7 +61,7 @@ class AuthFilter(
         if (routeValidator.isUnsecured(exchange.request) || authHeader == appConfig.internalAccessToken) {
             return createMono(InternalUserData("00000000"))
         }
-        return authGateway.validate(exchange)
+        return authGateway.validate()
     }
 
     private fun writeContext(authenticationData: IAuthenticationData, context: Context): Context {

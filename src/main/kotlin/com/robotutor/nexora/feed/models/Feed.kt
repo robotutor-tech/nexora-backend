@@ -9,7 +9,8 @@ import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneOffset
 
 const val Feed_COLLECTION = "feeds"
 
@@ -24,8 +25,8 @@ data class Feed(
     val name: String,
     var value: Number = 0,
     val type: FeedType,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: Instant = Instant.now(),
+    var updatedAt: Instant = Instant.now(),
     @Version
     val version: Long? = null
 ) {
@@ -36,7 +37,7 @@ data class Feed(
     }
 
     private fun updateUpdatedAt(): Feed {
-        this.updatedAt = LocalDateTime.now()
+        this.updatedAt = Instant.now()
         return this
     }
 
