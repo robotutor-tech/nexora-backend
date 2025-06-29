@@ -9,6 +9,7 @@ import com.robotutor.nexora.security.filters.annotations.ActionType
 import com.robotutor.nexora.security.filters.annotations.RequireAccess
 import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.PremisesActorData
+import com.robotutor.nexora.security.models.ResourcesData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -35,8 +36,8 @@ class FeedController(private val feedService: FeedService) {
 
     @RequireAccess(ActionType.LIST, ResourceType.FEED)
     @GetMapping
-    fun getFeeds(premisesActorData: PremisesActorData): Flux<FeedView> {
-        val feedIds = premisesActorData.getResourceIds(ActionType.READ, ResourceType.FEED)
+    fun getFeeds(premisesActorData: PremisesActorData, resourcesData: ResourcesData): Flux<FeedView> {
+        val feedIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.FEED)
         return feedService.getFeeds(premisesActorData, feedIds).map { FeedView.from(it) }
     }
 

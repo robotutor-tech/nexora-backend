@@ -9,6 +9,7 @@ import com.robotutor.nexora.security.filters.annotations.RequireAccess
 import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.InvitationData
 import com.robotutor.nexora.security.models.PremisesActorData
+import com.robotutor.nexora.security.models.ResourcesData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -33,8 +34,8 @@ class DeviceController(private val deviceService: DeviceService) {
 
     @RequireAccess(ActionType.LIST, ResourceType.DEVICE)
     @GetMapping
-    fun getDevices(premisesActorData: PremisesActorData): Flux<DeviceView> {
-        val deviceIds = premisesActorData.getResourceIds(ActionType.READ, ResourceType.DEVICE)
+    fun getDevices(premisesActorData: PremisesActorData, resourcesData: ResourcesData): Flux<DeviceView> {
+        val deviceIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.DEVICE)
         return deviceService.getDevices(premisesActorData, deviceIds).map { DeviceView.from(it) }
     }
 

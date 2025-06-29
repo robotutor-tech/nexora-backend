@@ -1,6 +1,8 @@
 package com.robotutor.nexora.security.filters
 
 import com.robotutor.nexora.logger.Logger
+import com.robotutor.nexora.logger.ReactiveContext.getTraceId
+import com.robotutor.nexora.logger.ReactiveContext.putTraceId
 import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
 import com.robotutor.nexora.logger.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.security.config.AppConfig
@@ -20,7 +22,6 @@ import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import reactor.util.context.Context
 import java.time.Instant
-import java.time.ZoneOffset
 
 @Component
 @Order(2)
@@ -40,6 +41,7 @@ class AuthFilter(
                 val content = SecurityContextImpl(authenticationToken)
                 chain.filter(exchange)
                     .contextWrite { writeContext(authenticationData, it) }
+                    .contextWrite { putTraceId(it, getTraceId(it)) }
                     .contextWrite { it.put("startTime", startTime) }
                     .contextWrite { it.put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange)) }
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
@@ -51,6 +53,7 @@ class AuthFilter(
                 val content = response.bufferFactory().wrap(serialize(responseEntity.body).toByteArray())
                 response.writeWith(createMono(content))
             }
+            .contextWrite { putTraceId(it, getTraceId(it)) }
             .contextWrite { it.put("startTime", startTime) }
             .contextWrite { it.put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange)) }
     }

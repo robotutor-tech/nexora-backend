@@ -33,7 +33,6 @@ app:
       - "/auth/login"
       - "/auth/tokens/validate"
       - "/orchestration/users/register"
-      - "/iam/actors/*"
   orchestration:
     internal-access-token: ${app.security.internal-access-token}
     auth-service:

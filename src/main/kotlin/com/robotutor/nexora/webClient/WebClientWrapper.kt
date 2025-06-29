@@ -8,8 +8,6 @@ import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
 import com.robotutor.nexora.security.createMonoError
 import com.robotutor.nexora.webClient.exceptions.BaseException
-import com.robotutor.nexora.webClient.exceptions.ClientException
-import com.robotutor.nexora.webClient.exceptions.ErrorResponse
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -51,7 +49,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                 }
                 .retrieve()
                 .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                    it.bodyToMono(BaseException::class.java)
                         .flatMap { exception -> createMonoError(exception) }
                 }
                 .bodyToMono(returnType)
@@ -111,7 +109,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                 }
                 .retrieve()
                 .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                    it.bodyToMono(BaseException::class.java)
                         .flatMap { exception -> createMonoError(exception) }
                 }
                 .bodyToMono(returnType)
@@ -235,7 +233,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                 }
                 .retrieve()
                 .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                    it.bodyToMono(BaseException::class.java)
                         .flatMap { exception -> createMonoError(exception) }
                 }
                 .bodyToFlux(returnType)
@@ -297,7 +295,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                 .bodyValue(body)
                 .retrieve()
                 .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                    it.bodyToMono(BaseException::class.java)
                         .flatMap { exception -> createMonoError(exception) }
                 }
                 .bodyToFlux(returnType)

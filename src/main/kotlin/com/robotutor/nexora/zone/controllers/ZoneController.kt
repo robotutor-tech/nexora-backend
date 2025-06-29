@@ -4,6 +4,7 @@ import com.robotutor.nexora.security.filters.annotations.ActionType
 import com.robotutor.nexora.security.filters.annotations.RequireAccess
 import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.PremisesActorData
+import com.robotutor.nexora.security.models.ResourcesData
 import com.robotutor.nexora.zone.controllers.view.ZoneCreateRequest
 import com.robotutor.nexora.zone.controllers.view.ZoneView
 import com.robotutor.nexora.zone.models.ZoneId
@@ -28,8 +29,8 @@ class ZoneController(private val zoneService: ZoneService) {
 
     @RequireAccess(ActionType.LIST, ResourceType.ZONE)
     @GetMapping
-    fun getAllZones(premisesActorData: PremisesActorData): Flux<ZoneView> {
-        val zoneIds = premisesActorData.getResourceIds(ActionType.READ, ResourceType.ZONE)
+    fun getAllZones(premisesActorData: PremisesActorData, resourcesData: ResourcesData): Flux<ZoneView> {
+        val zoneIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.ZONE)
         return zoneService.getAllZones(premisesActorData, zoneIds).map { ZoneView.from(it) }
     }
 

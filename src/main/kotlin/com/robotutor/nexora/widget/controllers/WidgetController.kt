@@ -7,6 +7,7 @@ import com.robotutor.nexora.widget.controllers.view.WidgetRequest
 import com.robotutor.nexora.widget.controllers.view.WidgetView
 import com.robotutor.nexora.widget.services.WidgetService
 import com.robotutor.nexora.security.models.PremisesActorData
+import com.robotutor.nexora.security.models.ResourcesData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -31,8 +32,8 @@ class WidgetController(private val widgetService: WidgetService) {
 
     @RequireAccess(ActionType.LIST, ResourceType.WIDGET)
     @GetMapping
-    fun getWidgets(premisesActorData: PremisesActorData): Flux<WidgetView> {
-        val widgetIds = premisesActorData.getResourceIds(ActionType.READ, ResourceType.WIDGET)
+    fun getWidgets(premisesActorData: PremisesActorData, resourcesData: ResourcesData): Flux<WidgetView> {
+        val widgetIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.WIDGET)
         return widgetService.getWidgets(premisesActorData, widgetIds).map { WidgetView.from(it) }
     }
 }

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.auth.controllers.views
 
-import com.robotutor.nexora.iam.controllers.view.RoleView
+import com.robotutor.nexora.iam.models.Role
 import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.iam.models.RoleType
 import com.robotutor.nexora.premises.models.PremisesId
@@ -56,7 +56,7 @@ data class RoleWithPolicyTypeView(
     val role: RoleType,
 ) {
     companion object {
-        fun from(role: RoleView): RoleWithPolicyTypeView {
+        fun from(role: Role): RoleWithPolicyTypeView {
             return RoleWithPolicyTypeView(
                 roleId = role.roleId,
                 premisesId = role.premisesId,

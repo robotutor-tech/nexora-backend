@@ -1,9 +1,12 @@
 package com.robotutor.nexora.zone.services
 
+import com.robotutor.nexora.iam.services.EntitlementResource
 import com.robotutor.nexora.kafka.auditOnSuccess
+import com.robotutor.nexora.kafka.services.KafkaPublisher
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
+import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
 import com.robotutor.nexora.zone.controllers.view.ZoneCreateRequest
@@ -18,7 +21,8 @@ import reactor.core.publisher.Mono
 @Service
 class ZoneService(
     private val zoneRepository: ZoneRepository,
-    private val idGeneratorService: IdGeneratorService
+    private val idGeneratorService: IdGeneratorService,
+    private val kafkaPublisher: KafkaPublisher
 ) {
     val logger = Logger(this::class.java)
 
@@ -28,6 +32,10 @@ class ZoneService(
             .flatMap { zone ->
                 zoneRepository.save(zone)
                     .auditOnSuccess("ZONE_CREATED", mapOf("zoneId" to zone.zoneId, "name" to zone.name))
+            }
+            .flatMap { zone ->
+                val entitlementResource = EntitlementResource(ResourceType.ZONE, zone.zoneId)
+                kafkaPublisher.publish("entitlement.create", entitlementResource) { zone }
             }
             .logOnSuccess(logger, "Successfully created zone")
             .logOnError(logger, "", "Failed to create zone")

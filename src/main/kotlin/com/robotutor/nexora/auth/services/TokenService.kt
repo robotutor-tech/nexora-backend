@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
 import java.time.Instant
-import java.time.ZoneOffset
 
 @Service
 class TokenService(
@@ -48,6 +47,8 @@ class TokenService(
     fun validate(tokenValue: String): Mono<Token> {
         return tokenRepository.findByValueAndExpiresOnGreaterThan(tokenValue, Instant.now())
             .switchIfEmpty { createMonoError(UnAuthorizedException(NexoraError.NEXORA0203)) }
+            .logOnSuccess(logger, "Successfully validated token")
+            .logOnError(logger, "", "Failed to validate token")
     }
 
     fun generatePremisesActorToken(tokenValue: String, request: PremisesActorRequest): Mono<Token> {

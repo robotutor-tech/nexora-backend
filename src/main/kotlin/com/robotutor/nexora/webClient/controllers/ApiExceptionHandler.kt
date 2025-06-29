@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.support.WebExchangeBindException
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.server.ServerWebInputException
-import kotlin.io.AccessDeniedException
 
 @ControllerAdvice
 class ApiExceptionHandler {
@@ -41,6 +40,12 @@ class ApiExceptionHandler {
     @ExceptionHandler(ClientException::class)
     fun handleClientException(ex: ClientException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.errorResponse())
+    }
+
+
+    @ExceptionHandler(AccessDeniedException::class)
+    fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.errorResponse())
     }
 
     @ExceptionHandler(ServerException::class)
@@ -76,12 +81,6 @@ class ApiExceptionHandler {
         ex.printStackTrace()
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ErrorResponse(errorCode = "NEXORA-0004", message = "Internal Server Error"))
-    }
-
-    @ExceptionHandler(AccessDeniedException::class)
-    fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<ErrorResponse> {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-            .body(ErrorResponse(errorCode = "NEXORA-0005", message = ex.reason ?: ""))
     }
 
 }

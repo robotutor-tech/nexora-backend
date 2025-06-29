@@ -3,6 +3,7 @@ package com.robotutor.nexora.orchestration.services
 import com.robotutor.nexora.auth.controllers.views.TokenView
 import com.robotutor.nexora.device.models.DeviceType
 import com.robotutor.nexora.feed.models.FeedType
+import com.robotutor.nexora.iam.services.EntitlementResource
 import com.robotutor.nexora.kafka.services.KafkaPublisher
 import com.robotutor.nexora.orchestration.controllers.view.DeviceRegistrationRequest
 import com.robotutor.nexora.orchestration.controllers.view.PremisesRegistrationRequest
@@ -22,6 +23,7 @@ import com.robotutor.nexora.saga.addCompensate
 import com.robotutor.nexora.saga.compensate
 import com.robotutor.nexora.saga.models.CompensateCommand
 import com.robotutor.nexora.saga.services.SagaService
+import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.utils.toMap
 import com.robotutor.nexora.widget.models.WidgetType
 import org.springframework.stereotype.Service
@@ -95,11 +97,18 @@ class OrchestratorService(
                         seed.updateDeviceId(it.deviceId)
                         it
                     }
-                    .flatMap { iamGateway.registerActorAsBot(it) }
-                    .flatMap { premisesActorData ->
-                        authGateway.createDeviceActorToken(premisesActorData)
-                            .flatMap { kafkaPublisher.publish("feeds.create", seed) { it } }
-                            .contextWrite { it.put(PremisesActorData::class.java, premisesActorData) }
+                    .flatMap { device ->
+                        iamGateway.registerActorAsBot(device)
+                            .flatMap { premisesActorData ->
+                                authGateway.createDeviceActorToken(premisesActorData)
+                                    .flatMap {
+                                        val entitlementResource =
+                                            EntitlementResource(ResourceType.DEVICE, device.deviceId)
+                                        kafkaPublisher.publish("entitlement.create", entitlementResource) { it }
+                                    }
+                                    .flatMap { kafkaPublisher.publish("feeds.create", seed) { it } }
+                                    .contextWrite { it.put(PremisesActorData::class.java, premisesActorData) }
+                            }
                     }
             }
     }

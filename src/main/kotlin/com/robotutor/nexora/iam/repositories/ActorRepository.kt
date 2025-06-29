@@ -12,5 +12,5 @@ import reactor.core.publisher.Mono
 @Repository
 interface ActorRepository : ReactiveCrudRepository<Actor, ActorId> {
     fun findAllByIdentifier_TypeAndIdentifier_Id(identifier: ActorIdentifier, id: String): Flux<Actor>
-    fun findByActorId(actorId: ActorId): Mono<Actor>
+    fun findByActorIdAndRolesContaining(actorId: ActorId, roleId: List<RoleId>): Mono<Actor>
 }

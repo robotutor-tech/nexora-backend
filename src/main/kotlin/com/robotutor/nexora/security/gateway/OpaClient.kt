@@ -19,7 +19,7 @@ class OpaClient(
     private val logger = Logger(this::class.java)
 
     fun evaluate(policyInput: PolicyInput): Mono<Boolean> {
-        return cacheService.retrieve(PolicyResult::class.java, key = policyInput.toString()) {
+        return cacheService.retrieve(PolicyResult::class.java, key = policyInput.hashCode().toString()) {
             webClient.post(
                 baseUrl = appConfig.opaBaseUrl,
                 path = appConfig.opaPath,

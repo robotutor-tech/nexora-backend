@@ -1,8 +1,10 @@
 package com.robotutor.nexora.iam.controllers.view
 
-import com.robotutor.nexora.iam.models.*
+import com.robotutor.nexora.iam.models.Actor
+import com.robotutor.nexora.iam.models.ActorState
+import com.robotutor.nexora.iam.models.Role
+import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.premises.models.PremisesId
-import com.robotutor.nexora.security.filters.ResourceEntitlement
 import com.robotutor.nexora.security.models.ActorId
 import com.robotutor.nexora.security.models.ActorIdentifier
 import com.robotutor.nexora.security.models.Identifier
@@ -19,29 +21,27 @@ data class RegisterActorRequest(
     val premisesId: PremisesId,
 )
 
-data class ActorWithRoleView(
+data class ActorView(
     val actorId: ActorId,
     val premisesId: PremisesId,
     val identifier: Identifier<ActorIdentifier>,
-    val role: RoleView,
+    val role: Role,
     val state: ActorState,
-    val entitlement: List<ResourceEntitlement>,
 ) {
     companion object {
-        fun from(actor: Actor, role: Role, entitlements: List<ResourceEntitlement>): ActorWithRoleView {
-            return ActorWithRoleView(
+        fun from(actor: Actor, role: Role): ActorView {
+            return ActorView(
                 actorId = actor.actorId,
                 premisesId = actor.premisesId,
                 identifier = actor.identifier,
-                role = RoleView.from(role),
+                role = role,
                 state = actor.state,
-                entitlement = entitlements,
             )
         }
     }
 }
 
-data class ActorView(
+data class ActorWithRolesView(
     val actorId: ActorId,
     val premisesId: PremisesId,
     val identifier: Identifier<ActorIdentifier>,
@@ -49,8 +49,8 @@ data class ActorView(
     val state: ActorState,
 ) {
     companion object {
-        fun from(actor: Actor, roles: List<Role>): ActorView {
-            return ActorView(
+        fun from(actor: Actor, roles: List<Role>): ActorWithRolesView {
+            return ActorWithRolesView(
                 actorId = actor.actorId,
                 premisesId = actor.premisesId,
                 identifier = actor.identifier,

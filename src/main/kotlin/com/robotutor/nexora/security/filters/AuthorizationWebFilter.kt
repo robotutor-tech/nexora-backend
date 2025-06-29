@@ -7,6 +7,7 @@ import com.robotutor.nexora.security.exceptions.NexoraError
 import com.robotutor.nexora.security.filters.annotations.ActionType
 import com.robotutor.nexora.security.filters.annotations.RequireAccess
 import com.robotutor.nexora.security.filters.annotations.ResourceType
+import com.robotutor.nexora.security.gateway.IAMGateway
 import com.robotutor.nexora.security.gateway.OpaClient
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.webClient.exceptions.AccessDeniedException
@@ -25,26 +26,25 @@ import reactor.core.publisher.Mono
 @Order(3)
 class AuthorizationWebFilter(
     private val opaClient: OpaClient,
-    private val handlerMapping: RequestMappingHandlerMapping
+    private val handlerMapping: RequestMappingHandlerMapping,
+    private val iamGateway: IAMGateway
 ) : WebFilter {
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        return handlerMapping.getHandler(exchange)
-            .flatMap { handler ->
-                if (handler is HandlerMethod) {
-                    val requirePolicy = handler.getMethodAnnotation(RequireAccess::class.java)
-                    if (requirePolicy == null) {
-                        chain.filter(exchange)
-                    } else {
-                        validateAccess(exchange, requirePolicy)
-                            .flatMap { allowed ->
-                                if (allowed) chain.filter(exchange)
-                                else createMonoError(AccessDeniedException(NexoraError.NEXORA0105))
-                            }
-                    }
-                } else {
+        return handlerMapping.getHandler(exchange).flatMap { handler ->
+            if (handler is HandlerMethod) {
+                val requirePolicy = handler.getMethodAnnotation(RequireAccess::class.java)
+                if (requirePolicy == null) {
                     chain.filter(exchange)
+                } else {
+                    validateAccess(exchange, requirePolicy).flatMap { allowed ->
+                        if (allowed) chain.filter(exchange)
+                        else createMonoError(AccessDeniedException(NexoraError.NEXORA0105))
+                    }
                 }
+            } else {
+                chain.filter(exchange)
             }
+        }
     }
 
     private fun validateAccess(exchange: ServerWebExchange, requirePolicy: RequireAccess): Mono<Boolean> {
@@ -57,14 +57,16 @@ class AuthorizationWebFilter(
             }
         }
             .flatMap { premisesActorData ->
-                val resourceId = resolveResourceId(exchange, requirePolicy.idParam) ?: "*"
-                val input = PolicyInput(
-                    action = requirePolicy.action,
-                    resource = ResourceContext(requirePolicy.resource, resourceId),
-                    premisesId = premisesActorData.premisesId,
-                    entitlements = premisesActorData.entitlements
-                )
-                opaClient.evaluate(input)
+                iamGateway.getEntitlements(requirePolicy.action, requirePolicy.resource)
+                    .flatMap { entitlements ->
+                        val resourceId = resolveResourceId(exchange, requirePolicy.idParam) ?: "*"
+                        val input = PolicyInput(
+                            resource = ResourceContext(requirePolicy.resource, resourceId, requirePolicy.action),
+                            premisesId = premisesActorData.premisesId,
+                            entitlements = entitlements
+                        )
+                        opaClient.evaluate(input)
+                    }
             }
     }
 
@@ -76,20 +78,13 @@ class AuthorizationWebFilter(
 }
 
 data class PolicyInput(
-    val action: ActionType,
     val resource: ResourceContext,
     val premisesId: PremisesId,
     val entitlements: List<ResourceEntitlement>
 )
 
-data class ResourceContext(
-    val type: ResourceType,
-    val id: String
-)
+data class ResourceContext(val type: ResourceType, val id: String, val action: ActionType)
 
 data class ResourceEntitlement(
-    val action: ActionType,
-    val resourceType: ResourceType,
-    val resourceId: String,
-    val premisesId: String
+    val resource: ResourceContext, val premisesId: String
 )

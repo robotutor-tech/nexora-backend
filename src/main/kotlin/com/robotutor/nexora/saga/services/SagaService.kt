@@ -20,7 +20,7 @@ class SagaService(private val sagaRepository: SagaRepository, private val idGene
     fun startSaga(name: String, metadata: Map<String, Any?>): Mono<ReactiveSaga> {
         return Mono.deferContextual { ctx ->
             val traceId = getTraceId(ctx)
-            idGeneratorService.generateId(IdType.SagaId)
+            idGeneratorService.generateId(IdType.SAGA_ID)
                 .map { sagaId ->
                     Saga(
                         sagaId = sagaId,

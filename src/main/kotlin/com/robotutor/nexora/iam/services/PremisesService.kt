@@ -1,17 +1,7 @@
 package com.robotutor.nexora.iam.services
 
-import com.robotutor.nexora.iam.controllers.view.EntitlementRequest
-import com.robotutor.nexora.iam.controllers.view.PremisesRequest
-import com.robotutor.nexora.iam.controllers.view.RegisterActorRequest
-import com.robotutor.nexora.iam.controllers.view.RegisterDeviceRequest
-import com.robotutor.nexora.iam.controllers.view.RoleEntitlementRequest
-import com.robotutor.nexora.iam.controllers.view.RoleRequest
-import com.robotutor.nexora.iam.models.Actor
-import com.robotutor.nexora.iam.models.Entitlement
-import com.robotutor.nexora.iam.models.Role
-import com.robotutor.nexora.iam.models.RoleEntitlement
-import com.robotutor.nexora.iam.models.RoleId
-import com.robotutor.nexora.iam.models.RoleType
+import com.robotutor.nexora.iam.controllers.view.*
+import com.robotutor.nexora.iam.models.*
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.createFlux
 import com.robotutor.nexora.security.filters.annotations.ActionType
@@ -29,18 +19,17 @@ class PremisesService(
     private val roleService: RoleService,
     private val actorService: ActorService,
     private val entitlementService: EntitlementService,
-    private val roleEntitlementService: RoleEntitlementService
 ) {
     fun registerPremises(request: PremisesRequest, authUserData: AuthUserData): Mono<Actor> {
         return registerRoles(request, authUserData)
+            .flatMap { role -> createReadPremisesEntitlement(request.premisesId, role).map { role } }
             .collectList()
             .flatMap { roles ->
-                createEntitlements(request.premisesId, roles)
-                    .collectList()
-                    .map { roles }
+                createInitialEntitlements(request.premisesId, roles).collectList().map { roles }
             }
             .flatMap { registerActor(authUserData, request, it) }
     }
+
 
     private fun registerActor(authUserData: AuthUserData, request: PremisesRequest, roles: List<Role>): Mono<Actor> {
         val defaultHumanActorRoles = listOf(RoleType.USER, RoleType.ADMIN, RoleType.OWNER)
@@ -61,26 +50,33 @@ class PremisesService(
             }
     }
 
-    private fun createEntitlements(premisesId: PremisesId, roles: List<Role>): Flux<RoleEntitlement> {
-        return createFlux(getEntitlementMap())
-            .flatMap {
-                entitlementService.createEntitlement(EntitlementRequest(it.action, it.resourceType), premisesId)
+
+    private fun createInitialEntitlements(premisesId: PremisesId, roles: List<Role>): Flux<Entitlement> {
+        val adminAndOwnerRoles = roles.filter { role -> role.role == RoleType.ADMIN || role.role == RoleType.OWNER }
+        return createFlux(adminAndOwnerRoles)
+            .flatMap { role ->
+                createFlux(getCreateEntitlementMap())
+                    .flatMap {
+                        val entitlementRequest = EntitlementRequest(
+                            action = it.action,
+                            resourceType = it.resourceType,
+                            resourceId = if (it.resourceType == ResourceType.PREMISES) premisesId else "*",
+                            roleId = role.roleId
+                        )
+                        entitlementService.createEntitlement(entitlementRequest, premisesId)
+                    }
             }
-            .filter { it.action == ActionType.READ || it.action == ActionType.CREATE }
-            .flatMap { entitlement -> createRoleEntitlement(roles, entitlement, premisesId) }
     }
 
-    private fun createRoleEntitlement(
-        roles: List<Role>,
-        entitlement: Entitlement,
-        premisesId: PremisesId
-    ): Flux<RoleEntitlement> {
-        return createFlux(roles)
-            .filter { it.role == RoleType.OWNER || it.role == RoleType.ADMIN || it.role == RoleType.USER }
-            .map { RoleEntitlementRequest("*", entitlement.entitlementId, it.roleId) }
-            .flatMap {
-                roleEntitlementService.createRoleEntitlement(it, premisesId)
-            }
+
+    private fun createReadPremisesEntitlement(premisesId: PremisesId, role: Role): Mono<Entitlement> {
+        val entitlementRequest = EntitlementRequest(
+            action = ActionType.READ,
+            resourceType = ResourceType.PREMISES,
+            resourceId = premisesId,
+            roleId = role.roleId
+        )
+        return entitlementService.createEntitlement(entitlementRequest, premisesId)
     }
 
     fun registerDevice(request: RegisterDeviceRequest, invitationData: InvitationData): Mono<Actor> {
@@ -99,23 +95,14 @@ class PremisesService(
             }
     }
 
-    private fun getEntitlementMap(): List<ActionResource> {
+    private fun getCreateEntitlementMap(): List<ActionResource> {
         return listOf(
-            ActionResource(ActionType.READ, ResourceType.PREMISES),
             ActionResource(ActionType.UPDATE, ResourceType.PREMISES),
+            ActionResource(ActionType.DELETE, ResourceType.PREMISES),
             ActionResource(ActionType.CREATE, ResourceType.FEED),
-            ActionResource(ActionType.READ, ResourceType.FEED),
-            ActionResource(ActionType.CONTROL, ResourceType.FEED),
-            ActionResource(ActionType.UPDATE, ResourceType.FEED),
             ActionResource(ActionType.CREATE, ResourceType.WIDGET),
-            ActionResource(ActionType.READ, ResourceType.WIDGET),
-            ActionResource(ActionType.UPDATE, ResourceType.WIDGET),
             ActionResource(ActionType.CREATE, ResourceType.ZONE),
-            ActionResource(ActionType.READ, ResourceType.ZONE),
-            ActionResource(ActionType.UPDATE, ResourceType.ZONE),
             ActionResource(ActionType.CREATE, ResourceType.DEVICE),
-            ActionResource(ActionType.READ, ResourceType.DEVICE),
-            ActionResource(ActionType.UPDATE, ResourceType.DEVICE),
         )
     }
 }

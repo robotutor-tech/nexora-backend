@@ -1,7 +1,7 @@
 package com.robotutor.nexora.iam.controllers
 
+import com.robotutor.nexora.iam.controllers.view.ActorWithRolesView
 import com.robotutor.nexora.iam.controllers.view.ActorView
-import com.robotutor.nexora.iam.controllers.view.ActorWithRoleView
 import com.robotutor.nexora.iam.controllers.view.PremisesRequest
 import com.robotutor.nexora.iam.controllers.view.RegisterDeviceRequest
 import com.robotutor.nexora.iam.services.PremisesService
@@ -26,12 +26,12 @@ class PremisesController(
     fun registerPremises(
         @RequestBody @Validated request: PremisesRequest,
         authUserData: AuthUserData
-    ): Mono<ActorView> {
+    ): Mono<ActorWithRolesView> {
         return premisesService.registerPremises(request, authUserData)
             .flatMap { actor ->
                 roleService.getRolesByRoleIds(actor.roles.toList())
                     .collectList()
-                    .map { ActorView.from(actor, it) }
+                    .map { ActorWithRolesView.from(actor, it) }
             }
     }
 
@@ -39,11 +39,11 @@ class PremisesController(
     fun registerDevice(
         @RequestBody @Validated request: RegisterDeviceRequest,
         invitationData: InvitationData
-    ): Mono<ActorWithRoleView> {
+    ): Mono<ActorView> {
         return premisesService.registerDevice(request, invitationData)
             .flatMap { actor ->
                 roleService.getRoleByRoleId(actor.roles.first())
-                    .map { ActorWithRoleView.from(actor, it, emptyList()) }
+                    .map { ActorView.from(actor, it) }
             }
     }
 }

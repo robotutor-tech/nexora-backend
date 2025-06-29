@@ -12,7 +12,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.ZoneOffset
 
 const val ACTOR_COLLECTION = "actors"
 
@@ -26,7 +25,7 @@ data class Actor(
     @Indexed
     val premisesId: PremisesId,
     val identifier: Identifier<ActorIdentifier>,
-    val roles: MutableSet<RoleId>,
+    val roles: List<RoleId>,
     val state: ActorState,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
@@ -39,7 +38,7 @@ data class Actor(
                 actorId = actorId,
                 premisesId = request.premisesId,
                 identifier = request.identifier,
-                roles = request.roles.toMutableSet(),
+                roles = request.roles.toSet().toList(),
                 state = ActorState.ACTIVE,
             )
         }

@@ -11,6 +11,7 @@ import com.robotutor.nexora.logger.models.ResponseDetails
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Signal
+import java.util.concurrent.atomic.AtomicBoolean
 
 fun <T> Flux<T>.logOnError(
     logger: Logger,
@@ -72,35 +73,36 @@ fun <T> Flux<T>.logOnSuccess(
     skipAdditionalDetails: Boolean = false,
     skipResponseBody: Boolean = true,
 ): Flux<T> {
-    return doOnEach { signal ->
-        if (signal.isOnComplete) {
-            val modifiedAdditionalDetails = additionalDetails.toMutableMap()
+    val hasElements = AtomicBoolean(false)
+    return doOnNext { hasElements.set(true) }
+        .doOnEach { signal ->
+            if (signal.isOnComplete && hasElements.get()) {
+                val modifiedAdditionalDetails = additionalDetails.toMutableMap()
+                if (skipAdditionalDetails) {
+                    modifiedAdditionalDetails.clear()
+                }
 
-            if (skipAdditionalDetails) {
-                modifiedAdditionalDetails.clear()
+                if (!skipResponseBody) {
+                    if (signal.hasValue())
+                        modifiedAdditionalDetails[LogConstants.RESPONSE_BODY] = getDeserializedResponseBody<T>(signal)
+                    else
+                        modifiedAdditionalDetails[LogConstants.RESPONSE_BODY] = "No response body found"
+                }
+
+                val logDetails = LogDetails.create(
+                    message = message,
+                    traceId = getTraceId(signal.contextView),
+                    premisesId = getPremisesId(signal.contextView),
+                    searchableFields = searchableFields,
+                    errorCode = null,
+                    requestDetails = RequestDetails.create(signal.contextView),
+                    responseDetails = ResponseDetails.create(signal.contextView),
+                    additionalDetails = modifiedAdditionalDetails
+
+                )
+                logger.info(details = logDetails)
             }
-
-            if (!skipResponseBody) {
-                if (signal.hasValue())
-                    modifiedAdditionalDetails[LogConstants.RESPONSE_BODY] = getDeserializedResponseBody<T>(signal)
-                else
-                    modifiedAdditionalDetails[LogConstants.RESPONSE_BODY] = "No response body found"
-            }
-
-            val logDetails = LogDetails.create(
-                message = message,
-                traceId = getTraceId(signal.contextView),
-                premisesId = getPremisesId(signal.contextView),
-                searchableFields = searchableFields,
-                errorCode = null,
-                requestDetails = RequestDetails.create(signal.contextView),
-                responseDetails = ResponseDetails.create(signal.contextView),
-                additionalDetails = modifiedAdditionalDetails
-
-            )
-            logger.info(details = logDetails)
         }
-    }
 }
 
 private fun <T> getDeserializedResponseBody(signal: Signal<T>): Any {

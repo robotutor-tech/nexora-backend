@@ -1,10 +1,12 @@
 package com.robotutor.nexora.widget.services
 
+import com.robotutor.nexora.iam.services.EntitlementResource
 import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.kafka.services.KafkaPublisher
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
+import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
 import com.robotutor.nexora.widget.controllers.view.WidgetRequest
@@ -30,6 +32,10 @@ class WidgetService(
             .flatMap { widget ->
                 widgetRepository.save(widget)
                     .auditOnSuccess("WIDGET_CREATE", mapOf("widgetId" to widget.widgetId, "name" to widget.name))
+            }
+            .flatMap {
+                val entitlementResource = EntitlementResource(ResourceType.WIDGET, it.widgetId)
+                kafkaPublisher.publish("entitlement.create", entitlementResource) { it }
             }
             .flatMap { kafkaPublisher.publish("widget.create.success", it) { it } }
             .logOnSuccess(logger, "Successfully created new widget")

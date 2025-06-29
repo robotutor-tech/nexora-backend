@@ -7,11 +7,14 @@ import com.robotutor.nexora.feed.models.Feed
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.feed.models.IdType
 import com.robotutor.nexora.feed.repositories.FeedRepository
+import com.robotutor.nexora.iam.services.EntitlementResource
 import com.robotutor.nexora.kafka.auditOnSuccess
+import com.robotutor.nexora.kafka.services.KafkaPublisher
 import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.security.createMonoError
+import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.services.IdGeneratorService
 import com.robotutor.nexora.utils.retryOptimisticLockingFailure
@@ -22,7 +25,11 @@ import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Service
-class FeedService(private val idGeneratorService: IdGeneratorService, private val feedRepository: FeedRepository) {
+class FeedService(
+    private val idGeneratorService: IdGeneratorService,
+    private val feedRepository: FeedRepository,
+    private val kafkaPublisher: KafkaPublisher
+) {
     val logger = Logger(this::class.java)
 
     fun createFeed(feedRequest: FeedRequest, premisesActorData: PremisesActorData): Mono<Feed> {
@@ -31,6 +38,10 @@ class FeedService(private val idGeneratorService: IdGeneratorService, private va
             .flatMap {
                 feedRepository.save(it)
                     .auditOnSuccess("FEED_CREATED", mapOf("feedId" to it.feedId, "name" to it.name))
+            }
+            .flatMap { feed ->
+                val entitlementResource = EntitlementResource(ResourceType.FEED, feed.feedId)
+                kafkaPublisher.publish("entitlement.create", entitlementResource) { feed }
             }
             .logOnSuccess(logger, "Successfully created new feed")
             .logOnError(logger, "", "Failed to create new feed")

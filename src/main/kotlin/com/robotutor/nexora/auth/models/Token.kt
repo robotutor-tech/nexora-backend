@@ -1,7 +1,7 @@
 package com.robotutor.nexora.auth.models
 
 import com.robotutor.nexora.auth.controllers.views.PremisesActorRequest
-import com.robotutor.nexora.auth.gateways.view.ActorView
+import com.robotutor.nexora.iam.controllers.view.ActorView
 import com.robotutor.nexora.iam.models.RoleId
 import com.robotutor.nexora.security.models.Identifier
 import com.robotutor.nexora.security.models.TokenIdentifier
@@ -13,7 +13,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.ZoneOffset
 
 const val TOKEN_COLLECTION = "tokens"
 const val DEVICE_TOKEN_LENGTH = 52
