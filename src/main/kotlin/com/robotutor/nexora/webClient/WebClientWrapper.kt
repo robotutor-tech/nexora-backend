@@ -2,12 +2,18 @@ package com.robotutor.nexora.webClient
 
 import com.robotutor.nexora.logger.LogDetails
 import com.robotutor.nexora.logger.Logger
+import com.robotutor.nexora.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.logger.logOnError
 import com.robotutor.nexora.logger.logOnSuccess
 import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
+import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.createMonoError
+import com.robotutor.nexora.security.filters.PREMISES_ID
+import com.robotutor.nexora.security.filters.TRACE_ID
 import com.robotutor.nexora.webClient.exceptions.BaseException
+import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -37,53 +43,49 @@ class WebClientWrapper(private val webClient: WebClient) {
     ): Mono<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
 
-        return Mono.deferContextual { ctx ->
-            val exchange = ctx.get(ServerWebExchangeDTO::class.java)
-            webClient.get()
-                .uri(url)
-                .headers { h ->
-                    h.putAll(exchange.requestDetails.headers)
-                    headers.map {
-                        h.set(it.key, it.value)
+        return getMetaDataHeaders()
+            .flatMap { metaDataHeaders ->
+                webClient.get()
+                    .uri(url)
+                    .headers { updateHeaders(it, headers, metaDataHeaders) }
+                    .retrieve()
+                    .onStatus({ it.is4xxClientError }) {
+                        it.bodyToMono(BaseException::class.java)
+                            .flatMap { exception -> createMonoError(exception) }
                     }
-                }
-                .retrieve()
-                .onStatus({ it.is4xxClientError }) {
-                    it.bodyToMono(BaseException::class.java)
-                        .flatMap { exception -> createMonoError(exception) }
-                }
-                .bodyToMono(returnType)
-                .retryWhen(
-                    Retry.backoff(3, Duration.ofSeconds(2))
-                        .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                        .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                )
-                .logOnSuccess(
-                    logger = logger,
-                    message = "GET request to Service successful",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    skipResponseBody = skipLoggingResponseBody,
-                    additionalDetails = mapOf("method" to "GET", "path" to url)
-                )
-                .logOnError(
-                    logger = logger,
-                    errorCode = "API_FAILURE",
-                    errorMessage = "GET request to Service failed",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    additionalDetails = mapOf("method" to "GET", "path" to url)
-                )
-                .contextWrite { it.putAll(ctx) }
-                .doOnSubscribe {
-                    logger.info(
-                        LogDetails(
-                            message = "Make request to Service successful",
-                            additionalDetails = mapOf("method" to "GET", "url" to url),
-                            traceId = getTraceId(ctx)
-                        )
+                    .bodyToMono(returnType)
+                    .retryWhen(
+                        Retry.backoff(3, Duration.ofSeconds(2))
+                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
                     )
-                }
-        }
+                    .logOnSuccess(
+                        logger = logger,
+                        message = "GET request to Service successful",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        skipResponseBody = skipLoggingResponseBody,
+                        additionalDetails = mapOf("method" to "GET", "path" to url)
+                    )
+                    .logOnError(
+                        logger = logger,
+                        errorCode = "API_FAILURE",
+                        errorMessage = "GET request to Service failed",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        additionalDetails = mapOf("method" to "GET", "path" to url)
+                    )
+                    .doOnSubscribe {
+                        logger.info(
+                            LogDetails(
+                                message = "Make request to Service successful",
+                                additionalDetails = mapOf("method" to "GET", "url" to url),
+                                traceId = metaDataHeaders.traceId,
+                                premisesId = metaDataHeaders.premisesId,
+                            )
+                        )
+                    }
+            }
     }
+
 
     fun <T> delete(
         baseUrl: String,
@@ -97,52 +99,47 @@ class WebClientWrapper(private val webClient: WebClient) {
     ): Mono<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
 
-        return Mono.deferContextual { ctx ->
-            val exchange = ctx.get(ServerWebExchangeDTO::class.java)
-            webClient.delete()
-                .uri(url)
-                .headers { h ->
-                    h.putAll(exchange.requestDetails.headers)
-                    headers.map {
-                        h.set(it.key, it.value)
+        return getMetaDataHeaders()
+            .flatMap { metaDataHeaders ->
+                webClient.delete()
+                    .uri(url)
+                    .headers { updateHeaders(it, headers, metaDataHeaders) }
+                    .retrieve()
+                    .onStatus({ it.is4xxClientError }) {
+                        it.bodyToMono(BaseException::class.java)
+                            .flatMap { exception -> createMonoError(exception) }
                     }
-                }
-                .retrieve()
-                .onStatus({ it.is4xxClientError }) {
-                    it.bodyToMono(BaseException::class.java)
-                        .flatMap { exception -> createMonoError(exception) }
-                }
-                .bodyToMono(returnType)
-                .retryWhen(
-                    Retry.backoff(3, Duration.ofSeconds(2))
-                        .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                        .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                )
-                .logOnSuccess(
-                    logger = logger,
-                    message = "GET request to Service successful",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    skipResponseBody = skipLoggingResponseBody,
-                    additionalDetails = mapOf("method" to "GET", "path" to url)
-                )
-                .logOnError(
-                    logger = logger,
-                    errorCode = "API_FAILURE",
-                    errorMessage = "GET request to Service failed",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    additionalDetails = mapOf("method" to "GET", "path" to url)
-                )
-                .contextWrite { it.putAll(ctx) }
-                .doOnSubscribe {
-                    logger.info(
-                        LogDetails(
-                            message = "Make request to Service successful",
-                            additionalDetails = mapOf("method" to "GET", "url" to url),
-                            traceId = getTraceId(ctx)
-                        )
+                    .bodyToMono(returnType)
+                    .retryWhen(
+                        Retry.backoff(3, Duration.ofSeconds(2))
+                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
                     )
-                }
-        }
+                    .logOnSuccess(
+                        logger = logger,
+                        message = "GET request to Service successful",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        skipResponseBody = skipLoggingResponseBody,
+                        additionalDetails = mapOf("method" to "GET", "path" to url)
+                    )
+                    .logOnError(
+                        logger = logger,
+                        errorCode = "API_FAILURE",
+                        errorMessage = "GET request to Service failed",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        additionalDetails = mapOf("method" to "GET", "path" to url)
+                    )
+                    .doOnSubscribe {
+                        logger.info(
+                            LogDetails(
+                                message = "Make request to Service successful",
+                                additionalDetails = mapOf("method" to "GET", "url" to url),
+                                traceId = metaDataHeaders.traceId,
+                                premisesId = metaDataHeaders.premisesId,
+                            )
+                        )
+                    }
+            }
     }
 
     fun <T> post(
@@ -159,54 +156,49 @@ class WebClientWrapper(private val webClient: WebClient) {
 
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
 
-        return Mono.deferContextual { ctx ->
-            val exchange = ctx.get(ServerWebExchangeDTO::class.java)
-            webClient
-                .post()
-                .uri(url)
-                .headers { h ->
-                    h.putAll(exchange.requestDetails.headers)
-                    headers.map {
-                        h.set(it.key, it.value)
+        return getMetaDataHeaders()
+            .flatMap { metaDataHeaders ->
+                webClient
+                    .post()
+                    .uri(url)
+                    .headers { updateHeaders(it, headers, metaDataHeaders) }
+                    .bodyValue(body)
+                    .retrieve()
+                    .onStatus({ it.is4xxClientError }) {
+                        it.bodyToMono(BaseException::class.java)
+                            .flatMap { exception -> createMonoError(exception) }
                     }
-                }
-                .bodyValue(body)
-                .retrieve()
-                .onStatus({ it.is4xxClientError }) {
-                    it.bodyToMono(BaseException::class.java)
-                        .flatMap { exception -> createMonoError(exception) }
-                }
-                .bodyToMono(returnType)
-                .retryWhen(
-                    Retry.backoff(3, Duration.ofSeconds(2))
-                        .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                        .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                )
-                .logOnSuccess(
-                    logger = logger,
-                    message = "POST request to Service successful",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    skipResponseBody = skipLoggingResponseBody,
-                    additionalDetails = mapOf("method" to "POST", "path" to url)
-                )
-                .logOnError(
-                    logger = logger,
-                    errorCode = "API_FAILURE",
-                    errorMessage = "POST request to Service failed",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    additionalDetails = mapOf("method" to "POST", "path" to url)
-                )
-                .contextWrite { it.putAll(ctx) }
-                .doOnSubscribe {
-                    logger.info(
-                        LogDetails(
-                            message = "Make request to Service successful",
-                            additionalDetails = mapOf("method" to "POST", "url" to url),
-                            traceId = getTraceId(ctx)
-                        )
+                    .bodyToMono(returnType)
+                    .retryWhen(
+                        Retry.backoff(3, Duration.ofSeconds(2))
+                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
                     )
-                }
-        }
+                    .logOnSuccess(
+                        logger = logger,
+                        message = "POST request to Service successful",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        skipResponseBody = skipLoggingResponseBody,
+                        additionalDetails = mapOf("method" to "POST", "path" to url)
+                    )
+                    .logOnError(
+                        logger = logger,
+                        errorCode = "API_FAILURE",
+                        errorMessage = "POST request to Service failed",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        additionalDetails = mapOf("method" to "POST", "path" to url)
+                    )
+                    .doOnSubscribe {
+                        logger.info(
+                            LogDetails(
+                                message = "Make request to Service successful",
+                                additionalDetails = mapOf("method" to "POST", "url" to url),
+                                traceId = metaDataHeaders.traceId,
+                                premisesId = metaDataHeaders.premisesId,
+                            )
+                        )
+                    }
+            }
     }
 
     fun <T> getFlux(
@@ -221,53 +213,49 @@ class WebClientWrapper(private val webClient: WebClient) {
     ): Flux<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
 
-        return Flux.deferContextual { ctx ->
-            val exchange = ctx.get(ServerWebExchangeDTO::class.java)
-            webClient.get()
-                .uri(url)
-                .headers { h ->
-                    h.putAll(exchange.requestDetails.headers)
-                    headers.map {
-                        h.set(it.key, it.value)
+        return getMetaDataHeaders()
+            .flatMapMany { metaDataHeaders ->
+                webClient.get()
+                    .uri(url)
+                    .headers { updateHeaders(it, headers, metaDataHeaders) }
+                    .retrieve()
+                    .onStatus({ it.is4xxClientError }) {
+                        it.bodyToMono(BaseException::class.java)
+                            .flatMap { exception -> createMonoError(exception) }
                     }
-                }
-                .retrieve()
-                .onStatus({ it.is4xxClientError }) {
-                    it.bodyToMono(BaseException::class.java)
-                        .flatMap { exception -> createMonoError(exception) }
-                }
-                .bodyToFlux(returnType)
-                .retryWhen(
-                    Retry.backoff(3, Duration.ofSeconds(2))
-                        .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                        .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                )
-                .logOnSuccess(
-                    logger = logger,
-                    message = "GET request to Service successful",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    skipResponseBody = skipLoggingResponseBody,
-                    additionalDetails = mapOf("method" to "GET", "path" to url)
-                )
-                .logOnError(
-                    logger = logger,
-                    errorCode = "API_FAILURE",
-                    errorMessage = "GET request to Service failed",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    additionalDetails = mapOf("method" to "GET", "path" to url)
-                )
-                .contextWrite { it.putAll(ctx) }
-                .doOnSubscribe {
-                    logger.info(
-                        LogDetails(
-                            message = "Make request to Service successful",
-                            additionalDetails = mapOf("method" to "GET", "url" to url),
-                            traceId = getTraceId(ctx)
-                        )
+                    .bodyToFlux(returnType)
+                    .retryWhen(
+                        Retry.backoff(3, Duration.ofSeconds(2))
+                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
                     )
-                }
-        }
+                    .logOnSuccess(
+                        logger = logger,
+                        message = "GET request to Service successful",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        skipResponseBody = skipLoggingResponseBody,
+                        additionalDetails = mapOf("method" to "GET", "path" to url)
+                    )
+                    .logOnError(
+                        logger = logger,
+                        errorCode = "API_FAILURE",
+                        errorMessage = "GET request to Service failed",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        additionalDetails = mapOf("method" to "GET", "path" to url)
+                    )
+                    .doOnSubscribe {
+                        logger.info(
+                            LogDetails(
+                                message = "Make request to Service successful",
+                                additionalDetails = mapOf("method" to "GET", "url" to url),
+                                traceId = metaDataHeaders.traceId,
+                                premisesId = metaDataHeaders.premisesId,
+                            )
+                        )
+                    }
+            }
     }
+
 
     fun <T> postFlux(
         baseUrl: String,
@@ -281,54 +269,62 @@ class WebClientWrapper(private val webClient: WebClient) {
         skipLoggingResponseBody: Boolean = true
     ): Flux<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
-        return Flux.deferContextual { ctx ->
-            val exchange = ctx.get(ServerWebExchangeDTO::class.java)
-            webClient
-                .post()
-                .uri(url)
-                .headers { h ->
-                    h.putAll(exchange.requestDetails.headers)
-                    headers.map {
-                        h.set(it.key, it.value)
+        return getMetaDataHeaders()
+            .flatMapMany { metaDataHeaders ->
+                webClient
+                    .post()
+                    .uri(url)
+                    .headers { updateHeaders(it, headers, metaDataHeaders) }
+                    .bodyValue(body)
+                    .retrieve()
+                    .onStatus({ it.is4xxClientError }) {
+                        it.bodyToMono(BaseException::class.java)
+                            .flatMap { exception -> createMonoError(exception) }
                     }
-                }
-                .bodyValue(body)
-                .retrieve()
-                .onStatus({ it.is4xxClientError }) {
-                    it.bodyToMono(BaseException::class.java)
-                        .flatMap { exception -> createMonoError(exception) }
-                }
-                .bodyToFlux(returnType)
-                .retryWhen(
-                    Retry.backoff(3, Duration.ofSeconds(2))
-                        .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                        .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                )
-                .logOnSuccess(
-                    logger = logger,
-                    message = "POST request to Service successful",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    skipResponseBody = skipLoggingResponseBody,
-                    additionalDetails = mapOf("method" to "POST", "path" to url)
-                )
-                .logOnError(
-                    logger = logger,
-                    errorCode = "API_FAILURE",
-                    errorMessage = "POST request to Service failed",
-                    skipAdditionalDetails = skipLoggingAdditionalDetails,
-                    additionalDetails = mapOf("method" to "POST", "path" to url)
-                )
-                .contextWrite { it.putAll(ctx) }
-                .doOnSubscribe {
-                    logger.info(
-                        LogDetails(
-                            message = "Make request to Service successful",
-                            additionalDetails = mapOf("method" to "POST", "url" to url),
-                            traceId = getTraceId(ctx)
-                        )
+                    .bodyToFlux(returnType)
+                    .retryWhen(
+                        Retry.backoff(3, Duration.ofSeconds(2))
+                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
                     )
-                }
+                    .logOnSuccess(
+                        logger = logger,
+                        message = "POST request to Service successful",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        skipResponseBody = skipLoggingResponseBody,
+                        additionalDetails = mapOf("method" to "POST", "path" to url)
+                    )
+                    .logOnError(
+                        logger = logger,
+                        errorCode = "API_FAILURE",
+                        errorMessage = "POST request to Service failed",
+                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        additionalDetails = mapOf("method" to "POST", "path" to url)
+                    )
+                    .doOnSubscribe {
+                        logger.info(
+                            LogDetails(
+                                message = "Make request to Service successful",
+                                additionalDetails = mapOf("method" to "POST", "url" to url),
+                                traceId = metaDataHeaders.traceId,
+                                premisesId = metaDataHeaders.premisesId,
+                            )
+                        )
+                    }
+            }
+    }
+
+    private fun updateHeaders(
+        httpHeaders: HttpHeaders,
+        headers: Map<String, String>,
+        metaDataHeaders: MetaDataHeaders
+    ) {
+        httpHeaders.putAll(metaDataHeaders.exchange.requestDetails.headers)
+        headers.map {
+            httpHeaders.set(it.key, it.value)
         }
+        httpHeaders.set(TRACE_ID, metaDataHeaders.traceId)
+        httpHeaders.set(PREMISES_ID, metaDataHeaders.premisesId)
     }
 
 
@@ -345,4 +341,15 @@ class WebClientWrapper(private val webClient: WebClient) {
             .build()
             .toUriString()
     }
+
+    private fun getMetaDataHeaders(): Mono<MetaDataHeaders> {
+        return Mono.deferContextual { ctx ->
+            val exchange = ctx.get(ServerWebExchangeDTO::class.java)
+            val traceId = exchange.requestDetails.headers.getFirst("x-trace-id") ?: getTraceId(ctx)
+            val premisesId = exchange.requestDetails.headers.getFirst("x-premises-id") ?: getPremisesId(ctx)
+            createMono(MetaDataHeaders(exchange, traceId, premisesId))
+        }
+    }
 }
+
+data class MetaDataHeaders(val exchange: ServerWebExchangeDTO, val traceId: String, val premisesId: PremisesId)

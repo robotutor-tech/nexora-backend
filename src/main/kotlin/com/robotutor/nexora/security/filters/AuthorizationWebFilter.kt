@@ -30,22 +30,26 @@ class AuthorizationWebFilter(
     private val iamGateway: IAMGateway
 ) : WebFilter {
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        return handlerMapping.getHandler(exchange).flatMap { handler ->
-            if (handler is HandlerMethod) {
-                val requirePolicy = handler.getMethodAnnotation(RequireAccess::class.java)
-                if (requirePolicy == null) {
-                    chain.filter(exchange)
-                } else {
-                    validateAccess(exchange, requirePolicy).flatMap { allowed ->
-                        if (allowed) chain.filter(exchange)
-                        else createMonoError(AccessDeniedException(NexoraError.NEXORA0105))
+        return handlerMapping.getHandler(exchange)
+            .flatMap { handler ->
+                if (handler is HandlerMethod) {
+                    val requirePolicy = handler.getMethodAnnotation(RequireAccess::class.java)
+                    if (requirePolicy == null) {
+                        chain.filter(exchange)
+                    } else {
+                        validateAccess(exchange, requirePolicy)
+                            .contextWrite { writeContextOnChain(it, exchange) }
+                            .flatMap { allowed ->
+                                if (allowed) chain.filter(exchange)
+                                else createMonoError(AccessDeniedException(NexoraError.NEXORA0105))
+                            }
                     }
+                } else {
+                    chain.filter(exchange)
                 }
-            } else {
-                chain.filter(exchange)
             }
-        }
     }
+
 
     private fun validateAccess(exchange: ServerWebExchange, requirePolicy: RequireAccess): Mono<Boolean> {
         return Mono.deferContextual { ctx ->

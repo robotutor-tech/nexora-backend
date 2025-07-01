@@ -1,10 +1,8 @@
 package com.robotutor.nexora.logger
 
-import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
-import org.springframework.http.HttpHeaders
+import com.robotutor.nexora.premises.models.PremisesId
 import reactor.util.context.Context
 import reactor.util.context.ContextView
-import java.util.UUID
 
 internal object ReactiveContext {
 
@@ -12,41 +10,18 @@ internal object ReactiveContext {
     private const val PREMISES_ID_HEADER_KEY = "x-premises-id"
 
     fun getTraceId(context: ContextView): String {
-        val traceId = context.getOrEmpty<String>(TRACE_ID_HEADER_KEY)
-        if (traceId.isEmpty || traceId.get().isBlank()) {
-            return generateTraceId()
-        }
-        return traceId.get()
+        return context.getOrDefault<String>(TRACE_ID_HEADER_KEY, null) ?: "missing-trace-id"
     }
 
     fun putTraceId(context: Context, traceId: String): Context {
         return context.put(TRACE_ID_HEADER_KEY, traceId)
     }
 
-    private fun generateTraceId(): String = UUID.randomUUID().toString()
+    fun putPremisesId(context: Context, premisesId: PremisesId): Context {
+        return context.put(PREMISES_ID_HEADER_KEY, premisesId)
+    }
 
-    fun getPremisesId(context: ContextView): String = getValueFromRequestHeader(context, PREMISES_ID_HEADER_KEY)
-        ?: "missing-premises-id"
-
-
-    private fun getValueFromRequestHeader(
-        context: ContextView,
-        headerKey: String
-    ): String? {
-        return when {
-            context.isEmpty -> "EMPTY_CONTEXT"
-            context.hasKey(ServerWebExchangeDTO::class.java) -> {
-                val valueFromRequest = context.get(ServerWebExchangeDTO::class.java)
-                    .requestDetails.headers[headerKey]?.first()
-                if (valueFromRequest == null && context.hasKey("headers")) {
-                    return context.get<HttpHeaders>("headers")[headerKey]?.firstOrNull()
-                } else {
-                    valueFromRequest
-                }
-            }
-
-            context.hasKey("headers") -> context.get<HttpHeaders>("headers")[headerKey]?.firstOrNull()
-            else -> null
-        }
+    fun getPremisesId(context: ContextView): String {
+        return context.getOrDefault<String>(PREMISES_ID_HEADER_KEY, null) ?: "missing-premises-id"
     }
 }

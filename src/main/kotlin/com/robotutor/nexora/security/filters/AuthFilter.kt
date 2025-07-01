@@ -1,7 +1,7 @@
 package com.robotutor.nexora.security.filters
 
 import com.robotutor.nexora.logger.Logger
-import com.robotutor.nexora.logger.ReactiveContext.getTraceId
+import com.robotutor.nexora.logger.ReactiveContext.putPremisesId
 import com.robotutor.nexora.logger.ReactiveContext.putTraceId
 import com.robotutor.nexora.logger.models.ServerWebExchangeDTO
 import com.robotutor.nexora.logger.serializer.DefaultSerializer.serialize
@@ -22,6 +22,11 @@ import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import reactor.util.context.Context
 import java.time.Instant
+import java.util.UUID.randomUUID
+
+const val TRACE_ID = "x-trace-id"
+const val PREMISES_ID = "x-premises-id"
+const val START_TIME = "startTime"
 
 @Component
 @Order(2)
@@ -34,16 +39,13 @@ class AuthFilter(
     val logger = Logger(this::class.java)
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        val startTime = Instant.now()
         return authorize(exchange)
+            .contextWrite { writeContextOnChain(it, exchange) }
             .flatMap { authenticationData ->
                 val authenticationToken = UsernamePasswordAuthenticationToken("authenticationData", null, listOf())
                 val content = SecurityContextImpl(authenticationToken)
                 chain.filter(exchange)
-                    .contextWrite { writeContext(authenticationData, it) }
-                    .contextWrite { putTraceId(it, getTraceId(it)) }
-                    .contextWrite { it.put("startTime", startTime) }
-                    .contextWrite { it.put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange)) }
+                    .contextWrite { writeContext(authenticationData, it, exchange) }
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
             }
             .onErrorResume {
@@ -53,9 +55,6 @@ class AuthFilter(
                 val content = response.bufferFactory().wrap(serialize(responseEntity.body).toByteArray())
                 response.writeWith(createMono(content))
             }
-            .contextWrite { putTraceId(it, getTraceId(it)) }
-            .contextWrite { it.put("startTime", startTime) }
-            .contextWrite { it.put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange)) }
     }
 
 
@@ -67,9 +66,14 @@ class AuthFilter(
         return authGateway.validate()
     }
 
-    private fun writeContext(authenticationData: IAuthenticationData, context: Context): Context {
-        return when (authenticationData) {
+    private fun writeContext(
+        authenticationData: IAuthenticationData,
+        context: Context,
+        exchange: ServerWebExchange
+    ): Context {
+        val newContext = when (authenticationData) {
             is PremisesActorData -> {
+                exchange.attributes.put(PREMISES_ID, authenticationData.premisesId)
                 val identifier = authenticationData.identifier
                 val premisesContext = when (identifier.type) {
                     ActorIdentifier.USER -> context.put(AuthUserData::class.java, AuthUserData(identifier.id))
@@ -85,6 +89,29 @@ class AuthFilter(
 
             else -> context
         }
+        return writeContextOnChain(newContext, exchange)
     }
 }
 
+fun getTraceIdFromExchange(exchange: ServerWebExchange): String {
+    return exchange.attributes[TRACE_ID] as? String
+        ?: exchange.request.headers.getFirst(TRACE_ID)
+        ?: randomUUID().toString()
+}
+
+fun getPremisesIdFromExchange(exchange: ServerWebExchange): String {
+    return exchange.attributes[PREMISES_ID] as? String
+        ?: exchange.request.headers.getFirst(PREMISES_ID)
+        ?: "missing-premises-id"
+}
+
+
+fun writeContextOnChain(context: Context, exchange: ServerWebExchange): Context {
+    val traceId = getTraceIdFromExchange(exchange)
+    val premisesId = getPremisesIdFromExchange(exchange)
+    val startTime = exchange.getAttribute(START_TIME) ?: Instant.now()
+    val newContext = putTraceId(context, traceId)
+    return putPremisesId(newContext, premisesId)
+        .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
+        .put(START_TIME, startTime)
+}
