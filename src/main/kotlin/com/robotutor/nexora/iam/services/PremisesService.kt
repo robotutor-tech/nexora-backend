@@ -103,6 +103,10 @@ class PremisesService(
             ActionResource(ActionType.CREATE, ResourceType.WIDGET),
             ActionResource(ActionType.CREATE, ResourceType.ZONE),
             ActionResource(ActionType.CREATE, ResourceType.DEVICE),
+            ActionResource(ActionType.CREATE, ResourceType.AUTOMATION_TRIGGER),
+            ActionResource(ActionType.CREATE, ResourceType.AUTOMATION_RULE),
+            ActionResource(ActionType.CREATE, ResourceType.AUTOMATION_ACTION),
+            ActionResource(ActionType.CREATE, ResourceType.AUTOMATION_CONDITION),
         )
     }
 }

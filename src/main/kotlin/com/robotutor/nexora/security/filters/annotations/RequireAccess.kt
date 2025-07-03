@@ -15,6 +15,10 @@ enum class ResourceType {
     PREMISES,
     WIDGET,
     ZONE,
+    AUTOMATION_RULE,
+    AUTOMATION_TRIGGER,
+    AUTOMATION_CONDITION,
+    AUTOMATION_ACTION,
 }
 
 enum class ActionType {
