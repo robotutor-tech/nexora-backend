@@ -50,4 +50,10 @@ class FeedController(private val feedService: FeedService) {
     ): Mono<FeedView> {
         return feedService.updateFeedValue(feedId, feedRequest, premisesActorData).map { FeedView.from(it) }
     }
+
+    @RequireAccess(ActionType.READ, ResourceType.FEED, "feedId")
+    @GetMapping("/{feedId}")
+    fun getFeed(@PathVariable feedId: FeedId, premisesActorData: PremisesActorData): Mono<FeedView> {
+        return feedService.getFeedByFeedId(feedId, premisesActorData).map { FeedView.from(it) }
+    }
 }

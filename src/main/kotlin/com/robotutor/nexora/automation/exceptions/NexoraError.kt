@@ -11,4 +11,6 @@ enum class NexoraError(override val errorCode: String, override val message: Str
     NEXORA0305("NEXORA-0305", "Group conditions should not be empty"),
     NEXORA0306("NEXORA-0306", "Condition not found"),
     NEXORA0307("NEXORA-0307", "Invalid trigger request"),
+    NEXORA0308("NEXORA-0308", "Invalid action request"),
+    NEXORA0309("NEXORA-0309", "Invalid condition request"),
 }

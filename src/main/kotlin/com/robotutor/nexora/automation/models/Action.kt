@@ -47,7 +47,6 @@ data class Action(
 enum class ActionType {
     FEED_CONTROL,
     DELAY,
-    NOTIFICATION,
     AUTOMATION_TRIGGER,
 }
 
@@ -55,10 +54,6 @@ sealed interface ActionConfig
 
 data class FeedControlActionConfig(val feedId: FeedId, val value: Number) : ActionConfig
 data class DelayActionConfig(val durationInMinute: Int) : ActionConfig
-data class NotificationActionConfig(
-    val title: String, val message: String, val recipients: List<ActorId>
-) : ActionConfig
-
 data class AutomationActionConfig(val automationId: AutomationId) : ActionConfig
 
 typealias ActionId = String

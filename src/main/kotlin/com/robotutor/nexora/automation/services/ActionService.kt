@@ -6,6 +6,7 @@ import com.robotutor.nexora.automation.models.Action
 import com.robotutor.nexora.automation.models.ActionId
 import com.robotutor.nexora.automation.models.IdType
 import com.robotutor.nexora.automation.repositories.ActionRepository
+import com.robotutor.nexora.automation.services.validator.ActionValidator
 import com.robotutor.nexora.iam.services.EntitlementResource
 import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.kafka.services.KafkaPublisher
@@ -26,7 +27,8 @@ import reactor.core.publisher.Mono
 class ActionService(
     private val idGeneratorService: IdGeneratorService,
     private val actionRepository: ActionRepository,
-    private val kafkaPublisher: KafkaPublisher
+    private val kafkaPublisher: KafkaPublisher,
+    private val actionValidator: ActionValidator
 ) {
 
     val logger = Logger(this::class.java)
@@ -57,7 +59,7 @@ class ActionService(
     }
 
     fun createAction(request: ActionRequest, premisesActorData: PremisesActorData): Mono<Action> {
-        return validateActionRequest(request, premisesActorData)
+        return actionValidator.validateRequest(request, premisesActorData)
             .flatMap { idGeneratorService.generateId(IdType.ACTION_ID) }
             .map { actionId -> Action.from(actionId, request, premisesActorData) }
             .flatMap {
@@ -73,9 +75,5 @@ class ActionService(
             }
             .logOnSuccess(logger, "Successfully created new Action")
             .logOnError(logger, "", "Failed to create new Action")
-    }
-
-    private fun validateActionRequest(request: ActionRequest, premisesActorData: PremisesActorData): Mono<Boolean> {
-        return createMono(true)
     }
 }

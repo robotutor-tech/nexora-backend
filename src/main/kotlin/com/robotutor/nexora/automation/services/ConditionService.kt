@@ -10,6 +10,7 @@ import com.robotutor.nexora.automation.models.ConditionNode
 import com.robotutor.nexora.automation.models.ConditionNot
 import com.robotutor.nexora.automation.models.IdType
 import com.robotutor.nexora.automation.repositories.ConditionRepository
+import com.robotutor.nexora.automation.services.validator.ConditionValidator
 import com.robotutor.nexora.iam.services.EntitlementResource
 import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.kafka.services.KafkaPublisher
@@ -30,7 +31,8 @@ import reactor.core.publisher.Mono
 class ConditionService(
     private val idGeneratorService: IdGeneratorService,
     private val conditionRepository: ConditionRepository,
-    private val kafkaPublisher: KafkaPublisher
+    private val kafkaPublisher: KafkaPublisher,
+    private val conditionValidator: ConditionValidator
 ) {
 
     val logger = Logger(this::class.java)
@@ -70,7 +72,7 @@ class ConditionService(
     }
 
     fun createCondition(request: ConditionRequest, premisesActorData: PremisesActorData): Mono<Condition> {
-        return validateConditionRequest(request, premisesActorData)
+        return conditionValidator.validateRequest(request, premisesActorData)
             .flatMap { idGeneratorService.generateId(IdType.CONDITION_ID) }
             .map { conditionId -> Condition.from(conditionId, request, premisesActorData) }
             .flatMap {
@@ -87,12 +89,4 @@ class ConditionService(
             .logOnSuccess(logger, "Successfully created new Condition")
             .logOnError(logger, "", "Failed to create new Condition")
     }
-
-    private fun validateConditionRequest(
-        request: ConditionRequest,
-        premisesActorData: PremisesActorData
-    ): Mono<Boolean> {
-        return createMono(true)
-    }
-
 }

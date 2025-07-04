@@ -52,12 +52,16 @@ class FeedService(
     }
 
     fun updateFeedValue(feedId: FeedId, feedRequest: FeedValueRequest, actorData: PremisesActorData): Mono<Feed> {
-        return feedRepository.findByFeedIdAndPremisesId(feedId, actorData.premisesId)
-            .switchIfEmpty { createMonoError(DataNotFoundException(NexoraError.NEXORA0301)) }
+        return getFeedByFeedId(feedId, actorData)
             .map { it.updateValue(feedRequest.value) }
             .flatMap { feedRepository.save(it) }
             .retryOptimisticLockingFailure()
             .logOnSuccess(logger, "Successfully updated feed value")
             .logOnError(logger, "", "Failed to update feed value")
+    }
+
+    fun getFeedByFeedId(feedId: FeedId, premisesActorData: PremisesActorData): Mono<Feed> {
+        return feedRepository.findByFeedIdAndPremisesId(feedId, premisesActorData.premisesId)
+            .switchIfEmpty { createMonoError(DataNotFoundException(NexoraError.NEXORA0301)) }
     }
 }

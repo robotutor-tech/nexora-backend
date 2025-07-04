@@ -52,3 +52,5 @@ app:
   auth:
     iam-service:
       base-url: "http://localhost:9001"
+  automation:
+    feed-service-base-url: "http://localhost:9001"

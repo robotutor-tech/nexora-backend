@@ -2,6 +2,7 @@ package com.robotutor.nexora.automation.services.validator
 
 import com.robotutor.nexora.automation.controllers.views.TriggerRequest
 import com.robotutor.nexora.automation.exceptions.NexoraError
+import com.robotutor.nexora.automation.gateways.FeedGateway
 import com.robotutor.nexora.automation.models.FeedTriggerConfig
 import com.robotutor.nexora.automation.models.ScheduleConfig
 import com.robotutor.nexora.automation.models.ScheduleTriggerConfig
@@ -21,27 +22,23 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class TriggerValidator(private val triggerRepository: TriggerRepository) {
+class TriggerValidator(private val triggerRepository: TriggerRepository, private val feedGateway: FeedGateway) {
 
     fun validateRequest(request: TriggerRequest, premisesActorData: PremisesActorData): Mono<Boolean> {
         val errorCode = NexoraError.NEXORA0307.errorCode
         return when (request.type) {
             TriggerType.SCHEDULE -> validateScheduleTriggerConfig(request.config, errorCode)
             TriggerType.VOICE -> validateVoiceTriggerConfig(request.config, errorCode, premisesActorData)
-            TriggerType.FEED -> validateFeedTriggerConfig(request.config, errorCode, premisesActorData)
+            TriggerType.FEED -> validateFeedTriggerConfig(request.config, errorCode)
         }
     }
 
-    private fun validateFeedTriggerConfig(
-        config: TriggerConfig,
-        errorCode: String,
-        premisesActorData: PremisesActorData
-    ): Mono<Boolean> {
+    private fun validateFeedTriggerConfig(config: TriggerConfig, errorCode: String): Mono<Boolean> {
         if (config !is FeedTriggerConfig) {
             return createMonoError(BadDataException(ErrorResponse(errorCode, "Invalid config for FEED trigger type")))
         }
-//        TODO: Check if feed is assigned to current premises and user has the permission to access it
-        return createMono(true)
+        return feedGateway.getFeedByFeedId(config.feedId)
+            .map { true }
     }
 
     private fun validateVoiceTriggerConfig(
