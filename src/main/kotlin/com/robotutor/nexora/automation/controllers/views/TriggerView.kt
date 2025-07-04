@@ -1,20 +1,19 @@
 package com.robotutor.nexora.automation.controllers.views
 
-import com.robotutor.nexora.automation.models.*
+import com.robotutor.nexora.automation.models.Trigger
+import com.robotutor.nexora.automation.models.TriggerConfig
+import com.robotutor.nexora.automation.models.TriggerId
+import com.robotutor.nexora.automation.models.TriggerType
 import com.robotutor.nexora.premises.models.PremisesId
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotEmpty
 import java.time.Instant
 
 data class TriggerRequest(
-    @field:NotEmpty(message = "At least one trigger is required")
-    val triggers: List<TriggerId>,
-    @field:NotEmpty(message = "At least one action is required")
-    val actions: List<ActionId>,
-    val condition: ConditionNode? = null,
-    val executionMode: ExecutionMode? = null,
     @field:NotBlank(message = "Name is required")
-    val name: String
+    val name: String,
+    val description: String? = null,
+    val type: TriggerType,
+    val config: TriggerConfig
 )
 
 data class TriggerView(

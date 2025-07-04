@@ -1,7 +1,9 @@
 package com.robotutor.nexora.automation.models
 
+import com.robotutor.nexora.automation.controllers.views.ConditionRequest
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.premises.models.PremisesId
+import com.robotutor.nexora.security.models.PremisesActorData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -26,7 +28,20 @@ data class Condition(
     val updatedOn: Instant = Instant.now(),
     @Version
     val version: Long? = null
-)
+) {
+    companion object {
+        fun from(conditionId: ConditionId, request: ConditionRequest, premisesActorData: PremisesActorData): Condition {
+            return Condition(
+                conditionId = conditionId,
+                premisesId = premisesActorData.premisesId,
+                name = request.name,
+                description = request.description,
+                type = request.type,
+                config = request.config,
+            )
+        }
+    }
+}
 
 enum class ConditionType {
     TIME_RANGE,

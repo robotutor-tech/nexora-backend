@@ -6,6 +6,7 @@ import com.robotutor.nexora.automation.models.IdType
 import com.robotutor.nexora.automation.models.Trigger
 import com.robotutor.nexora.automation.models.TriggerId
 import com.robotutor.nexora.automation.repositories.TriggerRepository
+import com.robotutor.nexora.automation.services.validator.TriggerValidator
 import com.robotutor.nexora.iam.services.EntitlementResource
 import com.robotutor.nexora.kafka.auditOnSuccess
 import com.robotutor.nexora.kafka.services.KafkaPublisher
@@ -26,7 +27,8 @@ import reactor.core.publisher.Mono
 class TriggerService(
     private val idGeneratorService: IdGeneratorService,
     private val triggerRepository: TriggerRepository,
-    private val kafkaPublisher: KafkaPublisher
+    private val kafkaPublisher: KafkaPublisher,
+    private val triggerValidator: TriggerValidator
 ) {
 
     val logger = Logger(this::class.java)
@@ -57,7 +59,7 @@ class TriggerService(
     }
 
     fun createTrigger(request: TriggerRequest, premisesActorData: PremisesActorData): Mono<Trigger> {
-        return validateRequest(request, premisesActorData)
+        return triggerValidator.validateRequest(request, premisesActorData)
             .flatMap { idGeneratorService.generateId(IdType.TRIGGER_ID) }
             .map { triggerId -> Trigger.from(triggerId, request, premisesActorData) }
             .flatMap {
@@ -72,9 +74,4 @@ class TriggerService(
             .logOnError(logger, "", "Failed to create new Trigger")
 
     }
-
-    private fun validateRequest(request: TriggerRequest, premisesActorData: PremisesActorData): Mono<Boolean> {
-        return createMono(true)
-    }
-
 }

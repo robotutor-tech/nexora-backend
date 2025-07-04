@@ -1,8 +1,10 @@
 package com.robotutor.nexora.automation.models
 
+import com.robotutor.nexora.automation.controllers.views.ActionRequest
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.premises.models.PremisesId
 import com.robotutor.nexora.security.models.ActorId
+import com.robotutor.nexora.security.models.PremisesActorData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -27,7 +29,20 @@ data class Action(
     val updatedOn: Instant = Instant.now(),
     @Version
     val version: Long? = null
-)
+) {
+    companion object {
+        fun from(actionId: ActionId, request: ActionRequest, premisesActorData: PremisesActorData): Action {
+            return Action(
+                actionId = actionId,
+                premisesId = premisesActorData.premisesId,
+                name = request.name,
+                description = request.description,
+                type = request.type,
+                config = request.config,
+            )
+        }
+    }
+}
 
 enum class ActionType {
     FEED_CONTROL,
