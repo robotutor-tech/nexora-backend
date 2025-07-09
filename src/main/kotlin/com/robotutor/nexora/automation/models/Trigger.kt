@@ -7,20 +7,29 @@ import com.robotutor.nexora.security.models.PremisesActorData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
+import org.springframework.data.mongodb.core.index.CompoundIndex
+import org.springframework.data.mongodb.core.index.CompoundIndexes
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.DayOfWeek
 import java.time.Instant
 
-
 const val TRIGGER_COLLECTION = "triggers"
 
 @TypeAlias("Trigger")
+@CompoundIndexes(
+    CompoundIndex(
+        name = "unique_trigger_by_premisesId_type_config",
+        def = "{'premisesId': 1, 'type': 1, 'config': 1}",
+        unique = true
+    )
+)
 @Document(TRIGGER_COLLECTION)
 data class Trigger(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     val triggerId: TriggerId,
+    @Indexed
     val premisesId: PremisesId,
     val name: String,
     val description: String? = null,
@@ -32,14 +41,19 @@ data class Trigger(
     val version: Long? = null
 ) {
     companion object {
-        fun from(triggerId: TriggerId, request: TriggerRequest, premisesActorData: PremisesActorData): Trigger {
+        fun from(
+            triggerId: TriggerId,
+            config: TriggerConfig,
+            request: TriggerRequest,
+            premisesActorData: PremisesActorData
+        ): Trigger {
             return Trigger(
                 triggerId = triggerId,
                 premisesId = premisesActorData.premisesId,
                 name = request.name,
                 description = request.description,
                 type = request.type,
-                config = request.config,
+                config = config,
             )
         }
     }
@@ -70,8 +84,14 @@ data class SunTriggerConfig(
 ) : ScheduleConfig
 
 data class VoiceTriggerConfig(
-    val commands: List<String>,
-) : TriggerConfig
+    var commands: List<String>,
+) : TriggerConfig {
+
+    fun sanitizeCommands() {
+        commands = commands.map { command -> command.split(" ").filter { c -> c.isNotBlank() }.joinToString(" ") }
+            .toSet().toList()
+    }
+}
 
 data class FeedTriggerConfig(
     val feedId: FeedId,

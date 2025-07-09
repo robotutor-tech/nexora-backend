@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux
 @Repository
 interface TriggerRepository : ReactiveCrudRepository<Trigger, TriggerId> {
     fun findAllByTriggerIdInAndPremisesId(triggers: List<TriggerId>, premisesId: PremisesId): Flux<Trigger>
-    @Query("""{"premisesId": ?0, "type": "VOICE", "config.commands": { "$in": ?1}}""")
-    fun findByPremisesIdAndVoiceCommand(premisesId: PremisesId, commands: List<String>): Flux<Trigger>
+
+    @Query("""{premisesId: ?0, type: "VOICE", "config.commands": {""" + "\$in: [{\$regex: ?1, \$options: \"i\"}]" + """ }}""")
+    fun findAllByPremisesIdAndVoiceCommands(premisesId: PremisesId, commands: String): Flux<Trigger>
 }

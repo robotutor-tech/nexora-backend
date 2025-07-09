@@ -15,7 +15,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.ZoneOffset
 
 interface Invitation {
     fun markAsAccepted(): Invitation
@@ -36,6 +35,7 @@ data class DeviceInvitation(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     override val invitationId: InvitationId,
+    @Indexed
     override val premisesId: PremisesId,
     val name: String,
     val zoneId: ZoneId,

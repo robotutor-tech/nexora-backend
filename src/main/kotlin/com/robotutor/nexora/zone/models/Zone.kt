@@ -10,7 +10,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.ZoneOffset
 
 const val ZONE_COLLECTION = "zones"
 
@@ -21,6 +20,7 @@ data class Zone(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     val zoneId: ZoneId,
+    @Indexed
     val premisesId: PremisesId,
     val name: String,
     val createdBy: ActorId,

@@ -23,6 +23,7 @@ data class Saga(
     var status: SagaStatus,
     val metadata: Map<String, Any?>,
     val steps: MutableList<SagaStep> = mutableListOf(),
+    @Indexed
     val traceId: String,
     @Version
     val version: Long? = null

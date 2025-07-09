@@ -1,11 +1,9 @@
 package com.robotutor.nexora.automation.controllers.views
 
-import com.robotutor.nexora.automation.models.Trigger
-import com.robotutor.nexora.automation.models.TriggerConfig
-import com.robotutor.nexora.automation.models.TriggerId
-import com.robotutor.nexora.automation.models.TriggerType
+import com.robotutor.nexora.automation.models.*
 import com.robotutor.nexora.premises.models.PremisesId
 import jakarta.validation.constraints.NotBlank
+import java.time.DayOfWeek
 import java.time.Instant
 
 data class TriggerRequest(
@@ -13,8 +11,15 @@ data class TriggerRequest(
     val name: String,
     val description: String? = null,
     val type: TriggerType,
-    val config: TriggerConfig
+    val config: Map<String, Any>,
 )
+
+data class ScheduleTriggerRequest(
+    val type: ScheduleType,
+    val config: Map<String, Any>,
+    val repeat: List<DayOfWeek>
+)
+
 
 data class TriggerView(
     val triggerId: TriggerId,

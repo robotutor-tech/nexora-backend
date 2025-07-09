@@ -10,7 +10,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.ZoneOffset
 
 const val Feed_COLLECTION = "feeds"
 
@@ -21,6 +20,7 @@ data class Feed(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     val feedId: FeedId,
+    @Indexed
     val premisesId: PremisesId,
     val name: String,
     var value: Number = 0,

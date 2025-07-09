@@ -13,7 +13,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.ZoneOffset
 
 const val DEVICE_COLLECTION = "device"
 
@@ -24,7 +23,7 @@ class Device(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     val deviceId: DeviceId,
-    @Indexed()
+    @Indexed
     val premisesId: PremisesId,
     val name: String,
     val modelNo: String,

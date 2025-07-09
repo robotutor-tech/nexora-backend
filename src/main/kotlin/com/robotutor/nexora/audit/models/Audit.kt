@@ -26,6 +26,7 @@ data class Audit(
     val event: String,
     val actorId: ActorId? = null,
     val identifier: Identifier<ActorIdentifier>? = null,
+    @Indexed
     val premisesId: PremisesId? = null,
     val status: AuditStatus,
     val metadata: Map<String, Any?>,

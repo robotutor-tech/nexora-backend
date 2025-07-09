@@ -13,4 +13,6 @@ enum class NexoraError(override val errorCode: String, override val message: Str
     NEXORA0307("NEXORA-0307", "Invalid trigger request"),
     NEXORA0308("NEXORA-0308", "Invalid action request"),
     NEXORA0309("NEXORA-0309", "Invalid condition request"),
+    NEXORA0310("NEXORA-0310", "Trigger already exists"),
+
 }

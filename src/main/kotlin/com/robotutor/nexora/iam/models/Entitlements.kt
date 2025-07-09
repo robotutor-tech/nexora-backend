@@ -19,9 +19,13 @@ data class Entitlement(
     @Id val id: String? = null,
     @Indexed(unique = true)
     val entitlementId: EntitlementId,
+    @Indexed
     val roleId: RoleId,
+    @Indexed
     val premisesId: PremisesId,
+    @Indexed
     val action: ActionType,
+    @Indexed
     val resourceType: ResourceType,
     val resourceId: String,
     val status: EntitlementStatus = EntitlementStatus.ACTIVE,

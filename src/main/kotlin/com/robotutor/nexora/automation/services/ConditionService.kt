@@ -72,7 +72,7 @@ class ConditionService(
     }
 
     fun createCondition(request: ConditionRequest, premisesActorData: PremisesActorData): Mono<Condition> {
-        return conditionValidator.validateRequest(request, premisesActorData)
+        return conditionValidator.validateRequest(request)
             .flatMap { idGeneratorService.generateId(IdType.CONDITION_ID) }
             .map { conditionId -> Condition.from(conditionId, request, premisesActorData) }
             .flatMap {

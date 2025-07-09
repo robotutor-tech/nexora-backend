@@ -18,6 +18,7 @@ data class Automation(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     val automationId: AutomationId,
+    @Indexed
     val premisesId: PremisesId,
     val name: String,
     val description: String? = null,

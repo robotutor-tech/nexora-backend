@@ -7,11 +7,14 @@ import com.robotutor.nexora.security.filters.annotations.ActionType
 import com.robotutor.nexora.security.filters.annotations.RequireAccess
 import com.robotutor.nexora.security.filters.annotations.ResourceType
 import com.robotutor.nexora.security.models.PremisesActorData
+import com.robotutor.nexora.security.models.ResourcesData
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
@@ -25,6 +28,14 @@ class TriggerController(private val triggerService: TriggerService) {
         premisesActorData: PremisesActorData
     ): Mono<TriggerView> {
         return triggerService.createTrigger(request, premisesActorData)
+            .map { TriggerView.from(it) }
+    }
+
+    @RequireAccess(ActionType.LIST, ResourceType.AUTOMATION_TRIGGER)
+    @GetMapping
+    fun getTriggers(premisesActorData: PremisesActorData, resourcesData: ResourcesData): Flux<TriggerView> {
+        val triggerIds = resourcesData.getResourceIds(ActionType.LIST, ResourceType.AUTOMATION_TRIGGER)
+        return triggerService.getAllTriggers(triggerIds, premisesActorData)
             .map { TriggerView.from(it) }
     }
 }

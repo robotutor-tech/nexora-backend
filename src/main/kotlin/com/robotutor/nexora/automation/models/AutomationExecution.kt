@@ -21,7 +21,9 @@ data class AutomationExecution(
     var id: ObjectId? = null,
     @Indexed(unique = true)
     val executionId: ExecutionId,
+    @Indexed
     val automationId: AutomationId,
+    @Indexed
     val triggerId: TriggerId,
     val status: ExecutionStatus = ExecutionStatus.PENDING,
     val currentActionIndex: Int = 0,

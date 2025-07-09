@@ -1,4 +1,4 @@
- package com.robotutor.nexora
+package com.robotutor.nexora
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
