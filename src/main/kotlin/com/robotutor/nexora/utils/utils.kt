@@ -1,9 +1,7 @@
 package com.robotutor.nexora.utils
 
-import kotlin.reflect.full.memberProperties
+import com.robotutor.nexora.logger.serializer.DefaultSerializer
 
 inline fun <reified T : Any> T.toMap(): Map<String, Any?> {
-    return T::class.memberProperties.associate { prop ->
-        prop.name to prop.get(this)
-    }
+    return DefaultSerializer.toMap(this)
 }

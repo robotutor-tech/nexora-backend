@@ -1,63 +1,22 @@
 package com.robotutor.nexora.automation.models
 
-import com.robotutor.nexora.automation.controllers.views.TriggerRequest
 import com.robotutor.nexora.feed.models.FeedId
 import com.robotutor.nexora.premises.models.PremisesId
-import com.robotutor.nexora.security.models.PremisesActorData
 import org.bson.types.ObjectId
-import org.springframework.data.annotation.TypeAlias
-import org.springframework.data.annotation.Version
-import org.springframework.data.mongodb.core.index.CompoundIndex
-import org.springframework.data.mongodb.core.index.CompoundIndexes
-import org.springframework.data.mongodb.core.index.Indexed
-import org.springframework.data.mongodb.core.mapping.Document
 import java.time.DayOfWeek
 import java.time.Instant
 
-const val TRIGGER_COLLECTION = "triggers"
-
-@TypeAlias("Trigger")
-@CompoundIndexes(
-    CompoundIndex(
-        name = "unique_trigger_by_premisesId_type_config",
-        def = "{'premisesId': 1, 'type': 1, 'config': 1}",
-        unique = true
-    )
-)
-@Document(TRIGGER_COLLECTION)
 data class Trigger(
-    var id: ObjectId? = null,
-    @Indexed(unique = true)
+    val id: ObjectId? = null,
     val triggerId: TriggerId,
-    @Indexed
     val premisesId: PremisesId,
     val name: String,
     val description: String? = null,
-    val type: TriggerType,
     val config: TriggerConfig,
     val createdOn: Instant = Instant.now(),
     val updatedOn: Instant = Instant.now(),
-    @Version
-    val version: Long? = null
-) {
-    companion object {
-        fun from(
-            triggerId: TriggerId,
-            config: TriggerConfig,
-            request: TriggerRequest,
-            premisesActorData: PremisesActorData
-        ): Trigger {
-            return Trigger(
-                triggerId = triggerId,
-                premisesId = premisesActorData.premisesId,
-                name = request.name,
-                description = request.description,
-                type = request.type,
-                config = config,
-            )
-        }
-    }
-}
+    val version: Long? = null,
+)
 
 enum class TriggerType {
     SCHEDULE,
@@ -65,25 +24,33 @@ enum class TriggerType {
     FEED
 }
 
-sealed interface TriggerConfig
-sealed interface ScheduleConfig
+sealed interface TriggerConfig {
+    val type: TriggerType
+}
+
+sealed interface ScheduleConfig {
+    val type: ScheduleType
+}
 
 data class ScheduleTriggerConfig(
-    val type: ScheduleType,
+    override val type: TriggerType = TriggerType.SCHEDULE,
     val config: ScheduleConfig,
     val repeat: List<DayOfWeek>
 ) : TriggerConfig
 
 data class TimeTriggerConfig(
+    override val type: ScheduleType = ScheduleType.TIME,
     val time: String,
 ) : ScheduleConfig
 
 data class SunTriggerConfig(
+    override val type: ScheduleType = ScheduleType.SUN,
     val event: SunEvent,
     val offsetMinutes: Int = 0
 ) : ScheduleConfig
 
 data class VoiceTriggerConfig(
+    override val type: TriggerType = TriggerType.VOICE,
     var commands: List<String>,
 ) : TriggerConfig {
 
@@ -94,6 +61,7 @@ data class VoiceTriggerConfig(
 }
 
 data class FeedTriggerConfig(
+    override val type: TriggerType = TriggerType.FEED,
     val feedId: FeedId,
     val operator: ComparisonOperator,
     val value: Double,

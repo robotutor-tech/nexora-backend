@@ -1,13 +1,10 @@
 package com.robotutor.nexora.logger
 
-import com.robotutor.nexora.logger.serializer.DefaultSerializer
-
-
-import com.google.gson.JsonSyntaxException
 import com.robotutor.nexora.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.logger.models.RequestDetails
 import com.robotutor.nexora.logger.models.ResponseDetails
+import com.robotutor.nexora.logger.serializer.DefaultSerializer
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Signal
@@ -60,7 +57,7 @@ private fun errorResponseBodyFrom(exception: WebClientResponseException): Any {
     val response = exception.responseBodyAsString
     return try {
         DefaultSerializer.deserialize(response, Map::class.java)
-    } catch (e: Throwable) {
+    } catch (_: Throwable) {
         response
     }
 }
@@ -110,7 +107,7 @@ private fun <T> getDeserializedResponseBody(signal: Signal<T>): Any {
     return if (data is String) {
         try {
             DefaultSerializer.deserialize(data, Map::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: Exception) {
             data
         }
     } else {

@@ -1,10 +1,8 @@
 package com.robotutor.nexora.automation.services.validator
 
-import com.robotutor.nexora.automation.controllers.views.ConditionRequest
 import com.robotutor.nexora.automation.exceptions.NexoraError
 import com.robotutor.nexora.automation.gateways.FeedGateway
 import com.robotutor.nexora.automation.models.ConditionConfig
-import com.robotutor.nexora.automation.models.ConditionType
 import com.robotutor.nexora.automation.models.FeedConditionConfig
 import com.robotutor.nexora.automation.models.TimeRangeConditionConfig
 import com.robotutor.nexora.security.createMono
@@ -17,37 +15,35 @@ import reactor.core.publisher.Mono
 @Service
 class ConditionValidator(private val feedGateway: FeedGateway) {
 
-    fun validateRequest(request: ConditionRequest): Mono<Boolean> {
+    fun validateRequest(config: ConditionConfig): Mono<ConditionConfig> {
         val errorCode = NexoraError.NEXORA0309.errorCode
-        return when (request.type) {
-            ConditionType.TIME_RANGE -> validateTimeRangeConditionConfig(request.config, errorCode)
-            ConditionType.FEED -> validateFeedConditionConfig(request.config, errorCode)
+        return when (config) {
+            is TimeRangeConditionConfig -> validateTimeRangeConditionConfig(config, errorCode)
+            is FeedConditionConfig -> validateFeedConditionConfig(config)
         }
+            .map { it as ConditionConfig }
     }
 
-    private fun validateFeedConditionConfig(config: ConditionConfig, errorCode: String): Mono<Boolean> {
-        if (config !is FeedConditionConfig) {
-            return createMonoError(BadDataException(ErrorResponse(errorCode, "Invalid config for FEED condition type")))
-        }
-        return feedGateway.getFeedByFeedId(config.feedId)
-            .map { true }
+    private fun validateFeedConditionConfig(config: FeedConditionConfig): Mono<FeedConditionConfig> {
+        return feedGateway.getFeedByFeedId(config.feedId).map { config }
     }
 
     private fun validateTimeRangeConditionConfig(
-        config: ConditionConfig,
+        config: TimeRangeConditionConfig,
         errorCode: String,
-    ): Mono<Boolean> {
-        if (config !is TimeRangeConditionConfig) {
+    ): Mono<TimeRangeConditionConfig> {
+        val regex = Regex("^([01]\\d|2[0-3]):[0-5]\\d$")
+        if (!config.startTime.matches(regex) || !config.endTime.matches(regex)) {
             return createMonoError(
-                BadDataException(
-                    ErrorResponse(errorCode, "Invalid config for TIME RANGE trigger type")
-                )
+                BadDataException(ErrorResponse(errorCode, "Invalid time format, expected HH:mm"))
             )
         }
-        if (!config.startTime.matches(Regex("^([01]\\d|2[0-3]):[0-5]\\d$")) || !config.endTime.matches(Regex("^([01]\\d|2[0-3]):[0-5]\\d$"))) {
-            return createMonoError(BadDataException(ErrorResponse(errorCode, "Invalid time format, expected HH:mm")))
+        if (config.startTime == config.endTime) {
+            return createMonoError(
+                BadDataException(ErrorResponse(errorCode, "Start time and end time should not be same"))
+            )
         }
-        return createMono(true)
+        return createMono(config)
     }
 
 }

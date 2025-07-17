@@ -10,13 +10,12 @@ data class TriggerRequest(
     @field:NotBlank(message = "Name is required")
     val name: String,
     val description: String? = null,
-    val type: TriggerType,
     val config: Map<String, Any>,
 )
 
 data class ScheduleTriggerRequest(
-    val type: ScheduleType,
-    val config: Map<String, Any>,
+    val type: TriggerType = TriggerType.SCHEDULE,
+    val config: Map<String, Any?>,
     val repeat: List<DayOfWeek>
 )
 
@@ -26,7 +25,6 @@ data class TriggerView(
     val premisesId: PremisesId,
     val name: String,
     val description: String?,
-    val type: TriggerType,
     val config: TriggerConfig,
     val createdOn: Instant,
     val updatedOn: Instant,
@@ -38,7 +36,6 @@ data class TriggerView(
                 premisesId = trigger.premisesId,
                 name = trigger.name,
                 description = trigger.description,
-                type = trigger.type,
                 config = trigger.config,
                 createdOn = trigger.createdOn,
                 updatedOn = trigger.updatedOn,

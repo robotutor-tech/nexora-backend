@@ -11,7 +11,7 @@ data class AutomationRequest(
     val triggers: List<TriggerId>,
     @field:NotEmpty(message = "At least one action is required")
     val actions: List<ActionId>,
-    val condition: ConditionNode? = null,
+    val condition: Map<String, Any?>? = null,
     val executionMode: ExecutionMode? = null,
     @field:NotBlank(message = "Name is required")
     val name: String,

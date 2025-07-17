@@ -1,5 +1,7 @@
 package com.robotutor.nexora.webClient.controllers
 
+import com.robotutor.nexora.logger.LogDetails
+import com.robotutor.nexora.logger.Logger
 import com.robotutor.nexora.webClient.exceptions.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,6 +13,7 @@ import org.springframework.web.server.ServerWebInputException
 
 @ControllerAdvice
 class ApiExceptionHandler {
+    val logger = Logger(this::class.java)
 
     @ExceptionHandler(BadDataException::class)
     fun handleBadDataException(ex: BadDataException): ResponseEntity<ErrorResponse> {
@@ -78,7 +81,7 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseEntity<ErrorResponse> {
-        ex.printStackTrace()
+        logger.error(LogDetails(message = "Internal server error"), ex)
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ErrorResponse(errorCode = "NEXORA-0004", message = "Internal Server Error"))
     }

@@ -21,6 +21,10 @@ spring:
     listener:
       ack-mode: manual
 
+logging:
+  level:
+    org.springframework.data.mongodb.core.convert: DEBUG
+
 server:
   port: 9001
 

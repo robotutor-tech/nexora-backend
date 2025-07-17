@@ -1,6 +1,8 @@
 package com.robotutor.nexora.logger.models
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.robotutor.nexora.logger.getResponseTime
+import com.robotutor.nexora.logger.serializer.HttpMethodSerializer
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.web.server.ServerWebExchange
@@ -33,7 +35,9 @@ data class ServerWebExchangeDTO(
     }
 }
 
+
 data class RequestDetails(
+    @JsonSerialize(using = HttpMethodSerializer::class)
     val method: HttpMethod,
     val headers: HttpHeaders,
     val uriWithParams: String? = null,

@@ -1,6 +1,5 @@
 package com.robotutor.nexora.logger
 
-import com.google.gson.JsonSyntaxException
 import com.robotutor.nexora.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.logger.models.RequestDetails
@@ -11,7 +10,6 @@ import reactor.core.publisher.Mono
 import reactor.core.publisher.Signal
 import reactor.util.context.ContextView
 import java.time.Instant
-import java.time.ZoneOffset
 
 fun <T> Mono<T>.logOnError(
     logger: Logger,
@@ -60,7 +58,7 @@ private fun errorResponseBodyFrom(exception: WebClientResponseException): Any {
     val response = exception.responseBodyAsString
     return try {
         DefaultSerializer.deserialize(response, Map::class.java)
-    } catch (e: Throwable) {
+    } catch (_: Throwable) {
         response
     }
 }
@@ -115,7 +113,7 @@ private fun <T> getDeserializedResponseBody(signal: Signal<T>): Any {
     return if (data is String) {
         try {
             DefaultSerializer.deserialize(data, Map::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: Exception) {
             data
         }
     } else {

@@ -1,19 +1,10 @@
 package com.robotutor.nexora.automation.services.validator
 
-import com.robotutor.nexora.automation.controllers.views.ScheduleTriggerRequest
-import com.robotutor.nexora.automation.controllers.views.TriggerRequest
 import com.robotutor.nexora.automation.exceptions.NexoraError
 import com.robotutor.nexora.automation.gateways.FeedGateway
-import com.robotutor.nexora.automation.models.FeedTriggerConfig
-import com.robotutor.nexora.automation.models.ScheduleTriggerConfig
-import com.robotutor.nexora.automation.models.ScheduleType
-import com.robotutor.nexora.automation.models.SunTriggerConfig
-import com.robotutor.nexora.automation.models.TimeTriggerConfig
-import com.robotutor.nexora.automation.models.TriggerConfig
-import com.robotutor.nexora.automation.models.TriggerType
-import com.robotutor.nexora.automation.models.VoiceTriggerConfig
+import com.robotutor.nexora.automation.models.*
 import com.robotutor.nexora.automation.repositories.TriggerRepository
-import com.robotutor.nexora.logger.serializer.DefaultSerializer
+import com.robotutor.nexora.automation.services.converter.TriggerConverter
 import com.robotutor.nexora.security.createMono
 import com.robotutor.nexora.security.createMonoError
 import com.robotutor.nexora.security.models.PremisesActorData
@@ -23,55 +14,74 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class TriggerValidator(private val triggerRepository: TriggerRepository, private val feedGateway: FeedGateway) {
+class TriggerValidator(
+    private val triggerRepository: TriggerRepository,
+    private val feedGateway: FeedGateway,
+    private val triggerConverter: TriggerConverter
+) {
 
-    fun validateRequest(request: TriggerRequest, premisesActorData: PremisesActorData): Mono<TriggerConfig> {
-        val errorCode = NexoraError.NEXORA0307.errorCode
-        val config = DefaultSerializer.serialize(request.config)
-        return when (request.type) {
-            TriggerType.SCHEDULE -> validateScheduleTriggerConfig(config, errorCode)
-            TriggerType.VOICE -> validateVoiceTriggerConfig(config, errorCode, premisesActorData)
-            TriggerType.FEED -> validateFeedTriggerConfig(config, errorCode)
-        } as Mono<TriggerConfig>
+    fun validateTriggers(triggerIds: List<TriggerId>, premisesActorData: PremisesActorData): Mono<List<TriggerId>> {
+        if (triggerIds.isEmpty())
+            return createMonoError(BadDataException(NexoraError.NEXORA0301))
+
+        val uniqueIds = triggerIds.toSet().toList()
+        return triggerRepository.findAllByTriggerIdInAndPremisesId(uniqueIds, premisesActorData.premisesId)
+            .collectList()
+            .flatMap { triggers ->
+                val missingIds = triggers.map { it.triggerId }.toSet() - uniqueIds
+                if (missingIds.isNotEmpty()) {
+                    createMonoError(
+                        BadDataException(
+                            ErrorResponse(
+                                NexoraError.NEXORA0302.errorCode,
+                                "Invalid trigger Ids: ${missingIds.joinToString(",")}"
+                            )
+                        )
+                    )
+                } else {
+                    createMono(triggerIds)
+                }
+            }
     }
 
-    private fun validateFeedTriggerConfig(config: String, errorCode: String): Mono<FeedTriggerConfig> {
-        try {
-            val feedTriggerConfig = DefaultSerializer.deserialize(config, FeedTriggerConfig::class.java)
-            return feedGateway.getFeedByFeedId(feedTriggerConfig.feedId)
-                .map { feedTriggerConfig }
-        } catch (_: Exception) {
-            return createMonoError(BadDataException(ErrorResponse(errorCode, "Invalid config for FEED trigger type")))
+    fun validateConfig(config: TriggerConfig, premisesActorData: PremisesActorData): Mono<TriggerConfig> {
+        val errorCode = NexoraError.NEXORA0307.errorCode
+        return when (config) {
+            is ScheduleTriggerConfig -> validateScheduleTriggerConfig(config, errorCode)
+            is VoiceTriggerConfig -> validateVoiceTriggerConfig(config, errorCode, premisesActorData)
+            is FeedTriggerConfig -> validateFeedTriggerConfig(config)
         }
+            .map { it as TriggerConfig }
+    }
+
+    private fun validateFeedTriggerConfig(config: FeedTriggerConfig): Mono<FeedTriggerConfig> {
+        return feedGateway.getFeedByFeedId(config.feedId).map { config }
     }
 
     private fun validateVoiceTriggerConfig(
-        config: String,
+        config: VoiceTriggerConfig,
         errorCode: String,
         premisesActorData: PremisesActorData
     ): Mono<VoiceTriggerConfig> {
-        try {
-            val voiceTriggerConfig = DefaultSerializer.deserialize(config, VoiceTriggerConfig::class.java)
-            voiceTriggerConfig.sanitizeCommands()
-            if (voiceTriggerConfig.commands.isEmpty() || voiceTriggerConfig.commands.any { it.isBlank() }) {
-                return createMonoError(
-                    BadDataException(
-                        ErrorResponse(errorCode, "Voice commands should not be empty or blank")
-                    )
+        config.sanitizeCommands()
+        return if (config.commands.isEmpty() || config.commands.any { it.isBlank() }) {
+            createMonoError(
+                BadDataException(
+                    ErrorResponse(errorCode, "Voice commands should not be empty or blank")
                 )
-            }
-            return triggerRepository.findAllByPremisesIdAndVoiceCommands(
+            )
+        } else {
+            triggerRepository.findAllByPremisesIdAndVoiceCommands(
                 premisesActorData.premisesId,
-                voiceTriggerConfig.commands.map { command ->
+                config.commands.map { command ->
                     Regex("^$command$", RegexOption.IGNORE_CASE)
                 }.joinToString("|")
             )
+                .flatMap { triggerConverter.toTrigger(it) }
                 .collectList()
-                .map { triggers ->
-                    triggers.map { (it.config as VoiceTriggerConfig).commands }.flatten()
-                }
+                .map { triggers -> triggers.map { (it.config as VoiceTriggerConfig).commands }.flatten() }
                 .flatMap { commands ->
-                    val conflicts = commands.filter { voiceTriggerConfig.commands.contains(it) }
+                    val conflicts = commands.filter { config.commands.contains(it) }
                     if (conflicts.isNotEmpty()) {
                         createMonoError(
                             BadDataException(
@@ -79,92 +89,43 @@ class TriggerValidator(private val triggerRepository: TriggerRepository, private
                             )
                         )
                     } else {
-                        createMono(voiceTriggerConfig)
+                        createMono(config)
                     }
                 }
-                .switchIfEmpty(createMono(voiceTriggerConfig))
-                .map {
-                    it.commands.map { command ->
-                        command.split(' ').filter { command -> command != "" }.joinToString(" ")
-                    }
-                    it
-                }
-        } catch (_: Exception) {
-            return createMonoError(BadDataException(ErrorResponse(errorCode, "Invalid config for VOICE trigger type")))
+                .switchIfEmpty(createMono(config))
         }
     }
 
     private fun validateScheduleTriggerConfig(
-        config: String,
+        config: ScheduleTriggerConfig,
         errorCode: String
     ): Mono<ScheduleTriggerConfig> {
-        try {
-            val scheduleTriggerRequest = DefaultSerializer.deserialize(config, ScheduleTriggerRequest::class.java)
-            if (scheduleTriggerRequest.repeat.isEmpty()) {
-                return createMonoError(BadDataException(ErrorResponse(errorCode, "Repeat days are required.")))
+        return if (config.repeat.isEmpty()) {
+            createMonoError(BadDataException(ErrorResponse(errorCode, "Repeat days are required.")))
+        } else {
+            when (config.config) {
+                is TimeTriggerConfig -> validateTimeTriggerConfig(config.config, errorCode)
+                is SunTriggerConfig -> validateSunTriggerConfig(config.config, errorCode)
             }
-            val scheduleConfig = scheduleTriggerRequest.config.toString()
-            return when (scheduleTriggerRequest.type) {
-                ScheduleType.TIME -> validateTimeTriggerConfig(scheduleConfig, errorCode)
-                ScheduleType.SUN -> validateSunTriggerConfig(scheduleConfig, errorCode)
-            }
-                .map {
-                    ScheduleTriggerConfig(
-                        type = scheduleTriggerRequest.type,
-                        config = it,
-                        repeat = scheduleTriggerRequest.repeat.sorted()
-                    )
-                }
-        } catch (_: Exception) {
-            return createMonoError(
-                BadDataException(
-                    ErrorResponse(errorCode, "Invalid config for SCHEDULE trigger type")
-                )
-            )
+                .map { config }
         }
-
-
     }
 
-    private fun validateSunTriggerConfig(config: String, errorCode: String): Mono<SunTriggerConfig> {
-        try {
-            val sunTriggerConfig = DefaultSerializer.deserialize(config, SunTriggerConfig::class.java)
-            if (sunTriggerConfig.offsetMinutes < -60 || sunTriggerConfig.offsetMinutes > 60) {
-                return createMonoError(
-                    BadDataException(
-                        ErrorResponse(errorCode, "Offset minutes must be between -60 and 60 minutes.")
-                    )
-                )
-            }
-            return createMono(sunTriggerConfig)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return createMonoError(
-                BadDataException(
-                    ErrorResponse(errorCode, "Invalid config for SUN schedule type trigger.")
-                )
+    private fun validateSunTriggerConfig(config: SunTriggerConfig, errorCode: String): Mono<SunTriggerConfig> {
+        return if (config.offsetMinutes < -60 || config.offsetMinutes > 60) {
+            createMonoError(
+                BadDataException(ErrorResponse(errorCode, "Offset minutes must be between -60 and 60 minutes."))
             )
+        } else {
+            createMono(config)
         }
-
     }
 
-    private fun validateTimeTriggerConfig(config: String, errorCode: String): Mono<TimeTriggerConfig> {
-        try {
-            val timeTriggerConfig = DefaultSerializer.deserialize(config, TimeTriggerConfig::class.java)
-            if (!timeTriggerConfig.time.matches(Regex("^([01]\\d|2[0-3]):[0-5]\\d$"))) {
-                return createMonoError(
-                    BadDataException(
-                        ErrorResponse(errorCode, "Invalid time format, expected HH:mm")
-                    )
-                )
-            }
-            return createMono(timeTriggerConfig)
-        } catch (_: Exception) {
-            return createMonoError(
-                BadDataException(
-                    ErrorResponse(errorCode, "Invalid config for TIME schedule type trigger.")
-                )
-            )
+    private fun validateTimeTriggerConfig(config: TimeTriggerConfig, errorCode: String): Mono<TimeTriggerConfig> {
+        return if (!config.time.matches(Regex("^([01]\\d|2[0-3]):[0-5]\\d$"))) {
+            createMonoError(BadDataException(ErrorResponse(errorCode, "Invalid time format, expected HH:mm")))
+        } else {
+            createMono(config)
         }
     }
 }

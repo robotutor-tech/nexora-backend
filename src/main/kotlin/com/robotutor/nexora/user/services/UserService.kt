@@ -16,7 +16,6 @@ import com.robotutor.nexora.security.models.ActorIdentifier
 import com.robotutor.nexora.security.models.Identifier
 import com.robotutor.nexora.security.models.UserId
 import com.robotutor.nexora.security.services.IdGeneratorService
-import io.lettuce.core.KillArgs.Builder.user
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

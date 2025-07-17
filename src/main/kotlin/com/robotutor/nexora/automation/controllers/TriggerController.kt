@@ -2,6 +2,7 @@ package com.robotutor.nexora.automation.controllers
 
 import com.robotutor.nexora.automation.controllers.views.TriggerRequest
 import com.robotutor.nexora.automation.controllers.views.TriggerView
+import com.robotutor.nexora.automation.models.TriggerId
 import com.robotutor.nexora.automation.services.TriggerService
 import com.robotutor.nexora.security.filters.annotations.ActionType
 import com.robotutor.nexora.security.filters.annotations.RequireAccess
@@ -10,6 +11,7 @@ import com.robotutor.nexora.security.models.PremisesActorData
 import com.robotutor.nexora.security.models.ResourcesData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -36,6 +38,13 @@ class TriggerController(private val triggerService: TriggerService) {
     fun getTriggers(premisesActorData: PremisesActorData, resourcesData: ResourcesData): Flux<TriggerView> {
         val triggerIds = resourcesData.getResourceIds(ActionType.LIST, ResourceType.AUTOMATION_TRIGGER)
         return triggerService.getAllTriggers(triggerIds, premisesActorData)
+            .map { TriggerView.from(it) }
+    }
+
+    @RequireAccess(ActionType.READ, ResourceType.AUTOMATION_TRIGGER, "triggerId")
+    @GetMapping("/{triggerId}")
+    fun getTrigger(@PathVariable triggerId: TriggerId, premisesActorData: PremisesActorData): Mono<TriggerView> {
+        return triggerService.getTrigger(triggerId, premisesActorData)
             .map { TriggerView.from(it) }
     }
 }
