@@ -36,15 +36,30 @@ class AutomationValidator(
 
     private fun validateConditionNode(
         condition: ConditionNode?,
-        premisesActorData: PremisesActorData
+        premisesActorData: PremisesActorData,
+        level: Int = 0
     ): Mono<ConditionNode> {
         val errorCode = NexoraError.NEXORA0305.errorCode
         return if (condition == null) {
             createMonoEmpty()
         } else {
             when (condition) {
-                is ConditionNot -> validateConditionNot(errorCode, condition, premisesActorData)
-                is ConditionGroup -> validateConditionGroup(errorCode, condition, premisesActorData)
+                is ConditionNot -> {
+                    if (level > 3) {
+                        createMonoError(BadDataException(NexoraError.NEXORA0314))
+                    } else {
+                        validateConditionNot(errorCode, condition, premisesActorData, level)
+                    }
+                }
+
+                is ConditionGroup -> {
+                    if (level > 3) {
+                        createMonoError(BadDataException(NexoraError.NEXORA0314))
+                    } else {
+                        validateConditionGroup(errorCode, condition, premisesActorData, level)
+                    }
+                }
+
                 is ConditionLeaf -> validateConditionLeaf(condition, premisesActorData)
             }
                 .map { condition }
@@ -54,7 +69,8 @@ class AutomationValidator(
     private fun validateConditionGroup(
         errorCode: String,
         condition: ConditionGroup,
-        premisesActorData: PremisesActorData
+        premisesActorData: PremisesActorData,
+        level: Int
     ): Mono<ConditionGroup> {
         return if (condition.children.size < 2) {
             createMonoError(
@@ -62,7 +78,7 @@ class AutomationValidator(
             )
         } else {
             createFlux(condition.children)
-                .flatMap { validateConditionNode(it, premisesActorData) }
+                .flatMap { validateConditionNode(it, premisesActorData, level + 1) }
                 .collectList()
                 .map { condition }
         }
@@ -78,12 +94,13 @@ class AutomationValidator(
     private fun validateConditionNot(
         errorCode: String,
         condition: ConditionNot,
-        premisesActorData: PremisesActorData
+        premisesActorData: PremisesActorData,
+        level: Int
     ): Mono<ConditionNot> {
         return if (condition.child.type == ConditionNodeType.NOT) {
             createMonoError(BadDataException(ErrorResponse(errorCode, "NOT should not be child of NOT condition")))
         } else
-            validateConditionNode(condition.child, premisesActorData)
+            validateConditionNode(condition.child, premisesActorData, level + 1)
                 .map { condition }
     }
 }

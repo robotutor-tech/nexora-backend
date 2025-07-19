@@ -1,7 +1,6 @@
 package com.robotutor.nexora.security
 
 import com.robotutor.nexora.webClient.exceptions.BaseException
-import com.robotutor.nexora.webClient.exceptions.ErrorResponse
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 

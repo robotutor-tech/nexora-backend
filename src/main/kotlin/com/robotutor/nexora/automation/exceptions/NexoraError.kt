@@ -17,7 +17,7 @@ enum class NexoraError(override val errorCode: String, override val message: Str
     NEXORA0311("NEXORA-0311", "Action already exists"),
     NEXORA0312("NEXORA-0312", "Condition already exists"),
     NEXORA0313("NEXORA-0313", "Trigger not found."),
-    NEXORA0314("NEXORA-0314", "Invalid automation condition"),
+    NEXORA0314("NEXORA-0314", "Too many nested conditions."),
     NEXORA0315("NEXORA-0315", "Condition not found."),
     NEXORA0316("NEXORA-0316", "Action not found."),
 }
