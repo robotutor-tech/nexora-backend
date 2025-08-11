@@ -1,0 +1,117 @@
+package com.robotutor.nexora.common.security.filters
+
+import com.robotutor.nexora.shared.logger.Logger
+import com.robotutor.nexora.shared.logger.ReactiveContext.putPremisesId
+import com.robotutor.nexora.shared.logger.ReactiveContext.putTraceId
+import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
+import com.robotutor.nexora.shared.logger.serializer.DefaultSerializer.serialize
+import com.robotutor.nexora.common.security.config.AppConfig
+import com.robotutor.nexora.common.security.createMono
+import com.robotutor.nexora.common.security.gateway.AuthGateway
+import com.robotutor.nexora.common.security.models.*
+import com.robotutor.nexora.shared.adapters.outbound.webclient.controllers.ExceptionHandlerRegistry
+import org.springframework.core.annotation.Order
+import org.springframework.http.HttpHeaders.AUTHORIZATION
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
+import org.springframework.security.core.context.SecurityContextImpl
+import org.springframework.stereotype.Component
+import org.springframework.web.server.ServerWebExchange
+import org.springframework.web.server.WebFilter
+import org.springframework.web.server.WebFilterChain
+import reactor.core.publisher.Mono
+import reactor.util.context.Context
+import java.time.Instant
+import java.util.UUID.randomUUID
+
+const val TRACE_ID = "x-trace-id"
+const val PREMISES_ID = "x-premises-id"
+const val START_TIME = "startTime"
+
+@Component
+@Order(2)
+class AuthFilter(
+    private val routeValidator: RouteValidator,
+    private val authGateway: AuthGateway,
+    private val appConfig: AppConfig,
+    private val exceptionHandlerRegistry: ExceptionHandlerRegistry
+) : WebFilter {
+    val logger = Logger(this::class.java)
+
+    override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
+        return authorize(exchange)
+            .contextWrite { writeContextOnChain(it, exchange) }
+            .flatMap { authenticationData ->
+                val authenticationToken = UsernamePasswordAuthenticationToken("authenticationData", null, listOf())
+                val content = SecurityContextImpl(authenticationToken)
+                chain.filter(exchange)
+                    .contextWrite { writeContext(authenticationData, it, exchange) }
+                    .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
+            }
+            .onErrorResume {
+                val responseEntity = exceptionHandlerRegistry.handle(it)
+                val response = exchange.response
+                exchange.response.statusCode = responseEntity.statusCode
+                val content = response.bufferFactory().wrap(serialize(responseEntity.body).toByteArray())
+                response.writeWith(createMono(content))
+            }
+    }
+
+
+    private fun authorize(exchange: ServerWebExchange): Mono<IAuthenticationData> {
+        val authHeader = exchange.request.headers.getFirst(AUTHORIZATION)
+        if (routeValidator.isUnsecured(exchange.request) || authHeader == appConfig.internalAccessToken) {
+            return createMono(InternalUserData("00000000"))
+        }
+        return authGateway.validate()
+    }
+
+    private fun writeContext(
+        authenticationData: IAuthenticationData,
+        context: Context,
+        exchange: ServerWebExchange
+    ): Context {
+        val newContext = when (authenticationData) {
+            is PremisesActorData -> {
+                exchange.attributes.put(PREMISES_ID, authenticationData.premisesId)
+                val identifier = authenticationData.identifier
+                val premisesContext = when (identifier.type) {
+                    ActorIdentifier.USER -> context.put(AuthUserData::class.java, AuthUserData(identifier.id))
+                    ActorIdentifier.DEVICE -> context.put(DeviceData::class.java, DeviceData(identifier.id))
+                    ActorIdentifier.SERVER -> context.put(ServerData::class.java, ServerData(identifier.id))
+                    ActorIdentifier.LOCAL_SERVER -> context.put(DeviceData::class.java, DeviceData(identifier.id))
+                }
+                premisesContext.put(PremisesActorData::class.java, authenticationData)
+            }
+
+            is AuthUserData -> context.put(AuthUserData::class.java, authenticationData)
+            is InvitationData -> context.put(InvitationData::class.java, authenticationData)
+
+            else -> context
+        }
+        return writeContextOnChain(newContext, exchange)
+    }
+}
+
+fun getTraceIdFromExchange(exchange: ServerWebExchange): String {
+    return exchange.attributes[TRACE_ID] as? String
+        ?: exchange.request.headers.getFirst(TRACE_ID)
+        ?: randomUUID().toString()
+}
+
+fun getPremisesIdFromExchange(exchange: ServerWebExchange): String {
+    return exchange.attributes[PREMISES_ID] as? String
+        ?: exchange.request.headers.getFirst(PREMISES_ID)
+        ?: "missing-premises-id"
+}
+
+
+fun writeContextOnChain(context: Context, exchange: ServerWebExchange): Context {
+    val traceId = getTraceIdFromExchange(exchange)
+    val premisesId = getPremisesIdFromExchange(exchange)
+    val startTime = exchange.getAttribute(START_TIME) ?: Instant.now()
+    val newContext = putTraceId(context, traceId)
+    return putPremisesId(newContext, premisesId)
+        .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
+        .put(START_TIME, startTime)
+}
