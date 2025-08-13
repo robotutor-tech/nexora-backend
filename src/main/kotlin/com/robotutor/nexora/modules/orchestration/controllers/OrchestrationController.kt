@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.orchestration.controllers
 
-import com.robotutor.nexora.modules.auth.controllers.views.TokenView
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.TokenView
 import com.robotutor.nexora.common.security.models.InvitationData
 import com.robotutor.nexora.modules.orchestration.controllers.view.DeviceRegistrationRequest
 import com.robotutor.nexora.modules.orchestration.gateway.view.PremisesWithActorView

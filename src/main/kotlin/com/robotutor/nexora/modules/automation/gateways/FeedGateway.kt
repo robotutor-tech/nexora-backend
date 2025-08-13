@@ -3,8 +3,8 @@ package com.robotutor.nexora.modules.automation.gateways
 import com.robotutor.nexora.modules.automation.config.AutomationConfig
 import com.robotutor.nexora.modules.feed.controllers.view.FeedView
 import com.robotutor.nexora.modules.feed.models.FeedId
-import com.robotutor.nexora.shared.adapters.outbound.cache.services.CacheService
-import com.robotutor.nexora.shared.adapters.outbound.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.adapters.cache.services.CacheService
+import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 

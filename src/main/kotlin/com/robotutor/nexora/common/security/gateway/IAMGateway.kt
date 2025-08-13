@@ -3,7 +3,7 @@ package com.robotutor.nexora.common.security.gateway
 import com.robotutor.nexora.modules.iam.controllers.view.ActorView
 import com.robotutor.nexora.modules.iam.controllers.view.EntitlementView
 import com.robotutor.nexora.modules.iam.models.RoleId
-import com.robotutor.nexora.shared.adapters.outbound.cache.services.CacheService
+import com.robotutor.nexora.shared.adapters.cache.services.CacheService
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.filters.ResourceContext
 import com.robotutor.nexora.common.security.filters.ResourceEntitlement
@@ -11,7 +11,7 @@ import com.robotutor.nexora.common.security.filters.annotations.ActionType
 import com.robotutor.nexora.common.security.filters.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.ActorId
 import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.shared.adapters.outbound.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap

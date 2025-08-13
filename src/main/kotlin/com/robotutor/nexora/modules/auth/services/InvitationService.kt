@@ -1,14 +1,14 @@
 package com.robotutor.nexora.modules.auth.services
 
-import com.robotutor.nexora.modules.auth.controllers.views.DeviceInvitationRequest
-import com.robotutor.nexora.modules.auth.controllers.views.UserInvitationRequest
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceInvitationRequest
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.UserInvitationRequest
 import com.robotutor.nexora.modules.auth.models.IdType
 import com.robotutor.nexora.modules.auth.models.DeviceInvitation
 import com.robotutor.nexora.modules.auth.models.InvitationId
 import com.robotutor.nexora.modules.auth.models.UserInvitation
 import com.robotutor.nexora.modules.auth.repositories.DeviceInvitationRepository
 import com.robotutor.nexora.modules.auth.repositories.UserInvitationRepository
-import com.robotutor.nexora.modules.auth.exceptions.NexoraError
+import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.shared.adapters.messaging.auditOnSuccess
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
@@ -17,7 +17,7 @@ import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.models.InvitationData
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.common.security.services.IdGeneratorService
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.DataNotFoundException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

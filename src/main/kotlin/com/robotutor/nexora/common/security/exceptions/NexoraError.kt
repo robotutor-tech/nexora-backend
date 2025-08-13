@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.exceptions
 
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.ServiceError
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.ServiceError
 
 enum class NexoraError(override val errorCode: String, override val message: String) : ServiceError {
     NEXORA0101("NEXORA-0101", "UnAuthorized exception"),

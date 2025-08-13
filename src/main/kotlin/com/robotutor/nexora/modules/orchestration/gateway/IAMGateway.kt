@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.orchestration.config.IAMConfig
 import com.robotutor.nexora.modules.orchestration.gateway.view.PremisesActorView
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.shared.adapters.outbound.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

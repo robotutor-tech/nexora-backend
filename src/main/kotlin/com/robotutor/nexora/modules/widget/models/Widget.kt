@@ -4,7 +4,6 @@ import com.robotutor.nexora.modules.feed.models.FeedId
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.modules.widget.controllers.view.WidgetRequest
-import com.robotutor.nexora.modules.zone.models.ZoneId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -26,7 +25,7 @@ data class Widget(
     val premisesId: PremisesId,
     val name: String,
     val feedId: FeedId,
-    val zoneId: ZoneId,
+    val zoneId: String,
     val type: WidgetType,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),

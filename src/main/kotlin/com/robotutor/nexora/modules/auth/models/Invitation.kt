@@ -1,13 +1,12 @@
 package com.robotutor.nexora.modules.auth.models
 
-import com.robotutor.nexora.modules.auth.controllers.views.DeviceInvitationRequest
-import com.robotutor.nexora.modules.auth.controllers.views.UserInvitationRequest
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceInvitationRequest
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.UserInvitationRequest
 import com.robotutor.nexora.modules.iam.models.RoleId
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.ActorId
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.common.security.models.UserId
-import com.robotutor.nexora.modules.zone.models.ZoneId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -38,7 +37,7 @@ data class DeviceInvitation(
     @Indexed
     override val premisesId: PremisesId,
     val name: String,
-    val zoneId: ZoneId,
+    val zoneId: String,
     override val invitedBy: ActorId,
     override val createdAt: Instant = Instant.now(),
     override var status: InvitationStatus = InvitationStatus.INVITED,

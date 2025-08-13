@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.auth.models
 
-import com.robotutor.nexora.modules.auth.controllers.views.AuthUserRequest
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthUserRequest
 import com.robotutor.nexora.common.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.ZoneOffset
 
 const val AUTH_USER_COLLECTION = "authUsers"
 

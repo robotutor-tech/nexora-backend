@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.orchestration.gateway
 import com.robotutor.nexora.modules.orchestration.config.InternalAccessTokenConfig
 import com.robotutor.nexora.modules.orchestration.config.UserConfig
 import com.robotutor.nexora.modules.orchestration.gateway.view.UserView
-import com.robotutor.nexora.shared.adapters.outbound.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono

@@ -1,19 +1,19 @@
 package com.robotutor.nexora.common.security.gateway
 
-import com.robotutor.nexora.modules.auth.controllers.views.AuthValidationView
-import com.robotutor.nexora.modules.auth.controllers.views.DeviceInvitationView
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthValidationView
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceInvitationView
 import com.robotutor.nexora.modules.auth.models.InvitationId
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
-import com.robotutor.nexora.shared.adapters.outbound.cache.services.CacheService
+import com.robotutor.nexora.shared.adapters.cache.services.CacheService
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.models.AuthUserData
 import com.robotutor.nexora.common.security.models.IAuthenticationData
 import com.robotutor.nexora.common.security.models.InvitationData
 import com.robotutor.nexora.common.security.models.TokenIdentifier
-import com.robotutor.nexora.shared.adapters.outbound.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono

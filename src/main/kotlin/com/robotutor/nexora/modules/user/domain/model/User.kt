@@ -9,16 +9,7 @@ data class User(
     val email: Email,
     val registeredAt: Instant = Instant.now(),
     val version: Long? = null
-) {
-    companion object {
-        fun from(userId: UserId, userDetails: UserDetails): User {
-            return User(
-                userId = userId,
-                name = userDetails.name,
-                email = userDetails.email,
-                registeredAt = userDetails.registeredAt,
-                version = userDetails.version
-            )
-        }
-    }
-}
+)
+
+@JvmInline
+value class Email(val value: String)

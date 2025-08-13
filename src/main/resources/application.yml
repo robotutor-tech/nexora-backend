@@ -37,7 +37,8 @@ app:
     un-secured-path:
       - "/auth/login"
       - "/auth/tokens/validate"
-      - "/orchestration/users/register"
+      - "/users/register"
+      - "/auth/register"
   orchestration:
     internal-access-token: ${app.security.internal-access-token}
     auth-service:

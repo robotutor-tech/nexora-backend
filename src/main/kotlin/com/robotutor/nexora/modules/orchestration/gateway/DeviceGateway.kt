@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.orchestration.gateway
 import com.robotutor.nexora.modules.device.domain.model.DeviceType
 import com.robotutor.nexora.modules.orchestration.config.DeviceConfig
 import com.robotutor.nexora.modules.orchestration.controllers.view.DeviceRegistrationRequest
-import com.robotutor.nexora.shared.adapters.outbound.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 

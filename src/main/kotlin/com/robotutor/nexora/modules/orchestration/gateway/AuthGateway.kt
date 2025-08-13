@@ -1,11 +1,11 @@
 package com.robotutor.nexora.modules.orchestration.gateway
 
-import com.robotutor.nexora.modules.auth.controllers.views.TokenView
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.TokenView
 import com.robotutor.nexora.modules.orchestration.config.AuthConfig
 import com.robotutor.nexora.modules.orchestration.config.InternalAccessTokenConfig
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.common.security.models.UserId
-import com.robotutor.nexora.shared.adapters.outbound.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 

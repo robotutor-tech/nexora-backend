@@ -15,3 +15,6 @@ value class PremisesId(val value: String)
 
 @JvmInline
 value class UserId(val value: String)
+
+@JvmInline
+value class ZoneId(val value: String)

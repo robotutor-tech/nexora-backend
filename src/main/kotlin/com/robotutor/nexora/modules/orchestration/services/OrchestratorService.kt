@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.orchestration.services
 
-import com.robotutor.nexora.modules.auth.controllers.views.TokenView
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.TokenView
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.filters.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.InvitationData

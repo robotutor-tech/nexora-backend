@@ -5,8 +5,8 @@ import com.robotutor.nexora.modules.automation.models.*
 import com.robotutor.nexora.modules.automation.models.documents.AutomationDocument
 import com.robotutor.nexora.shared.logger.serializer.DefaultSerializer
 import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.BadDataException
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.ErrorResponse
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.BadDataException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.ErrorResponse
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

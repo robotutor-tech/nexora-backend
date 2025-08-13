@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.filters.resolvers
 
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
 import com.robotutor.nexora.common.security.exceptions.NexoraError
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError

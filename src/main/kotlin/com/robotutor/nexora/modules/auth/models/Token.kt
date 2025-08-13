@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.auth.models
 
-import com.robotutor.nexora.modules.auth.controllers.views.PremisesActorRequest
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.PremisesActorRequest
 import com.robotutor.nexora.modules.iam.controllers.view.ActorView
 import com.robotutor.nexora.modules.iam.models.RoleId
 import com.robotutor.nexora.common.security.models.Identifier

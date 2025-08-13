@@ -1,13 +1,12 @@
 package com.robotutor.nexora.common.security.models
 
-import com.robotutor.nexora.modules.auth.controllers.views.AuthValidationView
-import com.robotutor.nexora.modules.auth.controllers.views.DeviceInvitationView
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthValidationView
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceInvitationView
 import com.robotutor.nexora.modules.auth.models.InvitationId
 import com.robotutor.nexora.modules.iam.controllers.view.ActorView
 import com.robotutor.nexora.modules.iam.models.Actor
 import com.robotutor.nexora.modules.iam.models.Role
 import com.robotutor.nexora.modules.premises.models.PremisesId
-import com.robotutor.nexora.modules.zone.models.ZoneId
 
 interface IAuthenticationData
 interface IPremisesActorData
@@ -24,7 +23,7 @@ data class InvitationData(
     val invitationId: InvitationId,
     val premisesId: PremisesId,
     val name: String,
-    val zoneId: ZoneId,
+    val zoneId: String,
     val invitedBy: ActorId,
 ) : IAuthenticationData, IPremisesActorData {
 

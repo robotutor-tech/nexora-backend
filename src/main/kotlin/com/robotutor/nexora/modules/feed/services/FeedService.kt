@@ -18,7 +18,7 @@ import com.robotutor.nexora.common.security.filters.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.common.security.services.IdGeneratorService
 import com.robotutor.nexora.utils.retryOptimisticLockingFailure
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.DataNotFoundException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

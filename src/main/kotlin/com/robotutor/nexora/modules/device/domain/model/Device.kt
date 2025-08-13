@@ -22,26 +22,6 @@ class Device(
         this.feedIds = feedIds
         return this
     }
-
-    companion object {
-        fun from(deviceId: DeviceId, deviceDetails: DeviceDetails): Device {
-            return Device(
-                deviceId = deviceId,
-                premisesId = deviceDetails.premisesId,
-                name = deviceDetails.name,
-                modelNo = deviceDetails.modelNo,
-                serialNo = deviceDetails.serialNo,
-                type = deviceDetails.type,
-                feedIds = deviceDetails.feeds,
-                state = deviceDetails.state,
-                health = deviceDetails.health,
-                os = deviceDetails.os,
-                createdBy = deviceDetails.createdBy,
-                createdAt = deviceDetails.createdAt,
-                version = deviceDetails.version
-            )
-        }
-    }
 }
 
 enum class DeviceState {

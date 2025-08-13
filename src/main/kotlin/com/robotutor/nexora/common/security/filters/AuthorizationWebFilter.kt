@@ -10,8 +10,8 @@ import com.robotutor.nexora.common.security.filters.annotations.ResourceType
 import com.robotutor.nexora.common.security.gateway.IAMGateway
 import com.robotutor.nexora.common.security.gateway.OpaClient
 import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.AccessDeniedException
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.AccessDeniedException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod

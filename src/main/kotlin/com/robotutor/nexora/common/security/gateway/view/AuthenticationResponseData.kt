@@ -6,7 +6,6 @@ import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.ActorId
 import com.robotutor.nexora.common.security.models.Identifier
 import com.robotutor.nexora.common.security.models.TokenIdentifier
-import com.robotutor.nexora.modules.zone.models.ZoneId
 
 data class AuthenticationResponseData(
     val identifier: Identifier<TokenIdentifier>,
@@ -18,5 +17,5 @@ data class InvitationResponseData(
     val premisesId: PremisesId,
     val invitedBy: ActorId,
     val name: String,
-    val zoneId: ZoneId,
+    val zoneId: String,
 )

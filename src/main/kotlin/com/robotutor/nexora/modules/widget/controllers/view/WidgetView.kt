@@ -5,7 +5,6 @@ import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.modules.widget.models.Widget
 import com.robotutor.nexora.modules.widget.models.WidgetId
 import com.robotutor.nexora.modules.widget.models.WidgetType
-import com.robotutor.nexora.modules.zone.models.ZoneId
 import jakarta.validation.constraints.NotBlank
 
 data class WidgetRequest(
@@ -15,7 +14,7 @@ data class WidgetRequest(
     val feed: FeedId,
     val type: WidgetType,
     @field:NotBlank(message = "Zone is required")
-    val zoneId: ZoneId
+    val zoneId: String
 ) {
 }
 
@@ -25,7 +24,7 @@ data class WidgetView(
     val name: String,
     val feedId: FeedId,
     val type: WidgetType,
-    val zoneId: ZoneId,
+    val zoneId: String,
 ) {
     companion object {
         fun from(widget: Widget): WidgetView {

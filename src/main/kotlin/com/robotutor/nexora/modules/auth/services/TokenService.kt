@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.auth.services
 
-import com.robotutor.nexora.modules.auth.controllers.views.PremisesActorRequest
-import com.robotutor.nexora.modules.auth.exceptions.NexoraError
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.PremisesActorRequest
+import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.gateways.IAMGateway
 import com.robotutor.nexora.modules.auth.models.AuthUser
 import com.robotutor.nexora.modules.auth.models.IdType
@@ -19,14 +19,14 @@ import com.robotutor.nexora.common.security.models.Identifier
 import com.robotutor.nexora.common.security.models.InvitationData
 import com.robotutor.nexora.common.security.models.TokenIdentifier
 import com.robotutor.nexora.common.security.services.IdGeneratorService
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.DataNotFoundException
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
 import java.time.Instant
 
-@Service
+@Service("TempTokenService")
 class TokenService(
     private val tokenRepository: TokenRepository,
     private val idGeneratorService: IdGeneratorService,

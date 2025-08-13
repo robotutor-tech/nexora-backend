@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security
 
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.BaseException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.BaseException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 

@@ -15,7 +15,7 @@ import com.robotutor.nexora.common.security.models.ActorId
 import com.robotutor.nexora.common.security.models.ActorIdentifier
 import com.robotutor.nexora.common.security.models.AuthUserData
 import com.robotutor.nexora.common.security.services.IdGeneratorService
-import com.robotutor.nexora.shared.adapters.outbound.webclient.exceptions.DataNotFoundException
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

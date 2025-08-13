@@ -9,7 +9,7 @@ import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.gateway.AuthGateway
 import com.robotutor.nexora.common.security.models.*
-import com.robotutor.nexora.shared.adapters.outbound.webclient.controllers.ExceptionHandlerRegistry
+import com.robotutor.nexora.shared.adapters.webclient.controllers.ExceptionHandlerRegistry
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
