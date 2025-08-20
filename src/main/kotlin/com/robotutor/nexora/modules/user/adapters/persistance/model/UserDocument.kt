@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.user.adapters.persistance.model
 
-import com.robotutor.nexora.modules.user.domain.model.Email
 import com.robotutor.nexora.modules.user.domain.model.User
+import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.mongodb.core.index.Indexed

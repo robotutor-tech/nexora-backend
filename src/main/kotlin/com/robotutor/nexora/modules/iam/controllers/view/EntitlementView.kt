@@ -5,8 +5,8 @@ import com.robotutor.nexora.modules.iam.models.EntitlementId
 import com.robotutor.nexora.modules.iam.models.EntitlementStatus
 import com.robotutor.nexora.modules.iam.models.RoleId
 import com.robotutor.nexora.modules.premises.models.PremisesId
-import com.robotutor.nexora.common.security.filters.annotations.ActionType
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 
 data class EntitlementView(
     val entitlementId: EntitlementId,

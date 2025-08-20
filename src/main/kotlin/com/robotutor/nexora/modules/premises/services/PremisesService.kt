@@ -11,7 +11,7 @@ import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.modules.premises.repositories.PremisesRepository
 import com.robotutor.nexora.common.security.models.AuthUserData
 import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.common.security.services.IdGeneratorService
+import com.robotutor.nexora.common.security.service.IdGeneratorService
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

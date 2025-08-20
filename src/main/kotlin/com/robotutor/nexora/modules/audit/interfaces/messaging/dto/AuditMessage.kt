@@ -2,8 +2,8 @@ package com.robotutor.nexora.modules.audit.interfaces.messaging.dto
 
 import com.robotutor.nexora.modules.audit.domain.model.AuditStatus
 import com.robotutor.nexora.common.security.models.ActorId
-import com.robotutor.nexora.common.security.models.ActorIdentifier
-import com.robotutor.nexora.common.security.models.Identifier
+import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.Identifier
 import java.time.Instant
 
 data class AuditMessage(

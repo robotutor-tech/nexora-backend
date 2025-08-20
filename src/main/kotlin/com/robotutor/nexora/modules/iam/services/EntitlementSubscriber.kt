@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.iam.services
 
 import com.robotutor.nexora.shared.adapters.messaging.services.KafkaConsumer
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Service

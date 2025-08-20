@@ -5,8 +5,8 @@ import com.robotutor.nexora.modules.audit.domain.model.AuditId
 import com.robotutor.nexora.modules.audit.domain.model.AuditStatus
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.ActorId
-import com.robotutor.nexora.common.security.models.ActorIdentifier
-import com.robotutor.nexora.common.security.models.Identifier
+import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.Identifier
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

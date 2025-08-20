@@ -8,4 +8,5 @@ enum class NexoraError(override val errorCode: String, override val message: Str
     NEXORA0203("NEXORA-0203", "UnAuthorized actor"),
     NEXORA0204("NEXORA-0204", "Invitation not found"),
     NEXORA0205("NEXORA-0205", "Invalid role for authorization"),
+    NEXORA0206("NEXORA-0206", "Unauthorized user"),
 }

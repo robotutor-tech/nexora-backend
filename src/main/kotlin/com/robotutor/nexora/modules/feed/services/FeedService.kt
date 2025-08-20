@@ -14,9 +14,9 @@ import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
 import com.robotutor.nexora.common.security.createMonoError
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.common.security.services.IdGeneratorService
+import com.robotutor.nexora.common.security.service.IdGeneratorService
 import com.robotutor.nexora.utils.retryOptimisticLockingFailure
 import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service

@@ -1,14 +1,11 @@
 package com.robotutor.nexora.modules.orchestration.controllers
 
-import com.robotutor.nexora.modules.auth.interfaces.controller.dto.TokenView
-import com.robotutor.nexora.common.security.models.InvitationData
-import com.robotutor.nexora.modules.orchestration.controllers.view.DeviceRegistrationRequest
 import com.robotutor.nexora.modules.orchestration.gateway.view.PremisesWithActorView
 import com.robotutor.nexora.modules.orchestration.services.OrchestratorService
-import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/orchestration")
@@ -29,11 +26,11 @@ class OrchestrationController(private val orchestratorService: OrchestratorServi
         return orchestratorService.getAllPremises()
     }
 
-    @PostMapping("/devices/register")
-    fun registerDevice(
-        @RequestBody @Validated request: DeviceRegistrationRequest,
-        invitationData: InvitationData
-    ): Mono<TokenView> {
-        return orchestratorService.registerDevice(request, invitationData)
-    }
+//    @PostMapping("/devices/register")
+//    fun registerDevice(
+//        @RequestBody @Validated request: DeviceRegistrationRequest,
+//        invitationData: InvitationData
+//    ): Mono<TokenView> {
+//        return orchestratorService.registerDevice(request, invitationData)
+//    }
 }

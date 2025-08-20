@@ -35,10 +35,9 @@ app:
     opa-base-url: "http://localhost:8181"
     internal-access-token: "internalAccessToken"
     un-secured-path:
-      - "/auth/login"
-      - "/auth/tokens/validate"
       - "/users/register"
-      - "/auth/register"
+      - "/auth/login"
+      - "/auth/validate"
   orchestration:
     internal-access-token: ${app.security.internal-access-token}
     auth-service:

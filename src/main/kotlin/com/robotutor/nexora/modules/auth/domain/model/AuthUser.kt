@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.auth.domain.model
 
+import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 import java.time.Instant
 
@@ -12,6 +13,6 @@ data class AuthUser(
     val version: Long? = null
 )
 
-data class Email(val value: String)
+
 data class Password(val value: String)
 data class HashedPassword(val value: String)

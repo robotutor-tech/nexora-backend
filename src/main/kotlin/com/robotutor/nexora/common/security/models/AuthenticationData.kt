@@ -1,22 +1,23 @@
 package com.robotutor.nexora.common.security.models
 
-import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthValidationView
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceInvitationView
 import com.robotutor.nexora.modules.auth.models.InvitationId
 import com.robotutor.nexora.modules.iam.controllers.view.ActorView
 import com.robotutor.nexora.modules.iam.models.Actor
 import com.robotutor.nexora.modules.iam.models.Role
 import com.robotutor.nexora.modules.premises.models.PremisesId
+import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.Identifier
 
 interface IAuthenticationData
 interface IPremisesActorData
 
 data class AuthUserData(val userId: UserId) : IAuthenticationData, IPremisesActorData {
-    companion object {
-        fun from(authValidationView: AuthValidationView): AuthUserData {
-            return AuthUserData(userId = authValidationView.identifier.id)
-        }
-    }
+//    companion object {
+//        fun from(authValidationView: AuthValidationView): AuthUserData {
+//            return AuthUserData(userId = authValidationView.identifier.id)
+//        }
+//    }
 }
 
 data class InvitationData(

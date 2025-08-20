@@ -2,8 +2,8 @@ package com.robotutor.nexora.modules.iam.models
 
 import com.robotutor.nexora.modules.iam.controllers.view.EntitlementRequest
 import com.robotutor.nexora.modules.premises.models.PremisesId
-import com.robotutor.nexora.common.security.filters.annotations.ActionType
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

@@ -1,10 +1,9 @@
 package com.robotutor.nexora.modules.auth.models
 
-import com.robotutor.nexora.modules.auth.interfaces.controller.dto.PremisesActorRequest
 import com.robotutor.nexora.modules.iam.controllers.view.ActorView
 import com.robotutor.nexora.modules.iam.models.RoleId
-import com.robotutor.nexora.common.security.models.Identifier
-import com.robotutor.nexora.common.security.models.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.Identifier
+import com.robotutor.nexora.shared.domain.model.TokenIdentifier
 import com.robotutor.nexora.common.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -37,7 +36,7 @@ data class Token(
         return Token(
             tokenId = tokenId,
             value = generateTokenValue(),
-            identifier = Identifier(actor.actorId, TokenIdentifier.PREMISES_ACTOR),
+            identifier = Identifier(actor.actorId, TokenIdentifier.ACTOR),
             expiresOn = expiresOn,
             role = actor.role.roleId,
         )
@@ -48,7 +47,7 @@ data class Token(
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(),
-                identifier = Identifier(userId, TokenIdentifier.AUTH_USER),
+                identifier = Identifier(userId, TokenIdentifier.USER),
                 expiresOn = Instant.now().plusSeconds(7 * 24 * 60 * 60),
             )
         }
@@ -62,15 +61,6 @@ data class Token(
             )
         }
 
-        fun generateDeviceActorToken(tokenId: TokenId, actorRequest: PremisesActorRequest): Token {
-            return Token(
-                tokenId = tokenId,
-                value = generateTokenValue(DEVICE_TOKEN_LENGTH),
-                identifier = Identifier(actorRequest.actorId, TokenIdentifier.PREMISES_ACTOR),
-                expiresOn = Instant.parse("9999-12-31T00:00:00.00Z"),
-                role = actorRequest.roleId
-            )
-        }
     }
 }
 

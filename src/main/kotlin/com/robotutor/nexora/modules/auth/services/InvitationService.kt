@@ -16,7 +16,7 @@ import com.robotutor.nexora.shared.logger.logOnSuccess
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.models.InvitationData
 import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.common.security.services.IdGeneratorService
+import com.robotutor.nexora.common.security.service.IdGeneratorService
 import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux

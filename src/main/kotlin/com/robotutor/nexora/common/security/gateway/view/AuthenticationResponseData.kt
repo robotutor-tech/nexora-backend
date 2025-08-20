@@ -4,8 +4,8 @@ import com.robotutor.nexora.modules.auth.models.InvitationId
 import com.robotutor.nexora.modules.iam.models.RoleId
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.ActorId
-import com.robotutor.nexora.common.security.models.Identifier
-import com.robotutor.nexora.common.security.models.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.Identifier
+import com.robotutor.nexora.shared.domain.model.TokenIdentifier
 
 data class AuthenticationResponseData(
     val identifier: Identifier<TokenIdentifier>,

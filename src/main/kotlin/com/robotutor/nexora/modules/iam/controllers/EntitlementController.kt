@@ -2,8 +2,8 @@ package com.robotutor.nexora.modules.iam.controllers
 
 import com.robotutor.nexora.modules.iam.controllers.view.EntitlementView
 import com.robotutor.nexora.modules.iam.services.EntitlementService
-import com.robotutor.nexora.common.security.filters.annotations.ActionType
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

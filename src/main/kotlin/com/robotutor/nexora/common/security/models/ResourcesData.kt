@@ -1,8 +1,8 @@
 package com.robotutor.nexora.common.security.models
 
-import com.robotutor.nexora.common.security.filters.ResourceEntitlement
-import com.robotutor.nexora.common.security.filters.annotations.ActionType
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.filters.ResourceEntitlement
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 
 data class ResourcesData(val entitlements: List<ResourceEntitlement>) {
     fun getResourceIds(action: ActionType, resourceType: ResourceType): List<String> {

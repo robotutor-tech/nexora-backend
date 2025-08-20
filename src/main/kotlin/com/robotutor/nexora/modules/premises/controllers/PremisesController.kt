@@ -1,10 +1,12 @@
 package com.robotutor.nexora.modules.premises.controllers
 
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.RequireAccess
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import com.robotutor.nexora.modules.premises.controllers.view.PremisesCreateRequest
 import com.robotutor.nexora.modules.premises.controllers.view.PremisesView
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.modules.premises.services.PremisesService
-import com.robotutor.nexora.common.security.filters.annotations.*
 import com.robotutor.nexora.common.security.models.AuthUserData
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import org.springframework.validation.annotation.Validated

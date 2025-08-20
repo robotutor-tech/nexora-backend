@@ -10,8 +10,8 @@ import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
-import com.robotutor.nexora.common.security.filters.PREMISES_ID
-import com.robotutor.nexora.common.security.filters.TRACE_ID
+import com.robotutor.nexora.common.security.application.filters.PREMISES_ID
+import com.robotutor.nexora.common.security.application.filters.TRACE_ID
 import com.robotutor.nexora.shared.adapters.webclient.exceptions.BaseException
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component

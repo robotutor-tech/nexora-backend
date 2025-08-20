@@ -5,12 +5,16 @@ import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.auth.application.command.LoginCommand
 import com.robotutor.nexora.modules.auth.application.command.RegisterAuthUserCommand
 import com.robotutor.nexora.modules.auth.application.dto.AuthUserResponse
+import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.model.AuthUser
+import com.robotutor.nexora.modules.auth.domain.model.TokenType
 import com.robotutor.nexora.modules.auth.domain.repository.AuthRepository
 import com.robotutor.nexora.modules.auth.domain.service.PasswordService
 import com.robotutor.nexora.shared.adapters.webclient.exceptions.BadDataException
 import com.robotutor.nexora.shared.adapters.webclient.exceptions.DuplicateDataException
+import com.robotutor.nexora.shared.domain.model.Identifier
+import com.robotutor.nexora.shared.domain.model.TokenIdentifier
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -22,7 +26,7 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 class AuthUserService(
     private val authRepository: AuthRepository,
     private val passwordService: PasswordService,
-    private val tokenService: TokenService
+    private val tokenUseCase: TokenUseCase
 ) {
     private val logger = Logger(this::class.java)
 
@@ -50,9 +54,16 @@ class AuthUserService(
         return authRepository.save(authUser)
     }
 
-    fun login(loginCommand: LoginCommand): Mono<AuthUser> {
+    fun login(loginCommand: LoginCommand): Mono<TokenResponses> {
         return validateCredentials(loginCommand)
-//            .flatMap { authUser -> tokenService.generateAuthUserToken(authUser) }
+            .flatMap { authUser ->
+                tokenUseCase.generateTokenWithRefreshToken(
+                    TokenType.AUTHORIZATION,
+                    Identifier(authUser.userId.value, TokenIdentifier.USER),
+                    emptyMap()
+                )
+            }
+            .map { TokenResponses.from(it) }
     }
 
     private fun validateCredentials(loginCommand: LoginCommand): Mono<AuthUser> {
@@ -66,5 +77,7 @@ class AuthUserService(
                     createMono(authUser)
                 }
             }
+            .logOnSuccess(logger, "Successfully validated credentials for ${loginCommand.email}")
+            .logOnError(logger, "", "Failed to validate credentials for ${loginCommand.email}")
     }
 }

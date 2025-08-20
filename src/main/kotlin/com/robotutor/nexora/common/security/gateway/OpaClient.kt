@@ -5,7 +5,7 @@ import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
 import com.robotutor.nexora.shared.adapters.cache.services.CacheService
 import com.robotutor.nexora.common.security.config.AppConfig
-import com.robotutor.nexora.common.security.filters.PolicyInput
+import com.robotutor.nexora.common.security.application.filters.PolicyInput
 import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono

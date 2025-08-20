@@ -1,14 +1,8 @@
 package com.robotutor.nexora.modules.orchestration.services
 
-import com.robotutor.nexora.modules.auth.interfaces.controller.dto.TokenView
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.InvitationData
-import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.modules.feed.models.FeedType
-import com.robotutor.nexora.modules.iam.services.EntitlementResource
 import com.robotutor.nexora.modules.device.domain.model.DeviceType
-import com.robotutor.nexora.modules.orchestration.controllers.view.DeviceRegistrationRequest
+import com.robotutor.nexora.modules.feed.models.FeedType
 import com.robotutor.nexora.modules.orchestration.gateway.AuthGateway
 import com.robotutor.nexora.modules.orchestration.gateway.DeviceGateway
 import com.robotutor.nexora.modules.orchestration.gateway.IAMGateway
@@ -18,8 +12,8 @@ import com.robotutor.nexora.modules.orchestration.models.Device
 import com.robotutor.nexora.modules.orchestration.models.Feed
 import com.robotutor.nexora.modules.orchestration.models.FeedCreationRequest
 import com.robotutor.nexora.modules.orchestration.models.Widget
-import com.robotutor.nexora.shared.adapters.messaging.services.KafkaPublisher
 import com.robotutor.nexora.modules.widget.models.WidgetType
+import com.robotutor.nexora.shared.adapters.messaging.services.KafkaPublisher
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -81,29 +75,29 @@ class OrchestratorService(
 //            }
 //    }
 
-    fun registerDevice(request: DeviceRegistrationRequest, invitationData: InvitationData): Mono<TokenView> {
-        return createMono(getDeviceSeedData(invitationData))
-            .flatMap { seed ->
-                deviceGateway.registerDevice(request, seed.type, seed.feedCount)
-                    .map {
-                        seed.updateDeviceId(it.deviceId)
-                        it
-                    }
-                    .flatMap { device ->
-                        iamGateway.registerActorAsBot(device)
-                            .flatMap { premisesActorData ->
-                                authGateway.createDeviceActorToken(premisesActorData)
-                                    .flatMap {
-                                        val entitlementResource =
-                                            EntitlementResource(ResourceType.DEVICE, device.deviceId)
-                                        kafkaPublisher.publish("entitlement.create", entitlementResource) { it }
-                                    }
-                                    .flatMap { kafkaPublisher.publish("feeds.create", seed) { it } }
-                                    .contextWrite { it.put(PremisesActorData::class.java, premisesActorData) }
-                            }
-                    }
-            }
-    }
+//    fun registerDevice(request: DeviceRegistrationRequest, invitationData: InvitationData): Mono<TokenView> {
+//        return createMono(getDeviceSeedData(invitationData))
+//            .flatMap { seed ->
+//                deviceGateway.registerDevice(request, seed.type, seed.feedCount)
+//                    .map {
+//                        seed.updateDeviceId(it.deviceId)
+//                        it
+//                    }
+//                    .flatMap { device ->
+//                        iamGateway.registerActorAsBot(device)
+//                            .flatMap { premisesActorData ->
+//                                authGateway.createDeviceActorToken(premisesActorData)
+//                                    .flatMap {
+//                                        val entitlementResource =
+//                                            EntitlementResource(ResourceType.DEVICE, device.deviceId)
+//                                        kafkaPublisher.publish("entitlement.create", entitlementResource) { it }
+//                                    }
+//                                    .flatMap { kafkaPublisher.publish("feeds.create", seed) { it } }
+//                                    .contextWrite { it.put(PremisesActorData::class.java, premisesActorData) }
+//                            }
+//                    }
+//            }
+//    }
 
     fun getAllPremises(): Flux<PremisesWithActorView> {
         return iamGateway.getActors().collectList().flatMapMany { actors ->

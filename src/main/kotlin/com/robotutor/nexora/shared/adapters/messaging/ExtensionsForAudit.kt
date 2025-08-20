@@ -6,8 +6,8 @@ import com.robotutor.nexora.modules.iam.models.RoleType
 import com.robotutor.nexora.shared.adapters.messaging.models.AuditMessage
 import com.robotutor.nexora.shared.adapters.messaging.services.KafkaPublisher
 import com.robotutor.nexora.modules.premises.models.PremisesId
-import com.robotutor.nexora.common.security.models.ActorIdentifier
-import com.robotutor.nexora.common.security.models.Identifier
+import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.Identifier
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import reactor.core.publisher.Mono
 import reactor.util.context.ContextView

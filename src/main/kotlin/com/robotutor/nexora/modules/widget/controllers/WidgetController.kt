@@ -1,8 +1,8 @@
 package com.robotutor.nexora.modules.widget.controllers
 
-import com.robotutor.nexora.common.security.filters.annotations.ActionType
-import com.robotutor.nexora.common.security.filters.annotations.RequireAccess
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.RequireAccess
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import com.robotutor.nexora.modules.widget.controllers.view.WidgetRequest
 import com.robotutor.nexora.modules.widget.controllers.view.WidgetView
 import com.robotutor.nexora.modules.widget.services.WidgetService

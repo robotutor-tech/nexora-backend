@@ -2,12 +2,11 @@ package com.robotutor.nexora.modules.auth.repositories
 
 import com.robotutor.nexora.modules.auth.models.Token
 import com.robotutor.nexora.modules.auth.models.TokenId
-import com.robotutor.nexora.common.security.models.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.TokenIdentifier
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 import java.time.Instant
-import java.time.ZoneOffset
 
 @Repository
 interface TokenRepository : ReactiveCrudRepository<Token, TokenId> {

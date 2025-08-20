@@ -4,11 +4,11 @@ import com.robotutor.nexora.modules.iam.controllers.view.*
 import com.robotutor.nexora.modules.iam.models.*
 import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.createFlux
-import com.robotutor.nexora.common.security.filters.annotations.ActionType
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
-import com.robotutor.nexora.common.security.models.ActorIdentifier
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
+import com.robotutor.nexora.shared.domain.model.ActorIdentifier
 import com.robotutor.nexora.common.security.models.AuthUserData
-import com.robotutor.nexora.common.security.models.Identifier
+import com.robotutor.nexora.shared.domain.model.Identifier
 import com.robotutor.nexora.common.security.models.InvitationData
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux

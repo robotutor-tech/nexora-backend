@@ -4,9 +4,9 @@ import com.robotutor.nexora.modules.automation.controllers.views.TriggerRequest
 import com.robotutor.nexora.modules.automation.controllers.views.TriggerView
 import com.robotutor.nexora.modules.automation.models.TriggerId
 import com.robotutor.nexora.modules.automation.services.TriggerService
-import com.robotutor.nexora.common.security.filters.annotations.ActionType
-import com.robotutor.nexora.common.security.filters.annotations.RequireAccess
-import com.robotutor.nexora.common.security.filters.annotations.ResourceType
+import com.robotutor.nexora.common.security.application.annotations.ActionType
+import com.robotutor.nexora.common.security.application.annotations.RequireAccess
+import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.common.security.models.ResourcesData
 import org.springframework.validation.annotation.Validated

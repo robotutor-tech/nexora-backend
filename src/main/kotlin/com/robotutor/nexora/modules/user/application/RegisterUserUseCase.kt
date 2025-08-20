@@ -5,7 +5,6 @@ import com.robotutor.nexora.modules.user.application.command.RegisterAuthUserCom
 import com.robotutor.nexora.modules.user.application.command.RegisterUserCommand
 import com.robotutor.nexora.modules.user.application.service.RegisterAuthUser
 import com.robotutor.nexora.modules.user.domain.exception.NexoraError
-import com.robotutor.nexora.modules.user.domain.model.Email
 import com.robotutor.nexora.modules.user.domain.model.IdType
 import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.modules.user.domain.repository.UserRepository
@@ -27,7 +26,7 @@ class RegisterUserUseCase(
     val logger = Logger(this::class.java)
 
     fun register(registerUserCommand: RegisterUserCommand): Mono<User> {
-        return userRepository.existsByEmail(Email(registerUserCommand.email))
+        return userRepository.existsByEmail(registerUserCommand.email)
             .flatMap { existsByEmail ->
                 if (!existsByEmail)
                     registerUser(registerUserCommand)
@@ -61,7 +60,7 @@ class RegisterUserUseCase(
                 val user = User(
                     userId = UserId(value = userId),
                     name = registerUserCommand.name,
-                    email = Email(registerUserCommand.email),
+                    email = registerUserCommand.email,
                 )
                 userRepository.save(user)
             }

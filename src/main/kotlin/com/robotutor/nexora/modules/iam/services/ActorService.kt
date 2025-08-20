@@ -12,9 +12,9 @@ import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.models.ActorId
-import com.robotutor.nexora.common.security.models.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.ActorIdentifier
 import com.robotutor.nexora.common.security.models.AuthUserData
-import com.robotutor.nexora.common.security.services.IdGeneratorService
+import com.robotutor.nexora.common.security.service.IdGeneratorService
 import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux

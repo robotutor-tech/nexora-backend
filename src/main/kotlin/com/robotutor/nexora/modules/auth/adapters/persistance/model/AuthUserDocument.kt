@@ -1,8 +1,8 @@
 package com.robotutor.nexora.modules.auth.adapters.persistance.model
 
 import com.robotutor.nexora.modules.auth.domain.model.AuthUser
-import com.robotutor.nexora.modules.auth.domain.model.Email
 import com.robotutor.nexora.modules.auth.domain.model.HashedPassword
+import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id

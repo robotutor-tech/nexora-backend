@@ -5,6 +5,8 @@ import com.robotutor.nexora.modules.iam.models.Role
 import com.robotutor.nexora.modules.iam.models.RoleId
 import com.robotutor.nexora.modules.iam.models.RoleType
 import com.robotutor.nexora.modules.premises.models.PremisesId
+import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.Identifier
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 
