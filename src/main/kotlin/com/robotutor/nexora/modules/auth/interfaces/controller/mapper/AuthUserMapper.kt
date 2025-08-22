@@ -1,13 +1,18 @@
 package com.robotutor.nexora.modules.auth.interfaces.controller.mapper
 
+import com.robotutor.nexora.modules.auth.application.command.ActorLoginCommand
 import com.robotutor.nexora.modules.auth.application.command.LoginCommand
 import com.robotutor.nexora.modules.auth.application.command.RegisterAuthUserCommand
 import com.robotutor.nexora.modules.auth.application.dto.AuthUserResponse
 import com.robotutor.nexora.modules.auth.domain.model.Password
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.ActorLoginRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthLoginRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthUserRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthUserResponseDto
+import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.Email
+import com.robotutor.nexora.shared.domain.model.RoleId
+import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.shared.domain.model.UserId
 
 object AuthUserMapper {
@@ -30,6 +35,15 @@ object AuthUserMapper {
         return LoginCommand(
             email = Email(authLoginRequest.email),
             password = Password(authLoginRequest.password)
+        )
+    }
+
+    fun toActorLoginCommand(actorLoginRequest: ActorLoginRequest, userData: UserData, token: String): ActorLoginCommand {
+        return ActorLoginCommand(
+            actorId = ActorId(actorLoginRequest.actorId),
+            roleId = RoleId(actorLoginRequest.roleId),
+            userData = userData,
+            token = token.removePrefix("Bearer ")
         )
     }
 }

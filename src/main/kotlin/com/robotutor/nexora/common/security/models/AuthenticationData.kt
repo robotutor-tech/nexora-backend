@@ -1,12 +1,8 @@
 package com.robotutor.nexora.common.security.models
 
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceInvitationView
-import com.robotutor.nexora.modules.auth.models.InvitationId
-import com.robotutor.nexora.modules.iam.controllers.view.ActorView
-import com.robotutor.nexora.modules.iam.models.Actor
-import com.robotutor.nexora.modules.iam.models.Role
-import com.robotutor.nexora.modules.premises.models.PremisesId
-import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.modules.iam.adapters.model.RoleDocument
+import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
 import com.robotutor.nexora.shared.domain.model.Identifier
 
 interface IAuthenticationData
@@ -21,11 +17,11 @@ data class AuthUserData(val userId: UserId) : IAuthenticationData, IPremisesActo
 }
 
 data class InvitationData(
-    val invitationId: InvitationId,
-    val premisesId: PremisesId,
+    val invitationId: String,
+    val premisesId: String,
     val name: String,
     val zoneId: String,
-    val invitedBy: ActorId,
+    val invitedBy: String,
 ) : IAuthenticationData, IPremisesActorData {
 
     companion object {
@@ -47,31 +43,32 @@ data class ServerData(val serverId: String) : IAuthenticationData, IPremisesActo
 
 data class PremisesActorData(
     val actorId: ActorId,
-    val role: Role,
+    val roleDocument: RoleDocument,
     val premisesId: PremisesId,
-    val identifier: Identifier<ActorIdentifier>,
+    val identifier: Identifier<ActorPrincipalType>,
 ) : IAuthenticationData {
 
-    companion object {
-        fun from(actorData: ActorView): PremisesActorData {
-            return PremisesActorData(
-                actorId = actorData.actorId,
-                premisesId = actorData.premisesId,
-                role = actorData.role,
-                identifier = actorData.identifier,
-            )
-        }
-
-        fun from(actor: Actor, role: Role): PremisesActorData {
-            return PremisesActorData(
-                actorId = actor.actorId,
-                premisesId = actor.premisesId,
-                role = role,
-                identifier = actor.identifier,
-            )
-        }
-    }
+//    companion object {
+//        fun from(actorData: ActorView): PremisesActorData {
+//            return PremisesActorData(
+//                actorId = actorData.actorId,
+//                premisesId = actorData.premisesId,
+//                roleDocument = actorData.roleDocument,
+//                identifier = actorData.identifier,
+//            )
+//        }
+//
+//        fun from(actorDocument: ActorDocument, roleDocument: RoleDocument): PremisesActorData {
+//            return PremisesActorData(
+//                actorId = actorDocument.actorId,
+//                premisesId = actorDocument.premisesId,
+//                roleDocument = roleDocument,
+//                identifier = actorDocument.identifier,
+//            )
+//        }
+//    }
 }
 
 typealias UserId = String
+typealias PremisesId = String
 typealias ActorId = String

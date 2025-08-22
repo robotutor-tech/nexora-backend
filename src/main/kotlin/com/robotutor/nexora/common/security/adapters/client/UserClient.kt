@@ -10,8 +10,8 @@ import reactor.core.publisher.Mono
 
 @Service("SecurityUserClient")
 class UserClient(private val userController: UserController) : UserDataRetriever {
-    override fun getUserData(userId: String): Mono<UserData> {
-        return userController.getUser(userId)
+    override fun getUserData(userId: UserId): Mono<UserData> {
+        return userController.getUser(userId.value)
             .map {
                 UserData(
                     userId = UserId(it.userId),

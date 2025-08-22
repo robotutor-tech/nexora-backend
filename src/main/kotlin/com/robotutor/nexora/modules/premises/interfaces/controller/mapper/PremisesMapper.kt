@@ -1,0 +1,49 @@
+package com.robotutor.nexora.modules.premises.interfaces.controller.mapper
+
+import com.robotutor.nexora.modules.premises.application.dto.ActorWithRolesPremises
+import com.robotutor.nexora.modules.premises.application.facade.dto.ActorWithRoles
+import com.robotutor.nexora.modules.premises.application.facade.dto.Role
+import com.robotutor.nexora.modules.premises.domain.model.Premises
+import com.robotutor.nexora.modules.premises.interfaces.controller.dto.ActorWithRoleResponse
+import com.robotutor.nexora.modules.premises.interfaces.controller.dto.PremisesActorResponse
+import com.robotutor.nexora.modules.premises.interfaces.controller.dto.PremisesResponse
+import com.robotutor.nexora.modules.premises.interfaces.controller.dto.RoleResponse
+
+class PremisesMapper {
+    companion object {
+        fun toPremisesActorResponse(actorWithRolesPremises: ActorWithRolesPremises): PremisesActorResponse {
+            val premises = actorWithRolesPremises.premises
+            val actor = actorWithRolesPremises.actor
+            return PremisesActorResponse(
+                premisesId = premises.premisesId.value,
+                name = premises.name,
+                createdAt = premises.createdAt,
+                actor = toActorResponse(actor)
+            )
+        }
+
+        private fun toActorResponse(actor: ActorWithRoles): ActorWithRoleResponse {
+            return ActorWithRoleResponse(
+                actorId = actor.actorId.value,
+                premisesId = actor.premisesId.value,
+                roles = actor.roles.map { toRoleResponse(it) },
+            )
+        }
+
+        fun toRoleResponse(role: Role): RoleResponse {
+            return RoleResponse(
+                roleId = role.roleId.value,
+                name = role.name,
+                roleType = role.roleType,
+            )
+        }
+
+        fun toPremisesResponse(premises: Premises): PremisesResponse {
+            return PremisesResponse(
+                premisesId = premises.premisesId.value,
+                name = premises.name,
+                createdAt = premises.createdAt
+            )
+        }
+    }
+}

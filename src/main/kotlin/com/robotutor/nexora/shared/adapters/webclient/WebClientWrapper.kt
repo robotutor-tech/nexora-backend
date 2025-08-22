@@ -7,7 +7,7 @@ import com.robotutor.nexora.shared.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
 import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
-import com.robotutor.nexora.modules.premises.models.PremisesId
+import com.robotutor.nexora.common.security.models.PremisesId
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.application.filters.PREMISES_ID

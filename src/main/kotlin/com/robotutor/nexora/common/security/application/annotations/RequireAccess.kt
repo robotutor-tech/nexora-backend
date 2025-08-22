@@ -1,5 +1,8 @@
 package com.robotutor.nexora.common.security.application.annotations
 
+import com.robotutor.nexora.shared.domain.model.ActionType
+import com.robotutor.nexora.shared.domain.model.ResourceType
+
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
@@ -9,23 +12,3 @@ annotation class RequireAccess(
     val idParam: String = ""
 )
 
-enum class ResourceType {
-    DEVICE,
-    FEED,
-    PREMISES,
-    WIDGET,
-    ZONE,
-    AUTOMATION_RULE,
-    AUTOMATION_TRIGGER,
-    AUTOMATION_CONDITION,
-    AUTOMATION_ACTION,
-}
-
-enum class ActionType {
-    READ,
-    UPDATE,
-    DELETE,
-    LIST,
-    CREATE,
-    CONTROL,
-}

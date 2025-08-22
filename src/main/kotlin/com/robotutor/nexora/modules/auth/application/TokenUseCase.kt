@@ -1,12 +1,15 @@
 package com.robotutor.nexora.modules.auth.application
 
+import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.auth.application.factory.TokenFactory
+import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.model.Token
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
 import com.robotutor.nexora.modules.auth.domain.model.Tokens
 import com.robotutor.nexora.modules.auth.domain.repository.TokenRepository
-import com.robotutor.nexora.shared.domain.model.Identifier
-import com.robotutor.nexora.shared.domain.model.TokenIdentifier
+import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.model.PrincipalContext
+import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -22,26 +25,25 @@ class TokenUseCase(
 
     fun generateToken(
         tokenType: TokenType,
-        identifier: Identifier<TokenIdentifier>,
-        metadata: Map<String, Any?>
+        principalType: TokenPrincipalType,
+        principalContext: PrincipalContext,
+        metadata: Map<String, String> = emptyMap()
     ): Mono<Token> {
         val strategy = tokenFactory.getStrategy(tokenType)
-        val token = strategy.generate(identifier, metadata)
+        val token = strategy.generate(principalType, principalContext, metadata)
         return tokenRepository.save(token)
             .logOnSuccess(logger, "Successfully generated token")
             .logOnError(logger, "", "Failed to generate token")
     }
 
     fun generateTokenWithRefreshToken(
-        tokenType: TokenType,
-        identifier: Identifier<TokenIdentifier>,
-        metadata: Map<String, Any?>
+        principalType: TokenPrincipalType,
+        principalContext: PrincipalContext,
     ): Mono<Tokens> {
-        return generateToken(tokenType, identifier, metadata)
+        return generateToken(TokenType.AUTHORIZATION, principalType, principalContext)
             .flatMap { token ->
-                val mutableMap = metadata.toMutableMap()
-                mutableMap["authorizationToken"] = token.tokenId.value
-                generateToken(TokenType.REFRESH, identifier, mutableMap.toMap())
+                val map = mapOf("authorizationToken" to token.tokenId.value)
+                generateToken(TokenType.REFRESH, principalType, principalContext, map)
                     .map { Tokens(token, it) }
             }
     }
@@ -50,6 +52,13 @@ class TokenUseCase(
         return tokenRepository.invalidateToken(token)
             .logOnSuccess(logger, "Successfully invalidated token")
             .logOnError(logger, "", "Failed to invalidate token")
+    }
+
+    fun findTokenByValue(token: String): Mono<Token> {
+        return tokenRepository.findByValue(token)
+            .switchIfEmpty(
+                createMonoError(UnAuthorizedException(NexoraError.NEXORA0206))
+            )
     }
 
 }

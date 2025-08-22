@@ -1,0 +1,17 @@
+package com.robotutor.nexora.modules.iam.domain.model
+
+import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.model.RoleId
+import com.robotutor.nexora.shared.domain.model.RoleType
+import java.time.Instant
+
+data class Role(
+    val roleId: RoleId,
+    val premisesId: PremisesId,
+    val name: String,
+    val roleType: RoleType,
+    val createdAt: Instant = Instant.now(),
+    val updatedAt: Instant = Instant.now(),
+    val version: Long? = null
+)
+

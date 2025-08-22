@@ -4,17 +4,16 @@ data class Identifier<T>(val id: String, val type: T) {
     fun isValid(id: String?, type: T) = this.type == type && this.id == id
 }
 
-enum class ActorIdentifier {
+enum class ActorPrincipalType {
     USER,
     DEVICE,
     LOCAL_SERVER,
     SERVER
 }
 
-enum class TokenIdentifier {
+enum class TokenPrincipalType {
     USER,
     ACTOR,
-    SERVER,
     INVITATION,
     INTERNAL,
 }

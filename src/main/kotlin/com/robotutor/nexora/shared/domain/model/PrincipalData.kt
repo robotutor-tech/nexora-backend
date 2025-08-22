@@ -13,9 +13,17 @@ data class UserData(
 
 data class ActorData(
     val actorId: ActorId,
-    val roleId: RoleId,
-    val user: UserData
+    val role: Role,
+    val premisesId: PremisesId,
+    val principalType: ActorPrincipalType,
+    val principal: PrincipalData,
 ) : PrincipalData()
 
+data class Role(
+    val roleId: RoleId,
+    val premisesId: PremisesId,
+    val name: String,
+    val roleType: RoleType,
+)
 
 data class InternalData(val id: String) : PrincipalData()

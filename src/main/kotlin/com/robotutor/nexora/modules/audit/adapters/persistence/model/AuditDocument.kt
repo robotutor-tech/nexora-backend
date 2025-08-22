@@ -3,9 +3,7 @@ package com.robotutor.nexora.modules.audit.adapters.persistence.model
 import com.robotutor.nexora.modules.audit.domain.model.Audit
 import com.robotutor.nexora.modules.audit.domain.model.AuditId
 import com.robotutor.nexora.modules.audit.domain.model.AuditStatus
-import com.robotutor.nexora.modules.premises.models.PremisesId
-import com.robotutor.nexora.common.security.models.ActorId
-import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
 import com.robotutor.nexora.shared.domain.model.Identifier
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -25,10 +23,10 @@ data class AuditDocument(
     @Indexed(unique = true)
     val auditId: String,
     val event: String,
-    val actorId: ActorId? = null,
-    val identifier: Identifier<ActorIdentifier>? = null,
+    val actorId: String? = null,
+    val identifier: Identifier<ActorPrincipalType>? = null,
     @Indexed
-    val premisesId: PremisesId? = null,
+    val premisesId: String? = null,
     val status: AuditStatus,
     val metadata: Map<String, Any?>,
     val timestamp: Instant,

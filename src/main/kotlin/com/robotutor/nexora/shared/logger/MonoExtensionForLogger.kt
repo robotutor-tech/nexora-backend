@@ -1,5 +1,6 @@
 package com.robotutor.nexora.shared.logger
 
+import com.robotutor.nexora.modules.iam.domain.model.Role
 import com.robotutor.nexora.shared.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.shared.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.shared.logger.models.RequestDetails

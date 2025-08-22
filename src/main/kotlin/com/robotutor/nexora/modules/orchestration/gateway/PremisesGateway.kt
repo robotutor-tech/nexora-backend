@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.orchestration.gateway
 
 import com.robotutor.nexora.modules.orchestration.config.PremisesConfig
 import com.robotutor.nexora.modules.orchestration.gateway.view.PremisesView
-import com.robotutor.nexora.modules.premises.models.PremisesId
+import com.robotutor.nexora.common.security.models.PremisesId
 import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap

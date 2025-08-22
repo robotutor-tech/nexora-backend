@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.orchestration.models
 
 import com.robotutor.nexora.modules.device.domain.model.DeviceType
 import com.robotutor.nexora.modules.feed.models.FeedType
-import com.robotutor.nexora.modules.widget.models.WidgetType
+import com.robotutor.nexora.modules.widget.domain.model.WidgetType
 
 data class Device(
     val modelNo: String,

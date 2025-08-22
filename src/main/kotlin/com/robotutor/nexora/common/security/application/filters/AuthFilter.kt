@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.application.filters
 
 import com.robotutor.nexora.common.security.application.ports.TokenValidator
-import com.robotutor.nexora.common.security.application.strategy.DataRetrieverStrategyFactory
+import com.robotutor.nexora.common.security.application.strategy.factory.TokenDataRetrieverStrategyFactory
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
@@ -13,7 +13,8 @@ import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.common.security.domain.model.ValidateTokenResult
 import com.robotutor.nexora.shared.adapters.webclient.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
-import com.robotutor.nexora.shared.domain.model.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.InternalContext
+import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.ReactiveContext.putPremisesId
 import com.robotutor.nexora.shared.logger.ReactiveContext.putTraceId
@@ -44,7 +45,7 @@ class AuthFilter(
     private val appConfig: AppConfig,
     private val exceptionHandlerRegistry: ExceptionHandlerRegistry,
     private val tokenValidator: TokenValidator,
-    private val dataRetrieverStrategyFactory: DataRetrieverStrategyFactory
+    private val tokenDataRetrieverStrategyFactory: TokenDataRetrieverStrategyFactory
 ) : WebFilter {
     val logger = Logger(this::class.java)
 
@@ -52,14 +53,14 @@ class AuthFilter(
         return authorize(exchange)
             .contextWrite { writeContextOnChain(it, exchange) }
             .flatMap { tokenResult ->
-                dataRetrieverStrategyFactory.getStrategy(tokenResult.principalType)
-                    .getPrincipalData(tokenResult.principalId)
+                tokenDataRetrieverStrategyFactory.getStrategy(tokenResult.principalType)
+                    .getPrincipalData(tokenResult.principal)
             }
             .flatMap { principalData ->
                 val authenticationToken = UsernamePasswordAuthenticationToken("auth", null, listOf())
                 val content = SecurityContextImpl(authenticationToken)
                 chain.filter(exchange)
-                    .contextWrite { writeContext(principalData, it, exchange) }
+                    .contextWrite { writeContextOnChain(setContextForResolvers(principalData, it, exchange), exchange) }
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
             }
             .onErrorResume {
@@ -79,8 +80,8 @@ class AuthFilter(
             return createMono(
                 ValidateTokenResult(
                     isValid = true,
-                    principalId = "",
-                    principalType = TokenIdentifier.INTERNAL,
+                    principalType = TokenPrincipalType.INTERNAL,
+                    principal = InternalContext(""),
                     expiresAt = Instant.MAX,
                 )
             )
@@ -91,19 +92,20 @@ class AuthFilter(
         return tokenValidator.validate(authHeader)
     }
 
-    private fun writeContext(
+    private fun setContextForResolvers(
         principalData: PrincipalData,
         context: Context,
         exchange: ServerWebExchange
     ): Context {
-        val newContext = when (principalData) {
+        return when (principalData) {
             is UserData -> context.put(UserData::class.java, principalData)
             is InternalData -> context.put(InternalData::class.java, principalData)
-            is ActorData -> context.put(ActorData::class.java, principalData)
-                .put(UserData::class.java, principalData.user)
-
+            is ActorData -> setContextForResolvers(
+                principalData.principal,
+                context.put(ActorData::class.java, principalData),
+                exchange
+            )
         }
-        return writeContextOnChain(newContext, exchange)
     }
 }
 

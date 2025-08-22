@@ -1,15 +1,15 @@
 package com.robotutor.nexora.modules.zone.interfaces.controller
 
-import com.robotutor.nexora.common.security.application.annotations.ActionType
 import com.robotutor.nexora.common.security.application.annotations.RequireAccess
-import com.robotutor.nexora.common.security.application.annotations.ResourceType
 import com.robotutor.nexora.common.security.models.PremisesActorData
-import com.robotutor.nexora.common.security.models.ResourcesData
+import com.robotutor.nexora.shared.domain.model.ResourcesData
+import com.robotutor.nexora.modules.zone.application.ZoneUseCase
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneCreateRequest
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneView
-import com.robotutor.nexora.modules.zone.application.ZoneUseCase
 import com.robotutor.nexora.modules.zone.interfaces.controller.mapper.ZoneMapper
+import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.model.ZoneId
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*

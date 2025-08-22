@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.logger
 
-import com.robotutor.nexora.modules.premises.models.PremisesId
+import com.robotutor.nexora.common.security.models.PremisesId
 import reactor.util.context.Context
 import reactor.util.context.ContextView
 

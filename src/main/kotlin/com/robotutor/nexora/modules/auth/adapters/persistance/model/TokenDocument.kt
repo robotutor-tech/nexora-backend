@@ -4,8 +4,7 @@ import com.robotutor.nexora.modules.auth.domain.model.Token
 import com.robotutor.nexora.modules.auth.domain.model.TokenId
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
 import com.robotutor.nexora.modules.auth.domain.model.TokenValue
-import com.robotutor.nexora.shared.domain.model.Identifier
-import com.robotutor.nexora.shared.domain.model.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -24,19 +23,21 @@ data class TokenDocument(
     val tokenId: String,
     @Indexed(unique = true)
     val value: String,
-    val identifier: Identifier<TokenIdentifier>,
+    val principalType: com.robotutor.nexora.shared.domain.model.TokenPrincipalType,
+    val principal: PrincipalContext,
     val tokenType: TokenType,
     val issuedAt: Instant,
     @Indexed(name = "expireAtIndex", expireAfter = "0s")
     val expiresAt: Instant,
-    val metadata: Map<String, Any?>,
+    val metadata: Map<String, Any>,
 ) {
     fun toDomainModel(): Token {
         return Token(
             tokenId = TokenId(tokenId),
             tokenType = tokenType,
             value = TokenValue(value),
-            identifier = identifier,
+            principalType = principalType,
+            principal = principal,
             issuedAt = issuedAt,
             expiresAt = expiresAt,
             metadata = metadata
@@ -49,7 +50,8 @@ data class TokenDocument(
                 tokenId = token.tokenId.value,
                 value = token.value.value,
                 tokenType = token.tokenType,
-                identifier = token.identifier,
+                principalType = token.principalType,
+                principal = token.principal,
                 issuedAt = token.issuedAt,
                 expiresAt = token.expiresAt,
                 metadata = token.metadata,

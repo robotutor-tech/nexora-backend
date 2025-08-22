@@ -1,9 +1,7 @@
 package com.robotutor.nexora.modules.auth.models
 
-import com.robotutor.nexora.modules.iam.controllers.view.ActorView
-import com.robotutor.nexora.modules.iam.models.RoleId
 import com.robotutor.nexora.shared.domain.model.Identifier
-import com.robotutor.nexora.shared.domain.model.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.common.security.models.UserId
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -25,29 +23,29 @@ data class Token(
     val tokenId: TokenId,
     @Indexed(unique = true)
     val value: String,
-    val identifier: Identifier<TokenIdentifier>,
-    val role: RoleId? = null,
+    val identifier: Identifier<TokenPrincipalType>,
+    val role: String? = null,
     val createdAt: Instant = Instant.now(),
     val expiresOn: Instant,
     @Version
     val version: Long? = null
 ) {
-    fun generatePremisesActorToken(tokenId: TokenId, actor: ActorView): Token {
-        return Token(
-            tokenId = tokenId,
-            value = generateTokenValue(),
-            identifier = Identifier(actor.actorId, TokenIdentifier.ACTOR),
-            expiresOn = expiresOn,
-            role = actor.role.roleId,
-        )
-    }
+//    fun generatePremisesActorToken(tokenId: TokenId, actor: ActorView): Token {
+//        return Token(
+//            tokenId = tokenId,
+//            value = generateTokenValue(),
+//            identifier = Identifier(actor.actorId, TokenIdentifier.ACTOR),
+//            expiresOn = expiresOn,
+//            role = actor.roleDocument.roleId,
+//        )
+//    }
 
     companion object {
         fun generateAuthUser(tokenId: TokenId, userId: UserId): Token {
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(),
-                identifier = Identifier(userId, TokenIdentifier.USER),
+                identifier = Identifier(userId, TokenPrincipalType.USER),
                 expiresOn = Instant.now().plusSeconds(7 * 24 * 60 * 60),
             )
         }
@@ -56,7 +54,7 @@ data class Token(
             return Token(
                 tokenId = tokenId,
                 value = generateTokenValue(DEVICE_TOKEN_LENGTH),
-                identifier = Identifier(invitation.invitationId, TokenIdentifier.INVITATION),
+                identifier = Identifier(invitation.invitationId, TokenPrincipalType.INVITATION),
                 expiresOn = Instant.now().plusSeconds(6 * 60 * 60),
             )
         }

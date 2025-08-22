@@ -1,9 +1,13 @@
 package com.robotutor.nexora.modules.auth.domain.strategy
 
-import com.robotutor.nexora.shared.domain.model.Identifier
 import com.robotutor.nexora.modules.auth.domain.model.Token
-import com.robotutor.nexora.shared.domain.model.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.PrincipalContext
+import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 
 interface TokenGenerationStrategy {
-    fun generate(identifier: Identifier<TokenIdentifier>, metadata: Map<String, Any?>?): Token
+    fun generate(
+        principalType: TokenPrincipalType,
+        principalContext: PrincipalContext,
+        metadata: Map<String, String>
+    ): Token
 }

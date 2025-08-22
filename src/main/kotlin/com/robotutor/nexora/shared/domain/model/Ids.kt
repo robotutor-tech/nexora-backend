@@ -22,4 +22,7 @@ value class RoleId(val value: String)
 value class UserId(val value: String)
 
 @JvmInline
+value class WidgetId(val value: String)
+
+@JvmInline
 value class ZoneId(val value: String)

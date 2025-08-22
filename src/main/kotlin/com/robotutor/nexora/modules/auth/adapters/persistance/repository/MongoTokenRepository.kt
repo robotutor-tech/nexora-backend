@@ -27,6 +27,7 @@ class MongoTokenRepository(
             .map { tokenDocument -> (tokenDocument.metadata["authorizationToken"] ?: "") as String }
             .flatMap { tokenId -> tokenRepository.deleteByTokenId(tokenId) }
             .map { true }
+            .switchIfEmpty(createMono(false))
             .onErrorResume { createMono(true) }
     }
 }

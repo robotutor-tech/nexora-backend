@@ -1,11 +1,8 @@
 package com.robotutor.nexora.modules.auth.application
 
-import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.auth.application.command.ValidateTokenCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenValidationResult
-import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
-import com.robotutor.nexora.modules.auth.domain.repository.TokenRepository
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextResponseMapper
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -14,21 +11,18 @@ import reactor.core.publisher.Mono
 
 @Service
 class ValidateTokenUseCase(
-    private val tokenRepository: TokenRepository,
+    private val tokenUseCase: TokenUseCase,
 ) {
     private val logger = Logger(this::class.java)
 
     fun validate(validateTokenCommand: ValidateTokenCommand): Mono<TokenValidationResult> {
-        return tokenRepository.findByValue(validateTokenCommand.token)
-            .switchIfEmpty(
-                createMonoError(UnAuthorizedException(NexoraError.NEXORA0206))
-            )
+        return tokenUseCase.findTokenByValue(validateTokenCommand.token)
             .map {
                 TokenValidationResult(
                     isValid = true,
-                    principalId = it.identifier.id,
-                    principalType = it.identifier.type,
-                    expiresAt = it.expiresAt,
+                    principal = PrincipalContextResponseMapper.toPrincipalContextResponse(it.principal),
+                    principalType = it.principalType,
+                    expiresAt = it.expiresAt
                 )
             }
             .logOnSuccess(logger, "Successfully validated token")

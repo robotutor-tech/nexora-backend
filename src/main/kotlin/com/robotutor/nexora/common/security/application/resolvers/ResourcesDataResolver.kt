@@ -1,9 +1,9 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
-import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.application.annotations.RequireAccess
-import com.robotutor.nexora.common.security.gateway.IAMGateway
-import com.robotutor.nexora.common.security.models.ResourcesData
+import com.robotutor.nexora.common.security.application.ports.EntitlementFacade
+import com.robotutor.nexora.common.security.createMono
+import com.robotutor.nexora.shared.domain.model.ResourcesData
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
 @Component
 class ResourcesDataResolver(
     private val handlerMapping: RequestMappingHandlerMapping,
-    private val iamGateway: IAMGateway
+    private val entitlementFacade: EntitlementFacade,
 ) : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.parameterType == ResourcesData::class.java
@@ -30,12 +30,12 @@ class ResourcesDataResolver(
         return handlerMapping.getHandler(exchange).flatMap { handler ->
             if (handler is HandlerMethod) {
                 val requirePolicy = handler.getMethodAnnotation(RequireAccess::class.java)
-//                if (requirePolicy == null) {
+                if (requirePolicy == null) {
                     createMono(ResourcesData(emptyList()))
-//                } else {
-//                    iamGateway.getEntitlements(requirePolicy.action, requirePolicy.resource)
-//                        .map { ResourcesData(it) }
-//                }
+                } else {
+                    entitlementFacade.getEntitlements(requirePolicy.action, requirePolicy.resource).collectList()
+                        .map { ResourcesData(it) }
+                }
             } else {
                 createMono(ResourcesData(emptyList()))
             }

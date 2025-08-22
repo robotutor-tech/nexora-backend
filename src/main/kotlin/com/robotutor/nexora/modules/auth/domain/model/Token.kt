@@ -1,17 +1,17 @@
 package com.robotutor.nexora.modules.auth.domain.model
 
-import com.robotutor.nexora.shared.domain.model.Identifier
-import com.robotutor.nexora.shared.domain.model.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import java.time.Instant
 
 data class Token(
     val tokenId: TokenId,
-    val identifier: Identifier<TokenIdentifier>,
+    val principalType: com.robotutor.nexora.shared.domain.model.TokenPrincipalType,
+    val principal: PrincipalContext,
     val tokenType: TokenType,
     val value: TokenValue,
     val issuedAt: Instant,
     val expiresAt: Instant,
-    val metadata: Map<String, Any?> = emptyMap()
+    val metadata: Map<String, Any> = emptyMap()
 )
 
 data class TokenId(val value: String)

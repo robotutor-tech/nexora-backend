@@ -1,7 +1,6 @@
 package com.robotutor.nexora.modules.feed.models
 
 import com.robotutor.nexora.modules.feed.controllers.view.FeedRequest
-import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -21,7 +20,7 @@ data class Feed(
     @Indexed(unique = true)
     val feedId: FeedId,
     @Indexed
-    val premisesId: PremisesId,
+    val premisesId: String,
     val name: String,
     var value: Number = 0,
     val type: FeedType,

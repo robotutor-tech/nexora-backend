@@ -9,6 +9,8 @@ import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
 import com.robotutor.nexora.shared.logger.serializer.DefaultSerializer
 import com.robotutor.nexora.common.security.createFlux
 import com.robotutor.nexora.common.security.models.PremisesActorData
+import com.robotutor.nexora.shared.domain.event.DomainEvent
+import com.robotutor.nexora.shared.domain.event.EventPublisher
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
 import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
@@ -74,4 +76,5 @@ class KafkaPublisher(
         }
         return headers
     }
+
 }

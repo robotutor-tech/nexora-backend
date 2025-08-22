@@ -3,6 +3,7 @@ package com.robotutor.nexora.common.security.adapters.client
 import com.robotutor.nexora.common.security.application.ports.TokenValidator
 import com.robotutor.nexora.common.security.domain.model.ValidateTokenResult
 import com.robotutor.nexora.modules.auth.interfaces.controller.AuthController
+import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextResponseMapper
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -13,7 +14,7 @@ class AuthTokenValidator(private val authController: AuthController) : TokenVali
             .map {
                 ValidateTokenResult(
                     isValid = it.isValid,
-                    principalId = it.principalId,
+                    principal = PrincipalContextResponseMapper.toPrincipalContext(it.principal),
                     principalType = it.principalType,
                     expiresAt = it.expiresAt,
                 )

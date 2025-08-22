@@ -1,12 +1,8 @@
 package com.robotutor.nexora.modules.auth.interfaces.controller.dto
 
-import com.robotutor.nexora.common.security.models.ActorId
-import com.robotutor.nexora.common.security.models.UserId
 import com.robotutor.nexora.modules.auth.models.DeviceInvitation
-import com.robotutor.nexora.modules.auth.models.InvitationId
 import com.robotutor.nexora.modules.auth.models.Token
 import com.robotutor.nexora.modules.auth.models.UserInvitation
-import com.robotutor.nexora.modules.premises.models.PremisesId
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
@@ -19,18 +15,18 @@ data class DeviceInvitationRequest(
 
 data class UserInvitationRequest(
     @field:NotBlank(message = "User id is required")
-    val userId: UserId,
+    val userId: String,
     @field:NotBlank(message = "Device Name is required")
     @field:Size(min = 1, max = 5, message = "Roles should be at least 1 or at max 5")
     val roles: List<String>,
 )
 
 data class DeviceInvitationView(
-    val invitationId: InvitationId,
-    val premisesId: PremisesId,
+    val invitationId: String,
+    val premisesId: String,
     val name: String,
     val token: String,
-    val invitedBy: ActorId,
+    val invitedBy: String,
     val zoneId: String
 ) {
     companion object {
@@ -48,10 +44,10 @@ data class DeviceInvitationView(
 }
 
 data class UserInvitationView(
-    val invitationId: InvitationId,
-    val premisesId: PremisesId,
-    val userId: UserId,
-    val createdBy: UserId
+    val invitationId: String,
+    val premisesId: String,
+    val userId: String,
+    val createdBy: String
 ) {
     companion object {
         fun from(userInvitation: UserInvitation): UserInvitationView {

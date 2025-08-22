@@ -2,7 +2,8 @@ package com.robotutor.nexora.modules.auth.application.dto
 
 import com.robotutor.nexora.modules.auth.domain.model.Token
 import com.robotutor.nexora.modules.auth.domain.model.Tokens
-import com.robotutor.nexora.shared.domain.model.TokenIdentifier
+import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
+import com.robotutor.nexora.shared.interfaces.dto.PrincipalContextResponse
 import java.time.Instant
 
 data class TokenResponse(
@@ -33,7 +34,7 @@ data class TokenResponses(
 
 data class TokenValidationResult(
     val isValid: Boolean,
-    val principalId: String,
-    val principalType: TokenIdentifier,
+    val principal: PrincipalContextResponse,
+    val principalType: TokenPrincipalType,
     val expiresAt: Instant,
 )

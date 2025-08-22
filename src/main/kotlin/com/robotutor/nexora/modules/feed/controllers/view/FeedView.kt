@@ -3,7 +3,6 @@ package com.robotutor.nexora.modules.feed.controllers.view
 import com.robotutor.nexora.modules.feed.models.Feed
 import com.robotutor.nexora.modules.feed.models.FeedId
 import com.robotutor.nexora.modules.feed.models.FeedType
-import com.robotutor.nexora.modules.premises.models.PremisesId
 import jakarta.validation.constraints.NotBlank
 
 data class FeedRequest(
@@ -16,7 +15,7 @@ data class FeedValueRequest(val value: Number)
 
 data class FeedView(
     val feedId: FeedId,
-    val premisesId: PremisesId,
+    val premisesId: String,
     val name: String,
     val value: Number,
     val type: FeedType,

@@ -1,7 +1,6 @@
 package com.robotutor.nexora.modules.auth.services
 
 import com.robotutor.nexora.common.security.service.IdGeneratorService
-import com.robotutor.nexora.modules.auth.gateways.IAMGateway
 import com.robotutor.nexora.modules.auth.repositories.TokenRepository
 import com.robotutor.nexora.shared.logger.Logger
 import org.springframework.stereotype.Service
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service
 class TokenService(
     private val tokenRepository: TokenRepository,
     private val idGeneratorService: IdGeneratorService,
-    private val iamGateway: IAMGateway
 ) {
     val logger = Logger(this::class.java)
 

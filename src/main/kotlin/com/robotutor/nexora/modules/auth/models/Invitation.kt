@@ -2,8 +2,6 @@ package com.robotutor.nexora.modules.auth.models
 
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceInvitationRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.UserInvitationRequest
-import com.robotutor.nexora.modules.iam.models.RoleId
-import com.robotutor.nexora.modules.premises.models.PremisesId
 import com.robotutor.nexora.common.security.models.ActorId
 import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.common.security.models.UserId
@@ -18,9 +16,9 @@ import java.time.Instant
 interface Invitation {
     fun markAsAccepted(): Invitation
 
-    val invitationId: InvitationId
-    val premisesId: PremisesId
-    val invitedBy: ActorId
+    val invitationId: String
+    val premisesId: String
+    val invitedBy: String
     val createdAt: Instant
     var status: InvitationStatus
 }
@@ -35,7 +33,7 @@ data class DeviceInvitation(
     @Indexed(unique = true)
     override val invitationId: InvitationId,
     @Indexed
-    override val premisesId: PremisesId,
+    override val premisesId: String,
     val name: String,
     val zoneId: String,
     override val invitedBy: ActorId,
@@ -74,9 +72,9 @@ data class UserInvitation(
     @Id
     var id: ObjectId? = null,
     override val invitationId: InvitationId,
-    override val premisesId: PremisesId,
+    override val premisesId: String,
     val userId: UserId,
-    val roles: List<RoleId> = emptyList(),
+    val roles: List<String> = emptyList(),
     override val invitedBy: ActorId,
     override val createdAt: Instant = Instant.now(),
     override var status: InvitationStatus = InvitationStatus.INVITED,

@@ -2,14 +2,14 @@ package com.robotutor.nexora.shared.adapters.messaging.models
 
 import com.robotutor.nexora.modules.audit.domain.model.AuditStatus
 import com.robotutor.nexora.common.security.models.ActorId
-import com.robotutor.nexora.shared.domain.model.ActorIdentifier
+import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
 import com.robotutor.nexora.shared.domain.model.Identifier
 import java.time.Instant
 
 data class AuditMessage(
     val status: AuditStatus,
     val actorId: ActorId?,
-    val identifier: Identifier<ActorIdentifier>?,
+    val identifier: Identifier<ActorPrincipalType>?,
     val metadata: Map<String, Any?>,
     val event: String,
     val accountId: String? = null,

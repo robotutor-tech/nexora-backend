@@ -14,14 +14,14 @@ data class PremisesWithActorView(
     val createdAt: Instant,
     val actor: PremisesActorView,
 ) {
-    companion object {
-        fun from(premises: PremisesView, actorView: PremisesActorView): PremisesWithActorView {
-            return PremisesWithActorView(
-                premisesId = premises.premisesId,
-                name = premises.name,
-                createdAt = premises.createdAt,
-                actor = actorView
-            )
-        }
-    }
+//    companion object {
+//        fun from(premises: PremisesView, actorView: PremisesActorView): PremisesWithActorView {
+//            return PremisesWithActorView(
+//                premisesId = premises.premisesId,
+//                name = premises.name,
+//                createdAt = premises.createdAt,
+//                actor = actorView
+//            )
+//        }
+//    }
 }
