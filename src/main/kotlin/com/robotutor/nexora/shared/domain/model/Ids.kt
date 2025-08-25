@@ -1,28 +1,27 @@
 package com.robotutor.nexora.shared.domain.model
 
-@JvmInline
-value class ActorId(val value: String)
+interface SequenceId {
+    val value: String
+}
 
-@JvmInline
-value class DeviceId(val value: String)
+open class ResourceId(override val value: String) : SequenceId
 
-@JvmInline
-value class Email(val value: String)
+data class ActorId(override val value: String) : SequenceId
 
-@JvmInline
-value class FeedId(val value: String)
+data class DeviceId(override val value: String) : ResourceId(value)
 
-@JvmInline
-value class PremisesId(val value: String)
+data class Email(override val value: String) : SequenceId
 
-@JvmInline
-value class RoleId(val value: String)
+data class FeedId(override val value: String) : ResourceId(value)
 
-@JvmInline
-value class UserId(val value: String)
+data class InvitationId(override val value: String) : SequenceId
 
-@JvmInline
-value class WidgetId(val value: String)
+data class PremisesId(override val value: String) : ResourceId(value)
 
-@JvmInline
-value class ZoneId(val value: String)
+data class RoleId(override val value: String) : SequenceId
+
+data class UserId(override val value: String) : SequenceId
+
+data class WidgetId(override val value: String) : ResourceId(value)
+
+data class ZoneId(override val value: String) : ResourceId(value)

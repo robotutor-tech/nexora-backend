@@ -10,8 +10,9 @@ import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.model.AuthUser
 import com.robotutor.nexora.modules.auth.domain.repository.AuthRepository
 import com.robotutor.nexora.modules.auth.domain.service.PasswordService
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.BadDataException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.DuplicateDataException
+import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.domain.exception.BadDataException
+import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
 import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.UserContext
 import com.robotutor.nexora.shared.logger.Logger
@@ -30,25 +31,20 @@ class AuthUserUseCase(
     private val logger = Logger(this::class.java)
 
     fun register(registerAuthUserCommand: RegisterAuthUserCommand): Mono<AuthUserResponse> {
-        return authRepository.existsByUserId(registerAuthUserCommand.userId)
-            .flatMap {
-                if (it) {
-                    createMonoError(DuplicateDataException(NexoraError.NEXORA0201))
-                } else {
-                    registerAuthUser(registerAuthUserCommand)
-                }
-            }
+        return authRepository.findByEmail(registerAuthUserCommand.email)
+            .flatMap { createMonoError<AuthUser>(DuplicateDataException(NexoraError.NEXORA0201)) }
+            .switchIfEmpty(registerAuthUser(registerAuthUserCommand))
+            .publishEvents()
             .logOnSuccess(logger, "Successfully registered auth user for ${registerAuthUserCommand.userId}")
             .logOnError(logger, "", "Failed to register auth user ${registerAuthUserCommand.userId}")
             .map { AuthUserResponse.from(it) }
-        // TODO: Audit for success or failure
     }
 
-    private fun registerAuthUser(registerAuthUserCommand: RegisterAuthUserCommand): Mono<AuthUser> {
-        val authUser = AuthUser(
-            userId = registerAuthUserCommand.userId,
-            email = registerAuthUserCommand.email,
-            password = passwordService.encodePassword(registerAuthUserCommand.password),
+    private fun registerAuthUser(command: RegisterAuthUserCommand): Mono<AuthUser> {
+        val authUser = AuthUser.register(
+            userId = command.userId,
+            email = command.email,
+            password = passwordService.encodePassword(command.password),
         )
         return authRepository.save(authUser)
     }
@@ -61,7 +57,6 @@ class AuthUserUseCase(
                     UserContext(authUser.userId)
                 )
             }
-            .map { TokenResponses.from(it) }
     }
 
     private fun validateCredentials(loginCommand: LoginCommand): Mono<AuthUser> {

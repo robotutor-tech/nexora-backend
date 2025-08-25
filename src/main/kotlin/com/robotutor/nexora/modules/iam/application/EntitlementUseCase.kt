@@ -24,10 +24,10 @@ class EntitlementUseCase(
     val logger = Logger(this::class.java)
 
     fun createEntitlement(createEntitlementCommand: CreateEntitlementCommand): Mono<Entitlement> {
-        return idGeneratorService.generateId(IdType.ENTITLEMENT_ID)
+        return idGeneratorService.generateId(IdType.ENTITLEMENT_ID, EntitlementId::class.java)
             .map { entitlementId ->
-                Entitlement(
-                    entitlementId = EntitlementId(entitlementId),
+                Entitlement.create(
+                    entitlementId = entitlementId,
                     roleId = createEntitlementCommand.roleId,
                     premisesId = createEntitlementCommand.premisesId,
                     action = createEntitlementCommand.action,
@@ -48,5 +48,4 @@ class EntitlementUseCase(
             action
         )
     }
-
 }

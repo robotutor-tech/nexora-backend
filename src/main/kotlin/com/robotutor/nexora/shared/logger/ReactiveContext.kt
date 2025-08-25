@@ -1,6 +1,5 @@
 package com.robotutor.nexora.shared.logger
 
-import com.robotutor.nexora.common.security.models.PremisesId
 import reactor.util.context.Context
 import reactor.util.context.ContextView
 
@@ -17,7 +16,7 @@ internal object ReactiveContext {
         return context.put(TRACE_ID_HEADER_KEY, traceId)
     }
 
-    fun putPremisesId(context: Context, premisesId: PremisesId): Context {
+    fun putPremisesId(context: Context, premisesId: String): Context {
         return context.put(PREMISES_ID_HEADER_KEY, premisesId)
     }
 

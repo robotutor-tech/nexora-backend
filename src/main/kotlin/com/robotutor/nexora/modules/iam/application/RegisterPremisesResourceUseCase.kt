@@ -24,8 +24,8 @@ class RegisterPremisesResourceUseCase(
             .flatMap { roleType ->
                 val createRoleCommand = CreateRoleCommand(
                     premisesId = registerPremisesResourceCommand.premisesId,
-                    name = roleType.name,
-                    role = roleType
+                    name = Name(roleType.name),
+                    roleType = roleType
                 )
                 roleUseCase.createRole(createRoleCommand)
             }
@@ -33,7 +33,7 @@ class RegisterPremisesResourceUseCase(
                 val createEntitlementCommand = CreateEntitlementCommand(
                     premisesId = role.premisesId,
                     roleId = role.roleId,
-                    resourceId = role.premisesId.value,
+                    resourceId = role.premisesId,
                     resourceType = ResourceType.PREMISES,
                     action = ActionType.READ
                 )
@@ -66,7 +66,7 @@ class RegisterPremisesResourceUseCase(
                         val entitlementCommand = CreateEntitlementCommand(
                             action = it.first,
                             resourceType = it.second,
-                            resourceId = if (it.second == ResourceType.PREMISES) premisesId.value else "*",
+                            resourceId = if (it.second == ResourceType.PREMISES) premisesId else ResourceId("*"),
                             roleId = role.roleId,
                             premisesId = premisesId
                         )

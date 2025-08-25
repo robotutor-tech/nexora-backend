@@ -8,7 +8,7 @@ data class ActorResponse(
     val role: Role,
     val premisesId: PremisesId,
     val principalType: ActorPrincipalType,
-    val principal: PrincipalContext,
+    val principal: ActorPrincipalContext,
 )
 
 interface ActorDataRetriever {

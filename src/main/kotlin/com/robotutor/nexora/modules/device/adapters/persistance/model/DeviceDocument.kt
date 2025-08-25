@@ -9,7 +9,10 @@ import com.robotutor.nexora.modules.device.domain.model.FeedIds
 import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.DeviceId
 import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.model.ModelNo
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.model.SerialNo
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -31,23 +34,23 @@ data class DeviceDocument(
     val modelNo: String,
     val serialNo: String,
     val type: DeviceType,
-    var feedIds: List<String> = emptyList(),
-    val state: DeviceState = DeviceState.ACTIVE,
-    val health: DeviceHealth = DeviceHealth.OFFLINE,
-    val os: DeviceOS? = null,
+    val feedIds: List<String>,
+    val state: DeviceState,
+    val health: DeviceHealth,
+    val os: DeviceOS?,
     val createdBy: String,
-    val createdAt: Instant = Instant.now(),
+    val createdAt: Instant,
     @Version
-    val version: Long? = null
+    val version: Long?
 ) {
     companion object {
         fun from(device: Device): DeviceDocument {
             return DeviceDocument(
                 deviceId = device.deviceId.value,
                 premisesId = device.premisesId.value,
-                name = device.name,
-                modelNo = device.modelNo,
-                serialNo = device.serialNo,
+                name = device.name.value,
+                modelNo = device.modelNo.value,
+                serialNo = device.serialNo.value,
                 type = device.type,
                 feedIds = device.feedIds.asList().map { it.value },
                 state = device.state,
@@ -64,9 +67,9 @@ data class DeviceDocument(
         return Device(
             deviceId = DeviceId(deviceId),
             premisesId = PremisesId(premisesId),
-            name = name,
-            modelNo = modelNo,
-            serialNo = serialNo,
+            name = Name(name),
+            modelNo = ModelNo(modelNo),
+            serialNo = SerialNo(serialNo),
             type = type,
             feedIds = FeedIds(feedIds.map { FeedId(it) }),
             state = state,

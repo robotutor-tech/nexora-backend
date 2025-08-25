@@ -1,19 +1,11 @@
 package com.robotutor.nexora.modules.device.application.command
 
-import com.robotutor.nexora.modules.device.domain.model.DeviceHealth
-import com.robotutor.nexora.modules.device.domain.model.DeviceOS
-import com.robotutor.nexora.modules.device.domain.model.DeviceState
 import com.robotutor.nexora.modules.device.domain.model.DeviceType
+import com.robotutor.nexora.shared.domain.model.ModelNo
+import com.robotutor.nexora.shared.domain.model.SerialNo
 
 data class CreateDeviceCommand(
-    val premisesId: String,
-    val name: String,
-    val modelNo: String,
-    val serialNo: String,
+    val modelNo: ModelNo,
+    val serialNo: SerialNo,
     val type: DeviceType,
-    var feedIds: List<String> = emptyList(),
-    val state: DeviceState = DeviceState.ACTIVE,
-    val health: DeviceHealth = DeviceHealth.OFFLINE,
-    val os: DeviceOS? = null,
-    val createdBy: String,
 )

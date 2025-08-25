@@ -12,8 +12,10 @@ import com.robotutor.nexora.shared.domain.model.PrincipalData
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.common.security.domain.model.ValidateTokenResult
 import com.robotutor.nexora.shared.adapters.webclient.controllers.ExceptionHandlerRegistry
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.model.DeviceData
 import com.robotutor.nexora.shared.domain.model.InternalContext
+import com.robotutor.nexora.shared.domain.model.InvitationData
 import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.ReactiveContext.putPremisesId
@@ -100,12 +102,15 @@ class AuthFilter(
         return when (principalData) {
             is UserData -> context.put(UserData::class.java, principalData)
             is InternalData -> context.put(InternalData::class.java, principalData)
+            is InvitationData -> context.put(InvitationData::class.java, principalData)
+            is DeviceData -> context.put(DeviceData::class.java, principalData)
             is ActorData -> setContextForResolvers(
                 principalData.principal,
                 context.put(ActorData::class.java, principalData),
                 exchange
             )
         }
+            .put(PrincipalData::class.java, principalData)
     }
 }
 

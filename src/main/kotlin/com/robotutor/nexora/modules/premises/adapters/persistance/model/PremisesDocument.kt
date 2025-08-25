@@ -1,6 +1,7 @@
 package com.robotutor.nexora.modules.premises.adapters.persistance.model
 
 import com.robotutor.nexora.modules.premises.domain.model.Premises
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.UserId
 import org.bson.types.ObjectId
@@ -29,7 +30,7 @@ data class PremisesDocument(
     fun toDomainModel(): Premises {
         return Premises(
             premisesId = PremisesId(premisesId),
-            name = name,
+            name = Name(name),
             owner = UserId(owner),
             createdAt = createdAt,
             version = version
@@ -40,7 +41,7 @@ data class PremisesDocument(
         fun from(premises: Premises): PremisesDocument {
             return PremisesDocument(
                 premisesId = premises.premisesId.value,
-                name = premises.name,
+                name = premises.name.value,
                 owner = premises.owner.value,
                 createdAt = premises.createdAt,
                 version = premises.version,

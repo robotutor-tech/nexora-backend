@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class InternalUserDataRetrieverStrategy() : DataRetrieverStrategy {
-    override fun getPrincipalData(principalContext: PrincipalContext): Mono<PrincipalData> {
+class InternalUserDataRetrieverStrategy() : DataRetrieverStrategy<PrincipalContext, InternalData> {
+    override fun getPrincipalData(context: PrincipalContext): Mono<InternalData> {
         return createMono(InternalData("internal data"))
     }
 }

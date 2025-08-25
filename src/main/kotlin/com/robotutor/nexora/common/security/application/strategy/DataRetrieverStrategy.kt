@@ -4,6 +4,6 @@ import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import com.robotutor.nexora.shared.domain.model.PrincipalData
 import reactor.core.publisher.Mono
 
-interface DataRetrieverStrategy {
-    fun getPrincipalData(principalContext: PrincipalContext): Mono<PrincipalData>
+interface DataRetrieverStrategy<C : PrincipalContext, P : PrincipalData> {
+    fun getPrincipalData(context:  C): Mono<P>
 }

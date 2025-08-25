@@ -23,7 +23,7 @@ data class ActorDocument(
     @Indexed
     val premisesId: String,
     val principalType: ActorPrincipalType,
-    val principal: PrincipalContext,
+    val principal: ActorPrincipalContext,
     val roleIds: List<String>,
     val state: ActorState,
     val createdAt: Instant,

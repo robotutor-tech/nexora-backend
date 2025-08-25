@@ -12,7 +12,7 @@ class EntitlementMapper {
                 premisesId = entitlement.premisesId.value,
                 action = entitlement.action,
                 resourceType = entitlement.resourceType,
-                resourceId = entitlement.resourceId,
+                resourceId = entitlement.resourceId.value,
                 status = entitlement.status
             )
         }

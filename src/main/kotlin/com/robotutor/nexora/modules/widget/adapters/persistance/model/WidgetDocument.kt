@@ -3,6 +3,7 @@ package com.robotutor.nexora.modules.widget.adapters.persistance.model
 import com.robotutor.nexora.modules.widget.domain.model.Widget
 import com.robotutor.nexora.modules.widget.domain.model.WidgetType
 import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.WidgetId
 import com.robotutor.nexora.shared.domain.model.ZoneId
@@ -38,7 +39,7 @@ data class WidgetDocument(
         return Widget(
             widgetId = WidgetId(widgetId),
             premisesId = PremisesId(premisesId),
-            name = name,
+            name = Name(name),
             feedId = FeedId(feedId),
             zoneId = ZoneId(zoneId),
             type = type,

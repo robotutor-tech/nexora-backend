@@ -9,7 +9,7 @@ import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.*
 import com.robotutor.nexora.modules.auth.interfaces.controller.mapper.AuthUserMapper
 import com.robotutor.nexora.modules.auth.interfaces.controller.mapper.TokenMapper
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.model.UserData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*

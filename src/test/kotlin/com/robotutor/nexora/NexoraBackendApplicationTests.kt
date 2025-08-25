@@ -10,10 +10,6 @@ class NexoraBackendApplicationTests {
     @Test
     fun contextLoads() {
         Mono.just("data")
-            .map {
-                println("-----$it--------------")
-                it
-            }
             .subscribe()
     }
 

@@ -9,7 +9,7 @@
 //    var id: ObjectId? = null,
 //    val conditionId: ConditionId,
 //    val premisesId: PremisesId,
-//    val name: String,
+//    val name: Name,
 //    val description: String? = null,
 //    val config: ConditionConfig,
 //    val createdOn: Instant = Instant.now(),

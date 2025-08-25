@@ -1,6 +1,5 @@
 package com.robotutor.nexora.modules.auth.interfaces.controller.dto
 
-import com.robotutor.nexora.common.security.models.UserId
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
@@ -8,7 +7,7 @@ import jakarta.validation.constraints.Size
 
 data class AuthUserRequest(
     @field:NotBlank(message = "UserId is required")
-    val userId: UserId,
+    val userId: String,
     @field:Email(message = "Email should be valid")
     val email: String,
     @field:NotBlank(message = "Password is required")

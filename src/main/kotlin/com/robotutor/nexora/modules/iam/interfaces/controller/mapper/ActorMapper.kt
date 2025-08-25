@@ -4,7 +4,8 @@ import com.robotutor.nexora.modules.iam.domain.model.Actor
 import com.robotutor.nexora.modules.iam.domain.model.Role
 import com.robotutor.nexora.modules.iam.interfaces.controller.dto.ActorResponse
 import com.robotutor.nexora.modules.iam.interfaces.controller.dto.ActorWithRolesResponse
-import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextResponseMapper
+import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextMapper
 
 class ActorMapper {
     companion object {
@@ -14,7 +15,7 @@ class ActorMapper {
                 premisesId = actor.premisesId.value,
                 roles = roles.map { RoleMapper.toRoleResponse(it) },
                 principalType = actor.principalType,
-                principal = PrincipalContextResponseMapper.toPrincipalContextResponse(actor.principal),
+                principal = PrincipalContextMapper.toActorPrincipalContextResponse(actor.principal),
                 state = actor.state,
             )
         }
@@ -24,9 +25,18 @@ class ActorMapper {
                 actorId = actor.actorId.value,
                 premisesId = actor.premisesId.value,
                 role = RoleMapper.toRoleResponse(role),
-                state = actor.state,
                 principalType = actor.principalType,
-                principal = PrincipalContextResponseMapper.toPrincipalContextResponse(actor.principal),
+                principal = PrincipalContextMapper.toActorPrincipalContextResponse(actor.principal),
+            )
+        }
+
+        fun toActorResponse(actorData: ActorData): ActorResponse {
+            return ActorResponse(
+                actorId = actorData.actorId.value,
+                premisesId = actorData.premisesId.value,
+                role = RoleMapper.toRoleResponse(actorData.role),
+                principalType = actorData.principalType,
+                principal = PrincipalContextMapper.toActorPrincipalContextResponse(actorData.principal),
             )
         }
     }

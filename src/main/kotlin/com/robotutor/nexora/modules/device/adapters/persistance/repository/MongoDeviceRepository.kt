@@ -21,18 +21,12 @@ class MongoDeviceRepository(private val deviceDocumentRepository: DeviceDocument
             .map { it.toDomainModel() }
     }
 
-    override fun findAllByPremisesIdAndDeviceIdsIn(
-        premisesId: PremisesId,
-        deviceIds: List<DeviceId>
-    ): Flux<Device> {
+    override fun findAllByPremisesIdAndDeviceIdsIn(premisesId: PremisesId, deviceIds: List<DeviceId>): Flux<Device> {
         return deviceDocumentRepository.findAllByPremisesIdAndDeviceIdIn(premisesId.value, deviceIds.map { it.value })
             .map { it.toDomainModel() }
     }
 
-    override fun findByPremisesIdAndDeviceId(
-        premisesId: PremisesId,
-        deviceId: DeviceId
-    ): Mono<Device> {
+    override fun findByPremisesIdAndDeviceId(premisesId: PremisesId, deviceId: DeviceId): Mono<Device> {
         return deviceDocumentRepository.findByDeviceIdAndPremisesId(deviceId.value, premisesId.value)
             .map { it.toDomainModel() }
     }

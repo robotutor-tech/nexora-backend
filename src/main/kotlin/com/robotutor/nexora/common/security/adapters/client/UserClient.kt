@@ -4,6 +4,7 @@ import com.robotutor.nexora.common.security.application.ports.UserDataRetriever
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.modules.user.interfaces.controller.UserController
 import com.robotutor.nexora.shared.domain.model.Email
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.UserId
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -15,7 +16,7 @@ class UserClient(private val userController: UserController) : UserDataRetriever
             .map {
                 UserData(
                     userId = UserId(it.userId),
-                    name = it.name,
+                    name = Name(it.name),
                     email = Email(it.email),
                     registeredAt = it.registeredAt
                 )

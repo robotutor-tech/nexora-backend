@@ -15,3 +15,5 @@ data class DeviceResponse(
     val health: DeviceHealth,
     val feeds: List<String>,
 )
+
+data class DeviceTokensResponse(val token: String, val refreshToken: String)

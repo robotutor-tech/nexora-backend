@@ -3,7 +3,7 @@ package com.robotutor.nexora.common.security.application.resolvers
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.model.UserData
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component

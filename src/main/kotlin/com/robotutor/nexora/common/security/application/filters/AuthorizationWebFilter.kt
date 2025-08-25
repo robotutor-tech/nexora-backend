@@ -1,14 +1,14 @@
 package com.robotutor.nexora.common.security.application.filters
 
-import com.robotutor.nexora.common.security.application.annotations.RequireAccess
+import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.common.security.application.ports.EntitlementFacade
 import com.robotutor.nexora.common.security.application.ports.OpaFacade
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
 import com.robotutor.nexora.common.security.domain.model.PolicyInput
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.AccessDeniedException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.exception.AccessDeniedException
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.ResourceContext
 import org.springframework.core.annotation.Order
@@ -30,6 +30,7 @@ class AuthorizationWebFilter(
 ) : WebFilter {
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         return handlerMapping.getHandler(exchange)
+            .switchIfEmpty(chain.filter(exchange))
             .flatMap { handler ->
                 if (handler is HandlerMethod) {
                     val requirePolicy = handler.getMethodAnnotation(RequireAccess::class.java)
@@ -59,7 +60,7 @@ class AuthorizationWebFilter(
                         val resourceId = resolveResourceId(exchange, requirePolicy.idParam) ?: "*"
                         val input = PolicyInput(
                             resource = ResourceContext(requirePolicy.resource, resourceId, requirePolicy.action),
-                            premisesId = actorData.premisesId,
+                            premisesId = actorData.premisesId.value,
                             entitlements = entitlements
                         )
                         opaFacade.evaluate(input)

@@ -4,7 +4,9 @@ import com.robotutor.nexora.modules.widget.domain.model.Widget
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.WidgetId
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 interface WidgetRepository {
     fun findAllByPremisesIdAndWidgetIdIn(premisesId: PremisesId, widgetIds: List<WidgetId>): Flux<Widget>
+    fun save(widget: Widget): Mono<Widget>
 }

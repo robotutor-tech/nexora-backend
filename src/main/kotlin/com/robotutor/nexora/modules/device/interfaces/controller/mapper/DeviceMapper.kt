@@ -1,20 +1,21 @@
 package com.robotutor.nexora.modules.device.interfaces.controller.mapper
 
-import com.robotutor.nexora.common.security.models.InvitationData
 import com.robotutor.nexora.modules.device.application.command.CreateDeviceCommand
+import com.robotutor.nexora.modules.device.application.facade.dto.DeviceTokens
 import com.robotutor.nexora.modules.device.domain.model.Device
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceRequest
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceResponse
+import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceTokensResponse
+import com.robotutor.nexora.modules.seed.SeedData
+import com.robotutor.nexora.shared.domain.model.ModelNo
+import com.robotutor.nexora.shared.domain.model.SerialNo
 
 object DeviceMapper {
-    fun toCreateDeviceCommand(deviceRequest: DeviceRequest, invitationData: InvitationData): CreateDeviceCommand {
+    fun toCreateDeviceCommand(deviceRequest: DeviceRequest): CreateDeviceCommand {
         return CreateDeviceCommand(
-            premisesId = invitationData.premisesId,
-            name = invitationData.name,
-            modelNo = deviceRequest.modelNo,
-            serialNo = deviceRequest.serialNo,
-            type = deviceRequest.deviceType,
-            createdBy = invitationData.invitedBy,
+            modelNo = ModelNo(deviceRequest.modelNo),
+            serialNo = SerialNo(deviceRequest.serialNo),
+            type = SeedData.getDeviceType(),
         )
     }
 
@@ -22,13 +23,20 @@ object DeviceMapper {
         return DeviceResponse(
             deviceId = device.deviceId.value,
             premisesId = device.premisesId.value,
-            name = device.name,
-            modelNo = device.modelNo,
-            serialNo = device.serialNo,
+            name = device.name.value,
+            modelNo = device.modelNo.value,
+            serialNo = device.serialNo.value,
             type = device.type,
             state = device.state,
             health = device.health,
             feeds = device.feedIds.asList().map { it.value }
+        )
+    }
+
+    fun toDeviceTokenResponse(deviceTokens: DeviceTokens): DeviceTokensResponse {
+        return DeviceTokensResponse(
+            token = deviceTokens.token,
+            refreshToken = deviceTokens.refreshToken
         )
     }
 }

@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono
 
 interface UserRepository {
     fun save(user: User): Mono<User>
-    fun existsByEmail(email: Email): Mono<Boolean>
     fun deleteByUserId(userId: UserId): Mono<User>
     fun findByUserId(userId: UserId): Mono<User>
+    fun findByEmail(email: Email): Mono<User>
 }

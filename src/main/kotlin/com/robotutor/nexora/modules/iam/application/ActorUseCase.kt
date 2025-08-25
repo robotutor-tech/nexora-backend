@@ -6,7 +6,7 @@ import com.robotutor.nexora.modules.iam.domain.model.Actor
 import com.robotutor.nexora.modules.iam.domain.model.IdType
 import com.robotutor.nexora.modules.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.modules.iam.exceptions.NexoraError
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
+import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.shared.logger.Logger
@@ -24,10 +24,10 @@ class ActorUseCase(
     val logger = Logger(this::class.java)
 
     fun createActor(createActorCommand: CreateActorCommand): Mono<Actor> {
-        return idGeneratorService.generateId(IdType.ACTOR_ID)
+        return idGeneratorService.generateId(IdType.ACTOR_ID, ActorId::class.java)
             .map { actorId ->
-                Actor(
-                    actorId = ActorId(actorId),
+                Actor.create(
+                    actorId = actorId,
                     premisesId = createActorCommand.premisesId,
                     principalType = createActorCommand.principalType,
                     principal = createActorCommand.principal,

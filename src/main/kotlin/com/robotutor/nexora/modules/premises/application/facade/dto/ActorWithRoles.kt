@@ -13,6 +13,6 @@ data class ActorWithRoles(
 data class Role(
     val roleId: RoleId,
     val premisesId: PremisesId,
-    val name: String,
+    val name: Name,
     val roleType: RoleType,
 )

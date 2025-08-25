@@ -2,6 +2,7 @@ package com.robotutor.nexora.modules.user.adapters.persistance.model
 
 import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.shared.domain.model.Email
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.UserId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.mongodb.core.index.Indexed
@@ -22,7 +23,7 @@ data class UserDocument(
     fun toDomainModel(): User {
         return User(
             userId = UserId(userId),
-            name = name,
+            name = Name(name),
             email = Email(email),
             registeredAt = registeredAt,
             version = version
@@ -33,7 +34,7 @@ data class UserDocument(
         fun from(user: User): UserDocument {
             return UserDocument(
                 userId = user.userId.value,
-                name = user.name,
+                name = user.name.value,
                 email = user.email.value,
                 registeredAt = user.registeredAt,
                 version = user.version

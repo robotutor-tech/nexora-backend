@@ -9,7 +9,7 @@
 //import com.robotutor.nexora.modules.automation.services.converter.AutomationConverter
 //import com.robotutor.nexora.modules.automation.services.validator.AutomationValidator
 //import com.robotutor.nexora.modules.iam.services.EntitlementResource
-//import com.robotutor.nexora.shared.adapters.messaging.auditOnSuccess
+//import com.robotutor.nexora.shared.audit.model.auditOnSuccess
 //import com.robotutor.nexora.shared.adapters.messaging.services.KafkaPublisher
 //import com.robotutor.nexora.shared.logger.Logger
 //import com.robotutor.nexora.shared.logger.logOnError

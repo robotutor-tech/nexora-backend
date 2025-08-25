@@ -6,5 +6,5 @@ import com.robotutor.nexora.shared.domain.model.ResourceType
 import reactor.core.publisher.Flux
 
 interface EntitlementFacade {
-    fun getEntitlements(action: ActionType, resource: ResourceType): Flux<ResourceEntitlement>
+    fun getEntitlements(action: ActionType, resourceType: ResourceType): Flux<ResourceEntitlement>
 }

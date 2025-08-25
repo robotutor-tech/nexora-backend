@@ -15,8 +15,9 @@ class MongoUserDocumentRepository(private val userDocumentRepository: UserDocume
             .map { it.toDomainModel() }
     }
 
-    override fun existsByEmail(email: Email): Mono<Boolean> {
-        return userDocumentRepository.existsByEmail(email.value)
+    override fun findByEmail(email: Email): Mono<User> {
+        return userDocumentRepository.findByEmail(email.value)
+            .map { it.toDomainModel() }
     }
 
     override fun deleteByUserId(userId: UserId): Mono<User> {

@@ -1,7 +1,5 @@
 package com.robotutor.nexora.modules.zone.application.command
 
-data class CreateZoneCommand(
-    val premisesId: String,
-    val name: String,
-    val createdBy: String,
-)
+import com.robotutor.nexora.shared.domain.model.Name
+
+data class CreateZoneCommand(val name: Name)

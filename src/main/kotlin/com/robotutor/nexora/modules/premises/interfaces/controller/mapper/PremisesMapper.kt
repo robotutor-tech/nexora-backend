@@ -16,7 +16,7 @@ class PremisesMapper {
             val actor = actorWithRolesPremises.actor
             return PremisesActorResponse(
                 premisesId = premises.premisesId.value,
-                name = premises.name,
+                name = premises.name.value,
                 createdAt = premises.createdAt,
                 actor = toActorResponse(actor)
             )
@@ -33,7 +33,7 @@ class PremisesMapper {
         fun toRoleResponse(role: Role): RoleResponse {
             return RoleResponse(
                 roleId = role.roleId.value,
-                name = role.name,
+                name = role.name.value,
                 roleType = role.roleType,
             )
         }
@@ -41,7 +41,7 @@ class PremisesMapper {
         fun toPremisesResponse(premises: Premises): PremisesResponse {
             return PremisesResponse(
                 premisesId = premises.premisesId.value,
-                name = premises.name,
+                name = premises.name.value,
                 createdAt = premises.createdAt
             )
         }

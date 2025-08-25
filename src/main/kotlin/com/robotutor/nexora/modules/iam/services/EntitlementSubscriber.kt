@@ -1,6 +1,5 @@
 package com.robotutor.nexora.modules.iam.services
 
-import com.robotutor.nexora.shared.domain.model.ResourceType
 import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Service
 
@@ -22,7 +21,3 @@ class EntitlementSubscriber(
 }
 
 
-data class EntitlementResource(
-    val resourceType: ResourceType,
-    val resourceId: String,
-)

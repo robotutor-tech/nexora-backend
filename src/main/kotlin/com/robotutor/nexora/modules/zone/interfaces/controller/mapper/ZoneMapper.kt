@@ -1,16 +1,23 @@
 package com.robotutor.nexora.modules.zone.interfaces.controller.mapper
 
-import com.robotutor.nexora.common.security.models.PremisesActorData
 import com.robotutor.nexora.modules.zone.application.command.CreateZoneCommand
-import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneCreateRequest
+import com.robotutor.nexora.modules.zone.domain.model.Zone
+import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneRequest
+import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneResponse
+import com.robotutor.nexora.shared.domain.model.Name
 
 class ZoneMapper {
     companion object {
-        fun toCreateZoneCommand(request: ZoneCreateRequest, premisesActorData: PremisesActorData): CreateZoneCommand {
-            return CreateZoneCommand(
-                premisesId = premisesActorData.premisesId,
-                name = request.name,
-                createdBy = premisesActorData.actorId,
+        fun toCreateZoneCommand(request: ZoneRequest): CreateZoneCommand {
+            return CreateZoneCommand(name = Name(request.name))
+        }
+
+        fun toZoneResponse(zone: Zone): ZoneResponse {
+            return ZoneResponse(
+                zoneId = zone.zoneId.value,
+                premisesId = zone.premisesId.value,
+                name = zone.name.value,
+                createdAt = zone.createdAt
             )
         }
     }

@@ -8,7 +8,7 @@
 //    var id: ObjectId? = null,
 //    val automationId: AutomationId,
 //    val premisesId: PremisesId,
-//    val name: String,
+//    val name: Name,
 //    val description: String? = null,
 //    val triggers: List<TriggerId>,
 //    var condition: ConditionNode? = null,

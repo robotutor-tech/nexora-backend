@@ -9,7 +9,16 @@ class RoleMapper {
             return RoleResponse(
                 roleId = role.roleId.value,
                 premisesId = role.premisesId.value,
-                name = role.name,
+                name = role.name.value,
+                roleType = role.roleType
+            )
+        }
+
+        fun toRoleResponse( role: com.robotutor.nexora.shared.domain.model.Role): RoleResponse {
+            return RoleResponse(
+                roleId = role.roleId.value,
+                premisesId = role.premisesId.value,
+                name = role.name.value,
                 roleType = role.roleType
             )
         }

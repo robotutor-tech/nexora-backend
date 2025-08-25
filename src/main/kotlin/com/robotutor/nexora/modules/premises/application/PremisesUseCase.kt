@@ -8,7 +8,7 @@ import com.robotutor.nexora.modules.premises.application.facade.PremisesResource
 import com.robotutor.nexora.modules.premises.domain.model.IdType
 import com.robotutor.nexora.modules.premises.domain.model.Premises
 import com.robotutor.nexora.modules.premises.domain.repository.PremisesRepository
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
@@ -29,15 +29,16 @@ class PremisesUseCase(
     val logger = Logger(this::class.java)
 
     fun createPremises(createPremisesCommand: CreatePremisesCommand): Mono<ActorWithRolesPremises> {
-        return idGeneratorService.generateId(IdType.PREMISE_ID)
+        return idGeneratorService.generateId(IdType.PREMISE_ID, PremisesId::class.java)
             .map { premisesId ->
-                Premises(
-                    premisesId = PremisesId(premisesId),
+                Premises.register(
+                    premisesId = premisesId,
                     name = createPremisesCommand.name,
                     owner = createPremisesCommand.owner.userId
                 )
             }
             .flatMap { premises -> premisesRepository.save(premises) }
+            .publishEvents()
             .flatMap { premises ->
                 val command = RegisterPremisesResourceCommand(premises.premisesId, createPremisesCommand.owner)
                 premisesResourceFacade.register(command)

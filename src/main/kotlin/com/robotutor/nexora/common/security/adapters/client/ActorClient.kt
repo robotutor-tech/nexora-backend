@@ -4,10 +4,11 @@ import com.robotutor.nexora.common.security.application.ports.ActorDataRetriever
 import com.robotutor.nexora.common.security.application.ports.ActorResponse
 import com.robotutor.nexora.modules.iam.interfaces.controller.ActorController
 import com.robotutor.nexora.shared.domain.model.ActorId
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.Role
 import com.robotutor.nexora.shared.domain.model.RoleId
-import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextResponseMapper
+import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextMapper
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -20,7 +21,7 @@ class ActorClient(private val actorController: ActorController) : ActorDataRetri
                 val role = Role(
                     roleId = RoleId(it.role.roleId),
                     premisesId = PremisesId(it.role.premisesId),
-                    name = it.role.name,
+                    name = Name(it.role.name),
                     roleType = it.role.roleType
                 )
                 ActorResponse(
@@ -28,7 +29,7 @@ class ActorClient(private val actorController: ActorController) : ActorDataRetri
                     role = role,
                     premisesId = PremisesId(it.premisesId),
                     principalType = it.principalType,
-                    principal = PrincipalContextResponseMapper.toPrincipalContext(it.principal)
+                    principal = PrincipalContextMapper.toActorPrincipalContext(it.principal)
                 )
             }
     }

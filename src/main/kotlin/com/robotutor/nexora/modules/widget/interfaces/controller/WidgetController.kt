@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.widget.interfaces.controller
 
-import com.robotutor.nexora.common.security.application.annotations.RequireAccess
+import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.modules.widget.application.WidgetUseCase
 import com.robotutor.nexora.modules.widget.interfaces.controller.dto.WidgetResponse
 import com.robotutor.nexora.modules.widget.interfaces.controller.mapper.WidgetMapper

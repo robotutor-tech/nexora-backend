@@ -7,8 +7,6 @@ data class Identifier<T>(val id: String, val type: T) {
 enum class ActorPrincipalType {
     USER,
     DEVICE,
-    LOCAL_SERVER,
-    SERVER
 }
 
 enum class TokenPrincipalType {

@@ -9,7 +9,7 @@ class WidgetMapper {
             return WidgetResponse(
                 widgetId = widget.widgetId.value,
                 premisesId = widget.premisesId.value,
-                name = widget.name,
+                name = widget.name.value,
                 feedId = widget.feedId.value,
                 type = widget.type,
                 zoneId = widget.zoneId.value,

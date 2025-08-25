@@ -1,6 +1,7 @@
 package com.robotutor.nexora.modules.iam.adapters.model
 
 import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.RoleId
 import com.robotutor.nexora.shared.domain.model.RoleType
@@ -34,7 +35,7 @@ data class RoleDocument(
         return Role(
             roleId = RoleId(roleId),
             premisesId = PremisesId(premisesId),
-            name = name,
+            name = Name(name),
             roleType = roleType,
             createdAt = createdAt,
             updatedAt = updatedAt,
@@ -47,7 +48,7 @@ data class RoleDocument(
             return RoleDocument(
                 roleId = role.roleId.value,
                 premisesId = role.premisesId.value,
-                name = role.name,
+                name = role.name.value,
                 roleType = role.roleType,
                 createdAt = role.createdAt,
                 updatedAt = role.updatedAt,

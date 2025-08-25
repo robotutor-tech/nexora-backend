@@ -7,12 +7,11 @@ import com.robotutor.nexora.shared.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
 import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
-import com.robotutor.nexora.common.security.models.PremisesId
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.application.filters.PREMISES_ID
 import com.robotutor.nexora.common.security.application.filters.TRACE_ID
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.BaseException
+import com.robotutor.nexora.shared.domain.exception.BaseException
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
@@ -352,4 +351,4 @@ class WebClientWrapper(private val webClient: WebClient) {
     }
 }
 
-data class MetaDataHeaders(val exchange: ServerWebExchangeDTO, val traceId: String, val premisesId: PremisesId)
+data class MetaDataHeaders(val exchange: ServerWebExchangeDTO, val traceId: String, val premisesId: String)

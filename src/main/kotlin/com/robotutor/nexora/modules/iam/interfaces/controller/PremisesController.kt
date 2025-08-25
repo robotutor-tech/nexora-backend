@@ -30,7 +30,7 @@ class PremisesController(
         val registerPremisesResourceCommand = RegisterPremisesResourceCommand(PremisesId(request.premisesId), userData)
         return registerPremisesResourceUseCase.registerPremises(registerPremisesResourceCommand)
             .flatMap { actor ->
-                roleUseCase.getRolesByRoleIds(actor.roleIds).collectList()
+                roleUseCase.getRoles(actor.premisesId, actor.roleIds).collectList()
                     .map { roles -> ActorMapper.toActorWithRolesResponse(actor, roles) }
             }
     }

@@ -1,29 +1,39 @@
 package com.robotutor.nexora.modules.auth.application.strategy
 
 import com.robotutor.nexora.modules.auth.domain.model.Token
-import com.robotutor.nexora.modules.auth.domain.model.TokenId
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
-import com.robotutor.nexora.modules.auth.domain.model.TokenValue
-import com.robotutor.nexora.modules.auth.domain.strategy.TokenGenerationStrategy
-import com.robotutor.nexora.shared.domain.model.PrincipalContext
+import com.robotutor.nexora.shared.domain.model.*
+import org.springframework.stereotype.Service
 import java.time.Instant
-import java.util.*
 
+@Service
 class AuthorizationTokenStrategy() : TokenGenerationStrategy {
     override fun generate(
-        principalType: com.robotutor.nexora.shared.domain.model.TokenPrincipalType,
+        principalType: TokenPrincipalType,
         principalContext: PrincipalContext,
         metadata: Map<String, String>
     ): Token {
-        return Token(
-            tokenId = TokenId(UUID.randomUUID().toString()),
+        return Token.generate(
             tokenType = TokenType.AUTHORIZATION,
-            value = TokenValue.generate(),
-            issuedAt = Instant.now(),
-            expiresAt = Instant.now().plusSeconds(30 * 60),
+            expiresAt = getExpiresAt(principalType, principalContext),
             principalType = principalType,
             principal = principalContext,
             metadata = metadata,
         )
+    }
+
+    private fun getExpiresAt(principalType: TokenPrincipalType, principalContext: PrincipalContext): Instant {
+        val seconds: Long = when (principalType) {
+            TokenPrincipalType.USER -> 15 * 60
+            TokenPrincipalType.INVITATION -> 6 * 60 * 60
+            TokenPrincipalType.INTERNAL -> 60
+            TokenPrincipalType.ACTOR -> {
+                when ((principalContext as ActorContext).principalContext) {
+                    is DeviceContext -> 24 * 60 * 60
+                    is UserContext -> 15 * 60
+                }
+            }
+        }
+        return Instant.now().plusSeconds(seconds)
     }
 }

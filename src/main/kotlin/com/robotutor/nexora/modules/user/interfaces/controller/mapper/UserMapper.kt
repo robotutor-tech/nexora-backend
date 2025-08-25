@@ -5,13 +5,14 @@ import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserRequest
 import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
 import com.robotutor.nexora.shared.domain.model.Email
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.UserData
 
 
 object UserMapper {
     fun toRegisterUserCommand(userRequest: UserRequest): RegisterUserCommand {
         return RegisterUserCommand(
-            name = userRequest.name,
+            name = Name(userRequest.name),
             email = Email(userRequest.email),
             password = userRequest.password
         )
@@ -20,7 +21,7 @@ object UserMapper {
     fun toUserResponse(user: User): UserResponse {
         return UserResponse(
             userId = user.userId.value,
-            name = user.name,
+            name = user.name.value,
             email = user.email.value,
             registeredAt = user.registeredAt,
         )
@@ -29,7 +30,7 @@ object UserMapper {
     fun toUserResponse(user: UserData): UserResponse {
         return UserResponse(
             userId = user.userId.value,
-            name = user.name,
+            name = user.name.value,
             email = user.email.value,
             registeredAt = user.registeredAt,
         )

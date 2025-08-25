@@ -7,6 +7,5 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface AuthDocumentRepository : ReactiveCrudRepository<AuthUserDocument, String> {
-    fun existsByUserId(value: String): Mono<Boolean>
     fun findByEmail(value: String): Mono<AuthUserDocument>
 }

@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.auth.application
 
 import com.robotutor.nexora.modules.auth.application.command.ValidateTokenCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenValidationResult
-import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextResponseMapper
+import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextMapper
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -20,7 +20,7 @@ class ValidateTokenUseCase(
             .map {
                 TokenValidationResult(
                     isValid = true,
-                    principal = PrincipalContextResponseMapper.toPrincipalContextResponse(it.principal),
+                    principal = PrincipalContextMapper.toPrincipalContextResponse(it.principal),
                     principalType = it.principalType,
                     expiresAt = it.expiresAt
                 )

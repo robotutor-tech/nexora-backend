@@ -10,7 +10,7 @@
 //    val id: ObjectId? = null,
 //    val triggerId: TriggerId,
 //    val premisesId: PremisesId,
-//    val name: String,
+//    val name: Name,
 //    val description: String? = null,
 //    val config: TriggerConfig,
 //    val createdOn: Instant = Instant.now(),

@@ -9,5 +9,5 @@ import reactor.core.publisher.Mono
 interface ZoneRepository {
     fun save(zone: Zone): Mono<Zone>
     fun findAllByPremisesIdAndZoneIdIn(premisesId: PremisesId, zoneIds: List<ZoneId>): Flux<Zone>
-    fun findByZoneIdAndPremisesId(zoneId: ZoneId, premisesId: PremisesId): Mono<Zone>
+//    fun findByZoneIdAndPremisesId(zoneId: ZoneId, premisesId: PremisesId): Mono<Zone>
 }

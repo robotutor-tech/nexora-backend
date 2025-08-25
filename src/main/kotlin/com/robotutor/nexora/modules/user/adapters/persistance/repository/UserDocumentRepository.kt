@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface UserDocumentRepository : ReactiveMongoRepository<UserDocument, String> {
-    fun existsByEmail(value: String): Mono<Boolean>
+    fun findByEmail(value: String): Mono<UserDocument>
     fun deleteByUserId(userId: String): Mono<UserDocument>
     fun findByUserId(userId: String): Mono<UserDocument>
 }

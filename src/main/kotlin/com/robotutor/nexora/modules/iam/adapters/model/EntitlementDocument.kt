@@ -5,6 +5,7 @@ import com.robotutor.nexora.modules.iam.domain.model.EntitlementId
 import com.robotutor.nexora.modules.iam.domain.model.EntitlementStatus
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.model.ResourceId
 import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.model.RoleId
 import org.springframework.data.annotation.Id
@@ -44,7 +45,7 @@ data class EntitlementDocument(
             premisesId = PremisesId(premisesId),
             action = action,
             resourceType = resourceType,
-            resourceId = resourceId,
+            resourceId = ResourceId(resourceId),
             status = status,
             createdAt = createdAt,
             updatedAt = updatedAt,
@@ -60,7 +61,7 @@ data class EntitlementDocument(
                 premisesId = entitlement.premisesId.value,
                 action = entitlement.action,
                 resourceType = entitlement.resourceType,
-                resourceId = entitlement.resourceId,
+                resourceId = entitlement.resourceId.value,
                 status = entitlement.status,
                 createdAt = entitlement.createdAt,
                 updatedAt = entitlement.updatedAt,

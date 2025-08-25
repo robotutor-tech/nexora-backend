@@ -4,6 +4,7 @@ import com.robotutor.nexora.modules.auth.domain.model.Token
 import com.robotutor.nexora.modules.auth.domain.model.TokenId
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
 import com.robotutor.nexora.modules.auth.domain.model.TokenValue
+import com.robotutor.nexora.shared.adapters.persistance.model.MongoDocument
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -30,8 +31,8 @@ data class TokenDocument(
     @Indexed(name = "expireAtIndex", expireAfter = "0s")
     val expiresAt: Instant,
     val metadata: Map<String, Any>,
-) {
-    fun toDomainModel(): Token {
+) : MongoDocument<Token> {
+    override fun toDomainModel(): Token {
         return Token(
             tokenId = TokenId(tokenId),
             tokenType = tokenType,

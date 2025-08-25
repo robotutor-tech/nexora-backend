@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.auth.application.command.RefreshTokenCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -35,7 +35,6 @@ class RefreshTokenUseCase(
                         }
                 }
             }
-            .map { TokenResponses.from(it) }
             .logOnSuccess(logger, "Successfully refreshed token")
             .logOnError(logger, "", "Failed to refresh token")
     }

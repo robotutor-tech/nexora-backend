@@ -8,7 +8,8 @@ import com.robotutor.nexora.modules.user.domain.exception.NexoraError
 import com.robotutor.nexora.modules.user.domain.model.IdType
 import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.modules.user.domain.repository.UserRepository
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.DuplicateDataException
+import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
 import com.robotutor.nexora.shared.domain.model.UserId
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.shared.logger.Logger
@@ -26,43 +27,33 @@ class RegisterUserUseCase(
     val logger = Logger(this::class.java)
 
     fun register(registerUserCommand: RegisterUserCommand): Mono<User> {
-        return userRepository.existsByEmail(registerUserCommand.email)
-            .flatMap { existsByEmail ->
-                if (!existsByEmail)
-                    registerUser(registerUserCommand)
-                else {
-                    createMonoError(DuplicateDataException(NexoraError.NEXORA0201))
-                }
-            }
+        return userRepository.findByEmail(registerUserCommand.email)
+            .flatMap { createMonoError<User>(DuplicateDataException(NexoraError.NEXORA0201)) }
+            .switchIfEmpty(registerUser(registerUserCommand))
             .flatMap { user -> registerAuthUser(user, registerUserCommand) }
-            // TODO: Audit success at last
+            .publishEvents()
             .logOnSuccess(logger, "Successfully registered user")
             .logOnError(logger, "", "Failed to registered user")
     }
 
-    private fun registerAuthUser(user: User, registerUserCommand: RegisterUserCommand): Mono<User> {
+    private fun registerAuthUser(user: User, command: RegisterUserCommand): Mono<User> {
         val registerAuthUserCommand = RegisterAuthUserCommand(
             userId = user.userId,
             email = user.email,
-            password = registerUserCommand.password,
+            password = command.password
         )
         return registerAuthUser.register(registerAuthUserCommand)
             .map { user }
             .onErrorResume { throwable ->
                 userRepository.deleteByUserId(user.userId)
+                    .map { user.clearDomainEvents() }
                     .flatMap { createMonoError(throwable) }
             }
     }
 
-    private fun registerUser(registerUserCommand: RegisterUserCommand): Mono<User> {
-        return idGeneratorService.generateId(IdType.USER_ID)
-            .flatMap { userId ->
-                val user = User(
-                    userId = UserId(value = userId),
-                    name = registerUserCommand.name,
-                    email = registerUserCommand.email,
-                )
-                userRepository.save(user)
-            }
+    private fun registerUser(command: RegisterUserCommand): Mono<User> {
+        return idGeneratorService.generateId(IdType.USER_ID, UserId::class.java)
+            .map { userId -> User.register(userId = userId, name = command.name, email = command.email) }
+            .flatMap { user -> userRepository.save(user) }
     }
 }

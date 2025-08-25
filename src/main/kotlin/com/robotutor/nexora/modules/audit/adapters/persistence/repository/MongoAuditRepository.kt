@@ -13,7 +13,7 @@ interface AuditDocumentRepository : ReactiveCrudRepository<AuditDocument, String
 @Repository
 class MongoAuditRepository(private val auditDocumentRepository: AuditDocumentRepository) : AuditRepository {
     override fun save(audit: Audit): Mono<Audit> {
-        return auditDocumentRepository.save(AuditDocument.from(audit))
-            .map { it.toDomainModel() }
+        TODO("Not yet implemented")
     }
+
 }

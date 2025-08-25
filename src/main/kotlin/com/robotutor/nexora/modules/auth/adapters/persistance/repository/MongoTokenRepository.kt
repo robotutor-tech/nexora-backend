@@ -1,33 +1,37 @@
 package com.robotutor.nexora.modules.auth.adapters.persistance.repository
 
-import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.modules.auth.adapters.persistance.model.TokenDocument
 import com.robotutor.nexora.modules.auth.domain.model.Token
+import com.robotutor.nexora.modules.auth.domain.model.TokenId
 import com.robotutor.nexora.modules.auth.domain.repository.TokenRepository
+import org.springframework.data.mongodb.core.FindAndReplaceOptions
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
+
 @Repository
 class MongoTokenRepository(
-    private val tokenRepository: TokenDocumentRepository,
+    private val mongoTemplate: ReactiveMongoTemplate,
 ) : TokenRepository {
 
     override fun save(token: Token): Mono<Token> {
-        return tokenRepository.save(TokenDocument.from(token))
-            .map { it.toDomainModel() }
+        val tokenDocument = TokenDocument.from(token)
+        val query = Query(Criteria.where("tokenId").`is`(tokenDocument.tokenId))
+        return mongoTemplate.replace(query, tokenDocument, FindAndReplaceOptions().upsert())
+            .map { token }
     }
 
     override fun findByValue(value: String): Mono<Token> {
-        return tokenRepository.findByValue(value)
+        return mongoTemplate.findOne(Query(Criteria.where("value").`is`(value)), TokenDocument::class.java)
             .map { it.toDomainModel() }
     }
 
-    override fun invalidateToken(token: Token): Mono<Boolean> {
-        return tokenRepository.deleteByTokenId(token.tokenId.value)
-            .map { tokenDocument -> (tokenDocument.metadata["authorizationToken"] ?: "") as String }
-            .flatMap { tokenId -> tokenRepository.deleteByTokenId(tokenId) }
-            .map { true }
-            .switchIfEmpty(createMono(false))
-            .onErrorResume { createMono(true) }
+    override fun findByTokenId(tokenId: TokenId): Mono<Token> {
+        return mongoTemplate.findOne(Query(Criteria.where("tokenId").`is`(tokenId.value)), TokenDocument::class.java)
+            .map { it.toDomainModel() }
     }
+
 }

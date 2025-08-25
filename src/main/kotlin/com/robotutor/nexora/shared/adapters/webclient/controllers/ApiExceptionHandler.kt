@@ -1,14 +1,14 @@
 package com.robotutor.nexora.shared.adapters.webclient.controllers
 
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.AccessDeniedException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.BadDataException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.ClientException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.DataNotFoundException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.DuplicateDataException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.ErrorResponse
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.ServerException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.TooManyRequestsException
-import com.robotutor.nexora.shared.adapters.webclient.exceptions.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.exception.AccessDeniedException
+import com.robotutor.nexora.shared.domain.exception.BadDataException
+import com.robotutor.nexora.shared.domain.exception.ClientException
+import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
+import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
+import com.robotutor.nexora.shared.domain.exception.ErrorResponse
+import com.robotutor.nexora.shared.domain.exception.ServerException
+import com.robotutor.nexora.shared.domain.exception.TooManyRequestsException
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.logger.LogDetails
 import com.robotutor.nexora.shared.logger.Logger
 import org.springframework.http.HttpStatus
