@@ -1,6 +1,6 @@
-package com.robotutor.nexora.modules.user.adapters.persistance.repository
+package com.robotutor.nexora.modules.user.adapters.persistence.repository
 
-import com.robotutor.nexora.modules.user.adapters.persistance.model.UserDocument
+import com.robotutor.nexora.modules.user.adapters.persistence.model.UserDocument
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono

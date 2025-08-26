@@ -8,15 +8,10 @@ import java.time.Instant
 
 @Service
 class RefreshTokenStrategy : TokenGenerationStrategy {
-    override fun generate(
-        principalType: TokenPrincipalType,
-        principalContext: PrincipalContext,
-        metadata: Map<String, String>
-    ): Token {
+    override fun generate(principalType: TokenPrincipalType, principalContext: PrincipalContext): Token {
         return Token.generate(
             tokenType = TokenType.REFRESH,
             expiresAt = getExpiresAt(principalType, principalContext),
-            metadata = metadata,
             principalType = principalType,
             principal = principalContext
         )

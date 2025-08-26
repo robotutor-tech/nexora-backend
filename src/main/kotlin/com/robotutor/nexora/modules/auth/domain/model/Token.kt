@@ -1,11 +1,10 @@
 package com.robotutor.nexora.modules.auth.domain.model
 
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
-import com.robotutor.nexora.shared.domain.model.DomainModel
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 data class Token(
     val tokenId: TokenId,
@@ -14,12 +13,12 @@ data class Token(
     val tokenType: TokenType,
     val value: TokenValue,
     val issuedAt: Instant,
-    var expiresAt: Instant,
-    val metadata: Map<String, Any> = emptyMap()
+    val expiresAt: Instant,
+    var otherTokenId: TokenId? = null,
 ) : DomainAggregate() {
-    fun invalidate(): Token {
-        this.expiresAt = Instant.now()
-//        this.addDomainEvent() // invalidate token event
+
+    fun updateOtherTokenId(tokenId: TokenId): Token {
+        this.otherTokenId = tokenId
         return this
     }
 
@@ -28,8 +27,7 @@ data class Token(
             tokenType: TokenType,
             expiresAt: Instant,
             principalType: TokenPrincipalType,
-            principal: PrincipalContext,
-            metadata: Map<String, String>
+            principal: PrincipalContext
         ): Token {
             return Token(
                 tokenId = TokenId(UUID.randomUUID().toString()),
@@ -39,10 +37,7 @@ data class Token(
                 expiresAt = expiresAt,
                 principalType = principalType,
                 principal = principal,
-                metadata = metadata
             )
-//            token.addDomainEvent()
-//            return token
         }
     }
 }

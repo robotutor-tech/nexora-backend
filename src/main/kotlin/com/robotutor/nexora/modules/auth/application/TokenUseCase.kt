@@ -6,7 +6,6 @@ import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
 import com.robotutor.nexora.modules.auth.application.factory.TokenFactory
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.model.Token
-import com.robotutor.nexora.modules.auth.domain.model.TokenId
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
 import com.robotutor.nexora.modules.auth.domain.model.Tokens
 import com.robotutor.nexora.modules.auth.domain.repository.TokenRepository
@@ -31,10 +30,9 @@ class TokenUseCase(
         tokenType: TokenType,
         principalType: TokenPrincipalType,
         principalContext: PrincipalContext,
-        metadata: Map<String, String> = emptyMap()
     ): Mono<Token> {
         val token = tokenFactory.getStrategy(tokenType)
-            .generate(principalType, principalContext, metadata)
+            .generate(principalType, principalContext)
         return tokenRepository.save(token)
             .logOnSuccess(logger, "Successfully generated token")
             .logOnError(logger, "", "Failed to generate token")
@@ -44,24 +42,30 @@ class TokenUseCase(
         principalType: TokenPrincipalType,
         principalContext: PrincipalContext,
     ): Mono<TokenResponses> {
-        return generateToken(TokenType.AUTHORIZATION, principalType, principalContext)
-            .flatMap { token ->
-                val map = mapOf("authorizationToken" to token.tokenId.value)
-                generateToken(TokenType.REFRESH, principalType, principalContext, map)
-                    .map { Tokens(token, it) }
-            }
+        val authToken = tokenFactory.getStrategy(TokenType.AUTHORIZATION).generate(principalType, principalContext)
+        val refreshToken = tokenFactory.getStrategy(TokenType.REFRESH).generate(principalType, principalContext)
+        authToken.updateOtherTokenId(refreshToken.tokenId)
+        refreshToken.updateOtherTokenId(authToken.tokenId)
+
+        return tokenRepository.save(authToken)
+            .publishEvents()
+            .flatMap { tokenRepository.save(refreshToken) }
+            .publishEvents()
+            .map { Tokens(authToken, refreshToken) }
+            .logOnSuccess(logger, "Successfully generated tokens")
+            .logOnError(logger, "", "Failed to generate tokens")
             .map { TokenResponses.from(it) }
     }
 
     fun invalidateToken(token: Token): Mono<Token> {
-        return tokenRepository.save(token.invalidate())
-            .publishEvents()
+        return tokenRepository.deleteByTokenId(token.tokenId)
             .flatMap { invalidatedToken ->
-                val tokenId = TokenId((invalidatedToken.metadata["authorizationToken"] ?: "") as String)
-                tokenRepository.findByTokenId(tokenId)
-                    .flatMap { tokenRepository.save(it.invalidate()) }
-                    .publishEvents()
-                    .switchIfEmpty(createMono(invalidatedToken))
+                if (invalidatedToken.otherTokenId == null) {
+                    createMono(invalidatedToken)
+                } else {
+                    tokenRepository.deleteByTokenId(invalidatedToken.otherTokenId!!)
+                        .map{invalidatedToken}
+                }
             }
             .logOnSuccess(logger, "Successfully invalidated token")
             .logOnError(logger, "", "Failed to invalidate token")

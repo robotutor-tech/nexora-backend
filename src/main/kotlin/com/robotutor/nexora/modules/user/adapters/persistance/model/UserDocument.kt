@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.user.adapters.persistance.model
+package com.robotutor.nexora.modules.user.adapters.persistence.model
 
 import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.shared.domain.model.Email

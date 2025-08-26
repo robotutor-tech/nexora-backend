@@ -8,6 +8,5 @@ interface TokenGenerationStrategy {
     fun generate(
         principalType: TokenPrincipalType,
         principalContext: PrincipalContext,
-        metadata: Map<String, String>
     ): Token
 }

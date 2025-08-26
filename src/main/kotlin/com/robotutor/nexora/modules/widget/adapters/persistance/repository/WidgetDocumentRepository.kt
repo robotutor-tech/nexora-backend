@@ -1,6 +1,6 @@
-package com.robotutor.nexora.modules.widget.adapters.persistance.repository
+package com.robotutor.nexora.modules.widget.adapters.persistence.repository
 
-import com.robotutor.nexora.modules.widget.adapters.persistance.model.WidgetDocument
+import com.robotutor.nexora.modules.widget.adapters.persistence.model.WidgetDocument
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux

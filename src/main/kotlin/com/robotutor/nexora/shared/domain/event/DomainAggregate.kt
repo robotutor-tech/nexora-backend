@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.domain.event
 
-import com.robotutor.nexora.shared.domain.model.DomainModel
+interface DomainModel
 
 open class DomainAggregate(
     private val domainEvents: MutableList<DomainEvent> = mutableListOf()

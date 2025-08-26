@@ -8,17 +8,12 @@ import java.time.Instant
 
 @Service
 class AuthorizationTokenStrategy() : TokenGenerationStrategy {
-    override fun generate(
-        principalType: TokenPrincipalType,
-        principalContext: PrincipalContext,
-        metadata: Map<String, String>
-    ): Token {
+    override fun generate(principalType: TokenPrincipalType, principalContext: PrincipalContext): Token {
         return Token.generate(
             tokenType = TokenType.AUTHORIZATION,
             expiresAt = getExpiresAt(principalType, principalContext),
             principalType = principalType,
             principal = principalContext,
-            metadata = metadata,
         )
     }
 

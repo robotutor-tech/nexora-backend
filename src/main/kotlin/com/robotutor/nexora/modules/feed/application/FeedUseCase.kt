@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
 import com.robotutor.nexora.modules.feed.domain.model.Feed
 import com.robotutor.nexora.modules.feed.domain.model.IdType
 import com.robotutor.nexora.modules.feed.domain.repository.FeedRepository
-import com.robotutor.nexora.shared.adapters.persistance.service.MongoIdGeneratorService
+import com.robotutor.nexora.shared.adapters.persistence.service.MongoIdGeneratorService
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.FeedId

@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.widget.adapters.persistance.repository
+package com.robotutor.nexora.modules.widget.adapters.persistence.repository
 
 import com.robotutor.nexora.modules.widget.domain.model.Widget
 import com.robotutor.nexora.modules.widget.domain.repository.WidgetRepository

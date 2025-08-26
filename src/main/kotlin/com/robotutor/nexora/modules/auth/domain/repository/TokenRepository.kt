@@ -8,4 +8,5 @@ interface TokenRepository {
     fun save(token: Token): Mono<Token>
     fun findByValue(value: String): Mono<Token>
     fun findByTokenId(tokenId: TokenId): Mono<Token>
+    fun deleteByTokenId(tokenId: TokenId): Mono<Token>
 }

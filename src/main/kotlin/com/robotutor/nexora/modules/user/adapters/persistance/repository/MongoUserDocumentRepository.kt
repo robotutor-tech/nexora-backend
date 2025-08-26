@@ -1,6 +1,6 @@
-package com.robotutor.nexora.modules.user.adapters.persistance.repository
+package com.robotutor.nexora.modules.user.adapters.persistence.repository
 
-import com.robotutor.nexora.modules.user.adapters.persistance.model.UserDocument
+import com.robotutor.nexora.modules.user.adapters.persistence.model.UserDocument
 import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.modules.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.domain.model.Email

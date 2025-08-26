@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.premises.adapters.persistance.model
+package com.robotutor.nexora.modules.premises.adapters.persistence.model
 
 import com.robotutor.nexora.modules.premises.domain.model.Premises
 import com.robotutor.nexora.shared.domain.model.Name

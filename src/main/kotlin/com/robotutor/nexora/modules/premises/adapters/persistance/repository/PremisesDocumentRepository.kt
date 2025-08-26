@@ -1,6 +1,6 @@
-package com.robotutor.nexora.modules.premises.adapters.persistance.repository
+package com.robotutor.nexora.modules.premises.adapters.persistence.repository
 
-import com.robotutor.nexora.modules.premises.adapters.persistance.model.PremisesDocument
+import com.robotutor.nexora.modules.premises.adapters.persistence.model.PremisesDocument
 import com.robotutor.nexora.modules.premises.domain.model.Premises
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import org.springframework.data.repository.reactive.ReactiveCrudRepository

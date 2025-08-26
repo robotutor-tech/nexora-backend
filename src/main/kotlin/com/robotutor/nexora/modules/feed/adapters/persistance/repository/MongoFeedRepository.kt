@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.feed.adapters.persistance.repository
+package com.robotutor.nexora.modules.feed.adapters.persistence.repository
 
 import com.robotutor.nexora.modules.feed.domain.model.Feed
 import com.robotutor.nexora.modules.feed.domain.repository.FeedRepository
