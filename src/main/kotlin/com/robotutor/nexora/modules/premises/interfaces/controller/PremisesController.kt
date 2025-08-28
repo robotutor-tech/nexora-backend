@@ -3,6 +3,7 @@ package com.robotutor.nexora.modules.premises.interfaces.controller
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.modules.premises.application.PremisesUseCase
 import com.robotutor.nexora.modules.premises.application.command.CreatePremisesCommand
+import com.robotutor.nexora.modules.premises.interfaces.controller.dto.AddressRequest
 import com.robotutor.nexora.modules.premises.interfaces.controller.dto.PremisesActorResponse
 import com.robotutor.nexora.modules.premises.interfaces.controller.dto.PremisesCreateRequest
 import com.robotutor.nexora.modules.premises.interfaces.controller.dto.PremisesResponse
@@ -26,7 +27,8 @@ class PremisesController(private val premisesUseCase: PremisesUseCase) {
         @RequestBody @Validated premisesRequest: PremisesCreateRequest,
         userData: UserData
     ): Mono<PremisesActorResponse> {
-        val createPremisesCommand = CreatePremisesCommand(Name(premisesRequest.name), userData)
+        val address = PremisesMapper.toAddress(premisesRequest.address)
+        val createPremisesCommand = CreatePremisesCommand(Name(premisesRequest.name), address, userData)
         return premisesUseCase.createPremises(createPremisesCommand)
             .map { PremisesMapper.toPremisesActorResponse(it) }
     }

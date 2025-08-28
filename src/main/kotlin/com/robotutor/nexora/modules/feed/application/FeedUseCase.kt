@@ -30,7 +30,7 @@ class FeedUseCase(
     fun createFeed(createFeedCommand: CreateFeedCommand, actorData: ActorData, zoneId: ZoneId): Mono<Feed> {
         return idGeneratorService.generateId(IdType.FEED_ID, FeedId::class.java)
             .map { feedId -> Feed.create(feedId, zoneId, createFeedCommand, actorData) }
-            .flatMap { feed -> feedRepository.save(feed) }
+            .flatMap { feed -> feedRepository.save(feed).map { feed } }
             .publishEvents()
             .logOnSuccess(logger, "Successfully created new Feed")
             .logOnError(logger, "", "Failed to create new Feed")

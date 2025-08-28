@@ -1,33 +1,47 @@
 package com.robotutor.nexora.modules.device.adapters.persistence.repository
 
+import com.robotutor.nexora.modules.device.adapters.persistence.mapper.DeviceDocumentMapper
 import com.robotutor.nexora.modules.device.adapters.persistence.model.DeviceDocument
 import com.robotutor.nexora.modules.device.domain.model.Device
 import com.robotutor.nexora.modules.device.domain.repository.DeviceRepository
+import com.robotutor.nexora.shared.adapters.persistence.repository.MongoRepository
 import com.robotutor.nexora.shared.domain.model.DeviceId
 import com.robotutor.nexora.shared.domain.model.PremisesId
-import org.springframework.stereotype.Repository
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-@Repository
-class MongoDeviceRepository(private val deviceDocumentRepository: DeviceDocumentRepository) : DeviceRepository {
-    override fun findByDeviceId(deviceId: DeviceId): Mono<Device> {
-        return deviceDocumentRepository.findByDeviceId(deviceId.value)
-            .map { it.toDomainModel() }
+@Component
+class MongoDeviceRepository(
+    mongoTemplate: ReactiveMongoTemplate,
+) : MongoRepository<Device, DeviceDocument>(mongoTemplate, DeviceDocument::class.java, DeviceDocumentMapper()),
+    DeviceRepository {
+    override fun save(device: Device): Mono<Device> {
+        val query = Query(Criteria.where("deviceId").`is`(device.deviceId.value))
+        return this.findAndReplace(query, device)
     }
 
-    override fun save(device: Device): Mono<Device> {
-        return deviceDocumentRepository.save(DeviceDocument.from(device))
-            .map { it.toDomainModel() }
+    override fun findByDeviceId(deviceId: DeviceId): Mono<Device> {
+        val query = Query(Criteria.where("deviceId").`is`(deviceId.value))
+        return this.findOne(query)
     }
 
     override fun findAllByPremisesIdAndDeviceIdsIn(premisesId: PremisesId, deviceIds: List<DeviceId>): Flux<Device> {
-        return deviceDocumentRepository.findAllByPremisesIdAndDeviceIdIn(premisesId.value, deviceIds.map { it.value })
-            .map { it.toDomainModel() }
+        val query = Query(
+            Criteria.where("premisesId").`is`(premisesId.value)
+                .and("deviceId").`in`(deviceIds.map { it.value })
+        )
+        return this.findAll(query)
     }
 
     override fun findByPremisesIdAndDeviceId(premisesId: PremisesId, deviceId: DeviceId): Mono<Device> {
-        return deviceDocumentRepository.findByDeviceIdAndPremisesId(deviceId.value, premisesId.value)
-            .map { it.toDomainModel() }
+        val query = Query(
+            Criteria.where("premisesId").`is`(premisesId.value)
+                .and("deviceId").`is`(deviceId.value)
+        )
+        return this.findOne(query)
     }
 }

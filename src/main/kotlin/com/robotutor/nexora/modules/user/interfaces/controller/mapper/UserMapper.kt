@@ -1,38 +1,34 @@
 package com.robotutor.nexora.modules.user.interfaces.controller.mapper
 
+import com.robotutor.nexora.modules.auth.domain.model.Password
 import com.robotutor.nexora.modules.user.application.command.RegisterUserCommand
 import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserRequest
 import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
 import com.robotutor.nexora.shared.domain.model.Email
+import com.robotutor.nexora.shared.domain.model.Mobile
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.UserData
-
 
 object UserMapper {
     fun toRegisterUserCommand(userRequest: UserRequest): RegisterUserCommand {
         return RegisterUserCommand(
-            name = Name(userRequest.name),
-            email = Email(userRequest.email),
-            password = userRequest.password
+                name = Name(userRequest.name),
+                email = Email(userRequest.email),
+                password = Password(userRequest.password),
+                mobile = Mobile(userRequest.mobile)
         )
     }
 
     fun toUserResponse(user: User): UserResponse {
         return UserResponse(
-            userId = user.userId.value,
-            name = user.name.value,
-            email = user.email.value,
-            registeredAt = user.registeredAt,
-        )
-    }
-
-    fun toUserResponse(user: UserData): UserResponse {
-        return UserResponse(
-            userId = user.userId.value,
-            name = user.name.value,
-            email = user.email.value,
-            registeredAt = user.registeredAt,
+                userId = user.userId.value,
+                name = user.name.value,
+                email = user.email.value,
+                registeredAt = user.registeredAt,
+            mobile = user.mobile.value,
+            isEmailVerified = user.isEmailVerified,
+            isMobileVerified = user.isMobileVerified,
         )
     }
 }

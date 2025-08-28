@@ -42,19 +42,19 @@ class RegisterDeviceUseCase(
                     zoneId = invitationData.zoneId,
                 )
             }
-            .flatMap { device -> deviceRepository.save(device) }
+            .flatMap { device -> deviceRepository.save(device).map { device } }
             .flatMap { device ->
                 actorFacade.registerDeviceActor(device)
                     .flatMap { actorData ->
-                        tokenFacade.generateDeviceToken(actorData.principal as DeviceData)
+                        tokenFacade.generateDeviceToken(actorData)
+                            .publishEvents(device)
                             .contextWrite {
                                 it.put(ActorData::class.java, actorData)
                                     .put(DeviceData::class.java, actorData.principal)
                             }
                     }
-                    .publishEvents(device)
             }
-            .logOnSuccess(logger, "Successfully updated feedIds for deviceId")
-            .logOnError(logger, "", "Failed to add audit message")
+            .logOnSuccess(logger, "Successfully registered new Device")
+            .logOnError(logger, "", "Failed to register new Device")
     }
 }

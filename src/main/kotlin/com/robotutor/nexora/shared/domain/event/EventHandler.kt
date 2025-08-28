@@ -7,11 +7,21 @@ import com.robotutor.nexora.shared.domain.model.UserData
 import reactor.core.publisher.Mono
 
 abstract class EventHandler<T : DomainEvent>(val eventType: Class<T>) {
+
     open fun handle(event: T): Mono<Any> {
-        return ContextDataResolver.getUserData()
-            .flatMap { userData -> handle(event, userData) }
-            .flatMap { ContextDataResolver.getActorData() }
-            .flatMap { actorData -> handle(event, actorData) }
+        return createMono(event)
+            .flatMap {
+                ContextDataResolver.getUserData()
+                    .flatMap { userData -> handle(event, userData) }
+                    .onErrorResume { createMono(event) }
+            }
+            .map { event }
+            .flatMap {
+                ContextDataResolver.getActorData()
+                    .flatMap { actorData -> handle(event, actorData) }
+                    .onErrorResume { createMono(event) }
+            }
+            .map { event }
     }
 
     open fun handle(event: T, actorData: ActorData): Mono<Any> {

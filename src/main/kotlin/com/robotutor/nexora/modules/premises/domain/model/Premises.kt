@@ -9,15 +9,15 @@ import java.time.Instant
 data class Premises(
     val premisesId: PremisesId,
     val name: Name,
+    val address: Address,
     val owner: UserId,
     val createdAt: Instant = Instant.now(),
     val version: Long? = null
 ) : DomainAggregate() {
     companion object {
-        fun register(premisesId: PremisesId, name: Name, owner: UserId): Premises {
+        fun register(premisesId: PremisesId, name: Name, address: Address, owner: UserId): Premises {
             //TODO: add domain event
-            return Premises(premisesId = premisesId, name = name, owner = owner)
+            return Premises(premisesId = premisesId, name = name, address = address, owner = owner)
         }
     }
 }
-

@@ -1,9 +1,7 @@
 package com.robotutor.nexora.modules.audit.domain.model
 
 import com.robotutor.nexora.shared.audit.model.AuditStatus
-import com.robotutor.nexora.shared.domain.model.ActorId
-import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
-import com.robotutor.nexora.shared.domain.model.Identifier
+import com.robotutor.nexora.shared.domain.event.DomainModel
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
@@ -19,4 +17,4 @@ data class Audit(
     val metadata: Map<String, Any?>,
     val timestamp: Instant = Instant.now(),
     val version: Long? = null
-)
+) : DomainModel

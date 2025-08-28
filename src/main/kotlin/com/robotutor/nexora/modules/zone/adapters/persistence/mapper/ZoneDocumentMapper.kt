@@ -7,9 +7,9 @@ import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.ZoneId
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
+@Component
 class ZoneDocumentMapper : DocumentMapper<Zone, ZoneDocument> {
 
     override fun toDomainModel(document: ZoneDocument): Zone {
@@ -30,6 +30,7 @@ class ZoneDocumentMapper : DocumentMapper<Zone, ZoneDocument> {
             premisesId = domain.premisesId.value,
             createdBy = domain.createdBy.value,
             createdAt = domain.createdAt,
+            version = domain.version
         )
     }
 }

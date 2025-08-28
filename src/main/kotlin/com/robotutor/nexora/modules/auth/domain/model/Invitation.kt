@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.auth.domain.model
 
+import com.robotutor.nexora.shared.domain.event.DomainAggregate
 import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.InvitationId
 import com.robotutor.nexora.shared.domain.model.PremisesId
@@ -16,7 +17,7 @@ data class Invitation(
     val createdAt: Instant = Instant.now(),
     var status: InvitationStatus = InvitationStatus.INVITED,
     val version: Long? = null
-) {
+) : DomainAggregate() {
     fun markAsAccepted(): Invitation {
         this.status = InvitationStatus.ACCEPTED
         return this

@@ -33,7 +33,7 @@ class TokenUseCase(
     ): Mono<Token> {
         val token = tokenFactory.getStrategy(tokenType)
             .generate(principalType, principalContext)
-        return tokenRepository.save(token)
+        return tokenRepository.save(token).map { token }
             .logOnSuccess(logger, "Successfully generated token")
             .logOnError(logger, "", "Failed to generate token")
     }
@@ -48,8 +48,9 @@ class TokenUseCase(
         refreshToken.updateOtherTokenId(authToken.tokenId)
 
         return tokenRepository.save(authToken)
+            .map { authToken }
             .publishEvents()
-            .flatMap { tokenRepository.save(refreshToken) }
+            .flatMap { tokenRepository.save(refreshToken).map { refreshToken } }
             .publishEvents()
             .map { Tokens(authToken, refreshToken) }
             .logOnSuccess(logger, "Successfully generated tokens")
@@ -64,7 +65,7 @@ class TokenUseCase(
                     createMono(invalidatedToken)
                 } else {
                     tokenRepository.deleteByTokenId(invalidatedToken.otherTokenId!!)
-                        .map{invalidatedToken}
+                        .map { invalidatedToken }
                 }
             }
             .logOnSuccess(logger, "Successfully invalidated token")

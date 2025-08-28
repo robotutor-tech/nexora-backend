@@ -34,7 +34,7 @@ class RoleUseCase(
                     roleType = createRoleCommand.roleType
                 )
             }
-            .flatMap { role -> roleRepository.save(role) }
+            .flatMap { role -> roleRepository.save(role).map { role} }
             .logOnSuccess(logger, "Successfully created new Role")
             .logOnError(logger, "", "Failed to create new Role")
     }

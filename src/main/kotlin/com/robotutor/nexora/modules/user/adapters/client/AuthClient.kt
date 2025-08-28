@@ -13,7 +13,7 @@ class AuthClient(private val authController: AuthController) : RegisterAuthUser 
         val authUserRequest = AuthUserRequest(
             userId = registerAuthUserCommand.userId.value,
             email = registerAuthUserCommand.email.value,
-            password = registerAuthUserCommand.password
+            password = registerAuthUserCommand.password.value
         )
         return authController.register(authUserRequest).map { registerAuthUserCommand }
     }

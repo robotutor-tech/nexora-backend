@@ -32,7 +32,7 @@ class ZoneUseCase(
                     createdBy = actorData.actorId,
                 )
             }
-            .flatMap { zone -> zoneRepository.save(zone) }
+            .flatMap { zone -> zoneRepository.save(zone).map { zone } }
             .publishEvents()
             .logOnSuccess(logger, "Successfully created zone")
             .logOnError(logger, "", "Failed to create zone")

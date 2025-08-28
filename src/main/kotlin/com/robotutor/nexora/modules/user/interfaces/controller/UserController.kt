@@ -31,7 +31,7 @@ class UserController(val registerUserUseCase: RegisterUserUseCase, private val u
 
     @GetMapping("/me")
     fun me(userData: UserData): Mono<UserResponse> {
-        return createMono(userData)
+        return userUseCase.getUser(GetUserCommand(userData.userId))
             .map { UserMapper.toUserResponse(it) }
     }
 

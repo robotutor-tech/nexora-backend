@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.iam.domain.model
 
+import com.robotutor.nexora.shared.domain.event.DomainAggregate
 import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant
 
@@ -13,7 +14,7 @@ data class Actor(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
     val version: Long? = null
-) {
+) : DomainAggregate() {
     companion object {
         fun create(
             actorId: ActorId,

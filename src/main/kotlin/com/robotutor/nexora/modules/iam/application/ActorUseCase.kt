@@ -34,7 +34,7 @@ class ActorUseCase(
                     roleIds = createActorCommand.roles,
                 )
             }
-            .flatMap { actor -> actorRepository.save(actor) }
+            .flatMap { actor -> actorRepository.save(actor).map { actor } }
             .logOnSuccess(logger, "Successfully created actor")
             .logOnError(logger, "", "Failed to create actor")
     }

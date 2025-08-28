@@ -18,7 +18,7 @@ class UpdateFeedsUseCase(private val deviceRepository: DeviceRepository) {
     fun updateFeeds(deviceId: DeviceId, feedIds: FeedIds): Mono<Device> {
         return deviceRepository.findByDeviceId(deviceId)
             .map { device -> device.updateFeedIds(feedIds) }
-            .flatMap { device -> deviceRepository.save(device) }
+            .flatMap { device -> deviceRepository.save(device).map { device } }
             .logOnSuccess(logger, "Successfully updated feedIds for deviceId", mapOf("deviceId" to deviceId))
             .logOnError(logger, "", "Failed to add audit message", mapOf("deviceId" to deviceId))
     }

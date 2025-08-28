@@ -34,10 +34,11 @@ class PremisesUseCase(
                 Premises.register(
                     premisesId = premisesId,
                     name = createPremisesCommand.name,
-                    owner = createPremisesCommand.owner.userId
+                    owner = createPremisesCommand.owner.userId,
+                    address = createPremisesCommand.address,
                 )
             }
-            .flatMap { premises -> premisesRepository.save(premises) }
+            .flatMap { premises -> premisesRepository.save(premises).map { premises } }
             .publishEvents()
             .flatMap { premises ->
                 val command = RegisterPremisesResourceCommand(premises.premisesId, createPremisesCommand.owner)

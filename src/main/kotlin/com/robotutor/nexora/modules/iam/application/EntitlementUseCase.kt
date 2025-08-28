@@ -35,7 +35,7 @@ class EntitlementUseCase(
                     resourceId = createEntitlementCommand.resourceId,
                 )
             }
-            .flatMap { entitlement -> entitlementRepository.save(entitlement) }
+            .flatMap { entitlement -> entitlementRepository.save(entitlement).map { entitlement } }
             .logOnSuccess(logger, "Successfully created new Entitlement")
             .logOnError(logger, "", "Failed to create new Entitlement")
     }

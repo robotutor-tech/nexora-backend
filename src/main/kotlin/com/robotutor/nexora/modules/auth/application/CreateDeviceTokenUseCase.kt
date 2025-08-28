@@ -1,8 +1,7 @@
 package com.robotutor.nexora.modules.auth.application
 
-import com.robotutor.nexora.modules.auth.application.command.CreateDeviceTokenCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
-import com.robotutor.nexora.shared.domain.model.DeviceContext
+import com.robotutor.nexora.shared.domain.model.ActorContext
 import com.robotutor.nexora.shared.domain.model.InvitationData
 import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.logger.Logger
@@ -18,11 +17,8 @@ class CreateDeviceTokenUseCase(
 ) {
     private val logger = Logger(this::class.java)
 
-    fun createDeviceToken(command: CreateDeviceTokenCommand, invitationData: InvitationData): Mono<TokenResponses> {
-        return tokenUseCase.generateTokenWithRefreshToken(
-            TokenPrincipalType.ACTOR,
-            DeviceContext(command.deviceId)
-        )
+    fun createDeviceToken(actorContext: ActorContext, invitationData: InvitationData): Mono<TokenResponses> {
+        return tokenUseCase.generateTokenWithRefreshToken(TokenPrincipalType.ACTOR, actorContext)
             .flatMap { tokenResponses ->
                 invitationUseCase.markAsAccepted(invitationData.invitationId)
                     .map { tokenResponses }

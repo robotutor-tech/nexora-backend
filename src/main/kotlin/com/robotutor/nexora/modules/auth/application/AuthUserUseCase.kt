@@ -8,7 +8,7 @@ import com.robotutor.nexora.modules.auth.application.dto.AuthUserResponse
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.model.AuthUser
-import com.robotutor.nexora.modules.auth.domain.repository.AuthRepository
+import com.robotutor.nexora.modules.auth.domain.repository.AuthUserRepository
 import com.robotutor.nexora.modules.auth.domain.service.PasswordService
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.exception.BadDataException
@@ -24,14 +24,14 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Service
 class AuthUserUseCase(
-    private val authRepository: AuthRepository,
+    private val authUserRepository: AuthUserRepository,
     private val passwordService: PasswordService,
     private val tokenUseCase: TokenUseCase
 ) {
     private val logger = Logger(this::class.java)
 
     fun register(registerAuthUserCommand: RegisterAuthUserCommand): Mono<AuthUserResponse> {
-        return authRepository.findByEmail(registerAuthUserCommand.email)
+        return authUserRepository.findByEmail(registerAuthUserCommand.email)
             .flatMap { createMonoError<AuthUser>(DuplicateDataException(NexoraError.NEXORA0201)) }
             .switchIfEmpty(registerAuthUser(registerAuthUserCommand))
             .publishEvents()
@@ -46,7 +46,7 @@ class AuthUserUseCase(
             email = command.email,
             password = passwordService.encodePassword(command.password),
         )
-        return authRepository.save(authUser)
+        return authUserRepository.save(authUser).map { authUser }
     }
 
     fun login(loginCommand: LoginCommand): Mono<TokenResponses> {
@@ -60,7 +60,7 @@ class AuthUserUseCase(
     }
 
     private fun validateCredentials(loginCommand: LoginCommand): Mono<AuthUser> {
-        return authRepository.findByEmail(loginCommand.email)
+        return authUserRepository.findByEmail(loginCommand.email)
             .switchIfEmpty { createMonoError(BadDataException(NexoraError.NEXORA0202)) }
             .flatMap { authUser ->
                 val matches = passwordService.matches(loginCommand.password, authUser.password)

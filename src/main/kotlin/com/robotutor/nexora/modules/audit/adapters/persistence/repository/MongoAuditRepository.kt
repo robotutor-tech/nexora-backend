@@ -1,19 +1,23 @@
 package com.robotutor.nexora.modules.audit.adapters.persistence.repository
 
+import com.robotutor.nexora.modules.audit.adapters.persistence.mapper.AuditDocumentMapper
 import com.robotutor.nexora.modules.audit.adapters.persistence.model.AuditDocument
 import com.robotutor.nexora.modules.audit.domain.model.Audit
 import com.robotutor.nexora.modules.audit.domain.repository.AuditRepository
-import org.springframework.data.repository.reactive.ReactiveCrudRepository
-import org.springframework.stereotype.Repository
+import com.robotutor.nexora.shared.adapters.persistence.repository.MongoRepository
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
-@Repository
-interface AuditDocumentRepository : ReactiveCrudRepository<AuditDocument, String>
+@Component
+class MongoAuditRepository(mongoTemplate: ReactiveMongoTemplate) :
+    MongoRepository<Audit, AuditDocument>(mongoTemplate, AuditDocument::class.java, AuditDocumentMapper()),
+    AuditRepository {
 
-@Repository
-class MongoAuditRepository(private val auditDocumentRepository: AuditDocumentRepository) : AuditRepository {
     override fun save(audit: Audit): Mono<Audit> {
-        TODO("Not yet implemented")
+        val query = Query(Criteria.where("auditId").`is`(audit.auditId.value))
+        return this.findAndReplace(query, audit)
     }
-
 }

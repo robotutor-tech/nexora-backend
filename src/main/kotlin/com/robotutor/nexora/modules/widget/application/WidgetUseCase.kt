@@ -25,7 +25,7 @@ class WidgetUseCase(
     fun createWidget(createWidgetCommand: CreateWidgetCommand, actorData: ActorData): Mono<Widget> {
         return idGeneratorService.generateId(IdType.WIDGET_ID, WidgetId::class.java)
             .map { widgetId -> Widget.create(widgetId, createWidgetCommand, actorData) }
-            .flatMap { widget -> widgetRepository.save(widget) }
+            .flatMap { widget -> widgetRepository.save(widget).map { widget } }
             .publishEvents()
     }
 }

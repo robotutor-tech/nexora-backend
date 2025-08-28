@@ -39,6 +39,13 @@ object PrincipalContextMapper {
         }
     }
 
+    fun toActorPrincipalContext(principal: ActorPrincipalData): ActorPrincipalContext {
+        return when (principal) {
+            is DeviceData -> DeviceContext(DeviceId(principal.deviceId.value))
+            is UserData -> UserContext(UserId(principal.userId.value))
+        }
+    }
+
     fun toActorPrincipalContextResponse(principal: ActorPrincipalContext): ActorPrincipalContextResponse {
         return when (principal) {
             is DeviceContext -> DeviceContextResponse(principal.deviceId.value)

@@ -53,8 +53,9 @@ class InvitationUseCase(
 
     fun markAsAccepted(invitationId: InvitationId): Mono<Invitation> {
         return getInvitation(invitationId)
-            .map { invitation -> invitation.markAsAccepted() }
-            .flatMap { invitation -> invitationRepository.save(invitation) }
+//            .map { invitation -> invitation.markAsAccepted() }
+//            .flatMap { invitation -> invitationRepository.save(invitation).map { invitation } }
+//            .publishEvents()
     }
 }
 

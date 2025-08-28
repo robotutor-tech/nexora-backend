@@ -1,5 +1,7 @@
 package com.robotutor.nexora.modules.audit.adapters.persistence.model
 
+import com.robotutor.nexora.modules.audit.domain.model.Audit
+import com.robotutor.nexora.shared.adapters.persistence.model.MongoDocument
 import com.robotutor.nexora.shared.audit.model.AuditStatus
 import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
 import com.robotutor.nexora.shared.domain.model.Identifier
@@ -30,36 +32,4 @@ data class AuditDocument(
     val timestamp: Instant,
     @Version
     val version: Long? = null
-)
-//{
-//
-//    fun toDomainModel(): Audit {
-//        return Audit(
-//            auditId = AuditId(this.auditId),
-//            event = this.event,
-//            actorId = this.actorId?.let { ActorId(actorId) },
-//            identifier = this.identifier,
-//            premisesId = this.premisesId?.let { PremisesId(premisesId) },
-//            status = this.status,
-//            metadata = this.metadata,
-//            timestamp = this.timestamp,
-//            version = this.version,
-//        )
-//    }
-//
-//    companion object {
-//        fun from(audit: Audit): AuditDocument {
-//            return AuditDocument(
-//                auditId = audit.auditId.value,
-//                actorId = audit.actorId.let { it?.value },
-//                identifier = audit.identifier,
-//                premisesId = audit.premisesId.let { it?.value },
-//                status = audit.status,
-//                metadata = audit.metadata,
-//                event = audit.event,
-//                timestamp = audit.timestamp,
-//                version = audit.version
-//            )
-//        }
-//    }
-//}
+) : MongoDocument<Audit>
