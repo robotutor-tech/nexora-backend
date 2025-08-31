@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
@@ -31,19 +32,16 @@ class InvitationController(
     ): Mono<InvitationWithTokenResponse> {
         val invitationCommand = InvitationMapper.toInvitationCommand(invitationRequest)
         return invitationUseCase.createInvitation(invitationCommand, actorData)
-            .map { InvitationMapper.toInvitationWithTokenResponse(it) }
+            .map { pair -> InvitationMapper.toInvitationWithTokenResponse(pair) }
     }
 
-    //
-//    @GetMapping("/devices")
-//    fun getDeviceInvitations(premisesActorData: PremisesActorData): Flux<DeviceInvitationView> {
-//        return invitationService.getDeviceInvitations(premisesActorData)
-//            .flatMap { invitation ->
-//                tokenService.getInvitationToken(invitation)
-//                    .map { token -> DeviceInvitationView.Companion.from(invitation, token) }
-//            }
-//    }
-//
+
+    @GetMapping
+    fun getDInvitations(actorData: ActorData): Flux<InvitationWithTokenResponse> {
+        return invitationUseCase.getInvitations(actorData)
+            .map { pair -> InvitationMapper.toInvitationWithTokenResponse(pair) }
+    }
+
     @GetMapping("/{invitationId}")
     fun getInvitation(@PathVariable invitationId: String): Mono<InvitationResponse> {
         return invitationUseCase.getInvitation(InvitationId(invitationId))

@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.zone.domain.model
 
+import com.robotutor.nexora.modules.zone.domain.event.ZoneCreatedEvent
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.model.ActorId
@@ -21,6 +22,7 @@ data class Zone(
         fun create(zoneId: ZoneId, premisesId: PremisesId, name: Name, createdBy: ActorId): Zone {
             val zone = Zone(zoneId = zoneId, premisesId = premisesId, name = name, createdBy = createdBy)
             zone.addDomainEvent(ResourceCreatedEvent(ResourceType.ZONE, zone.zoneId))
+            zone.addDomainEvent(ZoneCreatedEvent(zone.zoneId, zone.name))
             return zone
         }
     }

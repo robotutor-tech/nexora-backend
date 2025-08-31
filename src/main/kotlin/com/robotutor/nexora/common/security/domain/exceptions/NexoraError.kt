@@ -8,4 +8,5 @@ enum class NexoraError(override val errorCode: String, override val message: Str
     NEXORA0103("NEXORA-0103", "Unable to retrieve actor data"),
     NEXORA0104("NEXORA-0104", "Unable to retrieve invitation data"),
     NEXORA0105("NEXORA-0105", "Doesn't have permission for the resource"),
+    NEXORA0106("NEXORA-0106", "Resource not found"),
 }

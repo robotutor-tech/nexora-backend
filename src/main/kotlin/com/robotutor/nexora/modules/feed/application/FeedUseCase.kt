@@ -4,11 +4,11 @@ import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
 import com.robotutor.nexora.modules.feed.domain.model.Feed
 import com.robotutor.nexora.modules.feed.domain.model.IdType
 import com.robotutor.nexora.modules.feed.domain.repository.FeedRepository
-import com.robotutor.nexora.shared.adapters.persistence.service.MongoIdGeneratorService
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 @Service
 class FeedUseCase(
     private val feedRepository: FeedRepository,
-    private val idGeneratorService: MongoIdGeneratorService
+    private val idGeneratorService: IdGeneratorService,
 ) {
     val logger = Logger(this::class.java)
 

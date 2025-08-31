@@ -14,6 +14,7 @@ data class Invitation(
     val name: Name,
     val zoneId: ZoneId,
     val invitedBy: ActorId,
+    val tokenId: TokenId,
     val createdAt: Instant = Instant.now(),
     var status: InvitationStatus = InvitationStatus.INVITED,
     val version: Long? = null
@@ -21,6 +22,26 @@ data class Invitation(
     fun markAsAccepted(): Invitation {
         this.status = InvitationStatus.ACCEPTED
         return this
+    }
+
+    companion object {
+        fun create(
+            invitationId: InvitationId,
+            premisesId: PremisesId,
+            name: Name,
+            zoneId: ZoneId,
+            invitedBy: ActorId,
+            tokenId: TokenId
+        ): Invitation {
+            return Invitation(
+                invitationId = invitationId,
+                premisesId = premisesId,
+                name = name,
+                zoneId = zoneId,
+                invitedBy = invitedBy,
+                tokenId = tokenId,
+            )
+        }
     }
 }
 

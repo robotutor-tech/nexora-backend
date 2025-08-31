@@ -5,19 +5,25 @@ import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
 import com.robotutor.nexora.modules.auth.application.factory.TokenFactory
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
+import com.robotutor.nexora.modules.auth.domain.model.InvitationStatus
 import com.robotutor.nexora.modules.auth.domain.model.Token
+import com.robotutor.nexora.modules.auth.domain.model.TokenId
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
 import com.robotutor.nexora.modules.auth.domain.model.Tokens
 import com.robotutor.nexora.modules.auth.domain.repository.TokenRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.model.InvitationContext
+import com.robotutor.nexora.shared.domain.model.InvitationId
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.time.Instant
 
 @Service
 class TokenUseCase(
@@ -59,13 +65,18 @@ class TokenUseCase(
     }
 
     fun invalidateToken(token: Token): Mono<Token> {
-        return tokenRepository.deleteByTokenId(token.tokenId)
+        return tokenRepository.save(token.invalidate()).map { token }
+            .publishEvents()
             .flatMap { invalidatedToken ->
                 if (invalidatedToken.otherTokenId == null) {
                     createMono(invalidatedToken)
                 } else {
-                    tokenRepository.deleteByTokenId(invalidatedToken.otherTokenId!!)
+                    tokenRepository.findByTokenId(invalidatedToken.otherTokenId!!)
+                        .map { otherToken -> otherToken.invalidate() }
+                        .flatMap { otherToken -> tokenRepository.save(otherToken).map { otherToken } }
+                        .publishEvents()
                         .map { invalidatedToken }
+                        .switchIfEmpty(createMono(invalidatedToken))
                 }
             }
             .logOnSuccess(logger, "Successfully invalidated token")
@@ -73,9 +84,13 @@ class TokenUseCase(
     }
 
     fun findTokenByValue(token: String): Mono<Token> {
-        return tokenRepository.findByValue(token)
+        return tokenRepository.findByValueAndExpiredAtAfter(token, Instant.now())
             .switchIfEmpty(
                 createMonoError(UnAuthorizedException(NexoraError.NEXORA0206))
             )
+    }
+
+    fun getAllTokenByTokenIdIn(tokenIds: List<TokenId>): Flux<Token> {
+        return tokenRepository.findAllByTokenIdIn(tokenIds)
     }
 }

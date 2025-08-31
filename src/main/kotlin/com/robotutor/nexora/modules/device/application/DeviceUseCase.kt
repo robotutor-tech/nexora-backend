@@ -31,7 +31,7 @@ class DeviceUseCase(
 
     fun updateDeviceFeeds(deviceId: DeviceId, feedIds: FeedIds, actorData: ActorData): Mono<Device> {
         return getDevice(deviceId, actorData.premisesId)
-            .map { it.updateFeedIds(feedIds) }
+            .map { device -> device.updateFeedIds(feedIds) }
             .flatMap { device -> deviceRepository.save(device).map { device } }
             .publishEvents()
             .logOnSuccess(logger, "Successfully updated feedIds for deviceId")

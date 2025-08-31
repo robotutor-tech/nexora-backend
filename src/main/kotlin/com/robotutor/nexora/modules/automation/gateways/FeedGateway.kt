@@ -1,15 +1,14 @@
 package com.robotutor.nexora.modules.automation.gateways
 
 import com.robotutor.nexora.modules.automation.config.AutomationConfig
-import com.robotutor.nexora.shared.adapters.cache.services.CacheService
-import com.robotutor.nexora.shared.adapters.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.infrastructure.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 
 @Component
 class FeedGateway(
-    private val webClient: WebClientWrapper,
-    private val automationConfig: AutomationConfig,
-    private val cacheService: CacheService
+//    private val webClient: WebClientWrapper,
+//    private val automationConfig: AutomationConfig,
+//    private val cacheService: CacheService
 ) {
 
 //    fun getFeedByFeedId(feedId: FeedId): Mono<FeedView> {

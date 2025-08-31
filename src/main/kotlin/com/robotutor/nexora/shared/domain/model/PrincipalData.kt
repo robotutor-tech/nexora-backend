@@ -2,7 +2,11 @@ package com.robotutor.nexora.shared.domain.model
 
 import java.time.Instant
 
+// Domain model should not have serialization annotations (Jackson, etc.)
+// Use Jackson Mixins or DTOs for (de)serialization in infrastructure layer
+
 sealed class PrincipalData
+
 sealed class ActorPrincipalData : PrincipalData()
 
 data class UserData(

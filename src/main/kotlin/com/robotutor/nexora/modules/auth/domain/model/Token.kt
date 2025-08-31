@@ -13,12 +13,17 @@ data class Token(
     val tokenType: TokenType,
     val value: TokenValue,
     val issuedAt: Instant,
-    val expiresAt: Instant,
+    var expiresAt: Instant,
     var otherTokenId: TokenId? = null,
 ) : DomainAggregate() {
 
     fun updateOtherTokenId(tokenId: TokenId): Token {
         this.otherTokenId = tokenId
+        return this
+    }
+
+    fun invalidate(): Token {
+        this.expiresAt = Instant.now().minusSeconds(100)
         return this
     }
 

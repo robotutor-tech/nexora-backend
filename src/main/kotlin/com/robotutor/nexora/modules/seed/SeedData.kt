@@ -14,8 +14,8 @@ object SeedData {
         return DeviceType.DEVICE
     }
 
-    fun getCreateFeedCommands(model: ModelNo): Array<CreateFeedCommand> {
-        return arrayOf(
+    fun getCreateFeedCommands(): List<CreateFeedCommand> {
+        return listOf(
             CreateFeedCommand(
                 FeedType.ACTUATOR,
                 Name("Light 1"),

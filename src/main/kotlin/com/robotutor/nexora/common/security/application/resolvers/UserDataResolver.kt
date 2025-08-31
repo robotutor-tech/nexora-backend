@@ -1,9 +1,6 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.common.security.createMonoError
-import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
+import com.robotutor.nexora.shared.application.service.ContextDataResolver
 import com.robotutor.nexora.shared.domain.model.UserData
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
@@ -23,13 +20,7 @@ class UserDataResolver : HandlerMethodArgumentResolver {
         bindingContext: BindingContext,
         exchange: ServerWebExchange
     ): Mono<Any> {
-        return Mono.deferContextual { context ->
-            val userData = context.getOrEmpty<UserData>(UserData::class.java)
-            if (userData.isPresent) {
-                createMono(userData.get())
-            } else {
-                createMonoError(UnAuthorizedException(NexoraError.NEXORA0102))
-            }
-        }
+        @Suppress("UNCHECKED_CAST")
+        return ContextDataResolver.getUserData() as Mono<Any>
     }
 }

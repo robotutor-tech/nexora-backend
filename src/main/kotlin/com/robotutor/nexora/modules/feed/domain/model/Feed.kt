@@ -1,15 +1,10 @@
 package com.robotutor.nexora.modules.feed.domain.model
 
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
+import com.robotutor.nexora.modules.feed.domain.event.FeedCreatedEvent
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
-import com.robotutor.nexora.shared.domain.event.FeedCreatedEvent
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
-import com.robotutor.nexora.shared.domain.model.ActorData
-import com.robotutor.nexora.shared.domain.model.FeedId
-import com.robotutor.nexora.shared.domain.model.PremisesId
-import com.robotutor.nexora.shared.domain.model.ResourceType
-import com.robotutor.nexora.shared.domain.model.Name
-import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant
 
 data class Feed(

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.auth.domain.model
 
+import com.robotutor.nexora.modules.auth.domain.event.AuthUserRegisteredEvent
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
-import com.robotutor.nexora.shared.domain.event.UserRegisteredEvent
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 import java.time.Instant
@@ -17,7 +17,7 @@ data class AuthUser(
     companion object {
         fun register(userId: UserId, email: Email, password: HashedPassword): AuthUser {
             val authUser = AuthUser(userId = userId, email = email, password = password)
-            authUser.addDomainEvent(UserRegisteredEvent(authUser.userId))
+            authUser.addDomainEvent(AuthUserRegisteredEvent(authUser.userId))
             return authUser
         }
     }

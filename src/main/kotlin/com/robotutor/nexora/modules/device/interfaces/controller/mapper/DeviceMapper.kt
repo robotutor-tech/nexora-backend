@@ -29,7 +29,7 @@ object DeviceMapper {
             type = device.type,
             state = device.state,
             health = device.health,
-            feeds = device.feedIds.asList().map { it.value }
+            feeds = device.feedIds.feeds.map { it.value }
         )
     }
 

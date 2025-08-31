@@ -3,8 +3,10 @@ package com.robotutor.nexora.modules.auth.application
 import com.robotutor.nexora.modules.auth.application.command.InvitationCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponse
 import com.robotutor.nexora.modules.auth.domain.model.Invitation
+import com.robotutor.nexora.modules.auth.domain.model.InvitationStatus
 import com.robotutor.nexora.modules.auth.domain.model.TokenType
 import com.robotutor.nexora.modules.auth.domain.repository.InvitationRepository
+import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.InvitationContext
 import com.robotutor.nexora.shared.domain.model.InvitationId
@@ -13,6 +15,7 @@ import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.util.*
 
@@ -27,24 +30,40 @@ class InvitationUseCase(
         invitationCommand: InvitationCommand,
         actorData: ActorData
     ): Mono<Pair<Invitation, TokenResponse>> {
-        val invitationData = Invitation(
-            invitationId = InvitationId(UUID.randomUUID().toString()),
-            premisesId = actorData.premisesId,
-            name = invitationCommand.name,
-            zoneId = invitationCommand.zoneId,
-            invitedBy = actorData.actorId,
+        val invitationId = InvitationId(UUID.randomUUID().toString())
+        return tokenUseCase.generateToken(
+            tokenType = TokenType.AUTHORIZATION,
+            principalType = TokenPrincipalType.INVITATION,
+            principalContext = InvitationContext(invitationId)
         )
-        return invitationRepository.save(invitationData)
-            .flatMap { invitation ->
-                tokenUseCase.generateToken(
-                    tokenType = TokenType.AUTHORIZATION,
-                    principalType = TokenPrincipalType.INVITATION,
-                    principalContext = InvitationContext(invitation.invitationId)
+            .flatMap { token ->
+                val invitation = Invitation.create(
+                    invitationId = invitationId,
+                    premisesId = actorData.premisesId,
+                    name = invitationCommand.name,
+                    zoneId = invitationCommand.zoneId,
+                    invitedBy = actorData.actorId,
+                    tokenId = token.tokenId
                 )
-                    .map { token -> Pair(invitation, TokenResponse.from(token)) }
+                invitationRepository.save(invitation).map { invitation }
+                    .publishEvents()
+                    .map { Pair(invitation, TokenResponse.from(token)) }
             }
             .logOnSuccess(logger, "Successfully created invitation")
             .logOnError(logger, "", "Failed to create invitation")
+    }
+
+    fun getInvitations(actorData: ActorData): Flux<Pair<Invitation, TokenResponse>> {
+        return invitationRepository.findAllByInvitedByAndStatus(actorData.actorId, InvitationStatus.INVITED)
+            .collectList()
+            .flatMapMany { invitations ->
+                val tokenIds = invitations.mapNotNull { invitation -> invitation.tokenId }
+                tokenUseCase.getAllTokenByTokenIdIn(tokenIds)
+                    .map { token ->
+                        val invitation = invitations.find { invitation -> invitation.tokenId == token.tokenId }!!
+                        Pair(invitation, TokenResponse.from(token))
+                    }
+            }
     }
 
     fun getInvitation(invitationId: InvitationId): Mono<Invitation> {
@@ -53,9 +72,9 @@ class InvitationUseCase(
 
     fun markAsAccepted(invitationId: InvitationId): Mono<Invitation> {
         return getInvitation(invitationId)
-//            .map { invitation -> invitation.markAsAccepted() }
-//            .flatMap { invitation -> invitationRepository.save(invitation).map { invitation } }
-//            .publishEvents()
+            .map { invitation -> invitation.markAsAccepted() }
+            .flatMap { invitation -> invitationRepository.save(invitation).map { invitation } }
+            .publishEvents()
     }
 }
 

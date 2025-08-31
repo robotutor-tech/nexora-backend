@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.device.domain.model
 
-import com.robotutor.nexora.shared.domain.event.DeviceCreatedEvent
+import com.robotutor.nexora.modules.device.domain.event.DeviceCreatedEvent
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.model.*

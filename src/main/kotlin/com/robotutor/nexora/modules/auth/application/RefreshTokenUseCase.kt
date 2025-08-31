@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.auth.application
 
+import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.auth.application.command.RefreshTokenCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
@@ -22,18 +23,17 @@ class RefreshTokenUseCase(
     fun refresh(refreshTokenCommand: RefreshTokenCommand): Mono<TokenResponses> {
         return tokenUseCase.findTokenByValue(refreshTokenCommand.token)
             .flatMap { token ->
-                if (token.tokenType != TokenType.REFRESH || token.expiresAt.isBefore(Instant.now())) {
+                if (token.tokenType != TokenType.REFRESH) {
                     createMonoError(UnAuthorizedException(NexoraError.NEXORA0206))
                 } else {
-                    tokenUseCase.generateTokenWithRefreshToken(
-                        token.principalType,
-                        token.principal
-                    )
-                        .flatMap { tokens ->
-                            tokenUseCase.invalidateToken(token)
-                                .map { tokens }
-                        }
+                    createMono(token)
                 }
+            }
+            .flatMap { token ->
+                tokenUseCase.generateTokenWithRefreshToken(token.principalType, token.principal)
+                    .flatMap { tokens ->
+                        tokenUseCase.invalidateToken(token).map { tokens }
+                    }
             }
             .logOnSuccess(logger, "Successfully refreshed token")
             .logOnError(logger, "", "Failed to refresh token")

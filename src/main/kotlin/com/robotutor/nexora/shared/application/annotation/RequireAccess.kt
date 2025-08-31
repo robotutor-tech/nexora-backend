@@ -9,6 +9,6 @@ import com.robotutor.nexora.shared.domain.model.ResourceType
 annotation class RequireAccess(
     val action: ActionType,
     val resource: ResourceType,
-    val idParam: String = ""
+    val idParam: String = "*"
 )
 

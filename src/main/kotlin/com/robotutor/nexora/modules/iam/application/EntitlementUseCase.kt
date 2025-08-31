@@ -45,7 +45,7 @@ class EntitlementUseCase(
             actorData.premisesId,
             actorData.role.roleId,
             resourceType,
-            action
+            if (action == ActionType.LIST) ActionType.READ else action
         )
     }
 }

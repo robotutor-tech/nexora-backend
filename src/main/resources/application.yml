@@ -21,10 +21,6 @@ spring:
     listener:
       ack-mode: manual
 
-logging:
-  level:
-    org.springframework.data.mongodb.core.convert: DEBUG
-
 server:
   port: 9001
 
@@ -38,3 +34,10 @@ app:
       - "/users"
       - "/auth/login"
       - "/auth/validate"
+
+  events:
+    topics:
+      AuthUserRegisteredEvent: "auth.auth-user.registered"
+      UserRegisteredEvent: "user.user.registered"
+      ResourceCreatedEvent: "shared.resource.created"
+      FeedCreatedEvent: "feed.feed.created"

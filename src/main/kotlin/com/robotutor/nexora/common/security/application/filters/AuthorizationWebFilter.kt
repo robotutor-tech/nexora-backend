@@ -7,6 +7,7 @@ import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
 import com.robotutor.nexora.common.security.domain.model.PolicyInput
+import com.robotutor.nexora.shared.application.service.ContextDataResolver
 import com.robotutor.nexora.shared.domain.exception.AccessDeniedException
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.model.ActorData
@@ -52,7 +53,7 @@ class AuthorizationWebFilter(
 
 
     private fun validateAccess(exchange: ServerWebExchange, requirePolicy: RequireAccess): Mono<Boolean> {
-        return getActorData()
+        return ContextDataResolver.getActorData()
             .flatMap { actorData ->
                 entitlementFacade.getEntitlements(requirePolicy.action, requirePolicy.resource)
                     .collectList()
@@ -66,17 +67,6 @@ class AuthorizationWebFilter(
                         opaFacade.evaluate(input)
                     }
             }
-    }
-
-    private fun getActorData(): Mono<ActorData> {
-        return Mono.deferContextual { ctx ->
-            val actorDataOptional = ctx.getOrEmpty<ActorData>(ActorData::class.java)
-            if (actorDataOptional.isEmpty) {
-                createMonoError(UnAuthorizedException(NexoraError.NEXORA0101))
-            } else {
-                createMono(actorDataOptional.get())
-            }
-        }
     }
 
     private fun resolveResourceId(exchange: ServerWebExchange, param: String): String? {

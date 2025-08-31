@@ -1,10 +1,10 @@
 package com.robotutor.nexora.shared.logger
 
+import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer
 import com.robotutor.nexora.shared.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.shared.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.shared.logger.models.RequestDetails
 import com.robotutor.nexora.shared.logger.models.ResponseDetails
-import com.robotutor.nexora.shared.logger.serializer.DefaultSerializer
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Signal

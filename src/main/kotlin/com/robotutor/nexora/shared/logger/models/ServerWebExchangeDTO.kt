@@ -2,7 +2,7 @@ package com.robotutor.nexora.shared.logger.models
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.robotutor.nexora.shared.logger.getResponseTime
-import com.robotutor.nexora.shared.logger.serializer.HttpMethodSerializer
+import com.robotutor.nexora.shared.infrastructure.serializer.HttpMethodSerializer
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.web.server.ServerWebExchange

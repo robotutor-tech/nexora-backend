@@ -5,7 +5,6 @@ import com.robotutor.nexora.modules.iam.application.EntitlementUseCase
 import com.robotutor.nexora.modules.iam.application.RoleUseCase
 import com.robotutor.nexora.modules.iam.application.command.CreateEntitlementCommand
 import com.robotutor.nexora.modules.iam.domain.model.Role
-import com.robotutor.nexora.shared.domain.event.EventHandler
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.ActorData
@@ -18,19 +17,22 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class ResourceCreatedEventHandler(
+class ResourceCreatedEventHandlerUserCase(
     private val entitlementUseCase: EntitlementUseCase,
     private val roleUseCase: RoleUseCase
-) : EventHandler<ResourceCreatedEvent>(ResourceCreatedEvent::class.java) {
+) {
 
-    val logger = Logger(this::class.java)
+    private val logger = Logger(this::class.java)
 
-    override fun handle(event: ResourceCreatedEvent, actorData: ActorData): Mono<Any> {
+    fun handle(event: ResourceCreatedEvent, actorData: ActorData): Mono<List<Role>> {
         return roleUseCase.getHumanRolesWithCurrentRole(actorData.premisesId, actorData)
             .flatMap { role -> createEntitlement(ActionType.READ, role, event) }
             .flatMap { role ->
-                if (event.resourceType == ResourceType.FEED) createEntitlement(ActionType.CONTROL, role, event)
-                else createMono(role)
+                if (event.resourceType == ResourceType.FEED) {
+                    createEntitlement(ActionType.UPDATE, role, event)
+                } else {
+                    createMono(role)
+                }
             }
             .filter { role -> role.roleType == RoleType.ADMIN || role.roleType == RoleType.OWNER }
             .flatMap { role -> createEntitlement(ActionType.UPDATE, role, event) }
@@ -38,7 +40,6 @@ class ResourceCreatedEventHandler(
             .collectList()
             .logOnSuccess(logger, "Successfully handled resource created event")
             .logOnError(logger, "", "Failed to handle resource created event")
-            .map { actorData }
     }
 
     private fun createEntitlement(
