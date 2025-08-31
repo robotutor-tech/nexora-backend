@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.iam.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.iam.domain.model.Role
-import com.robotutor.nexora.modules.iam.infrastructure.persistence.model.RoleDocument
+import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.RoleDocument
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.RoleId
 import com.robotutor.nexora.shared.domain.model.Name

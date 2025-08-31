@@ -33,7 +33,7 @@ class DeviceUseCase(
         return getDevice(deviceId, actorData.premisesId)
             .map { device -> device.updateFeedIds(feedIds) }
             .flatMap { device -> deviceRepository.save(device).map { device } }
-            .publishEvents()
+//            .publishEvents()
             .logOnSuccess(logger, "Successfully updated feedIds for deviceId")
             .logOnError(logger, "", "Failed to add audit message")
     }

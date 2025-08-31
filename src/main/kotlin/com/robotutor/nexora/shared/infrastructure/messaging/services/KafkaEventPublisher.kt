@@ -1,7 +1,6 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.services
 
-import com.robotutor.nexora.shared.domain.event.DomainEvent
-import com.robotutor.nexora.shared.domain.event.EventPublisher
+import com.robotutor.nexora.shared.domain.event.EventMessage
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer
@@ -15,23 +14,22 @@ import org.apache.kafka.common.header.internals.RecordHeader
 import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
+import reactor.kafka.sender.SenderResult
 import reactor.util.context.ContextView
 
 @Service
 class KafkaEventPublisher(
     private val reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, String>,
-) : EventPublisher {
+) {
     val logger = Logger(this::class.java)
 
-    override fun <T : DomainEvent, R : Any> publish(event: T, transformer: () -> R): Mono<R> {
-        val messageAsString = DefaultSerializer.serialize(event)
-        val topic = event.eventName.value
+    fun publish(topic: String, message: EventMessage): Mono<SenderResult<Void>> {
+        val messageAsString = DefaultSerializer.serialize(message)
         return Mono.deferContextual { ctx ->
             val headers = createHeadersRecord(ctx)
             val producerRecord = ProducerRecord(topic, "", messageAsString)
             headers.forEach { producerRecord.headers().add(it) }
             reactiveKafkaProducerTemplate.send(producerRecord)
-                .map { transformer() }
         }
             .logOnSuccess(logger, "Successfully published kafka topic to $topic")
             .logOnError(logger, "", "Failed to publish kafka topic to $topic")

@@ -13,7 +13,6 @@ import com.robotutor.nexora.shared.domain.model.DeviceData
 @JsonSubTypes(
     JsonSubTypes.Type(value = UserData::class, name = "user"),
     JsonSubTypes.Type(value = DeviceData::class, name = "device")
-    // Add other subtypes as needed
 )
 interface ActorPrincipalDataMixin
 

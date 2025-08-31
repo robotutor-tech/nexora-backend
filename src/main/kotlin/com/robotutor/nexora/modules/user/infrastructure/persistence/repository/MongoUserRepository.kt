@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.user.infrastructure.persistence.repository
 
 import com.robotutor.nexora.modules.user.infrastructure.persistence.mapper.UserDocumentMapper
-import com.robotutor.nexora.modules.user.infrastructure.persistence.model.UserDocument
+import com.robotutor.nexora.modules.user.infrastructure.persistence.document.UserDocument
 import com.robotutor.nexora.modules.user.domain.model.User
 import com.robotutor.nexora.modules.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.domain.model.Email

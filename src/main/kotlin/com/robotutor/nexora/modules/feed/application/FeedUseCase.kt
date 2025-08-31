@@ -31,7 +31,7 @@ class FeedUseCase(
         return idGeneratorService.generateId(IdType.FEED_ID, FeedId::class.java)
             .map { feedId -> Feed.create(feedId, zoneId, createFeedCommand, actorData) }
             .flatMap { feed -> feedRepository.save(feed).map { feed } }
-            .publishEvents()
+//            .publishEvents()
             .logOnSuccess(logger, "Successfully created new Feed")
             .logOnError(logger, "", "Failed to create new Feed")
     }

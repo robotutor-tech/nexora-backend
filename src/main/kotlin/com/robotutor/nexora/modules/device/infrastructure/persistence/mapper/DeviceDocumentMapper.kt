@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.device.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.device.domain.model.Device
 import com.robotutor.nexora.modules.device.domain.model.FeedIds
-import com.robotutor.nexora.modules.device.infrastructure.persistence.model.DeviceDocument
+import com.robotutor.nexora.modules.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 import org.springframework.stereotype.Component

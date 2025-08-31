@@ -33,7 +33,7 @@ class ZoneUseCase(
                 )
             }
             .flatMap { zone -> zoneRepository.save(zone).map { zone } }
-            .publishEvents()
+//            .publishEvents()
             .logOnSuccess(logger, "Successfully created zone")
             .logOnError(logger, "", "Failed to create zone")
     }

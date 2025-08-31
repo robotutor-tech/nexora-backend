@@ -1,6 +1,7 @@
-package com.robotutor.nexora.modules.premises.infrastructure.persistence.model
+package com.robotutor.nexora.modules.iam.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.premises.domain.model.Premises
+import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.shared.domain.model.RoleType
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -10,23 +11,21 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
-const val PREMISES_COLLECTION = "premises"
+const val ROLE_COLLECTION = "roles"
 
-@TypeAlias("Premises")
-@Document(PREMISES_COLLECTION)
-data class PremisesDocument(
+@TypeAlias("Role")
+@Document(ROLE_COLLECTION)
+data class RoleDocument(
     @Id
     var id: ObjectId? = null,
     @Indexed(unique = true)
+    val roleId: String,
+    @Indexed
     val premisesId: String,
     val name: String,
-    val street: String,
-    val city: String,
-    val state: String,
-    val country: String,
-    val postalCode: String,
-    val owner: String,
+    val roleType: RoleType,
     val createdAt: Instant,
+    val updatedAt: Instant,
     @Version
-    val version: Long? = null
-) : MongoDocument<Premises>
+    val version: Long?
+) : MongoDocument<Role>

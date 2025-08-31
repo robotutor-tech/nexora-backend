@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.iam.infrastructure.persistence.model
+package com.robotutor.nexora.modules.iam.infrastructure.persistence.document
 
 import com.robotutor.nexora.modules.iam.domain.model.Actor
 import com.robotutor.nexora.modules.iam.domain.model.ActorState

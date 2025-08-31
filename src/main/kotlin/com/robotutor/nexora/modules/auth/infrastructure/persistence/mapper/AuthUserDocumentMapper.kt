@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.auth.domain.model.AuthUser
 import com.robotutor.nexora.modules.auth.domain.model.HashedPassword
-import com.robotutor.nexora.modules.auth.infrastructure.persistence.model.AuthUserDocument
+import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.AuthUserDocument
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper

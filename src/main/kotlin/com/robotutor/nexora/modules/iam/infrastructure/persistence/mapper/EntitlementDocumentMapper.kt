@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.modules.iam.infrastructure.persistence.model.EntitlementDocument
+import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.EntitlementDocument
 import com.robotutor.nexora.modules.iam.domain.model.Entitlement
 import com.robotutor.nexora.modules.iam.domain.model.EntitlementId
 import com.robotutor.nexora.shared.domain.model.PremisesId

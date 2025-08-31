@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.device.infrastructure.persistence.model
+package com.robotutor.nexora.modules.device.infrastructure.persistence.document
 
 import com.robotutor.nexora.modules.device.domain.model.Device
 import com.robotutor.nexora.modules.device.domain.model.DeviceHealth

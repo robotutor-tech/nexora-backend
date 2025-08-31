@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.premises.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.premises.domain.model.Address
 import com.robotutor.nexora.modules.premises.domain.model.Premises
-import com.robotutor.nexora.modules.premises.infrastructure.persistence.model.PremisesDocument
+import com.robotutor.nexora.modules.premises.infrastructure.persistence.document.PremisesDocument
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.UserId

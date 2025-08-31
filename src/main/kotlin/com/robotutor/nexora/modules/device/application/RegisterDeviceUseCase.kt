@@ -1,6 +1,7 @@
 package com.robotutor.nexora.modules.device.application
 
 import com.robotutor.nexora.modules.device.application.command.CreateDeviceCommand
+import com.robotutor.nexora.modules.device.application.event.DeviceEventPublisher
 import com.robotutor.nexora.modules.device.application.facade.ActorFacade
 import com.robotutor.nexora.modules.device.application.facade.TokenFacade
 import com.robotutor.nexora.modules.device.application.facade.dto.DeviceTokens
@@ -25,6 +26,7 @@ class RegisterDeviceUseCase(
     private val idGeneratorService: IdGeneratorService,
     private val actorFacade: ActorFacade,
     private val tokenFacade: TokenFacade,
+    private val eventPublisher: DeviceEventPublisher
 ) {
     private val logger = Logger(this::class.java)
 
@@ -47,7 +49,7 @@ class RegisterDeviceUseCase(
                 actorFacade.registerDeviceActor(device)
                     .flatMap { actorData ->
                         tokenFacade.generateDeviceToken(actorData)
-                            .publishEvents(device)
+                            .publishEvents(eventPublisher, device)
                             .contextWrite {
                                 it.put(ActorData::class.java, actorData)
                                     .put(DeviceData::class.java, actorData.principal)

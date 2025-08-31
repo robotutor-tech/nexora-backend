@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.auth.domain.model.Invitation
 import com.robotutor.nexora.modules.auth.domain.model.InvitationStatus
 import com.robotutor.nexora.modules.auth.domain.repository.InvitationRepository
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper.InvitationDocumentMapper
-import com.robotutor.nexora.modules.auth.infrastructure.persistence.model.InvitationDocument
+import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.InvitationDocument
 import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.InvitationId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository

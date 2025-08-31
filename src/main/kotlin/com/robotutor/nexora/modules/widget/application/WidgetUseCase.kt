@@ -26,6 +26,6 @@ class WidgetUseCase(
         return idGeneratorService.generateId(IdType.WIDGET_ID, WidgetId::class.java)
             .map { widgetId -> Widget.create(widgetId, createWidgetCommand, actorData) }
             .flatMap { widget -> widgetRepository.save(widget).map { widget } }
-            .publishEvents()
+//            .publishEvents()
     }
 }

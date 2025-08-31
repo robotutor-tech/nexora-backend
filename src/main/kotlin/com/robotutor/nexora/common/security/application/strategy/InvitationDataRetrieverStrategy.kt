@@ -11,6 +11,6 @@ class InvitationDataRetrieverStrategy(
     private val invitationDataRetriever: InvitationDataRetriever
 ) : DataRetrieverStrategy<InvitationContext, InvitationData> {
     override fun getPrincipalData(context: InvitationContext): Mono<InvitationData> {
-        return invitationDataRetriever.getInvitationData(context.value)
+        return invitationDataRetriever.getInvitationData(context.invitationId)
     }
 }

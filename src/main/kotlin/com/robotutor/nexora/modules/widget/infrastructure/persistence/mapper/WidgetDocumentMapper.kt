@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.widget.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.widget.domain.model.Widget
-import com.robotutor.nexora.modules.widget.infrastructure.persistence.model.WidgetDocument
+import com.robotutor.nexora.modules.widget.infrastructure.persistence.document.WidgetDocument
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 import org.springframework.stereotype.Service

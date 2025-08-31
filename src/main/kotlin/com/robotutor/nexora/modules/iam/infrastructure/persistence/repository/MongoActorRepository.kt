@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.iam.adapters.persistence.repository
 
 import com.robotutor.nexora.modules.iam.infrastructure.persistence.mapper.ActorDocumentMapper
-import com.robotutor.nexora.modules.iam.infrastructure.persistence.model.ActorDocument
+import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.ActorDocument
 import com.robotutor.nexora.modules.iam.domain.model.Actor
 import com.robotutor.nexora.modules.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.shared.domain.model.ActorId

@@ -34,7 +34,7 @@ class AuthUserUseCase(
         return authUserRepository.findByEmail(registerAuthUserCommand.email)
             .flatMap { createMonoError<AuthUser>(DuplicateDataException(NexoraError.NEXORA0201)) }
             .switchIfEmpty(registerAuthUser(registerAuthUserCommand))
-            .publishEvents()
+//            .publishEvents()
             .logOnSuccess(logger, "Successfully registered auth user for ${registerAuthUserCommand.userId}")
             .logOnError(logger, "", "Failed to register auth user ${registerAuthUserCommand.userId}")
             .map { AuthUserResponse.from(it) }

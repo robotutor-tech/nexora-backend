@@ -46,7 +46,7 @@ class InvitationUseCase(
                     tokenId = token.tokenId
                 )
                 invitationRepository.save(invitation).map { invitation }
-                    .publishEvents()
+//                    .publishEvents()
                     .map { Pair(invitation, TokenResponse.from(token)) }
             }
             .logOnSuccess(logger, "Successfully created invitation")
@@ -74,7 +74,7 @@ class InvitationUseCase(
         return getInvitation(invitationId)
             .map { invitation -> invitation.markAsAccepted() }
             .flatMap { invitation -> invitationRepository.save(invitation).map { invitation } }
-            .publishEvents()
+//            .publishEvents()
     }
 }
 

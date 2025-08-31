@@ -32,7 +32,7 @@ class RegisterUserUseCase(
                 .flatMap { createMonoError<User>(DuplicateDataException(NexoraError.NEXORA0201)) }
                 .switchIfEmpty(registerUser(registerUserCommand))
                 .flatMap { user -> registerAuthUser(user, registerUserCommand) }
-                .publishEvents()
+//                .publishEvents()
                 .logOnSuccess(logger, "Successfully registered user")
                 .logOnError(logger, "", "Failed to registered user")
     }

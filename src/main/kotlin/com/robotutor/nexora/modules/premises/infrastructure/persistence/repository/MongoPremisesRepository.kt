@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.premises.infrastructure.persistence.reposit
 import com.robotutor.nexora.modules.premises.domain.model.Premises
 import com.robotutor.nexora.modules.premises.domain.repository.PremisesRepository
 import com.robotutor.nexora.modules.premises.infrastructure.persistence.mapper.PremisesDocumentMapper
-import com.robotutor.nexora.modules.premises.infrastructure.persistence.model.PremisesDocument
+import com.robotutor.nexora.modules.premises.infrastructure.persistence.document.PremisesDocument
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate

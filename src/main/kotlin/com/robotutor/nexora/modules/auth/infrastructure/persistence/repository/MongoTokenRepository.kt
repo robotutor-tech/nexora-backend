@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.auth.domain.model.Token
 import com.robotutor.nexora.modules.auth.domain.model.TokenId
 import com.robotutor.nexora.modules.auth.domain.repository.TokenRepository
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper.TokenDocumentMapper
-import com.robotutor.nexora.modules.auth.infrastructure.persistence.model.TokenDocument
+import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.TokenDocument
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria

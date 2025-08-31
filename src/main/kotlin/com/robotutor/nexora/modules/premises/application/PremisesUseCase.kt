@@ -39,7 +39,7 @@ class PremisesUseCase(
                 )
             }
             .flatMap { premises -> premisesRepository.save(premises).map { premises } }
-            .publishEvents()
+//            .publishEvents()
             .flatMap { premises ->
                 val command = RegisterPremisesResourceCommand(premises.premisesId, createPremisesCommand.owner)
                 premisesResourceFacade.register(command)

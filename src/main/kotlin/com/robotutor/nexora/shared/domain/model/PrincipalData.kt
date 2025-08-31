@@ -2,25 +2,22 @@ package com.robotutor.nexora.shared.domain.model
 
 import java.time.Instant
 
-// Domain model should not have serialization annotations (Jackson, etc.)
-// Use Jackson Mixins or DTOs for (de)serialization in infrastructure layer
+sealed interface PrincipalData
 
-sealed class PrincipalData
-
-sealed class ActorPrincipalData : PrincipalData()
+sealed interface ActorPrincipalData : PrincipalData
 
 data class UserData(
     val userId: UserId,
     val name: Name,
     val email: Email,
     val registeredAt: Instant
-) : ActorPrincipalData()
+) : ActorPrincipalData
 
 data class DeviceData(
     val deviceId: DeviceId,
     val premisesId: PremisesId,
     val name: Name,
-) : ActorPrincipalData()
+) : ActorPrincipalData
 
 data class ActorData(
     val actorId: ActorId,
@@ -28,7 +25,7 @@ data class ActorData(
     val premisesId: PremisesId,
     val principalType: ActorPrincipalType,
     val principal: ActorPrincipalData,
-) : PrincipalData()
+) : PrincipalData
 
 data class Role(
     val roleId: RoleId,
@@ -37,7 +34,7 @@ data class Role(
     val roleType: RoleType,
 )
 
-data class InternalData(val id: String) : PrincipalData()
+data class InternalData(val id: String) : PrincipalData
 
 data class InvitationData(
     val invitationId: InvitationId,
@@ -45,4 +42,4 @@ data class InvitationData(
     val name: Name,
     val zoneId: ZoneId,
     val invitedBy: ActorId,
-) : PrincipalData()
+) : PrincipalData

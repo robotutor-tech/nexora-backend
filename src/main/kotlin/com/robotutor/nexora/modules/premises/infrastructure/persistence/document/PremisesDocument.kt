@@ -1,7 +1,6 @@
-package com.robotutor.nexora.modules.feed.infrastructure.persistence.model
+package com.robotutor.nexora.modules.premises.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.feed.domain.model.Feed
-import com.robotutor.nexora.modules.feed.domain.model.FeedType
+import com.robotutor.nexora.modules.premises.domain.model.Premises
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -11,23 +10,23 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
-const val FEED_COLLECTION = "feeds"
+const val PREMISES_COLLECTION = "premises"
 
-@TypeAlias("Feed")
-@Document(FEED_COLLECTION)
-data class FeedDocument(
+@TypeAlias("Premises")
+@Document(PREMISES_COLLECTION)
+data class PremisesDocument(
     @Id
     var id: ObjectId? = null,
     @Indexed(unique = true)
-    val feedId: String,
-    @Indexed
     val premisesId: String,
     val name: String,
-    val value: Number = 0,
-    val type: FeedType,
-    val createdAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now(),
+    val street: String,
+    val city: String,
+    val state: String,
+    val country: String,
+    val postalCode: String,
+    val owner: String,
+    val createdAt: Instant,
     @Version
     val version: Long? = null
-) : MongoDocument<Feed>
-
+) : MongoDocument<Premises>

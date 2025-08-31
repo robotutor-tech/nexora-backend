@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.zone.infrastructure.persistence.repository
 import com.robotutor.nexora.modules.zone.domain.model.Zone
 import com.robotutor.nexora.modules.zone.domain.model.repository.ZoneRepository
 import com.robotutor.nexora.modules.zone.infrastructure.persistence.mapper.ZoneDocumentMapper
-import com.robotutor.nexora.modules.zone.infrastructure.persistence.model.ZoneDocument
+import com.robotutor.nexora.modules.zone.infrastructure.persistence.document.ZoneDocument
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.ZoneId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository

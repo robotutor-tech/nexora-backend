@@ -55,9 +55,9 @@ class TokenUseCase(
 
         return tokenRepository.save(authToken)
             .map { authToken }
-            .publishEvents()
+//            .publishEvents()
             .flatMap { tokenRepository.save(refreshToken).map { refreshToken } }
-            .publishEvents()
+//            .publishEvents()
             .map { Tokens(authToken, refreshToken) }
             .logOnSuccess(logger, "Successfully generated tokens")
             .logOnError(logger, "", "Failed to generate tokens")
@@ -66,7 +66,7 @@ class TokenUseCase(
 
     fun invalidateToken(token: Token): Mono<Token> {
         return tokenRepository.save(token.invalidate()).map { token }
-            .publishEvents()
+//            .publishEvents()
             .flatMap { invalidatedToken ->
                 if (invalidatedToken.otherTokenId == null) {
                     createMono(invalidatedToken)
@@ -74,7 +74,7 @@ class TokenUseCase(
                     tokenRepository.findByTokenId(invalidatedToken.otherTokenId!!)
                         .map { otherToken -> otherToken.invalidate() }
                         .flatMap { otherToken -> tokenRepository.save(otherToken).map { otherToken } }
-                        .publishEvents()
+//                        .publishEvents()
                         .map { invalidatedToken }
                         .switchIfEmpty(createMono(invalidatedToken))
                 }

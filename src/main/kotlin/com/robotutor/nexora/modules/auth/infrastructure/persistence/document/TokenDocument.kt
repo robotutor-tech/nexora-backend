@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.auth.infrastructure.persistence.model
+package com.robotutor.nexora.modules.auth.infrastructure.persistence.document
 
 
 import com.robotutor.nexora.modules.auth.domain.model.Token
@@ -27,7 +27,7 @@ data class TokenDocument(
     val value: String,
     val otherToken: String? = null,
     val principalType: TokenPrincipalType,
-    val principal: PrincipalContext,
+    val principal: PrincipalContextDocument,
     val tokenType: TokenType,
     val issuedAt: Instant,
     @Indexed(name = "expireAtIndex", expireAfter = "0s")
@@ -35,3 +35,16 @@ data class TokenDocument(
     @Version
     val version: Long? = null
 ) : MongoDocument<Token>
+
+sealed interface PrincipalContextDocument
+sealed interface ActorPrincipalContextDocument : PrincipalContextDocument
+
+data class UserContextDocument(val userId: String) : ActorPrincipalContextDocument
+data class DeviceContextDocument(val deviceId: String) : ActorPrincipalContextDocument
+data class InvitationContextDocument(val invitationId: String) : PrincipalContextDocument
+data class InternalContextDocument(val value: String) : PrincipalContextDocument
+data class ActorContextDocument(
+    val actorId: String,
+    val roleId: String,
+    val context: ActorPrincipalContextDocument
+) : PrincipalContextDocument

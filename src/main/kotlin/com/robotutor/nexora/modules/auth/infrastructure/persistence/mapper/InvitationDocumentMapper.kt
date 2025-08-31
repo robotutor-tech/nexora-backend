@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.auth.domain.model.Invitation
 import com.robotutor.nexora.modules.auth.domain.model.TokenId
-import com.robotutor.nexora.modules.auth.infrastructure.persistence.model.InvitationDocument
+import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.InvitationDocument
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 import org.springframework.stereotype.Component

@@ -9,7 +9,7 @@ object PrincipalContextMapper {
             is DeviceContext -> DeviceContextResponse(context.deviceId.value)
             is InternalContext -> InternalContextResponse("Internal Context")
             is UserContext -> UserContextResponse(context.userId.value)
-            is InvitationContext -> InvitationContextResponse(context.value.value)
+            is InvitationContext -> InvitationContextResponse(context.invitationId.value)
             is ActorContext -> ActorContextResponse(
                 actorId = context.actorId.value,
                 roleId = context.roleId.value,

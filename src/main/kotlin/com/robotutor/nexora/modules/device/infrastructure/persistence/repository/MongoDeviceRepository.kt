@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.device.infrastructure.persistence.repositor
 import com.robotutor.nexora.modules.device.domain.model.Device
 import com.robotutor.nexora.modules.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.modules.device.infrastructure.persistence.mapper.DeviceDocumentMapper
-import com.robotutor.nexora.modules.device.infrastructure.persistence.model.DeviceDocument
+import com.robotutor.nexora.modules.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.shared.domain.model.DeviceId
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
