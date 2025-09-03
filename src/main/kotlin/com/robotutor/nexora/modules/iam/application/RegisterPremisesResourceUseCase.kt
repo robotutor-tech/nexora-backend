@@ -5,9 +5,9 @@ import com.robotutor.nexora.modules.iam.application.command.CreateActorCommand
 import com.robotutor.nexora.modules.iam.application.command.CreateEntitlementCommand
 import com.robotutor.nexora.modules.iam.application.command.CreateRoleCommand
 import com.robotutor.nexora.modules.iam.application.command.RegisterPremisesResourceCommand
-import com.robotutor.nexora.modules.iam.domain.model.Actor
-import com.robotutor.nexora.modules.iam.domain.model.Entitlement
-import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.modules.iam.domain.entity.Actor
+import com.robotutor.nexora.modules.iam.domain.entity.Entitlement
+import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.shared.domain.model.*
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux

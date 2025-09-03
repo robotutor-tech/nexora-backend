@@ -1,11 +1,17 @@
 package com.robotutor.nexora.modules.zone.application
 
 import com.robotutor.nexora.modules.zone.application.command.CreateZoneCommand
-import com.robotutor.nexora.modules.zone.domain.model.IdType
-import com.robotutor.nexora.modules.zone.domain.model.Zone
-import com.robotutor.nexora.modules.zone.domain.model.repository.ZoneRepository
+import com.robotutor.nexora.modules.zone.domain.event.ZoneEvent
+import com.robotutor.nexora.modules.zone.domain.entity.IdType
+import com.robotutor.nexora.modules.zone.domain.entity.Zone
+import com.robotutor.nexora.modules.zone.domain.repository.ZoneRepository
+import com.robotutor.nexora.shared.domain.event.EventPublisher
+import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
+import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.model.ResourceId
+import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.model.ZoneId
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.shared.logger.Logger
@@ -19,6 +25,8 @@ import reactor.core.publisher.Mono
 class ZoneUseCase(
     private val zoneRepository: ZoneRepository,
     private val idGeneratorService: IdGeneratorService,
+    private val eventPublisher: EventPublisher<ResourceCreatedEvent>,
+    private val zoneEventPublisher: EventPublisher<ZoneEvent>
 ) {
     val logger = Logger(this::class.java)
 
@@ -32,8 +40,12 @@ class ZoneUseCase(
                     createdBy = actorData.actorId,
                 )
             }
-            .flatMap { zone -> zoneRepository.save(zone).map { zone } }
-//            .publishEvents()
+            .flatMap { zone ->
+                val resourceCreatedEvent = ResourceCreatedEvent(ResourceType.ZONE, ResourceId(zone.zoneId.value))
+                zoneRepository.save(zone).map { zone }
+                    .publishEvent(eventPublisher, resourceCreatedEvent)
+            }
+            .publishEvents(zoneEventPublisher)
             .logOnSuccess(logger, "Successfully created zone")
             .logOnError(logger, "", "Failed to create zone")
     }

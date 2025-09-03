@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.auth.domain.service
 
-import com.robotutor.nexora.modules.auth.domain.model.HashedPassword
-import com.robotutor.nexora.modules.auth.domain.model.Password
+import com.robotutor.nexora.modules.auth.domain.entity.HashedPassword
+import com.robotutor.nexora.modules.auth.domain.entity.Password
 import org.springframework.security.crypto.password.PasswordEncoder
 
 class PasswordService(private val passwordEncoder: PasswordEncoder) {

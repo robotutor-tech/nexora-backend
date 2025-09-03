@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.widget.interfaces.controller.dto
 
-import com.robotutor.nexora.modules.widget.domain.model.WidgetType
+import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
 
 data class WidgetResponse(
     val widgetId: String,

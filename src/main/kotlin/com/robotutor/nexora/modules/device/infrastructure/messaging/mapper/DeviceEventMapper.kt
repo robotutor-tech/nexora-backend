@@ -1,19 +1,17 @@
 package com.robotutor.nexora.modules.device.infrastructure.messaging.mapper
 
 import com.robotutor.nexora.modules.device.domain.event.DeviceCreatedEvent
+import com.robotutor.nexora.modules.device.domain.event.DeviceEvent
 import com.robotutor.nexora.modules.device.infrastructure.messaging.message.DeviceCreatedEventMessage
-import com.robotutor.nexora.shared.domain.event.DomainEvent
 import com.robotutor.nexora.shared.domain.event.EventMapper
 import com.robotutor.nexora.shared.domain.event.EventMessage
 import org.springframework.stereotype.Component
 
 @Component
-class DeviceEventMapper : EventMapper {
-    override fun toEventMessage(event: DomainEvent): EventMessage {
+class DeviceEventMapper : EventMapper<DeviceEvent> {
+    override fun toEventMessage(event: DeviceEvent): EventMessage {
         return when (event) {
             is DeviceCreatedEvent -> toDeviceCreatedEventMessage(event)
-
-            else -> throw IllegalArgumentException("Unsupported event type: ${event::class.java}")
         }
     }
 

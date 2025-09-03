@@ -4,7 +4,7 @@ import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.modules.iam.application.EntitlementUseCase
 import com.robotutor.nexora.modules.iam.application.RoleUseCase
 import com.robotutor.nexora.modules.iam.application.command.CreateEntitlementCommand
-import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.ActorData
@@ -24,7 +24,7 @@ class ResourceCreatedEventHandlerUserCase(
 
     private val logger = Logger(this::class.java)
 
-    fun handle(event: ResourceCreatedEvent, actorData: ActorData): Mono<List<Role>> {
+    fun createResource(event: ResourceCreatedEvent, actorData: ActorData): Mono<List<Role>> {
         return roleUseCase.getHumanRolesWithCurrentRole(actorData.premisesId, actorData)
             .flatMap { role -> createEntitlement(ActionType.READ, role, event) }
             .flatMap { role ->

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.feed.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.modules.feed.domain.model.Feed
+import com.robotutor.nexora.modules.feed.domain.entity.Feed
 import com.robotutor.nexora.modules.feed.infrastructure.persistence.document.FeedDocument
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.model.Name

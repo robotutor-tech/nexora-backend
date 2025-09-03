@@ -1,14 +1,13 @@
 package com.robotutor.nexora.modules.user.interfaces.controller.mapper
 
-import com.robotutor.nexora.modules.auth.domain.model.Password
+import com.robotutor.nexora.modules.auth.domain.entity.Password
 import com.robotutor.nexora.modules.user.application.command.RegisterUserCommand
-import com.robotutor.nexora.modules.user.domain.model.User
+import com.robotutor.nexora.modules.user.domain.entity.User
 import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserRequest
 import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.Mobile
 import com.robotutor.nexora.shared.domain.model.Name
-import com.robotutor.nexora.shared.domain.model.UserData
 
 object UserMapper {
     fun toRegisterUserCommand(userRequest: UserRequest): RegisterUserCommand {

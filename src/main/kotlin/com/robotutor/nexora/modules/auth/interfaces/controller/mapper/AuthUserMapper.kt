@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.auth.application.command.ActorLoginCommand
 import com.robotutor.nexora.modules.auth.application.command.LoginCommand
 import com.robotutor.nexora.modules.auth.application.command.RegisterAuthUserCommand
 import com.robotutor.nexora.modules.auth.application.dto.AuthUserResponse
-import com.robotutor.nexora.modules.auth.domain.model.Password
+import com.robotutor.nexora.modules.auth.domain.entity.Password
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.ActorLoginRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthLoginRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthUserRequest

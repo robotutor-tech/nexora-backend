@@ -21,11 +21,3 @@ enum class ActionType {
     CONTROL,
 }
 
-enum class RoleType {
-    DEVICE,
-    CUSTOM,
-    GUEST,
-    USER,
-    ADMIN,
-    OWNER,
-}

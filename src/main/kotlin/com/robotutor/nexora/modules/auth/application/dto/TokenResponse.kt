@@ -1,8 +1,8 @@
 package com.robotutor.nexora.modules.auth.application.dto
 
-import com.robotutor.nexora.modules.auth.domain.model.Token
-import com.robotutor.nexora.modules.auth.domain.model.Tokens
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
+import com.robotutor.nexora.modules.auth.domain.entity.Token
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.modules.auth.domain.entity.Tokens
 import com.robotutor.nexora.shared.interfaces.dto.PrincipalContextResponse
 import java.time.Instant
 

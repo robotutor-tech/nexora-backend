@@ -1,16 +1,18 @@
 package com.robotutor.nexora.modules.auth.application
 
+import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.auth.application.command.InvitationCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponse
-import com.robotutor.nexora.modules.auth.domain.model.Invitation
-import com.robotutor.nexora.modules.auth.domain.model.InvitationStatus
-import com.robotutor.nexora.modules.auth.domain.model.TokenType
+import com.robotutor.nexora.modules.auth.domain.entity.Invitation
+import com.robotutor.nexora.modules.auth.domain.entity.InvitationStatus
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.modules.auth.domain.entity.TokenType
+import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.repository.InvitationRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.InvitationContext
 import com.robotutor.nexora.shared.domain.model.InvitationId
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -67,7 +69,8 @@ class InvitationUseCase(
     }
 
     fun getInvitation(invitationId: InvitationId): Mono<Invitation> {
-        return invitationRepository.findByInvitationId(invitationId)
+        return invitationRepository.findByInvitationIdAndStatus(invitationId, InvitationStatus.INVITED)
+            .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0204)))
     }
 
     fun markAsAccepted(invitationId: InvitationId): Mono<Invitation> {

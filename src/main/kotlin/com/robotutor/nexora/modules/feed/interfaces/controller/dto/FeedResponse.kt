@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.feed.interfaces.controller.dto
 
-import com.robotutor.nexora.modules.feed.domain.model.FeedType
+import com.robotutor.nexora.modules.feed.domain.entity.FeedType
 
 data class FeedResponse(
     val feedId: String,

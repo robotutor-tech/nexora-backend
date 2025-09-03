@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.iam.interfaces.controller.mapper
 
-import com.robotutor.nexora.modules.iam.domain.model.Actor
-import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.modules.iam.domain.entity.Actor
+import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.modules.iam.interfaces.controller.dto.ActorResponse
 import com.robotutor.nexora.modules.iam.interfaces.controller.dto.ActorWithRolesResponse
 import com.robotutor.nexora.shared.domain.model.ActorData

@@ -6,14 +6,16 @@ import com.robotutor.nexora.modules.auth.application.command.LoginCommand
 import com.robotutor.nexora.modules.auth.application.command.RegisterAuthUserCommand
 import com.robotutor.nexora.modules.auth.application.dto.AuthUserResponse
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
+import com.robotutor.nexora.modules.auth.domain.entity.AuthUser
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.modules.auth.domain.event.AuthEvent
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
-import com.robotutor.nexora.modules.auth.domain.model.AuthUser
 import com.robotutor.nexora.modules.auth.domain.repository.AuthUserRepository
 import com.robotutor.nexora.modules.auth.domain.service.PasswordService
+import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.exception.BadDataException
 import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.UserContext
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
@@ -26,7 +28,8 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 class AuthUserUseCase(
     private val authUserRepository: AuthUserRepository,
     private val passwordService: PasswordService,
-    private val tokenUseCase: TokenUseCase
+    private val tokenUseCase: TokenUseCase,
+    private val eventPublisher: EventPublisher<AuthEvent>
 ) {
     private val logger = Logger(this::class.java)
 
@@ -34,7 +37,7 @@ class AuthUserUseCase(
         return authUserRepository.findByEmail(registerAuthUserCommand.email)
             .flatMap { createMonoError<AuthUser>(DuplicateDataException(NexoraError.NEXORA0201)) }
             .switchIfEmpty(registerAuthUser(registerAuthUserCommand))
-//            .publishEvents()
+            .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully registered auth user for ${registerAuthUserCommand.userId}")
             .logOnError(logger, "", "Failed to register auth user ${registerAuthUserCommand.userId}")
             .map { AuthUserResponse.from(it) }

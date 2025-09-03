@@ -1,12 +1,10 @@
 package com.robotutor.nexora.modules.device.application
 
-import com.robotutor.nexora.modules.device.domain.model.Device
-import com.robotutor.nexora.modules.device.domain.model.FeedIds
+import com.robotutor.nexora.modules.device.domain.entity.Device
+import com.robotutor.nexora.modules.device.domain.entity.FeedIds
 import com.robotutor.nexora.modules.device.domain.repository.DeviceRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.DeviceId
-import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError

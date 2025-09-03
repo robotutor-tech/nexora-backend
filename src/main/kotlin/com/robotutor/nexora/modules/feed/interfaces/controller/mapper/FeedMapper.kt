@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.feed.interfaces.controller.mapper
 
-import com.robotutor.nexora.modules.feed.domain.model.Feed
+import com.robotutor.nexora.modules.feed.domain.entity.Feed
 import com.robotutor.nexora.modules.feed.interfaces.controller.dto.FeedResponse
 
 class FeedMapper {

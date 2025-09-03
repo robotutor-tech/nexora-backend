@@ -5,9 +5,9 @@ import com.robotutor.nexora.common.security.application.strategy.DataRetrieverSt
 import com.robotutor.nexora.common.security.application.strategy.InternalUserDataRetrieverStrategy
 import com.robotutor.nexora.common.security.application.strategy.InvitationDataRetrieverStrategy
 import com.robotutor.nexora.common.security.application.strategy.UserDataRetrieverStrategy
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import com.robotutor.nexora.shared.domain.model.PrincipalData
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import org.springframework.stereotype.Service
 
 @Service

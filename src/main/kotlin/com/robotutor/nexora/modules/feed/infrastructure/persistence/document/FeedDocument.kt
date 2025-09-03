@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.feed.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.feed.domain.model.Feed
-import com.robotutor.nexora.modules.feed.domain.model.FeedType
+import com.robotutor.nexora.modules.feed.domain.entity.Feed
+import com.robotutor.nexora.modules.feed.domain.entity.FeedType
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id

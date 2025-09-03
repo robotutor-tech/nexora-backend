@@ -1,9 +1,9 @@
 package com.robotutor.nexora.modules.iam.application
 
 import com.robotutor.nexora.modules.iam.application.command.CreateEntitlementCommand
-import com.robotutor.nexora.modules.iam.domain.model.Entitlement
-import com.robotutor.nexora.modules.iam.domain.model.EntitlementId
-import com.robotutor.nexora.modules.iam.domain.model.IdType
+import com.robotutor.nexora.modules.iam.domain.entity.Entitlement
+import com.robotutor.nexora.modules.iam.domain.entity.EntitlementId
+import com.robotutor.nexora.modules.iam.domain.entity.IdType
 import com.robotutor.nexora.modules.iam.domain.repository.EntitlementRepository
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.ActorData

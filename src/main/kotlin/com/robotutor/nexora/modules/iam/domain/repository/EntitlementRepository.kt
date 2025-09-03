@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.domain.repository
 
-import com.robotutor.nexora.modules.iam.domain.model.Entitlement
+import com.robotutor.nexora.modules.iam.domain.entity.Entitlement
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.ResourceType

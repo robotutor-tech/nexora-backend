@@ -2,7 +2,6 @@ package com.robotutor.nexora.shared.application.service
 
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError
 import com.robotutor.nexora.shared.domain.model.ActorData
@@ -42,12 +41,6 @@ object ContextDataResolver {
             } else {
                 createMonoError(DataNotFoundException(SharedNexoraError.NEXORA0103))
             }
-        }
-    }
-
-    fun getEventPublisher(): Mono<EventPublisher> {
-        return Mono.deferContextual {
-            createMono(it.get(EventPublisher::class.java))
         }
     }
 

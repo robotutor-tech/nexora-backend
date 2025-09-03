@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.premises.domain.repository
 
-import com.robotutor.nexora.modules.premises.domain.model.Premises
+import com.robotutor.nexora.modules.premises.domain.entity.Premises
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

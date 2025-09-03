@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.interfaces.controller.mapper
 
-import com.robotutor.nexora.modules.iam.domain.model.Entitlement
+import com.robotutor.nexora.modules.iam.domain.entity.Entitlement
 import com.robotutor.nexora.modules.iam.interfaces.controller.dto.EntitlementResponse
 
 class EntitlementMapper {

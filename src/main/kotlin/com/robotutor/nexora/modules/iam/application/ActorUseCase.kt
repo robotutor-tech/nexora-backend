@@ -2,8 +2,8 @@ package com.robotutor.nexora.modules.iam.application
 
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.iam.application.command.CreateActorCommand
-import com.robotutor.nexora.modules.iam.domain.model.Actor
-import com.robotutor.nexora.modules.iam.domain.model.IdType
+import com.robotutor.nexora.modules.iam.domain.entity.Actor
+import com.robotutor.nexora.modules.iam.domain.entity.IdType
 import com.robotutor.nexora.modules.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.modules.iam.exceptions.NexoraError
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException

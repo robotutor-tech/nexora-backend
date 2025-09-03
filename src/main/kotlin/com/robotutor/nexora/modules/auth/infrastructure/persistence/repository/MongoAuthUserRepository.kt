@@ -1,7 +1,6 @@
-// generate code for the respository extends AuthUserRepository
 package com.robotutor.nexora.modules.auth.infrastructure.persistence.repository
 
-import com.robotutor.nexora.modules.auth.domain.model.AuthUser
+import com.robotutor.nexora.modules.auth.domain.entity.AuthUser
 import com.robotutor.nexora.modules.auth.domain.repository.AuthUserRepository
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper.AuthUserDocumentMapper
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.AuthUserDocument

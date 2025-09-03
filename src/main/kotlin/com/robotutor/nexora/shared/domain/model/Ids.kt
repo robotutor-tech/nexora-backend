@@ -22,6 +22,6 @@ data class RoleId(override val value: String) : SequenceId
 
 data class UserId(override val value: String) : SequenceId
 
-data class WidgetId(override val value: String) : ResourceId(value)
+
 
 data class ZoneId(override val value: String) : ResourceId(value)

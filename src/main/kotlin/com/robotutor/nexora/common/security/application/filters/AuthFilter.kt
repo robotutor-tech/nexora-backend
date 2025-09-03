@@ -11,11 +11,11 @@ import com.robotutor.nexora.shared.domain.model.InternalData
 import com.robotutor.nexora.shared.domain.model.PrincipalData
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.common.security.domain.model.ValidateTokenResult
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.model.DeviceData
 import com.robotutor.nexora.shared.domain.model.InternalContext
 import com.robotutor.nexora.shared.domain.model.InvitationData
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.shared.logger.Logger

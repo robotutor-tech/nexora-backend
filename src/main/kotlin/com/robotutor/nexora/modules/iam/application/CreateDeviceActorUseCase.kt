@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.iam.application
 import com.robotutor.nexora.modules.iam.application.command.CreateActorCommand
 import com.robotutor.nexora.modules.iam.application.command.CreateDeviceActorCommand
 import com.robotutor.nexora.modules.iam.application.command.CreateRoleCommand
-import com.robotutor.nexora.modules.iam.domain.model.Actor
+import com.robotutor.nexora.modules.iam.domain.entity.Actor
 import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.RoleType

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.widget.interfaces.controller.mapper
 
-import com.robotutor.nexora.modules.widget.domain.model.Widget
+import com.robotutor.nexora.modules.widget.domain.entity.Widget
 import com.robotutor.nexora.modules.widget.interfaces.controller.dto.WidgetResponse
 
 class WidgetMapper {

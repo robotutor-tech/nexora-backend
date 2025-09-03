@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.iam.infrastructure.persistence.repository
 
 import com.robotutor.nexora.modules.iam.infrastructure.persistence.mapper.EntitlementDocumentMapper
 import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.EntitlementDocument
-import com.robotutor.nexora.modules.iam.domain.model.Entitlement
+import com.robotutor.nexora.modules.iam.domain.entity.Entitlement
 import com.robotutor.nexora.modules.iam.domain.repository.EntitlementRepository
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.PremisesId

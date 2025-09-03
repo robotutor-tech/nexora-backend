@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.device.infrastructure.facade
 
 import com.robotutor.nexora.modules.device.application.facade.ActorFacade
-import com.robotutor.nexora.modules.device.domain.model.Device
+import com.robotutor.nexora.modules.device.domain.entity.Device
 import com.robotutor.nexora.modules.iam.interfaces.controller.ActorController
 import com.robotutor.nexora.shared.application.service.ContextDataResolver
 import com.robotutor.nexora.shared.domain.model.*

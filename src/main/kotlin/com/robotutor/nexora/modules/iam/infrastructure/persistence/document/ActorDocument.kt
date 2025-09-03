@@ -1,10 +1,10 @@
 package com.robotutor.nexora.modules.iam.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.iam.domain.model.Actor
-import com.robotutor.nexora.modules.iam.domain.model.ActorState
+import com.robotutor.nexora.modules.iam.domain.entity.Actor
+import com.robotutor.nexora.modules.iam.domain.entity.ActorState
 import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
+import com.robotutor.nexora.shared.infrastructure.persistence.model.ActorPrincipalDocument
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
-import com.robotutor.nexora.shared.interfaces.dto.PrincipalContextResponse
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -23,7 +23,7 @@ data class ActorDocument(
     @Indexed
     val premisesId: String,
     val principalType: ActorPrincipalType,
-    val principal: PrincipalContextResponse,
+    val principal: ActorPrincipalDocument,
     val roleIds: List<String>,
     val state: ActorState,
     val createdAt: Instant,

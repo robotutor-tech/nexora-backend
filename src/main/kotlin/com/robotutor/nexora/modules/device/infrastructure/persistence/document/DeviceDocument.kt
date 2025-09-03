@@ -1,10 +1,10 @@
 package com.robotutor.nexora.modules.device.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.device.domain.model.Device
-import com.robotutor.nexora.modules.device.domain.model.DeviceHealth
-import com.robotutor.nexora.modules.device.domain.model.DeviceOS
-import com.robotutor.nexora.modules.device.domain.model.DeviceState
-import com.robotutor.nexora.modules.device.domain.model.DeviceType
+import com.robotutor.nexora.modules.device.domain.entity.Device
+import com.robotutor.nexora.modules.device.domain.entity.DeviceHealth
+import com.robotutor.nexora.modules.device.domain.entity.DeviceOS
+import com.robotutor.nexora.modules.device.domain.entity.DeviceState
+import com.robotutor.nexora.modules.device.domain.entity.DeviceType
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -14,8 +14,8 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
-@TypeAlias("DeviceDocument")
 @Document(collection = "devices")
+@TypeAlias("Device")
 data class DeviceDocument(
     @Id
     var id: ObjectId? = null,

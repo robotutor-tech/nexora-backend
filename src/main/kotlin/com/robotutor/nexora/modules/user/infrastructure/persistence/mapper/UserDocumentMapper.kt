@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.user.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.user.infrastructure.persistence.document.UserDocument
-import com.robotutor.nexora.modules.user.domain.model.User
+import com.robotutor.nexora.modules.user.domain.entity.User
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.Mobile
 import com.robotutor.nexora.shared.domain.model.Name

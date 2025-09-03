@@ -2,8 +2,8 @@ package com.robotutor.nexora.modules.auth.application
 
 import com.robotutor.nexora.modules.auth.application.command.ActorLoginCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.ActorContext
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.UserContext
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError

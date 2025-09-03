@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.iam.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.iam.domain.model.Entitlement
-import com.robotutor.nexora.modules.iam.domain.model.EntitlementStatus
+import com.robotutor.nexora.modules.iam.domain.entity.Entitlement
+import com.robotutor.nexora.modules.iam.domain.entity.EntitlementStatus
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument

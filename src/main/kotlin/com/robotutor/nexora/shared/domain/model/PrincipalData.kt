@@ -43,3 +43,17 @@ data class InvitationData(
     val zoneId: ZoneId,
     val invitedBy: ActorId,
 ) : PrincipalData
+
+enum class ActorPrincipalType {
+    USER,
+    DEVICE,
+}
+
+enum class RoleType {
+    DEVICE,
+    CUSTOM,
+    GUEST,
+    USER,
+    ADMIN,
+    OWNER,
+}

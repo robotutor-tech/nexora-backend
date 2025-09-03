@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.device.infrastructure.persistence.repository
 
-import com.robotutor.nexora.modules.device.domain.model.Device
+import com.robotutor.nexora.modules.device.domain.entity.Device
 import com.robotutor.nexora.modules.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.modules.device.infrastructure.persistence.mapper.DeviceDocumentMapper
 import com.robotutor.nexora.modules.device.infrastructure.persistence.document.DeviceDocument

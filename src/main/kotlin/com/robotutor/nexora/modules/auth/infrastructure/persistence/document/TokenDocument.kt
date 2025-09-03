@@ -1,11 +1,10 @@
 package com.robotutor.nexora.modules.auth.infrastructure.persistence.document
 
-
-import com.robotutor.nexora.modules.auth.domain.model.Token
-import com.robotutor.nexora.modules.auth.domain.model.TokenType
-import com.robotutor.nexora.shared.domain.model.PrincipalContext
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
+import com.robotutor.nexora.modules.auth.domain.entity.Token
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.modules.auth.domain.entity.TokenType
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.model.PrincipalDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -27,7 +26,7 @@ data class TokenDocument(
     val value: String,
     val otherToken: String? = null,
     val principalType: TokenPrincipalType,
-    val principal: PrincipalContextDocument,
+    val principal: PrincipalDocument,
     val tokenType: TokenType,
     val issuedAt: Instant,
     @Indexed(name = "expireAtIndex", expireAfter = "0s")
@@ -35,16 +34,3 @@ data class TokenDocument(
     @Version
     val version: Long? = null
 ) : MongoDocument<Token>
-
-sealed interface PrincipalContextDocument
-sealed interface ActorPrincipalContextDocument : PrincipalContextDocument
-
-data class UserContextDocument(val userId: String) : ActorPrincipalContextDocument
-data class DeviceContextDocument(val deviceId: String) : ActorPrincipalContextDocument
-data class InvitationContextDocument(val invitationId: String) : PrincipalContextDocument
-data class InternalContextDocument(val value: String) : PrincipalContextDocument
-data class ActorContextDocument(
-    val actorId: String,
-    val roleId: String,
-    val context: ActorPrincipalContextDocument
-) : PrincipalContextDocument

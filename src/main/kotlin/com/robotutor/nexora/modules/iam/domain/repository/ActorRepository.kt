@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.domain.repository
 
-import com.robotutor.nexora.modules.iam.domain.model.Actor
+import com.robotutor.nexora.modules.iam.domain.entity.Actor
 import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
 import com.robotutor.nexora.shared.domain.model.RoleId

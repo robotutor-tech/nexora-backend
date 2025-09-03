@@ -1,12 +1,18 @@
 package com.robotutor.nexora.modules.feed.application
 
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
-import com.robotutor.nexora.modules.feed.domain.model.Feed
-import com.robotutor.nexora.modules.feed.domain.model.IdType
+import com.robotutor.nexora.modules.feed.domain.entity.Feed
+import com.robotutor.nexora.modules.feed.domain.entity.IdType
+import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
 import com.robotutor.nexora.modules.feed.domain.repository.FeedRepository
+import com.robotutor.nexora.shared.domain.event.EventPublisher
+import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
+import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.model.ResourceId
+import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.model.ZoneId
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.shared.logger.Logger
@@ -20,6 +26,8 @@ import reactor.core.publisher.Mono
 class FeedUseCase(
     private val feedRepository: FeedRepository,
     private val idGeneratorService: IdGeneratorService,
+    private val eventPublisher: EventPublisher<FeedEvent>,
+    private val resourceCreatedEventPublisher: EventPublisher<ResourceCreatedEvent>
 ) {
     val logger = Logger(this::class.java)
 
@@ -30,8 +38,14 @@ class FeedUseCase(
     fun createFeed(createFeedCommand: CreateFeedCommand, actorData: ActorData, zoneId: ZoneId): Mono<Feed> {
         return idGeneratorService.generateId(IdType.FEED_ID, FeedId::class.java)
             .map { feedId -> Feed.create(feedId, zoneId, createFeedCommand, actorData) }
-            .flatMap { feed -> feedRepository.save(feed).map { feed } }
-//            .publishEvents()
+            .flatMap { feed ->
+                feedRepository.save(feed).map { feed }
+                    .publishEvent(
+                        resourceCreatedEventPublisher,
+                        ResourceCreatedEvent(ResourceType.FEED, ResourceId(feed.feedId.value))
+                    )
+            }
+            .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully created new Feed")
             .logOnError(logger, "", "Failed to create new Feed")
     }

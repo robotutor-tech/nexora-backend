@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.zone.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.modules.zone.domain.model.Zone
+import com.robotutor.nexora.modules.zone.domain.entity.Zone
 import com.robotutor.nexora.modules.zone.infrastructure.persistence.document.ZoneDocument
 import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.Name

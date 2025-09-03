@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.interfaces.controller.dto
 
-import com.robotutor.nexora.modules.iam.domain.model.EntitlementStatus
+import com.robotutor.nexora.modules.iam.domain.entity.EntitlementStatus
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.ResourceType
 

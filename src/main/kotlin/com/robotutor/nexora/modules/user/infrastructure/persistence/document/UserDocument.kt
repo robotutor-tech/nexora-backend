@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.user.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.user.domain.model.User
+import com.robotutor.nexora.modules.user.domain.entity.User
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id

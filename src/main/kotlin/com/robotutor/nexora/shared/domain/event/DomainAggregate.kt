@@ -2,20 +2,20 @@ package com.robotutor.nexora.shared.domain.event
 
 interface DomainModel
 
-open class DomainAggregate(
-    private val domainEvents: MutableList<DomainEvent> = mutableListOf()
+open class DomainAggregate<T : DomainEvent>(
+    private val domainEvents: MutableList<T> = mutableListOf()
 ) : DomainModel {
 
-    fun addDomainEvent(event: DomainEvent): DomainAggregate {
+    fun addDomainEvent(event: T): DomainAggregate<T> {
         domainEvents.add(event)
         return this
     }
 
-    fun getDomainEvents(): List<DomainEvent> {
+    fun getDomainEvents(): List<T> {
         return domainEvents.toList()
     }
 
-    fun clearDomainEvents(): DomainAggregate {
+    fun clearDomainEvents(): DomainAggregate<T> {
         domainEvents.clear()
         return this
     }

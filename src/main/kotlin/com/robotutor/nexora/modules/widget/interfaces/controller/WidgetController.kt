@@ -2,13 +2,13 @@ package com.robotutor.nexora.modules.widget.interfaces.controller
 
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.modules.widget.application.WidgetUseCase
+import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
 import com.robotutor.nexora.modules.widget.interfaces.controller.dto.WidgetResponse
 import com.robotutor.nexora.modules.widget.interfaces.controller.mapper.WidgetMapper
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.model.ResourcesData
-import com.robotutor.nexora.shared.domain.model.WidgetId
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

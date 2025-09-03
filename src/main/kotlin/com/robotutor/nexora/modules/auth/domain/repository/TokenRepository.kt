@@ -1,10 +1,7 @@
 package com.robotutor.nexora.modules.auth.domain.repository
 
-import com.robotutor.nexora.modules.auth.domain.model.Token
-import com.robotutor.nexora.modules.auth.domain.model.TokenId
-import com.robotutor.nexora.shared.domain.model.InvitationId
-import com.robotutor.nexora.shared.domain.model.PrincipalContext
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
+import com.robotutor.nexora.modules.auth.domain.entity.Token
+import com.robotutor.nexora.modules.auth.domain.entity.TokenId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.Instant

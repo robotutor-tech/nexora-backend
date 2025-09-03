@@ -1,11 +1,10 @@
 package com.robotutor.nexora.modules.seed
 
 
-import com.robotutor.nexora.modules.device.domain.model.DeviceType
+import com.robotutor.nexora.modules.device.domain.entity.DeviceType
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
-import com.robotutor.nexora.modules.feed.domain.model.FeedType
-import com.robotutor.nexora.modules.widget.domain.model.WidgetType
-import com.robotutor.nexora.shared.domain.model.ModelNo
+import com.robotutor.nexora.modules.feed.domain.entity.FeedType
+import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
 import com.robotutor.nexora.shared.domain.model.Name
 
 object SeedData {

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.auth.infrastructure.persistence.repository
 
-import com.robotutor.nexora.modules.auth.domain.model.Token
-import com.robotutor.nexora.modules.auth.domain.model.TokenId
+import com.robotutor.nexora.modules.auth.domain.entity.Token
+import com.robotutor.nexora.modules.auth.domain.entity.TokenId
 import com.robotutor.nexora.modules.auth.domain.repository.TokenRepository
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper.TokenDocumentMapper
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.TokenDocument

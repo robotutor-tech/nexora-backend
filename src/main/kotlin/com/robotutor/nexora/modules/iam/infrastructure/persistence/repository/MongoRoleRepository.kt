@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.infrastructure.persistence.repository
 
-import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.modules.iam.domain.repository.RoleRepository
 import com.robotutor.nexora.modules.iam.infrastructure.persistence.mapper.RoleDocumentMapper
 import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.RoleDocument

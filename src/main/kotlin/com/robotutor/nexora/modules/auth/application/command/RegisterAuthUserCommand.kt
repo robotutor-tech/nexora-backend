@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.auth.application.command
 
-import com.robotutor.nexora.modules.auth.domain.model.Password
+import com.robotutor.nexora.modules.auth.domain.entity.Password
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 

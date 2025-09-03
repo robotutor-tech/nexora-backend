@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.user.domain.repository
 
-import com.robotutor.nexora.modules.user.domain.model.User
+import com.robotutor.nexora.modules.user.domain.entity.User
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 import reactor.core.publisher.Mono

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.domain.model
 
+import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
-import com.robotutor.nexora.shared.domain.model.TokenPrincipalType
 import java.time.Instant
 
 data class ValidateTokenResult(

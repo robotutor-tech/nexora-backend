@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.shared.domain.model.RoleType
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.user.application
 
 import com.robotutor.nexora.modules.user.application.command.GetUserCommand
-import com.robotutor.nexora.modules.user.domain.model.User
+import com.robotutor.nexora.modules.user.domain.entity.User
 import com.robotutor.nexora.modules.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError

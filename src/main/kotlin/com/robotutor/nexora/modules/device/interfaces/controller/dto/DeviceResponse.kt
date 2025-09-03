@@ -1,8 +1,8 @@
 package com.robotutor.nexora.modules.device.interfaces.controller.dto
 
-import com.robotutor.nexora.modules.device.domain.model.DeviceHealth
-import com.robotutor.nexora.modules.device.domain.model.DeviceState
-import com.robotutor.nexora.modules.device.domain.model.DeviceType
+import com.robotutor.nexora.modules.device.domain.entity.DeviceHealth
+import com.robotutor.nexora.modules.device.domain.entity.DeviceState
+import com.robotutor.nexora.modules.device.domain.entity.DeviceType
 
 data class DeviceResponse(
     val deviceId: String,

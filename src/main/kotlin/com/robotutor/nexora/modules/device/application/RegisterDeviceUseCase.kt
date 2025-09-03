@@ -1,18 +1,23 @@
 package com.robotutor.nexora.modules.device.application
 
 import com.robotutor.nexora.modules.device.application.command.CreateDeviceCommand
-import com.robotutor.nexora.modules.device.application.event.DeviceEventPublisher
 import com.robotutor.nexora.modules.device.application.facade.ActorFacade
 import com.robotutor.nexora.modules.device.application.facade.TokenFacade
 import com.robotutor.nexora.modules.device.application.facade.dto.DeviceTokens
-import com.robotutor.nexora.modules.device.domain.model.Device
-import com.robotutor.nexora.modules.device.domain.model.IdType
+import com.robotutor.nexora.modules.device.domain.entity.Device
+import com.robotutor.nexora.modules.device.domain.entity.IdType
+import com.robotutor.nexora.modules.device.domain.event.DeviceEvent
 import com.robotutor.nexora.modules.device.domain.repository.DeviceRepository
+import com.robotutor.nexora.shared.domain.event.EventPublisher
+import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
+import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.DeviceData
 import com.robotutor.nexora.shared.domain.model.DeviceId
 import com.robotutor.nexora.shared.domain.model.InvitationData
+import com.robotutor.nexora.shared.domain.model.ResourceId
+import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
@@ -26,7 +31,8 @@ class RegisterDeviceUseCase(
     private val idGeneratorService: IdGeneratorService,
     private val actorFacade: ActorFacade,
     private val tokenFacade: TokenFacade,
-    private val eventPublisher: DeviceEventPublisher
+    private val eventPublisher: EventPublisher<DeviceEvent>,
+    private val resourceCreatedEventPublisher: EventPublisher<ResourceCreatedEvent>
 ) {
     private val logger = Logger(this::class.java)
 
@@ -48,8 +54,13 @@ class RegisterDeviceUseCase(
             .flatMap { device ->
                 actorFacade.registerDeviceActor(device)
                     .flatMap { actorData ->
+                        val resourceCreatedEvent = ResourceCreatedEvent(
+                            resourceType = ResourceType.DEVICE,
+                            resourceId = ResourceId(device.deviceId.value)
+                        )
                         tokenFacade.generateDeviceToken(actorData)
                             .publishEvents(eventPublisher, device)
+                            .publishEvent(resourceCreatedEventPublisher, resourceCreatedEvent)
                             .contextWrite {
                                 it.put(ActorData::class.java, actorData)
                                     .put(DeviceData::class.java, actorData.principal)

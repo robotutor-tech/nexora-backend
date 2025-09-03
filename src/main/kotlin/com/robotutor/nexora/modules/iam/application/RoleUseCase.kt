@@ -2,8 +2,8 @@ package com.robotutor.nexora.modules.iam.application
 
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.modules.iam.application.command.CreateRoleCommand
-import com.robotutor.nexora.modules.iam.domain.model.IdType
-import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.modules.iam.domain.entity.IdType
+import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.modules.iam.domain.repository.RoleRepository
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.PremisesId

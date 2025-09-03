@@ -3,8 +3,8 @@ package com.robotutor.nexora.modules.premises.interfaces.controller.mapper
 import com.robotutor.nexora.modules.premises.application.dto.ActorWithRolesPremises
 import com.robotutor.nexora.modules.premises.application.facade.dto.ActorWithRoles
 import com.robotutor.nexora.modules.premises.application.facade.dto.Role
-import com.robotutor.nexora.modules.premises.domain.model.Premises
-import com.robotutor.nexora.modules.premises.domain.model.Address
+import com.robotutor.nexora.modules.premises.domain.entity.Premises
+import com.robotutor.nexora.modules.premises.domain.entity.Address
 import com.robotutor.nexora.modules.premises.interfaces.controller.dto.ActorWithRoleResponse
 import com.robotutor.nexora.modules.premises.interfaces.controller.dto.PremisesActorResponse
 import com.robotutor.nexora.modules.premises.interfaces.controller.dto.PremisesResponse

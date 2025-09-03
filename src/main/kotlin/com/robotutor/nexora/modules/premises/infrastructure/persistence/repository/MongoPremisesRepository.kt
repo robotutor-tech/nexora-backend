@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.premises.infrastructure.persistence.repository
 
-import com.robotutor.nexora.modules.premises.domain.model.Premises
+import com.robotutor.nexora.modules.premises.domain.entity.Premises
 import com.robotutor.nexora.modules.premises.domain.repository.PremisesRepository
 import com.robotutor.nexora.modules.premises.infrastructure.persistence.mapper.PremisesDocumentMapper
 import com.robotutor.nexora.modules.premises.infrastructure.persistence.document.PremisesDocument

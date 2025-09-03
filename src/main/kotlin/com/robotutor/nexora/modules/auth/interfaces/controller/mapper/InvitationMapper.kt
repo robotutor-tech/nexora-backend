@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.auth.interfaces.controller.mapper
 
 import com.robotutor.nexora.modules.auth.application.command.InvitationCommand
 import com.robotutor.nexora.modules.auth.application.dto.TokenResponse
-import com.robotutor.nexora.modules.auth.domain.model.Invitation
+import com.robotutor.nexora.modules.auth.domain.entity.Invitation
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.InvitationRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.InvitationResponse
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.InvitationWithTokenResponse

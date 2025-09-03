@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.interfaces.controller.mapper
 
-import com.robotutor.nexora.modules.iam.domain.model.Role
+import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.modules.iam.interfaces.controller.dto.RoleResponse
 
 class RoleMapper {

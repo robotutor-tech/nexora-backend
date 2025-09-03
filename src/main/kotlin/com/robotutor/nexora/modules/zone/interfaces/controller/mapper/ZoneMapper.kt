@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.zone.interfaces.controller.mapper
 
 import com.robotutor.nexora.modules.zone.application.command.CreateZoneCommand
-import com.robotutor.nexora.modules.zone.domain.model.Zone
+import com.robotutor.nexora.modules.zone.domain.entity.Zone
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneRequest
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneResponse
 import com.robotutor.nexora.shared.domain.model.Name

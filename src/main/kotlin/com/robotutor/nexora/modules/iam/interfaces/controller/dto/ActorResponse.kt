@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.iam.interfaces.controller.dto
 
-import com.robotutor.nexora.modules.iam.domain.model.ActorState
+import com.robotutor.nexora.modules.iam.domain.entity.ActorState
 import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
 import com.robotutor.nexora.shared.interfaces.dto.ActorPrincipalContextResponse
 

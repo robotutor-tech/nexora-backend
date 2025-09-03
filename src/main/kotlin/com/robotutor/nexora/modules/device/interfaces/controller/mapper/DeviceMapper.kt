@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.device.interfaces.controller.mapper
 
 import com.robotutor.nexora.modules.device.application.command.CreateDeviceCommand
 import com.robotutor.nexora.modules.device.application.facade.dto.DeviceTokens
-import com.robotutor.nexora.modules.device.domain.model.Device
+import com.robotutor.nexora.modules.device.domain.entity.Device
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceRequest
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceResponse
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceTokensResponse

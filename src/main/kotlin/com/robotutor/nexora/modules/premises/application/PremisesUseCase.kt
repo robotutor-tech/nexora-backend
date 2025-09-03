@@ -5,9 +5,11 @@ import com.robotutor.nexora.modules.premises.application.command.RegisterPremise
 import com.robotutor.nexora.modules.premises.application.dto.ActorWithRolesPremises
 import com.robotutor.nexora.modules.premises.application.facade.ActorResourceFacade
 import com.robotutor.nexora.modules.premises.application.facade.PremisesResourceFacade
-import com.robotutor.nexora.modules.premises.domain.model.IdType
-import com.robotutor.nexora.modules.premises.domain.model.Premises
+import com.robotutor.nexora.modules.premises.domain.entity.IdType
+import com.robotutor.nexora.modules.premises.domain.entity.Premises
+import com.robotutor.nexora.modules.premises.domain.event.PremisesEvent
 import com.robotutor.nexora.modules.premises.domain.repository.PremisesRepository
+import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.UserData
@@ -25,6 +27,7 @@ class PremisesUseCase(
     private val premisesRepository: PremisesRepository,
     private val premisesResourceFacade: PremisesResourceFacade,
     private val actorResourceFacade: ActorResourceFacade,
+    private val eventPublisher: EventPublisher<PremisesEvent>
 ) {
     val logger = Logger(this::class.java)
 
@@ -39,7 +42,7 @@ class PremisesUseCase(
                 )
             }
             .flatMap { premises -> premisesRepository.save(premises).map { premises } }
-//            .publishEvents()
+            .publishEvents(eventPublisher)
             .flatMap { premises ->
                 val command = RegisterPremisesResourceCommand(premises.premisesId, createPremisesCommand.owner)
                 premisesResourceFacade.register(command)
@@ -52,6 +55,7 @@ class PremisesUseCase(
     fun getAllPremises(userData: UserData): Flux<ActorWithRolesPremises> {
         return actorResourceFacade.getActors(userData).collectList()
             .flatMapMany { actor ->
+                println("actors: $actor-----------------")
                 val premisesIds = actor.map { it.premisesId }.distinct()
                 premisesRepository.findAllByPremisesIdIn(premisesIds)
                     .map { premises ->
