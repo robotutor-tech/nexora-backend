@@ -1,7 +1,6 @@
 package com.robotutor.nexora.modules.automation.infrastructure.persistence.document
 
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.ConditionConfigDocument
-import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.ConfigDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

@@ -20,7 +20,7 @@ class AuthorizationTokenStrategy() : TokenGenerationStrategy {
 
     private fun getExpiresAt(principalType: TokenPrincipalType, principalContext: PrincipalContext): Instant {
         val seconds: Long = when (principalType) {
-            TokenPrincipalType.USER -> 15 * 60
+            TokenPrincipalType.USER -> 6 * 60 * 60
             TokenPrincipalType.INVITATION -> 6 * 60 * 60
             TokenPrincipalType.INTERNAL -> 60
             TokenPrincipalType.ACTOR -> {

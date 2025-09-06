@@ -1,7 +1,6 @@
 package com.robotutor.nexora.modules.automation.infrastructure.persistence.document
 
 import com.robotutor.nexora.modules.automation.domain.entity.Trigger
-import com.robotutor.nexora.modules.automation.domain.entity.TriggerType
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.TriggerConfigDocument
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId
@@ -32,7 +31,6 @@ data class TriggerDocument(
     val premisesId: String,
     val name: String,
     val description: String?,
-    val type: TriggerType,
     val config: TriggerConfigDocument,
     val createdOn: Instant,
     val updatedOn: Instant,

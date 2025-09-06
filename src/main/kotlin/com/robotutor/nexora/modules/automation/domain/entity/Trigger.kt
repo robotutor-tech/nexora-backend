@@ -15,7 +15,6 @@ data class Trigger(
     val premisesId: PremisesId,
     val name: Name,
     val description: String? = null,
-    val type: TriggerType,
     val config: TriggerConfig,
     val createdOn: Instant = Instant.now(),
     val updatedOn: Instant = Instant.now(),
@@ -28,17 +27,10 @@ data class Trigger(
                 premisesId = actorData.premisesId,
                 name = createTriggerCommand.name,
                 description = createTriggerCommand.description,
-                type = createTriggerCommand.type,
                 config = createTriggerCommand.config,
             )
         }
     }
-}
-
-enum class TriggerType {
-    SCHEDULE,
-    VOICE,
-    FEED_CONTROL
 }
 
 data class TriggerId(override val value: String) : SequenceId

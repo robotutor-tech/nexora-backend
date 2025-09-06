@@ -15,7 +15,6 @@ data class Action(
     val premisesId: PremisesId,
     val name: Name,
     val description: String? = null,
-    val type: ActionType,
     val config: ActionConfig,
     val createdOn: Instant = Instant.now(),
     val updatedOn: Instant = Instant.now(),
@@ -28,17 +27,10 @@ data class Action(
                 premisesId = actorData.premisesId,
                 name = createActionCommand.name,
                 description = createActionCommand.description,
-                type = createActionCommand.type,
                 config = createActionCommand.config,
             )
         }
     }
-}
-
-enum class ActionType {
-    FEED,
-    WAIT,
-    AUTOMATION,
 }
 
 data class ActionId(override val value: String) : SequenceId

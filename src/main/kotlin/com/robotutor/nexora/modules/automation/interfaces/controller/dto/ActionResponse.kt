@@ -1,6 +1,5 @@
 package com.robotutor.nexora.modules.automation.interfaces.controller.dto
 
-import com.robotutor.nexora.modules.automation.domain.entity.ActionType
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.config.ActionConfigRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.config.ActionConfigResponse
 import jakarta.validation.constraints.NotBlank
@@ -10,7 +9,6 @@ data class ActionRequest(
     @field:NotBlank(message = "Name is required")
     val name: String,
     val description: String? = null,
-    val type: ActionType,
     val config: ActionConfigRequest,
 )
 

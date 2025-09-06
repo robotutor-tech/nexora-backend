@@ -24,9 +24,10 @@ import reactor.core.publisher.Mono
 @RequestMapping("/triggers")
 class TriggerController(private val triggerUseCase: TriggerUseCase) {
 
-    @RequireAccess(ActionType.CREATE, ResourceType.AUTOMATION_TRIGGER)
+//    @RequireAccess(ActionType.CREATE, ResourceType.AUTOMATION_TRIGGER)
     @PostMapping
     fun createTrigger(@RequestBody @Validated request: TriggerRequest, actorData: ActorData): Mono<TriggerResponse> {
+        println("$request---------------------------")
         val command = TriggerMapper.toCreateTriggerCommand(request)
         return triggerUseCase.createTrigger(command, actorData)
             .map { TriggerMapper.toTriggerResponse(it) }

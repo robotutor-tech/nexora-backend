@@ -24,7 +24,6 @@ object ActionMapper {
         return CreateActionCommand(
             name = Name(request.name),
             description = request.description,
-            type = request.type,
             config = toActionConfig(request.config)
         )
     }

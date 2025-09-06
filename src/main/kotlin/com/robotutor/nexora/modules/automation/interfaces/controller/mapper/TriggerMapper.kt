@@ -13,7 +13,6 @@ object TriggerMapper {
         return CreateTriggerCommand(
             name = Name(request.name),
             description = request.description,
-            type = request.type,
             config = toTriggerConfig(request.config)
         )
     }
@@ -32,7 +31,7 @@ object TriggerMapper {
 
     private fun toTriggerConfigResponse(config: TriggerConfig): TriggerConfigResponse {
         return when (config) {
-            is FeedControlConfig -> FeedControlConfigResponse(config.feedId.value, config.value)
+            is FeedControlConfig -> ConfigMapper.toFeedControlConfigResponse(config)
             is ScheduleTriggerConfig -> toScheduleTriggerConfigResponse(config)
             is VoiceConfig -> VoiceConfigResponse(config.commands.commands.map { it.command })
         }

@@ -1,6 +1,5 @@
 package com.robotutor.nexora.modules.automation.interfaces.controller.dto
 
-import com.robotutor.nexora.modules.automation.domain.entity.ConditionType
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.config.ConditionConfigRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.config.ConditionConfigResponse
 import jakarta.validation.constraints.NotBlank
@@ -11,7 +10,6 @@ data class ConditionRequest(
     val name: String,
     val description: String? = null,
     val config: ConditionConfigRequest,
-    val type: ConditionType,
 )
 
 data class ConditionResponse(

@@ -16,10 +16,4 @@ data class Condition(
     val version: Long? = null
 )
 
-enum class ConditionType {
-    TIME_RANGE,
-    FEED_CONTROL,
-}
-
-
 data class ConditionId(val value: String)

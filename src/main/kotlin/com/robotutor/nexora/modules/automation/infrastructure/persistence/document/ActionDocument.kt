@@ -1,9 +1,7 @@
 package com.robotutor.nexora.modules.automation.infrastructure.persistence.document
 
 import com.robotutor.nexora.modules.automation.domain.entity.Action
-import com.robotutor.nexora.modules.automation.domain.entity.ActionType
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.ActionConfigDocument
-import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.ConfigDocument
 import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
@@ -33,7 +31,6 @@ data class ActionDocument(
     val premisesId: String,
     val name: String,
     val description: String?,
-    val type: ActionType,
     val config: ActionConfigDocument,
     val createdOn: Instant,
     val updatedOn: Instant,
