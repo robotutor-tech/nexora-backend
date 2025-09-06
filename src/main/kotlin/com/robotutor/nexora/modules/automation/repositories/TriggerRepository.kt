@@ -18,3 +18,4 @@
 //    fun findAllByPremisesIdAndVoiceCommands(premisesId: PremisesId, commands: String): Flux<TriggerDocument>
 //    fun findByPremisesIdAndConfig(premisesId: PremisesId, config: Map<String, Any?>): Mono<TriggerDocument>
 //}
+

@@ -1,0 +1,20 @@
+package com.robotutor.nexora.modules.automation.application.validation.strategy
+
+import com.robotutor.nexora.modules.automation.application.facade.FeedFacade
+import com.robotutor.nexora.modules.automation.domain.entity.config.FeedConfig
+import com.robotutor.nexora.modules.automation.domain.entity.config.FeedControlConfig
+import com.robotutor.nexora.modules.automation.domain.entity.config.FeedValueConfig
+import com.robotutor.nexora.shared.domain.model.ActorData
+import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
+
+@Service
+class FeedConfigValidationStrategy(private val feedFacade: FeedFacade) : ValidationStrategy<FeedConfig> {
+    override fun validate(config: FeedConfig, actorData: ActorData): Mono<FeedConfig> {
+        val feedId = when (config) {
+            is FeedControlConfig -> config.feedId
+            is FeedValueConfig -> config.feedId
+        }
+        return feedFacade.getFeedById(feedId).map { config }
+    }
+}

@@ -1,21 +1,15 @@
 package com.robotutor.nexora.modules.user.interfaces.controller
 
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.shared.domain.model.UserData
-import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserRequest
-import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
-import com.robotutor.nexora.modules.user.interfaces.controller.mapper.UserMapper
 import com.robotutor.nexora.modules.user.application.RegisterUserUseCase
 import com.robotutor.nexora.modules.user.application.UserUseCase
 import com.robotutor.nexora.modules.user.application.command.GetUserCommand
+import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserRequest
+import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
+import com.robotutor.nexora.modules.user.interfaces.controller.mapper.UserMapper
+import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.shared.domain.model.UserId
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
 @RestController

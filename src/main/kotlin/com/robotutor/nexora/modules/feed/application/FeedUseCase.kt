@@ -1,14 +1,17 @@
 package com.robotutor.nexora.modules.feed.application
 
+import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
 import com.robotutor.nexora.modules.feed.domain.entity.Feed
 import com.robotutor.nexora.modules.feed.domain.entity.IdType
 import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
 import com.robotutor.nexora.modules.feed.domain.repository.FeedRepository
+import com.robotutor.nexora.modules.feed.domain.exception.NexoraError
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.model.ResourceId
@@ -27,7 +30,7 @@ class FeedUseCase(
     private val feedRepository: FeedRepository,
     private val idGeneratorService: IdGeneratorService,
     private val eventPublisher: EventPublisher<FeedEvent>,
-    private val resourceCreatedEventPublisher: EventPublisher<ResourceCreatedEvent>
+    private val resourceCreatedEventPublisher: EventPublisher<ResourceCreatedEvent>,
 ) {
     val logger = Logger(this::class.java)
 
@@ -48,5 +51,10 @@ class FeedUseCase(
             .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully created new Feed")
             .logOnError(logger, "", "Failed to create new Feed")
+    }
+
+    fun getFeedByFeedId(feedId: FeedId, actorData: ActorData): Mono<Feed> {
+        return feedRepository.findByPremisesIdAndFeedId(actorData.premisesId, feedId)
+            .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0301)))
     }
 }

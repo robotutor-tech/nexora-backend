@@ -1,0 +1,3 @@
+package com.robotutor.nexora.modules.automation.infrastructure.persistence.document
+
+sealed class ConditionNodeDocument

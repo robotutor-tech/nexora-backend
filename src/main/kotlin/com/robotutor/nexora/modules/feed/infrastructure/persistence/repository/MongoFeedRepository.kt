@@ -24,6 +24,14 @@ class MongoFeedRepository(
         return this.findAndReplace(query, feed)
     }
 
+    override fun findByPremisesIdAndFeedId(premisesId: PremisesId, feedId: FeedId): Mono<Feed> {
+        val query = Query(
+            Criteria.where("premisesId").`is`(premisesId.value)
+                .and("feedId").`is`(feedId.value)
+        )
+        return this.findOne(query)
+    }
+
     override fun findAllByPremisesIdAndFeedIdIn(premisesId: PremisesId, feedIds: List<FeedId>): Flux<Feed> {
         val query = Query(
             Criteria.where("premisesId").`is`(premisesId.value)

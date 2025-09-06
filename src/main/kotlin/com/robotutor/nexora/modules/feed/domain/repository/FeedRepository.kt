@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono
 interface FeedRepository {
     fun findAllByPremisesIdAndFeedIdIn(premisesId: PremisesId, feedIds: List<FeedId>): Flux<Feed>
     fun save(feed: Feed): Mono<Feed>
+    fun findByPremisesIdAndFeedId(premisesId: PremisesId, feedId: FeedId): Mono<Feed>
 }

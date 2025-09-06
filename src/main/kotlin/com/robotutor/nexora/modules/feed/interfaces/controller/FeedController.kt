@@ -6,9 +6,11 @@ import com.robotutor.nexora.modules.feed.interfaces.controller.dto.FeedResponse
 import com.robotutor.nexora.modules.feed.interfaces.controller.mapper.FeedMapper
 import com.robotutor.nexora.shared.domain.model.*
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/feeds")
@@ -30,6 +32,7 @@ class FeedController(private val feedUseCase: FeedUseCase) {
         return feedUseCase.getFeeds(actorData, feedIds).map { FeedMapper.toFeedResponse(it) }
     }
 
+
 //    @RequireAccess(ActionType.CONTROL, ResourceType.FEED, "feedId")
 //    @PatchMapping("/{feedId}/value")
 //    fun updateFeedValue(
@@ -39,11 +42,12 @@ class FeedController(private val feedUseCase: FeedUseCase) {
 //    ): Mono<FeedView> {
 //        return feedService.updateFeedValue(feedId, feedRequest, premisesActorData).map { FeedView.from(it) }
 //    }
-//
-//    @RequireAccess(ActionType.READ, ResourceType.FEED, "feedId")
-//    @GetMapping("/{feedId}")
-//    fun getFeed(@PathVariable feedId: FeedId, premisesActorData: PremisesActorData): Mono<FeedView> {
-//        return feedService.getFeedByFeedId(feedId, premisesActorData).map { FeedView.from(it) }
-//    }
+
+    @RequireAccess(ActionType.READ, ResourceType.FEED, "feedId")
+    @GetMapping("/{feedId}")
+    fun getFeed(@PathVariable feedId: String, actorData: ActorData): Mono<FeedResponse> {
+        return feedUseCase.getFeedByFeedId(FeedId(feedId), actorData)
+            .map { FeedMapper.toFeedResponse(it) }
+    }
 }
 
