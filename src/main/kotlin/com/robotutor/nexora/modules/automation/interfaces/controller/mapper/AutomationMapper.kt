@@ -9,8 +9,8 @@ import com.robotutor.nexora.shared.domain.model.Name
 object AutomationMapper {
     fun toCreateAutomationCommand(request: AutomationRequest): CreateAutomationCommand {
         return CreateAutomationCommand(
-            triggers = Triggers(request.triggers.map { TriggerId(it) }),
-            actions = Actions(request.actions.map { ActionId(it) }),
+            triggers = Rules(request.triggers.map { RuleId(it) }),
+            actions = Rules(request.actions.map { RuleId(it) }),
             condition = request.condition,
             executionMode = request.executionMode ?: ExecutionMode.MULTIPLE,
             name = Name(request.name),
@@ -24,9 +24,9 @@ object AutomationMapper {
             automationId = automation.automationId.value,
             premisesId = automation.premisesId.value,
             name = automation.name.value,
-            triggers = automation.triggers.triggerIds.map { it.value },
+            triggers = automation.triggers.ruleIds.map { it.value },
             condition = automation.condition?.let { ConditionNodeMapper.toConditionNodeResponse(automation.condition) },
-            actions = automation.actions.actionIds.map { it.value },
+            actions = automation.actions.ruleIds.map { it.value },
             state = automation.state,
             executionMode = automation.executionMode,
             createdOn = automation.createdOn,

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class ConfigValidation(private val configValidationStrategyFactory: ConfigValidationStrategyFactory) {
+class ConfigValidation(private val ruleConfigValidationStrategyFactory: ConfigValidationStrategyFactory) {
     fun validate(config: Config, actorData: ActorData): Mono<Config> {
-        val configValidatorStrategy = configValidationStrategyFactory.getStrategy(config)
+        val configValidatorStrategy = ruleConfigValidationStrategyFactory.getStrategy(config)
         return configValidatorStrategy.validate(config, actorData)
     }
 }

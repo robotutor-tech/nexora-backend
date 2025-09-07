@@ -1,12 +1,12 @@
 package com.robotutor.nexora.modules.automation.domain.entity.objects
 
-import com.robotutor.nexora.modules.automation.domain.entity.ConditionId
+import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.shared.domain.validation
 
 sealed interface ConditionNode
 
 data class ConditionLeaf(
-    val conditionId: ConditionId,
+    val ruleId: RuleId,
 ) : ConditionNode
 
 data class ConditionGroup(

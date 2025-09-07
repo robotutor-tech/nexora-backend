@@ -3,6 +3,8 @@ package com.robotutor.nexora.modules.automation.domain.entity
 import com.robotutor.nexora.modules.automation.domain.entity.objects.ConditionNode
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.model.SequenceId
+import com.robotutor.nexora.shared.infrastructure.persistence.model.IdSequence
 import java.time.Instant
 
 data class Automation(
@@ -10,9 +12,9 @@ data class Automation(
     val premisesId: PremisesId,
     val name: Name,
     val description: String? = null,
-    val triggers: Triggers,
+    val triggers: Rules,
     val condition: ConditionNode?,
-    val actions: Actions,
+    val actions: Rules,
     val state: AutomationState = AutomationState.ACTIVE,
     val executionMode: ExecutionMode = ExecutionMode.MULTIPLE,
     val createdOn: Instant = Instant.now(),
@@ -32,17 +34,12 @@ enum class ExecutionMode {
     REPLACE
 }
 
-data class Triggers(val triggerIds: List<TriggerId>) {
+data class Rules(val ruleIds: List<RuleId>) {
     init {
-        require(triggerIds.isNotEmpty()) { "Automation must have at least one trigger" }
+        require(ruleIds.isNotEmpty()) { "Automation must have at least one rule" }
     }
 }
 
 data class Conditions(val conditionNode: ConditionNode?)
-data class Actions(val actionIds: List<ActionId>) {
-    init {
-        require(actionIds.isNotEmpty()) { "Automation must have at least one action" }
-    }
-}
 
-data class AutomationId(val value: String)
+data class AutomationId(override val value: String) : SequenceId

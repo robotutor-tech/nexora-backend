@@ -83,10 +83,8 @@ class RegisterPremisesResourceUseCase(
             Pair(ActionType.CREATE, ResourceType.WIDGET),
             Pair(ActionType.CREATE, ResourceType.ZONE),
             Pair(ActionType.CREATE, ResourceType.DEVICE),
-            Pair(ActionType.CREATE, ResourceType.AUTOMATION_TRIGGER),
             Pair(ActionType.CREATE, ResourceType.AUTOMATION_RULE),
-            Pair(ActionType.CREATE, ResourceType.AUTOMATION_ACTION),
-            Pair(ActionType.CREATE, ResourceType.AUTOMATION_CONDITION),
+            Pair(ActionType.CREATE, ResourceType.AUTOMATION),
         )
     }
 }

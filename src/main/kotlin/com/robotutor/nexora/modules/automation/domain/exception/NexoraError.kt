@@ -5,7 +5,7 @@ import com.robotutor.nexora.shared.domain.exception.ServiceError
 
 enum class NexoraError(override val errorCode: String, override val message: String) : ServiceError {
     NEXORA0301("NEXORA-0301", "Invalid config type"),
-    NEXORA0302("NEXORA-0302", "Few triggers are invalid"),
+    NEXORA0302("NEXORA-0302", "Rule already exists"),
     NEXORA0303("NEXORA-0303", "Actions should not be empty"),
     NEXORA0304("NEXORA-0304", "Few actions are invalid"),
     NEXORA0305("NEXORA-0305", "Invalid automation condition"),

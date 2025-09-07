@@ -27,7 +27,7 @@ object ConditionNodeMapper {
 
     private fun toConditionLeafResponse(condition: ConditionLeaf): ConditionLeafResponse {
         return ConditionLeafResponse(
-            conditionId = condition.conditionId.value
+            conditionId = condition.ruleId.value
         )
     }
 
