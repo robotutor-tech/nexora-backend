@@ -7,8 +7,7 @@ import com.robotutor.nexora.modules.iam.interfaces.controller.dto.ActorWithRoles
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.interfaces.mapper.PrincipalContextMapper
 
-class ActorMapper {
-    companion object {
+object ActorMapper {
         fun toActorWithRolesResponse(actor: Actor, roles: List<Role>): ActorWithRolesResponse {
             return ActorWithRolesResponse(
                 actorId = actor.actorId.value,
@@ -40,4 +39,3 @@ class ActorMapper {
             )
         }
     }
-}

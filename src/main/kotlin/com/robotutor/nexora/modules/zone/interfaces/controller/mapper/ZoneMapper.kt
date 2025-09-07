@@ -6,20 +6,18 @@ import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneRequest
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneResponse
 import com.robotutor.nexora.shared.domain.model.Name
 
-class ZoneMapper {
-    companion object {
-        fun toCreateZoneCommand(request: ZoneRequest): CreateZoneCommand {
-            return CreateZoneCommand(name = Name(request.name))
-        }
+object ZoneMapper {
+    fun toCreateZoneCommand(request: ZoneRequest): CreateZoneCommand {
+        return CreateZoneCommand(name = Name(request.name))
+    }
 
-        fun toZoneResponse(zone: Zone): ZoneResponse {
-            return ZoneResponse(
-                zoneId = zone.zoneId.value,
-                premisesId = zone.premisesId.value,
-                name = zone.name.value,
-                createdAt = zone.createdAt
-            )
-        }
+    fun toZoneResponse(zone: Zone): ZoneResponse {
+        return ZoneResponse(
+            zoneId = zone.zoneId.value,
+            premisesId = zone.premisesId.value,
+            name = zone.name.value,
+            createdAt = zone.createdAt
+        )
     }
 
 }

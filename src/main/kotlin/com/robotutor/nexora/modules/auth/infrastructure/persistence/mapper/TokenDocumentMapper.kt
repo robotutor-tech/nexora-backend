@@ -7,10 +7,8 @@ import com.robotutor.nexora.modules.auth.domain.entity.TokenValue
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.TokenDocument
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.PrincipalDocumentMapper
-import org.springframework.stereotype.Service
 
-@Service
-class TokenDocumentMapper : DocumentMapper<Token, TokenDocument> {
+object TokenDocumentMapper : DocumentMapper<Token, TokenDocument> {
     override fun toMongoDocument(domain: Token): TokenDocument {
         return TokenDocument(
             tokenId = domain.tokenId.value,

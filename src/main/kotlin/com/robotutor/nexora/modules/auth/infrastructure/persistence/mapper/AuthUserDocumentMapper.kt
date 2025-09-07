@@ -6,10 +6,8 @@ import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.Aut
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.UserId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Component
 
-@Component
-class AuthUserDocumentMapper : DocumentMapper<AuthUser, AuthUserDocument> {
+object AuthUserDocumentMapper : DocumentMapper<AuthUser, AuthUserDocument> {
     override fun toMongoDocument(domain: AuthUser): AuthUserDocument = AuthUserDocument(
         id = null,
         userId = domain.userId.value,

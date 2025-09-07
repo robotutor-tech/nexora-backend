@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoActorRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Actor, ActorDocument>(mongoTemplate, ActorDocument::class.java, ActorDocumentMapper()),
+) : MongoRepository<Actor, ActorDocument>(mongoTemplate, ActorDocument::class.java, ActorDocumentMapper),
     ActorRepository {
     override fun save(actor: Actor): Mono<Actor> {
         val query = Query(Criteria.where("actorId").`is`(actor.actorId.value))

@@ -6,8 +6,8 @@ import com.robotutor.nexora.modules.automation.domain.entity.RuleType
 import com.robotutor.nexora.modules.automation.domain.entity.config.Config
 import com.robotutor.nexora.modules.automation.domain.repository.RuleRepository
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.RuleDocument
-import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.ConfigDocumentMapper
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.RuleDocumentMapper
+import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.config.ConfigDocumentMapper
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
@@ -20,8 +20,7 @@ import reactor.core.publisher.Mono
 @Component
 class RuleDocumentRepository(
     mongoTemplate: ReactiveMongoTemplate,
-
-    ) : MongoRepository<Rule, RuleDocument>(mongoTemplate, RuleDocument::class.java, RuleDocumentMapper()),
+) : MongoRepository<Rule, RuleDocument>(mongoTemplate, RuleDocument::class.java, RuleDocumentMapper),
     RuleRepository {
     override fun findByTypeAndPremisesIdAndConfig(
         type: RuleType,

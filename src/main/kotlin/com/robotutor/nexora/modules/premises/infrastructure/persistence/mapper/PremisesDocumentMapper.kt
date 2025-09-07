@@ -7,10 +7,8 @@ import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.UserId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Component
 
-@Component
-class PremisesDocumentMapper : DocumentMapper<Premises, PremisesDocument> {
+object PremisesDocumentMapper : DocumentMapper<Premises, PremisesDocument> {
     override fun toMongoDocument(domain: Premises): PremisesDocument {
         return PremisesDocument(
             id = null, // Let MongoDB generate the ObjectId

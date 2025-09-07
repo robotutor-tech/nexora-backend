@@ -3,13 +3,12 @@ package com.robotutor.nexora.modules.automation.infrastructure.persistence.mappe
 import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.RuleDocument
+import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.config.ConfigDocumentMapper
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Component
 
-@Component
-class RuleDocumentMapper : DocumentMapper<Rule, RuleDocument> {
+object RuleDocumentMapper : DocumentMapper<Rule, RuleDocument> {
     override fun toMongoDocument(domain: Rule): RuleDocument {
         return RuleDocument(
             ruleId = domain.ruleId.value,

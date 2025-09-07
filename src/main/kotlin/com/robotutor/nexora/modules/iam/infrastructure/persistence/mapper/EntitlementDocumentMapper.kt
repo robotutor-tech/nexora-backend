@@ -1,16 +1,14 @@
 package com.robotutor.nexora.modules.iam.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.EntitlementDocument
 import com.robotutor.nexora.modules.iam.domain.entity.Entitlement
 import com.robotutor.nexora.modules.iam.domain.entity.EntitlementId
+import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.EntitlementDocument
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.ResourceId
 import com.robotutor.nexora.shared.domain.model.RoleId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Component
 
-@Component
-class EntitlementDocumentMapper : DocumentMapper<Entitlement, EntitlementDocument> {
+object EntitlementDocumentMapper : DocumentMapper<Entitlement, EntitlementDocument> {
     override fun toMongoDocument(domain: Entitlement): EntitlementDocument = EntitlementDocument(
         id = null, // Let MongoDB handle ObjectId
         entitlementId = domain.entitlementId.value,

@@ -15,8 +15,9 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
-class MongoZoneRepository(mongoTemplate: ReactiveMongoTemplate) :
-    MongoRepository<Zone, ZoneDocument>(mongoTemplate, ZoneDocument::class.java, ZoneDocumentMapper()), ZoneRepository {
+class MongoZoneRepository(
+    mongoTemplate: ReactiveMongoTemplate
+) : MongoRepository<Zone, ZoneDocument>(mongoTemplate, ZoneDocument::class.java, ZoneDocumentMapper), ZoneRepository {
 
     override fun save(zone: Zone): Mono<Zone> {
         val query = Query(Criteria.where("zoneId").`is`(zone.zoneId.value))

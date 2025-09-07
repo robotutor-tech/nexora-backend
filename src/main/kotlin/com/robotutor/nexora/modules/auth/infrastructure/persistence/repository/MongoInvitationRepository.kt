@@ -20,7 +20,7 @@ class MongoInvitationRepository(
     mongoTemplate: ReactiveMongoTemplate,
 ) : MongoRepository<Invitation, InvitationDocument>(
     mongoTemplate, InvitationDocument::class.java,
-    InvitationDocumentMapper()
+    InvitationDocumentMapper
 ), InvitationRepository {
     override fun save(invitation: Invitation): Mono<Invitation> {
         val query = Query(Criteria.where("invitationId").`is`(invitation.invitationId.value))

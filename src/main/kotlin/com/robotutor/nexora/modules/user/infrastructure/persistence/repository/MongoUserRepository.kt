@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
 @Component
 class MongoUserRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<User, UserDocument>(mongoTemplate, UserDocument::class.java, UserDocumentMapper()),
+) : MongoRepository<User, UserDocument>(mongoTemplate, UserDocument::class.java, UserDocumentMapper),
     UserRepository {
     override fun save(user: User): Mono<User> {
         val query = Query(Criteria.where("userId").`is`(user.userId.value))

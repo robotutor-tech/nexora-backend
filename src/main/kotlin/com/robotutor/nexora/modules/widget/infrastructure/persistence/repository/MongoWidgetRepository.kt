@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoWidgetRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Widget, WidgetDocument>(mongoTemplate, WidgetDocument::class.java, WidgetDocumentMapper()),
+) : MongoRepository<Widget, WidgetDocument>(mongoTemplate, WidgetDocument::class.java, WidgetDocumentMapper),
     WidgetRepository {
     override fun save(widget: Widget): Mono<Widget> {
         val query = Query(Criteria.where("widgetId").`is`(widget.widgetId.value))

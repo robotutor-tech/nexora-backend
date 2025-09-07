@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoEntitlementRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Entitlement, EntitlementDocument>(mongoTemplate, EntitlementDocument::class.java, EntitlementDocumentMapper()),
+) : MongoRepository<Entitlement, EntitlementDocument>(mongoTemplate, EntitlementDocument::class.java, EntitlementDocumentMapper),
     EntitlementRepository {
     override fun save(entitlement: Entitlement): Mono<Entitlement> {
         val query = Query(Criteria.where("entitlementId").`is`(entitlement.entitlementId.value))

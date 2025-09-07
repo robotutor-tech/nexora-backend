@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config
 
+import com.robotutor.nexora.modules.automation.domain.entity.config.ConfigType
 import com.robotutor.nexora.modules.automation.domain.entity.config.SunEvent
 import java.time.DayOfWeek
 
@@ -8,7 +9,7 @@ sealed interface ScheduleTypeConfigDocument
 data class ScheduleConfigDocument(
     val config: ScheduleTypeConfigDocument,
     val repeat: List<DayOfWeek>
-) : ConfigDocument
+) : ConfigDocument(ConfigType.SCHEDULE)
 
 data class TimeConfigDocument(
     val time: String

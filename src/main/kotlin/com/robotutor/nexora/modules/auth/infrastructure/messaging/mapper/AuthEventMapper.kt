@@ -5,10 +5,8 @@ import com.robotutor.nexora.modules.auth.domain.event.AuthUserRegisteredEvent
 import com.robotutor.nexora.modules.auth.infrastructure.messaging.message.AuthUserRegisteredEventMessage
 import com.robotutor.nexora.shared.domain.event.EventMapper
 import com.robotutor.nexora.shared.domain.event.EventMessage
-import org.springframework.stereotype.Service
 
-@Service
-class AuthEventMapper : EventMapper<AuthEvent> {
+object AuthEventMapper : EventMapper<AuthEvent> {
     override fun toEventMessage(event: AuthEvent): EventMessage {
         return when (event) {
             is AuthUserRegisteredEvent -> toAuthUserRegisteredEventMessage(event)

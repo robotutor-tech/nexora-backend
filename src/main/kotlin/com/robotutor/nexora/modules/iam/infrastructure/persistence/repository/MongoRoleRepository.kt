@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoRoleRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Role, RoleDocument>(mongoTemplate, RoleDocument::class.java, RoleDocumentMapper()),
+) : MongoRepository<Role, RoleDocument>(mongoTemplate, RoleDocument::class.java, RoleDocumentMapper),
     RoleRepository {
     override fun save(role: Role): Mono<Role> {
         val query = Query(Criteria.where("roleId").`is`(role.roleId.value))

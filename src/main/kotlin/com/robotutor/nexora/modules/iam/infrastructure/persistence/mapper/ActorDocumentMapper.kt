@@ -7,10 +7,8 @@ import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.RoleId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.PrincipalDocumentMapper
-import org.springframework.stereotype.Service
 
-@Service
-class ActorDocumentMapper : DocumentMapper<Actor, ActorDocument> {
+object ActorDocumentMapper : DocumentMapper<Actor, ActorDocument> {
     override fun toMongoDocument(domain: Actor): ActorDocument {
         return ActorDocument(
             actorId = domain.actorId.value,

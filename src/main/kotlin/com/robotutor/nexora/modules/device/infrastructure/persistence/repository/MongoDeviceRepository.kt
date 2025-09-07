@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 @Component
 class MongoDeviceRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Device, DeviceDocument>(mongoTemplate, DeviceDocument::class.java, DeviceDocumentMapper()),
+) : MongoRepository<Device, DeviceDocument>(mongoTemplate, DeviceDocument::class.java, DeviceDocumentMapper),
     DeviceRepository {
     override fun save(device: Device): Mono<Device> {
         val query = Query(Criteria.where("deviceId").`is`(device.deviceId.value))

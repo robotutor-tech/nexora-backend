@@ -1,16 +1,14 @@
 package com.robotutor.nexora.modules.user.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.modules.user.infrastructure.persistence.document.UserDocument
 import com.robotutor.nexora.modules.user.domain.entity.User
+import com.robotutor.nexora.modules.user.infrastructure.persistence.document.UserDocument
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.Mobile
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.UserId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Component
 
-@Component
-class UserDocumentMapper : DocumentMapper<User, UserDocument> {
+object UserDocumentMapper : DocumentMapper<User, UserDocument> {
     override fun toMongoDocument(domain: User): UserDocument {
         return UserDocument(
             userId = domain.userId.value,

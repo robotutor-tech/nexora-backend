@@ -3,8 +3,7 @@ package com.robotutor.nexora.modules.feed.interfaces.controller.mapper
 import com.robotutor.nexora.modules.feed.domain.entity.Feed
 import com.robotutor.nexora.modules.feed.interfaces.controller.dto.FeedResponse
 
-class FeedMapper {
-    companion object {
+object FeedMapper {
         fun toFeedResponse(feed: Feed): FeedResponse {
             return FeedResponse(
                 feedId = feed.feedId.value,
@@ -15,5 +14,4 @@ class FeedMapper {
             )
 
         }
-    }
 }

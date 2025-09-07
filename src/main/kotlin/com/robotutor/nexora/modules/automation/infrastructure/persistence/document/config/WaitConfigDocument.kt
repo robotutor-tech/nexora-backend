@@ -1,3 +1,5 @@
 package com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config
 
-data class WaitConfigDocument(val duration: Int) : ConfigDocument
+import com.robotutor.nexora.modules.automation.domain.entity.config.ConfigType
+
+data class WaitConfigDocument(val duration: Int) : ConfigDocument(ConfigType.WAIT)

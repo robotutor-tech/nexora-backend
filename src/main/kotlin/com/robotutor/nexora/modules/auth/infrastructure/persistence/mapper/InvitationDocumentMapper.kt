@@ -5,10 +5,8 @@ import com.robotutor.nexora.modules.auth.domain.entity.TokenId
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.InvitationDocument
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Component
 
-@Component
-class InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument> {
+object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument> {
     override fun toMongoDocument(domain: Invitation): InvitationDocument {
         return InvitationDocument(
             id = null,

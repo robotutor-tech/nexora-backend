@@ -2,14 +2,12 @@ package com.robotutor.nexora.modules.iam.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.modules.iam.infrastructure.persistence.document.RoleDocument
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.RoleId
-import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Service
 
-@Service
-class RoleDocumentMapper : DocumentMapper<Role, RoleDocument> {
+object RoleDocumentMapper : DocumentMapper<Role, RoleDocument> {
     override fun toMongoDocument(domain: Role): RoleDocument = RoleDocument(
         id = null,
         roleId = domain.roleId.value,

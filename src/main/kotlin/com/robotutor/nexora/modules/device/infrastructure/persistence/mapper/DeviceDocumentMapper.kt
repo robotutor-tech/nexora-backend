@@ -5,10 +5,8 @@ import com.robotutor.nexora.modules.device.domain.entity.FeedIds
 import com.robotutor.nexora.modules.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Component
 
-@Component
-class DeviceDocumentMapper : DocumentMapper<Device, DeviceDocument> {
+object DeviceDocumentMapper : DocumentMapper<Device, DeviceDocument> {
     override fun toMongoDocument(domain: Device): DeviceDocument {
         return DeviceDocument(
             id = null,

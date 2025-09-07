@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoPremisesRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Premises, PremisesDocument>(mongoTemplate, PremisesDocument::class.java, PremisesDocumentMapper()),
+) : MongoRepository<Premises, PremisesDocument>(mongoTemplate, PremisesDocument::class.java, PremisesDocumentMapper),
     PremisesRepository {
     override fun save(premises: Premises): Mono<Premises> {
         val query = Query(Criteria.where("premisesId").`is`(premises.premisesId.value))

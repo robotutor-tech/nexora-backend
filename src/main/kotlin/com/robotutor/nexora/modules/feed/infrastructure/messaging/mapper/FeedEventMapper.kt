@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.feed.infrastructure.messaging.mapper
 
+
 import com.robotutor.nexora.modules.feed.domain.event.DeviceFeedsCreatedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedCreatedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
@@ -7,10 +8,8 @@ import com.robotutor.nexora.modules.feed.infrastructure.messaging.message.Device
 import com.robotutor.nexora.modules.feed.infrastructure.messaging.message.FeedCreatedMessage
 import com.robotutor.nexora.shared.domain.event.EventMapper
 import com.robotutor.nexora.shared.domain.event.EventMessage
-import org.springframework.stereotype.Service
 
-@Service
-class FeedEventMapper : EventMapper<FeedEvent> {
+object FeedEventMapper : EventMapper<FeedEvent> {
     override fun toEventMessage(event: FeedEvent): EventMessage {
         return when (event) {
             is DeviceFeedsCreatedEvent -> toDeviceFeedsCreatedMessage(event)

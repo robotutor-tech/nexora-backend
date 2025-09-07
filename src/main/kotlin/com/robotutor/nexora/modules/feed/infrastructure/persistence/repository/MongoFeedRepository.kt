@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 @Component
 class MongoFeedRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Feed, FeedDocument>(mongoTemplate, FeedDocument::class.java, FeedDocumentMapper()),
+) : MongoRepository<Feed, FeedDocument>(mongoTemplate, FeedDocument::class.java, FeedDocumentMapper),
     FeedRepository {
     override fun save(feed: Feed): Mono<Feed> {
         val query = Query(Criteria.where("feedId").`is`(feed.feedId.value))

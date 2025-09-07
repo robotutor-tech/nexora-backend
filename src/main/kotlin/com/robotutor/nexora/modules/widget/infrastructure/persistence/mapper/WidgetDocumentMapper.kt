@@ -3,12 +3,13 @@ package com.robotutor.nexora.modules.widget.infrastructure.persistence.mapper
 import com.robotutor.nexora.modules.widget.domain.entity.Widget
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
 import com.robotutor.nexora.modules.widget.infrastructure.persistence.document.WidgetDocument
-import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.model.ZoneId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Service
 
-@Service
-class WidgetDocumentMapper : DocumentMapper<Widget, WidgetDocument> {
+object WidgetDocumentMapper : DocumentMapper<Widget, WidgetDocument> {
     override fun toMongoDocument(domain: Widget): WidgetDocument = WidgetDocument(
         id = null,
         widgetId = domain.widgetId.value,

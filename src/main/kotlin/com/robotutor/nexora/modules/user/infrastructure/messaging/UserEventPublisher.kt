@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.user.infrastructure.messaging
 
 import com.robotutor.nexora.modules.user.domain.event.UserEvent
-import com.robotutor.nexora.shared.domain.event.EventMapper
+import com.robotutor.nexora.modules.user.infrastructure.messaging.mapper.UserEventMapper
 import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.messaging.services.KafkaEventPublisher
 import org.springframework.stereotype.Service
@@ -9,5 +9,4 @@ import org.springframework.stereotype.Service
 @Service
 class UserEventPublisher(
     eventPublisher: KafkaEventPublisher,
-    mapper: EventMapper<UserEvent>
-) : DomainEventPublisher<UserEvent>(eventPublisher, mapper)
+) : DomainEventPublisher<UserEvent>(eventPublisher, UserEventMapper)

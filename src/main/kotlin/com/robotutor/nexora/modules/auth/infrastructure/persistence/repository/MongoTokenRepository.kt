@@ -17,7 +17,7 @@ import java.time.Instant
 @Component
 class MongoTokenRepository(
     mongoTemplate: ReactiveMongoTemplate,
-) : MongoRepository<Token, TokenDocument>(mongoTemplate, TokenDocument::class.java, TokenDocumentMapper()),
+) : MongoRepository<Token, TokenDocument>(mongoTemplate, TokenDocument::class.java, TokenDocumentMapper),
     TokenRepository {
     override fun save(token: Token): Mono<Token> {
         val query = Query(Criteria.where("tokenId").`is`(token.tokenId.value))

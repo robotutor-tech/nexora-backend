@@ -6,10 +6,8 @@ import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import org.springframework.stereotype.Service
 
-@Service
-class FeedDocumentMapper : DocumentMapper<Feed, FeedDocument> {
+object FeedDocumentMapper : DocumentMapper<Feed, FeedDocument> {
     override fun toMongoDocument(domain: Feed): FeedDocument = FeedDocument(
         id = null,
         feedId = domain.feedId.value,
