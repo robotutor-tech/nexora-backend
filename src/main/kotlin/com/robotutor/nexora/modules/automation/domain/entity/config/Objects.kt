@@ -14,7 +14,7 @@ data class Time(val hour: Int, val minute: Int) {
         }
     }
 
-    fun toTimeString(): String = "$hour:$minute"
+    fun toTimeString(): String = "${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}"
 }
 
 data class VoiceCommand(val command: String) {

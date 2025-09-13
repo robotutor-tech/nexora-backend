@@ -13,7 +13,8 @@ data class UserRequest(
                 message = "Name should not be less than 2 char or more than 30 char"
         )
         val name: String,
-        @field:Email(message = "Email should be valid") val email: String,
+        @field:Email(message = "Email should be valid")
+        val email: String,
         @field:NotBlank(message = "Mobile number is required")
         @field:Pattern(
                 regexp = "^[0-9]{10}$",

@@ -4,6 +4,7 @@ import com.robotutor.nexora.modules.automation.application.command.CreateRuleCom
 import com.robotutor.nexora.modules.automation.domain.entity.config.ActionConfig
 import com.robotutor.nexora.modules.automation.domain.entity.config.ConditionConfig
 import com.robotutor.nexora.modules.automation.domain.entity.config.Config
+import com.robotutor.nexora.modules.automation.domain.entity.config.TriggerConfig
 import com.robotutor.nexora.modules.automation.domain.event.AutomationEvent
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
 import com.robotutor.nexora.shared.domain.model.ActorData
@@ -28,9 +29,9 @@ data class Rule(
         val isConfigValid = when (type) {
             RuleType.ACTION -> config is ActionConfig
             RuleType.CONDITION -> config is ConditionConfig
-            RuleType.TRIGGER -> config is ConditionConfig
+            RuleType.TRIGGER -> config is TriggerConfig
         }
-        validation(isConfigValid) { "Invalid config for rule unit" }
+        validation(isConfigValid) { "Invalid config for rule" }
     }
 
     companion object {

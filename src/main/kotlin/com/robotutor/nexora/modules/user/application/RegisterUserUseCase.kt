@@ -30,8 +30,7 @@ class RegisterUserUseCase(
     val logger = Logger(this::class.java)
 
     fun register(registerUserCommand: RegisterUserCommand): Mono<User> {
-        return userRepository
-            .findByEmail(registerUserCommand.email)
+        return userRepository.findByEmail(registerUserCommand.email)
             .flatMap { createMonoError<User>(DuplicateDataException(NexoraError.NEXORA0201)) }
             .switchIfEmpty(registerUser(registerUserCommand))
             .flatMap { user -> registerAuthUser(user, registerUserCommand) }
@@ -41,24 +40,31 @@ class RegisterUserUseCase(
     }
 
     private fun registerAuthUser(user: User, command: RegisterUserCommand): Mono<User> {
-        val registerAuthUserCommand =
-            RegisterAuthUserCommand(
-                userId = user.userId,
-                email = user.email,
-                password = command.password
-            )
-        return registerAuthUser.register(registerAuthUserCommand).map { user }.onErrorResume { throwable ->
-            userRepository.deleteByUserId(user.userId).map { user.clearDomainEvents() }.flatMap {
-                createMonoError(throwable)
+        val registerAuthUserCommand = RegisterAuthUserCommand(
+            userId = user.userId,
+            email = user.email,
+            password = command.password
+        )
+        return registerAuthUser.register(registerAuthUserCommand)
+            .map { user }
+            .onErrorResume { throwable ->
+                userRepository.deleteByUserId(user.userId)
+                    .map { user.clearDomainEvents() }
+                    .flatMap {
+                        createMonoError(throwable)
+                    }
             }
-        }
     }
 
     private fun registerUser(command: RegisterUserCommand): Mono<User> {
-        return idGeneratorService
-            .generateId(IdType.USER_ID, UserId::class.java)
+        return idGeneratorService.generateId(IdType.USER_ID, UserId::class.java)
             .map { userId ->
-                User.register(userId = userId, name = command.name, email = command.email, mobile = command.mobile)
+                User.register(
+                    userId = userId,
+                    name = command.name,
+                    email = command.email,
+                    mobile = command.mobile
+                )
             }
             .flatMap { user -> userRepository.save(user).map { user } }
     }

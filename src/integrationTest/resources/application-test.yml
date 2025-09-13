@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: NEXORA-BACKEND-TEST
+  data:
+    mongodb:
+      database: nexora-test
+      auto-index-creation: true
+  kafka:
+    # Use the broker address provided by @EmbeddedKafka
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+    consumer:
+      group-id: integration-test
+
+  # Disable redis and cache auto-config during tests to avoid external dependency
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration
+      - org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration
+
+# Required by de.flapdoodle to choose mongod binaries
+# For macOS ARM, supported ranges include 7.0.0-7.0.9 and 6.0.0-6.0.15
+de.flapdoodle.mongodb.embedded.version: 7.0.9
+
+server:
+  port: 0

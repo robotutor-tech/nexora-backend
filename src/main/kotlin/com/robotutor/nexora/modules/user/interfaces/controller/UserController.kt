@@ -8,6 +8,7 @@ import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
 import com.robotutor.nexora.modules.user.interfaces.controller.mapper.UserMapper
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.shared.domain.model.UserId
+import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
@@ -17,6 +18,7 @@ import reactor.core.publisher.Mono
 class UserController(val registerUserUseCase: RegisterUserUseCase, private val userUseCase: UserUseCase) {
 
     @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
     fun register(@RequestBody @Validated userRequest: UserRequest): Mono<UserResponse> {
         val registerUserCommand = UserMapper.toRegisterUserCommand(userRequest)
         return registerUserUseCase.register(registerUserCommand)

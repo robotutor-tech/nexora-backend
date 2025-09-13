@@ -10,14 +10,18 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
+const val USER_COLLECTION = "users"
+
 @TypeAlias("User")
-@Document("users")
+@Document(USER_COLLECTION)
 data class UserDocument(
     @Id
     var id: ObjectId? = null,
-    @Indexed(unique = true) val userId: String,
+    @Indexed(unique = true)
+    val userId: String,
     val name: String,
-    @Indexed(unique = true) val email: String,
+    @Indexed(unique = true)
+    val email: String,
     val mobile: String,
     val isEmailVerified: Boolean,
     val isMobileVerified: Boolean,

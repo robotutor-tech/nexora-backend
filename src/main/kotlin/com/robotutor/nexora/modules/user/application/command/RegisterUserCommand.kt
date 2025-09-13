@@ -14,9 +14,9 @@ data class RegisterUserCommand(
 )
 
 data class RegisterAuthUserCommand(
-        val userId: UserId,
-        val email: Email,
-        val password: Password,
+    val userId: UserId,
+    val email: Email,
+    val password: Password,
 )
 
 data class GetUserCommand(val userId: UserId)

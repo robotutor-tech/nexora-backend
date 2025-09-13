@@ -12,19 +12,19 @@ import com.robotutor.nexora.shared.domain.model.Name
 object UserMapper {
     fun toRegisterUserCommand(userRequest: UserRequest): RegisterUserCommand {
         return RegisterUserCommand(
-                name = Name(userRequest.name),
-                email = Email(userRequest.email),
-                password = Password(userRequest.password),
-                mobile = Mobile(userRequest.mobile)
+            name = Name(userRequest.name),
+            email = Email(userRequest.email),
+            password = Password(userRequest.password),
+            mobile = Mobile(userRequest.mobile)
         )
     }
 
     fun toUserResponse(user: User): UserResponse {
         return UserResponse(
-                userId = user.userId.value,
-                name = user.name.value,
-                email = user.email.value,
-                registeredAt = user.registeredAt,
+            userId = user.userId.value,
+            name = user.name.value,
+            email = user.email.value,
+            registeredAt = user.registeredAt,
             mobile = user.mobile.value,
             isEmailVerified = user.isEmailVerified,
             isMobileVerified = user.isMobileVerified,
