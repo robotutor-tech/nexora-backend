@@ -1,7 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
-import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.language.jvm.tasks.ProcessResources
 
 plugins {
     kotlin("jvm") version "1.9.25"
