@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
+import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.language.jvm.tasks.ProcessResources
 
 plugins {
     kotlin("jvm") version "1.9.25"
@@ -69,29 +72,17 @@ dependencies {
     testImplementation("org.apache.commons:commons-lang3:3.18.0")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "21"
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-    }
-
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    jvmArgs(
-        "--add-opens", "java.base/java.time=ALL-UNNAMED",
-        "--add-opens", "java.base/java.lang=ALL-UNNAMED"
-    )
-}
-
 sourceSets {
-    create("integrationTest") {
-        compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+    val main by getting
+    val test by getting
+
+    val integrationTest by creating {
+        // Rely on Kotlin/Gradle defaults for src/integrationTest/kotlin and resources
+        // Avoid re-adding the same dirs to prevent duplicate entries in processIntegrationTestResources
+        compileClasspath += main.output + test.output
         runtimeClasspath += output + compileClasspath
     }
 }
-
 
 configurations {
     named("integrationTestImplementation") {
@@ -103,61 +94,124 @@ configurations {
 }
 
 dependencies {
-    "integrationTestImplementation"(sourceSets.test.get().output)
+    add("integrationTestImplementation", sourceSets.test.get().output)
 }
 
 tasks.register<Test>("integrationTest") {
-    description = "Runs integration tests with embedded Mongo and Kafka"
+    description = "Runs integration tests"
     group = "verification"
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
     useJUnitPlatform()
-    shouldRunAfter("test")
+    shouldRunAfter(tasks.test)
 }
 
-tasks.check {
-    dependsOn("integrationTest")
-}
-
-tasks.withType<Test>().configureEach {
-    val agentJar = classpath.files.firstOrNull { it.name.startsWith("mockito-agent") && it.extension == "jar" }
-    if (agentJar != null) {
-        jvmArgs("-javaagent=${agentJar.absolutePath}")
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "21"
+        freeCompilerArgs = listOf("-Xjsr305=strict")
     }
 }
 
-// Jacoco configuration
+tasks.withType<Test> {
+    useJUnitPlatform()
+    jvmArgs(
+        "--add-opens", "java.base/java.time=ALL-UNNAMED",
+        "--add-opens", "java.base/java.lang=ALL-UNNAMED"
+    )
+}
 
-//tasks.test {
-//    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-//}
-//
-//tasks.jacocoTestReport {
-//    dependsOn(tasks.test) // tests are required to run before generating the report
-//    finalizedBy(tasks.jacocoTestCoverageVerification) // coverage verification is always performed after tests run
-//}
-//
-//tasks.jacocoTestCoverageVerification {
-//    dependsOn(tasks.jacocoTestReport) // tests are required to run before generating the report
-//}
-//
-//jacoco {
-//    toolVersion = "0.8.7"
-//}
-//
-//tasks.jacocoTestCoverageVerification {
-//    violationRules {
-//        rule {
-//            limit {
-//                minimum = BigDecimal("0.41")
-//            }
-//        }
-//
-//        rule {
-//            limit {
-//                counter = "BRANCH"
-//                minimum = "0.50".toBigDecimal()
-//            }
-//        }
-//    }
-//}
+jacoco {
+    toolVersion = "0.8.12" // latest stable as of 2025
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test, tasks.named("integrationTest"))
+
+    classDirectories.setFrom(files(sourceSets.main.get().output))
+    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
+
+    reports {
+        xml.required.set(true)     // for CI tools like SonarQube
+        csv.required.set(false)
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+
+    finalizedBy(tasks.jacocoTestCoverageVerification)
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.jacocoTestReport)
+
+    classDirectories.setFrom(files(sourceSets.main.get().output))
+    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
+
+    violationRules {
+        // Overall module thresholds (BUNDLE)
+        rule {
+            element = "BUNDLE"
+            // Line coverage (primary)
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.80".toBigDecimal()
+            }
+            // Branch coverage (conditionals)
+            limit {
+                counter = "BRANCH"
+                value = "COVEREDRATIO"
+                minimum = "0.80".toBigDecimal()
+            }
+            // Instruction coverage (fine-grained)
+            limit {
+                counter = "INSTRUCTION"
+                value = "COVEREDRATIO"
+                minimum = "0.75".toBigDecimal()
+            }
+            // Method coverage
+            limit {
+                counter = "METHOD"
+                value = "COVEREDRATIO"
+                minimum = "0.75".toBigDecimal()
+            }
+            // Class coverage
+            limit {
+                counter = "CLASS"
+                value = "COVEREDRATIO"
+                minimum = "0.80".toBigDecimal()
+            }
+            // Complexity coverage (cyclomatic)
+            limit {
+                counter = "COMPLEXITY"
+                value = "COVEREDRATIO"
+                minimum = "0.70".toBigDecimal()
+            }
+        }
+
+        // Guardrail so no single class is egregiously uncovered
+        rule {
+            element = "CLASS"
+            // Allow some leeway but catch 0% cases
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.20".toBigDecimal()
+            }
+        }
+    }
+}
+
+tasks.check {
+    dependsOn(tasks.named("integrationTest"))
+    dependsOn(tasks.jacocoTestCoverageVerification)
+}
+
+tasks.withType<ProcessResources> {
+    // Avoid duplicate resource copy failures (e.g., application-test.yml)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

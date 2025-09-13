@@ -1,16 +1,21 @@
 package com.robotutor.nexora
 
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-import reactor.core.publisher.Mono
 
-@SpringBootTest
-class NexoraBackendApplicationTests {
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationContext
+import org.springframework.stereotype.Component
 
-    @Test
-    fun contextLoads() {
-        Mono.just("data")
-            .subscribe()
+@Component
+class AppContext(
+    @Autowired applicationContext: ApplicationContext
+) {
+
+    init {
+        Companion.applicationContext = applicationContext
     }
 
+    companion object {
+        lateinit var applicationContext: ApplicationContext
+    }
 }
+
