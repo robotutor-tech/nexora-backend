@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.security.infrastructure.client
+package com.robotutor.nexora.common.security.infrastructure.facade
 
 import com.robotutor.nexora.common.security.application.ports.ActorDataRetriever
 import com.robotutor.nexora.common.security.application.ports.ActorResponse

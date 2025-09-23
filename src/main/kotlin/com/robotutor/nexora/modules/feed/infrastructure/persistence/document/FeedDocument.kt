@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.feed.infrastructure.persistence.document
 
 import com.robotutor.nexora.modules.feed.domain.entity.Feed
 import com.robotutor.nexora.modules.feed.domain.entity.FeedType
-import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -23,11 +23,11 @@ data class FeedDocument(
     @Indexed
     val premisesId: String,
     val name: String,
-    val value: Number = 0,
+    val value: Int,
     val type: FeedType,
-    val createdAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now(),
+    val createdAt: Instant,
+    val updatedAt: Instant,
     @Version
-    val version: Long? = null
+    val version: Long?
 ) : MongoDocument<Feed>
 

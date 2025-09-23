@@ -1,6 +1,7 @@
 package com.robotutor.nexora.modules.auth.domain.entity
 
 import com.robotutor.nexora.modules.auth.domain.event.AuthEvent
+import com.robotutor.nexora.modules.auth.domain.event.InvitationAcceptedEvent
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
 import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant
@@ -18,6 +19,7 @@ data class Invitation(
 ) : DomainAggregate<AuthEvent>() {
     fun markAsAccepted(): Invitation {
         this.status = InvitationStatus.ACCEPTED
+        this.addDomainEvent(InvitationAcceptedEvent(invitationId))
         return this
     }
 

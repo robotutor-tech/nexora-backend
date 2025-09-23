@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.device.domain.entity.DeviceHealth
 import com.robotutor.nexora.modules.device.domain.entity.DeviceOS
 import com.robotutor.nexora.modules.device.domain.entity.DeviceState
 import com.robotutor.nexora.modules.device.domain.entity.DeviceType
-import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

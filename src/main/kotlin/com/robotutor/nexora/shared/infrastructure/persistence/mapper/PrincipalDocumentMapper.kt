@@ -1,7 +1,7 @@
 package com.robotutor.nexora.shared.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.shared.domain.model.*
-import com.robotutor.nexora.shared.infrastructure.persistence.model.*
+import com.robotutor.nexora.shared.infrastructure.persistence.document.*
 
 object PrincipalDocumentMapper {
     fun toPrincipalContext(principalDocument: PrincipalDocument): PrincipalContext {

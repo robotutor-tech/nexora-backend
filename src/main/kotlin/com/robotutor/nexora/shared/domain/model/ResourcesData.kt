@@ -11,5 +11,5 @@ data class ResourcesData(val entitlements: List<ResourceEntitlement>) {
 data class ResourceContext(val type: ResourceType, val id: String, val action: ActionType)
 
 data class ResourceEntitlement(
-    val resource: ResourceContext, val premisesId: String
+    val resource: ResourceContext, val premisesId: PremisesId
 )

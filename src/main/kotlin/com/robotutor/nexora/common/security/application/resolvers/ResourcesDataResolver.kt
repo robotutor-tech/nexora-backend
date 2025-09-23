@@ -33,7 +33,7 @@ class ResourcesDataResolver(
                 if (requirePolicy == null) {
                     createMono(ResourcesData(emptyList()))
                 } else {
-                    entitlementFacade.getEntitlements(requirePolicy.action, requirePolicy.resource).collectList()
+                    entitlementFacade.getEntitlements(requirePolicy).collectList()
                         .map { ResourcesData(it) }
                 }
             } else {

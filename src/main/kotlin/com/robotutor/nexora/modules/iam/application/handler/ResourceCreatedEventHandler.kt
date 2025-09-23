@@ -29,7 +29,7 @@ class ResourceCreatedEventHandlerUserCase(
             .flatMap { role -> createEntitlement(ActionType.READ, role, event) }
             .flatMap { role ->
                 if (event.resourceType == ResourceType.FEED) {
-                    createEntitlement(ActionType.UPDATE, role, event)
+                    createEntitlement(ActionType.CONTROL, role, event)
                 } else {
                     createMono(role)
                 }

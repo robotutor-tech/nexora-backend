@@ -1,13 +1,14 @@
 package com.robotutor.nexora.shared.domain.model
 
 enum class ResourceType {
+    AUTOMATION,
+    AUTOMATION_RULE,
     DEVICE,
     FEED,
+    INVITATION,
     PREMISES,
     WIDGET,
     ZONE,
-    AUTOMATION,
-    AUTOMATION_RULE
 }
 
 enum class ActionType {

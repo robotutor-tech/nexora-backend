@@ -2,7 +2,7 @@ package com.robotutor.nexora.shared.infrastructure.persistence.repository
 
 import com.robotutor.nexora.shared.domain.event.DomainModel
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
-import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.mongodb.core.FindAndReplaceOptions
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate

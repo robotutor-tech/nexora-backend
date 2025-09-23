@@ -3,7 +3,7 @@ package com.robotutor.nexora.shared.infrastructure.persistence.service
 import com.robotutor.nexora.shared.domain.model.IdSequenceType
 import com.robotutor.nexora.shared.domain.model.SequenceId
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
-import com.robotutor.nexora.shared.infrastructure.persistence.model.IdSequence
+import com.robotutor.nexora.shared.infrastructure.persistence.document.IdSequence
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.data.mongodb.core.FindAndModifyOptions
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate

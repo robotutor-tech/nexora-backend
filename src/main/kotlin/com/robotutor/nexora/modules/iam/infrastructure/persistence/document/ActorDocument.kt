@@ -3,8 +3,8 @@ package com.robotutor.nexora.modules.iam.infrastructure.persistence.document
 import com.robotutor.nexora.modules.iam.domain.entity.Actor
 import com.robotutor.nexora.modules.iam.domain.entity.ActorState
 import com.robotutor.nexora.shared.domain.model.ActorPrincipalType
-import com.robotutor.nexora.shared.infrastructure.persistence.model.ActorPrincipalDocument
-import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.ActorPrincipalDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

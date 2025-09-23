@@ -3,6 +3,7 @@ package com.robotutor.nexora.modules.feed.domain.entity
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
 import com.robotutor.nexora.modules.feed.domain.event.FeedCreatedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
+import com.robotutor.nexora.modules.feed.domain.event.FeedValueUpdatedEvent
 import com.robotutor.nexora.shared.domain.event.DomainAggregate
 import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant
@@ -11,12 +12,19 @@ data class Feed(
     val feedId: FeedId,
     val premisesId: PremisesId,
     val name: Name,
-    var value: Number = 0,
+    var value: Int = 0,
     val type: FeedType,
     val createdAt: Instant = Instant.now(),
     var updatedAt: Instant = Instant.now(),
     val version: Long? = null
 ) : DomainAggregate<FeedEvent>() {
+
+    fun updateValue(newValue: Int): Feed {
+        this.value = newValue
+        this.addDomainEvent(FeedValueUpdatedEvent(feedId, newValue))
+        return this
+    }
+
     companion object {
         fun create(feedId: FeedId, zoneId: ZoneId, createFeedCommand: CreateFeedCommand, actorData: ActorData): Feed {
             val feed = Feed(

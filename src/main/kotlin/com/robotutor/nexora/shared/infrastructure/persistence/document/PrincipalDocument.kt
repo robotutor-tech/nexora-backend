@@ -1,4 +1,4 @@
-package com.robotutor.nexora.shared.infrastructure.persistence.model
+package com.robotutor.nexora.shared.infrastructure.persistence.document
 
 sealed interface PrincipalDocument
 sealed interface ActorPrincipalDocument : PrincipalDocument

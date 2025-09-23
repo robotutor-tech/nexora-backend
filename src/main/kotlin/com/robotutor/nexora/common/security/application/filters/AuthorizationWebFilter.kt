@@ -1,17 +1,10 @@
 package com.robotutor.nexora.common.security.application.filters
 
-import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.common.security.application.ports.EntitlementFacade
-import com.robotutor.nexora.common.security.application.ports.OpaFacade
-import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.common.security.domain.model.PolicyInput
-import com.robotutor.nexora.shared.application.service.ContextDataResolver
+import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.shared.domain.exception.AccessDeniedException
-import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.domain.model.ActorData
-import com.robotutor.nexora.shared.domain.model.ResourceContext
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
@@ -25,7 +18,6 @@ import reactor.core.publisher.Mono
 @Component
 @Order(3)
 class AuthorizationWebFilter(
-    private val opaFacade: OpaFacade,
     private val handlerMapping: RequestMappingHandlerMapping,
     private val entitlementFacade: EntitlementFacade
 ) : WebFilter {
@@ -38,8 +30,9 @@ class AuthorizationWebFilter(
                     if (requirePolicy == null) {
                         chain.filter(exchange)
                     } else {
-                        validateAccess(exchange, requirePolicy)
-                            .contextWrite { writeContextOnChain(it, exchange) }
+                        val resourceId = resolveResourceId(exchange, requirePolicy.idParam) ?: "*"
+                        entitlementFacade.authorize(requirePolicy, resourceId)
+                            .contextWrite { context -> writeContextOnChain(context, exchange) }
                             .flatMap { allowed ->
                                 if (allowed) chain.filter(exchange)
                                 else createMonoError(AccessDeniedException(NexoraError.NEXORA0105))
@@ -48,24 +41,6 @@ class AuthorizationWebFilter(
                 } else {
                     chain.filter(exchange)
                 }
-            }
-    }
-
-
-    private fun validateAccess(exchange: ServerWebExchange, requirePolicy: RequireAccess): Mono<Boolean> {
-        return ContextDataResolver.getActorData()
-            .flatMap { actorData ->
-                entitlementFacade.getEntitlements(requirePolicy.action, requirePolicy.resource)
-                    .collectList()
-                    .flatMap { entitlements ->
-                        val resourceId = resolveResourceId(exchange, requirePolicy.idParam) ?: "*"
-                        val input = PolicyInput(
-                            resource = ResourceContext(requirePolicy.resource, resourceId, requirePolicy.action),
-                            premisesId = actorData.premisesId.value,
-                            entitlements = entitlements
-                        )
-                        opaFacade.evaluate(input)
-                    }
             }
     }
 

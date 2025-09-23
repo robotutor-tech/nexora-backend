@@ -79,12 +79,13 @@ class RegisterPremisesResourceUseCase(
         return listOf(
             Pair(ActionType.UPDATE, ResourceType.PREMISES),
             Pair(ActionType.DELETE, ResourceType.PREMISES),
+            Pair(ActionType.CREATE, ResourceType.AUTOMATION),
+            Pair(ActionType.CREATE, ResourceType.AUTOMATION_RULE),
+            Pair(ActionType.CREATE, ResourceType.DEVICE),
+            Pair(ActionType.CREATE, ResourceType.INVITATION),
             Pair(ActionType.CREATE, ResourceType.FEED),
             Pair(ActionType.CREATE, ResourceType.WIDGET),
             Pair(ActionType.CREATE, ResourceType.ZONE),
-            Pair(ActionType.CREATE, ResourceType.DEVICE),
-            Pair(ActionType.CREATE, ResourceType.AUTOMATION_RULE),
-            Pair(ActionType.CREATE, ResourceType.AUTOMATION),
         )
     }
 }

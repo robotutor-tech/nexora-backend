@@ -3,9 +3,8 @@ package com.robotutor.nexora.modules.auth.infrastructure.persistence.repository
 import com.robotutor.nexora.modules.auth.domain.entity.Invitation
 import com.robotutor.nexora.modules.auth.domain.entity.InvitationStatus
 import com.robotutor.nexora.modules.auth.domain.repository.InvitationRepository
-import com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper.InvitationDocumentMapper
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.InvitationDocument
-import com.robotutor.nexora.shared.domain.model.ActorId
+import com.robotutor.nexora.modules.auth.infrastructure.persistence.mapper.InvitationDocumentMapper
 import com.robotutor.nexora.shared.domain.model.InvitationId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
@@ -35,12 +34,12 @@ class MongoInvitationRepository(
         return this.findOne(query)
     }
 
-    override fun findAllByInvitedByAndStatus(
-        actorId: ActorId,
+    override fun findAllByInvitationIdInAndStatus(
+        invitationIds: List<InvitationId>,
         status: InvitationStatus
     ): Flux<Invitation> {
         val query = Query(
-            Criteria.where("invitedBy").`is`(actorId.value)
+            Criteria.where("invitationId").`in`(invitationIds.map { it.value })
                 .and("status").`is`(status)
         )
         return this.findAll(query)

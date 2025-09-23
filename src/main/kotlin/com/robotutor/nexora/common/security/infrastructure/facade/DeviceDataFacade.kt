@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.security.infrastructure.client
+package com.robotutor.nexora.common.security.infrastructure.facade
 
 import com.robotutor.nexora.common.security.application.ports.DeviceDataRetriever
 import com.robotutor.nexora.modules.device.interfaces.controller.DeviceController

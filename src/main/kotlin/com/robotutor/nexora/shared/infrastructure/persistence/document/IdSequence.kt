@@ -1,4 +1,4 @@
-package com.robotutor.nexora.shared.infrastructure.persistence.model
+package com.robotutor.nexora.shared.infrastructure.persistence.document
 
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id

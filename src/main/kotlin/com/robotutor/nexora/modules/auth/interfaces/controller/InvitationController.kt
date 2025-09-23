@@ -1,20 +1,18 @@
 package com.robotutor.nexora.modules.auth.interfaces.controller
 
 import com.robotutor.nexora.modules.auth.application.InvitationUseCase
-import com.robotutor.nexora.modules.auth.application.TokenUseCase
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.InvitationRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.InvitationResponse
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.InvitationWithTokenResponse
 import com.robotutor.nexora.modules.auth.interfaces.controller.mapper.InvitationMapper
+import com.robotutor.nexora.shared.application.annotation.RequireAccess
+import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.InvitationId
+import com.robotutor.nexora.shared.domain.model.ResourceType
+import com.robotutor.nexora.shared.domain.model.ResourcesData
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -22,9 +20,9 @@ import reactor.core.publisher.Mono
 @RequestMapping("/auth/invitations")
 class InvitationController(
     private val invitationUseCase: InvitationUseCase,
-    private val tokenUseCase: TokenUseCase
 ) {
 
+    @RequireAccess(ActionType.CREATE, ResourceType.INVITATION)
     @PostMapping
     fun createInvitation(
         @RequestBody @Validated invitationRequest: InvitationRequest,
@@ -35,13 +33,16 @@ class InvitationController(
             .map { pair -> InvitationMapper.toInvitationWithTokenResponse(pair) }
     }
 
-
+    @RequireAccess(ActionType.LIST, ResourceType.INVITATION)
     @GetMapping
-    fun getDInvitations(actorData: ActorData): Flux<InvitationWithTokenResponse> {
-        return invitationUseCase.getInvitations(actorData)
+    fun getDeviceInvitations(resourcesData: ResourcesData): Flux<InvitationWithTokenResponse> {
+        val invitationIds = resourcesData.getResourceIds(ActionType.LIST, ResourceType.INVITATION)
+            .map { InvitationId(it) }
+        return invitationUseCase.getInvitations(invitationIds)
             .map { pair -> InvitationMapper.toInvitationWithTokenResponse(pair) }
     }
 
+    @RequireAccess(ActionType.READ, ResourceType.INVITATION, "invitationId")
     @GetMapping("/{invitationId}")
     fun getInvitation(@PathVariable invitationId: String): Mono<InvitationResponse> {
         return invitationUseCase.getInvitation(InvitationId(invitationId))

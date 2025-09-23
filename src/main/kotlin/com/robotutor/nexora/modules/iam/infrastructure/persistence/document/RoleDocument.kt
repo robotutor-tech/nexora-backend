@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.iam.infrastructure.persistence.document
 
 import com.robotutor.nexora.modules.iam.domain.entity.Role
 import com.robotutor.nexora.shared.domain.model.RoleType
-import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

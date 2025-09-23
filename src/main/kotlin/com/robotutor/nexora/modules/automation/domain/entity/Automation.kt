@@ -4,7 +4,6 @@ import com.robotutor.nexora.modules.automation.domain.entity.objects.ConditionNo
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.SequenceId
-import com.robotutor.nexora.shared.infrastructure.persistence.model.IdSequence
 import java.time.Instant
 
 data class Automation(

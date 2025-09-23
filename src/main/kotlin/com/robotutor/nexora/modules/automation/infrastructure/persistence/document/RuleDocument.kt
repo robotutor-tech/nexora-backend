@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.automation.infrastructure.persistence.docum
 import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.domain.entity.RuleType
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.ConfigDocument
-import com.robotutor.nexora.shared.infrastructure.persistence.model.MongoDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

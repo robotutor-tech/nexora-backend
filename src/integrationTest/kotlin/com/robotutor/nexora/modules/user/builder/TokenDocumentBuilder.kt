@@ -3,8 +3,8 @@ package com.robotutor.nexora.modules.user.builder
 import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.modules.auth.domain.entity.TokenType
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.TokenDocument
-import com.robotutor.nexora.shared.infrastructure.persistence.model.PrincipalDocument
-import com.robotutor.nexora.shared.infrastructure.persistence.model.UserDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.PrincipalDocument
+import com.robotutor.nexora.shared.infrastructure.persistence.document.UserDocument
 import java.time.Instant
 
 data class TokenDocumentBuilder(

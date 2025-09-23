@@ -7,12 +7,19 @@ import com.robotutor.nexora.modules.auth.domain.entity.Invitation
 import com.robotutor.nexora.modules.auth.domain.entity.InvitationStatus
 import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.modules.auth.domain.entity.TokenType
+import com.robotutor.nexora.modules.auth.domain.event.AuthEvent
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.domain.repository.InvitationRepository
+import com.robotutor.nexora.shared.domain.event.EventPublisher
+import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
+import com.robotutor.nexora.shared.domain.event.publishEvent
+import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.InvitationContext
 import com.robotutor.nexora.shared.domain.model.InvitationId
+import com.robotutor.nexora.shared.domain.model.ResourceId
+import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -24,7 +31,9 @@ import java.util.*
 @Service
 class InvitationUseCase(
     private val invitationRepository: InvitationRepository,
-    private val tokenUseCase: TokenUseCase
+    private val tokenUseCase: TokenUseCase,
+    private val eventPublisher: EventPublisher<AuthEvent>,
+    private val resourceCreatedEventPublisher: EventPublisher<ResourceCreatedEvent>
 ) {
     private val logger = Logger(this::class.java)
 
@@ -47,16 +56,18 @@ class InvitationUseCase(
                     invitedBy = actorData.actorId,
                     tokenId = token.tokenId
                 )
+                val resourceCreatedEvent = ResourceCreatedEvent(ResourceType.INVITATION, ResourceId(invitationId.value))
                 invitationRepository.save(invitation).map { invitation }
-//                    .publishEvents()
+                    .publishEvent(resourceCreatedEventPublisher, resourceCreatedEvent)
+                    .publishEvents(eventPublisher)
                     .map { Pair(invitation, TokenResponse.from(token)) }
             }
             .logOnSuccess(logger, "Successfully created invitation")
             .logOnError(logger, "", "Failed to create invitation")
     }
 
-    fun getInvitations(actorData: ActorData): Flux<Pair<Invitation, TokenResponse>> {
-        return invitationRepository.findAllByInvitedByAndStatus(actorData.actorId, InvitationStatus.INVITED)
+    fun getInvitations(invitationIds: List<InvitationId>): Flux<Pair<Invitation, TokenResponse>> {
+        return invitationRepository.findAllByInvitationIdInAndStatus(invitationIds, InvitationStatus.INVITED)
             .collectList()
             .flatMapMany { invitations ->
                 val tokenIds = invitations.mapNotNull { invitation -> invitation.tokenId }
@@ -77,7 +88,7 @@ class InvitationUseCase(
         return getInvitation(invitationId)
             .map { invitation -> invitation.markAsAccepted() }
             .flatMap { invitation -> invitationRepository.save(invitation).map { invitation } }
-//            .publishEvents()
+            .publishEvents(eventPublisher)
     }
 }
 
