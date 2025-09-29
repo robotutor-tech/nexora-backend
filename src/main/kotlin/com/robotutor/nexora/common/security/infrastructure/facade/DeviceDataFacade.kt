@@ -13,8 +13,7 @@ import reactor.core.publisher.Mono
 @Service("SecurityDeviceDataClient")
 class DeviceDataFacade(private val deviceController: DeviceController) : DeviceDataRetriever {
     override fun getDeviceData(deviceId: DeviceId): Mono<DeviceData> {
-        return ContextDataResolver.getActorData()
-            .flatMap { actorData -> deviceController.getDevice(deviceId.value, actorData) }
+        return deviceController.getDevice(deviceId.value)
             .map { response ->
                 DeviceData(
                     deviceId = DeviceId(response.deviceId),

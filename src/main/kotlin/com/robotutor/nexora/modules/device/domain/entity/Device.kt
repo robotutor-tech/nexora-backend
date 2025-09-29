@@ -15,7 +15,7 @@ class Device(
     val type: DeviceType,
     var feedIds: FeedIds = FeedIds(emptyList()),
     val state: DeviceState = DeviceState.ACTIVE,
-    val health: DeviceHealth = DeviceHealth.OFFLINE,
+    var health: DeviceHealth = DeviceHealth.OFFLINE,
     val os: DeviceOS? = null,
     val createdBy: ActorId,
     val createdAt: Instant = Instant.now(),
@@ -24,6 +24,11 @@ class Device(
 
     fun updateFeedIds(feedIds: FeedIds): Device {
         this.feedIds = feedIds
+        return this
+    }
+
+    fun updateHealth(health: DeviceHealth): Device {
+        this.health = health
         return this
     }
 

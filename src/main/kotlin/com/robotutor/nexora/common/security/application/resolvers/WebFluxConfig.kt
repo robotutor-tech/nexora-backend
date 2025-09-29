@@ -9,10 +9,12 @@ class WebFluxConfig(
     private val userDataResolver: UserDataResolver,
     private val actorDataResolver: ActorDataResolver,
     private val invitationDataResolver: InvitationDataResolver,
+    private val deviceDataResolver: DeviceDataResolver,
 ) : WebFluxConfigurer {
     override fun configureArgumentResolvers(configurer: ArgumentResolverConfigurer) {
         configurer.addCustomResolver(userDataResolver)
         configurer.addCustomResolver(actorDataResolver)
         configurer.addCustomResolver(invitationDataResolver)
+        configurer.addCustomResolver(deviceDataResolver)
     }
 }

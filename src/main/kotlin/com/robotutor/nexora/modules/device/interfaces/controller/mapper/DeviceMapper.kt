@@ -3,9 +3,12 @@ package com.robotutor.nexora.modules.device.interfaces.controller.mapper
 import com.robotutor.nexora.modules.device.application.command.CreateDeviceCommand
 import com.robotutor.nexora.modules.device.application.facade.dto.DeviceTokens
 import com.robotutor.nexora.modules.device.domain.entity.Device
+import com.robotutor.nexora.modules.device.domain.entity.DeviceHealth
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceRequest
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceResponse
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceTokensResponse
+import com.robotutor.nexora.modules.device.interfaces.controller.dto.Health
+import com.robotutor.nexora.modules.device.interfaces.controller.dto.HealthRequest
 import com.robotutor.nexora.modules.seed.SeedData
 import com.robotutor.nexora.shared.domain.model.ModelNo
 import com.robotutor.nexora.shared.domain.model.SerialNo
@@ -38,5 +41,9 @@ object DeviceMapper {
             token = deviceTokens.token,
             refreshToken = deviceTokens.refreshToken
         )
+    }
+
+    fun toDeviceHealth(healthRequest: HealthRequest): DeviceHealth {
+        return if (healthRequest.health == Health.CONNECTED) DeviceHealth.ONLINE else DeviceHealth.OFFLINE
     }
 }

@@ -8,4 +8,6 @@ data class FeedResponse(
     val name: String,
     val value: Number,
     val type: FeedType,
+    val resume: Boolean = false,
+    val updateLocally: Boolean = false
 )
