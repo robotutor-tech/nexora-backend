@@ -53,6 +53,8 @@ Nexora orchestrates automation across premises, devices, zones, and users. The b
 ```
 Cross-cutting modules (security, shared kernel, logging) provide reusable abstractions WITHOUT leaking domain logic.
 
+![Hex image](https://camo.githubusercontent.com/a76ba559102ca4b41f7b23662dc0fecaad54bcb2c77eb9ff3214ecef0c151640/68747470733a2f2f776174612e65732f77702d636f6e74656e742f75706c6f6164732f323032312f30352f6469616772616d612d6172717569746563747572612d68657861676f6e616c2d776174612d666163746f72792d31303234783739362e706e67)
+![Hex image](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Vtb2aANDq2sBmvngPrydqA.jpeg)
 ---
 ## 3. Domain-Driven Design in This Project
 DDD principles applied:
