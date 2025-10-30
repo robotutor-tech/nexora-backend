@@ -9,6 +9,7 @@ import com.robotutor.nexora.modules.auth.interfaces.controller.dto.ActorLoginReq
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthLoginRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthUserRequest
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthUserResponseDto
+import com.robotutor.nexora.modules.auth.interfaces.controller.dto.DeviceLoginRequest
 import com.robotutor.nexora.shared.domain.model.ActorId
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.RoleId

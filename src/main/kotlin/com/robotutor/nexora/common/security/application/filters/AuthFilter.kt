@@ -84,7 +84,7 @@ class AuthFilter(
                     isValid = true,
                     principalType = TokenPrincipalType.INTERNAL,
                     principal = InternalContext(""),
-                    expiresAt = Instant.MAX,
+                    expiresIn = 300,
                 )
             )
         }

@@ -10,5 +10,5 @@ data class TokenValidationResultDto(
     val isValid: Boolean,
     val principalType: TokenPrincipalType,
     val principal: PrincipalContextResponse,
-    val expiresAt: Instant,
+    val expiresIn: Number,
 )

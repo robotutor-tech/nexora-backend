@@ -16,7 +16,7 @@ class AuthTokenValidator(private val authController: AuthController) : TokenVali
                     isValid = it.isValid,
                     principal = PrincipalContextMapper.toPrincipalContext(it.principal),
                     principalType = it.principalType,
-                    expiresAt = it.expiresAt,
+                    expiresIn = it.expiresIn,
                 )
             }
     }

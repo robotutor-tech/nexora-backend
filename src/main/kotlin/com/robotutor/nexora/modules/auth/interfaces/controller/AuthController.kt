@@ -3,13 +3,16 @@ package com.robotutor.nexora.modules.auth.interfaces.controller
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.modules.auth.application.ActorLoginUseCase
 import com.robotutor.nexora.modules.auth.application.AuthUserUseCase
+import com.robotutor.nexora.modules.auth.application.AuthDeviceUseCase
 import com.robotutor.nexora.modules.auth.application.RefreshTokenUseCase
 import com.robotutor.nexora.modules.auth.application.ValidateTokenUseCase
 import com.robotutor.nexora.modules.auth.domain.exception.NexoraError
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.*
 import com.robotutor.nexora.modules.auth.interfaces.controller.mapper.AuthUserMapper
+import com.robotutor.nexora.modules.auth.interfaces.controller.mapper.AuthDeviceMapper
 import com.robotutor.nexora.modules.auth.interfaces.controller.mapper.TokenMapper
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.model.InvitationData
 import com.robotutor.nexora.shared.domain.model.UserData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -21,7 +24,8 @@ class AuthController(
     private val authUserUseCase: AuthUserUseCase,
     private val validateTokenUseCase: ValidateTokenUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
-    private val actorLoginUseCase: ActorLoginUseCase
+    private val actorLoginUseCase: ActorLoginUseCase,
+    private val authDeviceUseCase: AuthDeviceUseCase
 ) {
 
     @PostMapping("/register")
@@ -49,6 +53,15 @@ class AuthController(
             .map { TokenMapper.toTokenResponsesDto(it) }
     }
 
+    @PostMapping("/login/device")
+    fun deviceLogin(
+        @RequestBody @Validated deviceLoginRequest: DeviceLoginRequest,
+    ): Mono<TokenResponsesDto> {
+        val deviceLoginCommand = AuthDeviceMapper.toDeviceLoginCommand(deviceLoginRequest)
+        return authDeviceUseCase.deviceLogin(deviceLoginCommand)
+            .map { TokenMapper.toTokenResponsesDto(it) }
+    }
+
     @GetMapping("/validate")
     fun validate(@RequestHeader("authorization") token: String = ""): Mono<TokenValidationResultDto> {
         if (!token.startsWith("Bearer ")) {
@@ -67,5 +80,11 @@ class AuthController(
         val refreshTokenCommand = TokenMapper.toRefreshTokenCommand(token)
         return refreshTokenUseCase.refresh(refreshTokenCommand)
             .map { TokenMapper.toTokenResponsesDto(it) }
+    }
+
+    fun registerDevice(@RequestBody @Validated request: AuthDeviceRegisterRequest, invitationData: InvitationData): Mono<AuthDeviceResponse> {
+        val command = AuthDeviceMapper.toAuthDeviceRegisterCommand(request)
+        return authDeviceUseCase.register(command, invitationData)
+            .map { AuthDeviceMapper.toAuthDeviceResponse(it) }
     }
 }

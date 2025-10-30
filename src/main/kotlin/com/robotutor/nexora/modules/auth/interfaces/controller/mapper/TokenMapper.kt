@@ -6,6 +6,7 @@ import com.robotutor.nexora.modules.auth.application.dto.TokenResponses
 import com.robotutor.nexora.modules.auth.application.dto.TokenValidationResult
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.TokenResponsesDto
 import com.robotutor.nexora.modules.auth.interfaces.controller.dto.TokenValidationResultDto
+import java.time.Instant
 
 object TokenMapper {
     fun toTokenResponsesDto(tokenResponses: TokenResponses): TokenResponsesDto {
@@ -20,7 +21,7 @@ object TokenMapper {
         return TokenValidationResultDto(
             isValid = tokenValidationResult.isValid,
             principalType = tokenValidationResult.principalType,
-            expiresAt = tokenValidationResult.expiresAt,
+            expiresIn = tokenValidationResult.expiresAt.epochSecond - Instant.now().epochSecond,
             principal = tokenValidationResult.principal,
         )
     }

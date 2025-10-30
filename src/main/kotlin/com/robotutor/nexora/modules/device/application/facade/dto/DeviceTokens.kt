@@ -1,3 +1,3 @@
 package com.robotutor.nexora.modules.device.application.facade.dto
 
-data class DeviceTokens(val token: String, val refreshToken: String)
+data class AuthDevice(val deviceId: String, val deviceSecret: String)

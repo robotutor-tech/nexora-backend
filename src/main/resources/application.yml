@@ -33,4 +33,5 @@ app:
     un-secured-path:
       - "/users"
       - "/auth/login"
+      - "/auth/login/device"
       - "/auth/validate"

@@ -18,3 +18,4 @@ data class AuthUserRequest(
     )
     val password: String
 )
+

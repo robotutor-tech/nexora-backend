@@ -1,23 +1,16 @@
 package com.robotutor.nexora.modules.device.interfaces.controller
 
-import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.modules.device.application.DeviceUseCase
 import com.robotutor.nexora.modules.device.application.RegisterDeviceUseCase
+import com.robotutor.nexora.modules.device.application.facade.dto.AuthDevice
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceRequest
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceResponse
-import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceTokensResponse
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.HealthRequest
 import com.robotutor.nexora.modules.device.interfaces.controller.mapper.DeviceMapper
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.shared.domain.model.*
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -31,10 +24,9 @@ class DeviceController(
     fun registerDevice(
         @RequestBody @Validated deviceRequest: DeviceRequest,
         invitationData: InvitationData
-    ): Mono<DeviceTokensResponse> {
+    ): Mono<AuthDevice> {
         val createDeviceCommand = DeviceMapper.toCreateDeviceCommand(deviceRequest)
         return registerDeviceUseCase.register(createDeviceCommand, invitationData)
-            .map { DeviceMapper.toDeviceTokenResponse(it) }
     }
 
     @RequireAccess(ActionType.LIST, ResourceType.DEVICE)

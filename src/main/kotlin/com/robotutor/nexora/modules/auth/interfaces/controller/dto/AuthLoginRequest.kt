@@ -18,6 +18,13 @@ data class ActorLoginRequest(
     val roleId: String
 )
 
+data class DeviceLoginRequest(
+    @field:NotBlank(message = "Device id is required")
+    val deviceId: String,
+    @field:NotBlank(message = "Secret id is required")
+    val secret: String
+)
+
 
 //data class PremisesActorDataView(
 //    val actorId: ActorId,

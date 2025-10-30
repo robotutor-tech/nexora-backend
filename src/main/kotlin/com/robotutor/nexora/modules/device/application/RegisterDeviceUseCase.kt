@@ -2,8 +2,8 @@ package com.robotutor.nexora.modules.device.application
 
 import com.robotutor.nexora.modules.device.application.command.CreateDeviceCommand
 import com.robotutor.nexora.modules.device.application.facade.ActorFacade
-import com.robotutor.nexora.modules.device.application.facade.TokenFacade
-import com.robotutor.nexora.modules.device.application.facade.dto.DeviceTokens
+import com.robotutor.nexora.modules.device.application.facade.AuthDeviceFacade
+import com.robotutor.nexora.modules.device.application.facade.dto.AuthDevice
 import com.robotutor.nexora.modules.device.domain.entity.Device
 import com.robotutor.nexora.modules.device.domain.entity.IdType
 import com.robotutor.nexora.modules.device.domain.event.DeviceEvent
@@ -30,13 +30,13 @@ class RegisterDeviceUseCase(
     private val deviceRepository: DeviceRepository,
     private val idGeneratorService: IdGeneratorService,
     private val actorFacade: ActorFacade,
-    private val tokenFacade: TokenFacade,
+    private val authDeviceFacade: AuthDeviceFacade,
     private val eventPublisher: EventPublisher<DeviceEvent>,
     private val resourceCreatedEventPublisher: EventPublisher<ResourceCreatedEvent>
 ) {
     private val logger = Logger(this::class.java)
 
-    fun register(createDeviceCommand: CreateDeviceCommand, invitationData: InvitationData): Mono<DeviceTokens> {
+    fun register(createDeviceCommand: CreateDeviceCommand, invitationData: InvitationData): Mono<AuthDevice> {
         return idGeneratorService.generateId(IdType.DEVICE_ID, DeviceId::class.java)
             .map { deviceId ->
                 Device.create(
@@ -58,7 +58,7 @@ class RegisterDeviceUseCase(
                             resourceType = ResourceType.DEVICE,
                             resourceId = ResourceId(device.deviceId.value)
                         )
-                        tokenFacade.generateDeviceToken(actorData)
+                        authDeviceFacade.register(device, actorData)
                             .publishEvents(eventPublisher, device)
                             .publishEvent(resourceCreatedEventPublisher, resourceCreatedEvent)
                             .contextWrite {

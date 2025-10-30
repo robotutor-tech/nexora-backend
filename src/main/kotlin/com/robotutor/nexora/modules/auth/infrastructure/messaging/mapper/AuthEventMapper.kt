@@ -1,8 +1,10 @@
 package com.robotutor.nexora.modules.auth.infrastructure.messaging.mapper
 
+import com.robotutor.nexora.modules.auth.domain.event.AuthDeviceRegisteredEvent
 import com.robotutor.nexora.modules.auth.domain.event.AuthEvent
 import com.robotutor.nexora.modules.auth.domain.event.AuthUserRegisteredEvent
 import com.robotutor.nexora.modules.auth.domain.event.InvitationAcceptedEvent
+import com.robotutor.nexora.modules.auth.infrastructure.messaging.message.AuthDeviceRegisteredEventMessage
 import com.robotutor.nexora.modules.auth.infrastructure.messaging.message.AuthUserRegisteredEventMessage
 import com.robotutor.nexora.modules.auth.infrastructure.messaging.message.InvitationAcceptedEventMessage
 import com.robotutor.nexora.shared.domain.event.EventMapper
@@ -13,6 +15,7 @@ object AuthEventMapper : EventMapper<AuthEvent> {
         return when (event) {
             is AuthUserRegisteredEvent -> toAuthUserRegisteredEventMessage(event)
             is InvitationAcceptedEvent -> toInvitationAcceptedEventMessage(event)
+            is AuthDeviceRegisteredEvent -> toAuthDeviceRegisteredEventMessage(event)
         }
     }
 
@@ -22,5 +25,9 @@ object AuthEventMapper : EventMapper<AuthEvent> {
 
     private fun toAuthUserRegisteredEventMessage(event: AuthUserRegisteredEvent): AuthUserRegisteredEventMessage {
         return AuthUserRegisteredEventMessage(event.userId.value)
+    }
+
+    private fun toAuthDeviceRegisteredEventMessage(event: AuthDeviceRegisteredEvent): AuthDeviceRegisteredEventMessage {
+        return AuthDeviceRegisteredEventMessage(event.deviceId.value)
     }
 }
