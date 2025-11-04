@@ -75,8 +75,8 @@ class ZoneControllerTest {
 
         val resourcesData = ResourcesData(
             listOf(
-                ResourceEntitlement(ResourceContext(ResourceType.ZONE, "zone-0001", ActionType.READ), "prem-1"),
-                ResourceEntitlement(ResourceContext(ResourceType.ZONE, "zone-0002", ActionType.READ), "prem-1"),
+                ResourceEntitlement(ResourceContext(ResourceType.ZONE, "zone-0001", ActionType.READ), PremisesId("prem-1")),
+                ResourceEntitlement(ResourceContext(ResourceType.ZONE, "zone-0002", ActionType.READ), PremisesId("prem-1")),
             )
         )
 

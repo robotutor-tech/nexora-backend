@@ -32,11 +32,23 @@ class RuleControllerTest {
         role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
         premisesId = PremisesId("prem-1"),
         principalType = ActorPrincipalType.USER,
-        principal = UserData(UserId("user-1"), Name("John"), Email("john@example.com"), Instant.parse("2020-01-01T00:00:00Z"))
+        principal = UserData(
+            UserId("user-1"),
+            Name("John"),
+            Email("john@example.com"),
+            Instant.parse("2020-01-01T00:00:00Z")
+        )
     )
 
-    @BeforeEach fun setup() { clearAllMocks() }
-    @AfterEach fun tearDown() { clearAllMocks() }
+    @BeforeEach
+    fun setup() {
+        clearAllMocks()
+    }
+
+    @AfterEach
+    fun tearDown() {
+        clearAllMocks()
+    }
 
     @Test
     fun `should create rule`() {
@@ -50,7 +62,12 @@ class RuleControllerTest {
         )
         val domain = Rule.create(
             RuleId("rule-1"),
-            CreateRuleCommand(Name("Morning Rule"), "desc", RuleType.TRIGGER, FeedControlConfig(FeedId("feed-1"), ComparisonOperator.GREATER_THAN, 10)),
+            CreateRuleCommand(
+                Name("Morning Rule"),
+                "desc",
+                RuleType.TRIGGER,
+                FeedControlConfig(FeedId("feed-1"), ComparisonOperator.GREATER_THAN, 10)
+            ),
             actorData
         )
         every { mockUseCase.createRule(any(), any()) } returns Mono.just(domain)
@@ -75,26 +92,64 @@ class RuleControllerTest {
 
     @Test
     fun `should list rules`() {
-        val r1 = Rule.create(RuleId("r1"), CreateRuleCommand(Name("Rule-A"), null, RuleType.TRIGGER, FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)), actorData)
-        val r2 = Rule.create(RuleId("r2"), CreateRuleCommand(Name("Rule-B"), null, RuleType.CONDITION, FeedControlConfig(FeedId("f2"), ComparisonOperator.EQUAL, 2)), actorData)
+        val r1 = Rule.create(
+            RuleId("r1"),
+            CreateRuleCommand(
+                Name("Rule-A"),
+                null,
+                RuleType.TRIGGER,
+                FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)
+            ),
+            actorData
+        )
+        val r2 = Rule.create(
+            RuleId("r2"),
+            CreateRuleCommand(
+                Name("Rule-B"),
+                null,
+                RuleType.CONDITION,
+                FeedControlConfig(FeedId("f2"), ComparisonOperator.EQUAL, 2)
+            ),
+            actorData
+        )
         every { mockUseCase.getRules(any(), any()) } returns Flux.just(r1, r2)
 
         val resources = ResourcesData(
             listOf(
-                ResourceEntitlement(ResourceContext(ResourceType.AUTOMATION_RULE, "r1", ActionType.READ), "prem-1"),
-                ResourceEntitlement(ResourceContext(ResourceType.AUTOMATION_RULE, "r2", ActionType.READ), "prem-1"),
+                ResourceEntitlement(
+                    ResourceContext(ResourceType.AUTOMATION_RULE, "r1", ActionType.READ),
+                    PremisesId("prem-1")
+                ),
+                ResourceEntitlement(
+                    ResourceContext(ResourceType.AUTOMATION_RULE, "r2", ActionType.READ),
+                    PremisesId("prem-1")
+                ),
             )
         )
 
         val list = controller.getRules(actorData, resources).collectList().block()!!
         list.size shouldBe 2
 //        list[0] is RuleResponse shouldBe true
-        verify(exactly = 1) { mockUseCase.getRules(match { it.map { id -> id.value } == listOf("r1", "r2") }, actorData) }
+        verify(exactly = 1) {
+            mockUseCase.getRules(
+                match { it.map { id -> id.value } == listOf("r1", "r2") },
+                actorData
+            )
+        }
     }
 
     @Test
     fun `should get rule by id`() {
-        val r1 = Rule.create(RuleId("r1"), CreateRuleCommand(Name("Rule-A"), null, RuleType.TRIGGER, FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)), actorData)
+        val r1 = Rule.create(
+            RuleId("r1"),
+            CreateRuleCommand(
+                Name("Rule-A"),
+                null,
+                RuleType.TRIGGER,
+                FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)
+            ),
+            actorData
+        )
         every { mockUseCase.getRule(RuleId("r1"), actorData) } returns Mono.just(r1)
 
         val mono = controller.getRule("r1", actorData)

@@ -65,8 +65,8 @@ class WidgetControllerTest {
 
         val resourcesData = ResourcesData(
             listOf(
-                ResourceEntitlement(ResourceContext(ResourceType.WIDGET, "widget-1", ActionType.READ), "prem-1"),
-                ResourceEntitlement(ResourceContext(ResourceType.WIDGET, "widget-2", ActionType.READ), "prem-1"),
+                ResourceEntitlement(ResourceContext(ResourceType.WIDGET, "widget-1", ActionType.READ), PremisesId("prem-1")),
+                ResourceEntitlement(ResourceContext(ResourceType.WIDGET, "widget-2", ActionType.READ), PremisesId("prem-1")),
             )
         )
 

@@ -31,7 +31,8 @@ data class AuthDevice(
 data class DeviceSecret(val value: String) {
     companion object {
         fun generate(): DeviceSecret {
-            return DeviceSecret(value = java.util.UUID.randomUUID().toString())
+            val value = java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 32)
+            return DeviceSecret(value = value)
         }
     }
 }

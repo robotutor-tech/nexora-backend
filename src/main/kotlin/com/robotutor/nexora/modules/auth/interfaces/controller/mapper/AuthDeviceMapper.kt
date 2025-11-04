@@ -14,7 +14,6 @@ import com.robotutor.nexora.shared.domain.model.RoleId
 object AuthDeviceMapper {
 
     fun toDeviceLoginCommand(deviceLoginRequest: DeviceLoginRequest): DeviceLoginCommand {
-        println("Device login request: -------------------- $deviceLoginRequest")
         return DeviceLoginCommand(
             deviceId = DeviceId(deviceLoginRequest.deviceId),
             deviceSecret = DeviceSecret(deviceLoginRequest.secret)

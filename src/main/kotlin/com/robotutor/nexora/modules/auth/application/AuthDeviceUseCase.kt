@@ -31,7 +31,6 @@ class AuthDeviceUseCase(
     private val logger = Logger(this::class.java)
 
     fun deviceLogin(deviceLoginCommand: DeviceLoginCommand): Mono<TokenResponses> {
-        println("deviceLogin: $deviceLoginCommand")
         return authDeviceRepository.findByDeviceIdAndDeviceSecret(
             deviceLoginCommand.deviceId,
             deviceLoginCommand.deviceSecret
@@ -55,9 +54,9 @@ class AuthDeviceUseCase(
         val authDevice = AuthDevice.register(command.deviceId, command.actorId, command.roleId)
         return authDeviceRepository.save(authDevice).map { authDevice }
             .publishEvents(eventPublisher)
-            .flatMap { authDevice ->
+            .flatMap { device ->
                 invitationUseCase.markAsAccepted(invitationData.invitationId)
-                    .map { authDevice }
+                    .map { device }
             }
             .logOnSuccess(logger, "Successfully registered auth device for ${command.deviceId}")
             .logOnError(logger, "", "Failed to register auth device for ${command.deviceId}")

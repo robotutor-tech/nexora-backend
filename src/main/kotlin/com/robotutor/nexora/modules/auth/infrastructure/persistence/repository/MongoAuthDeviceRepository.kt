@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Component
 class MongoAuthDeviceRepository(
@@ -36,5 +37,13 @@ class MongoAuthDeviceRepository(
                 .and("secret").`is`(deviceSecret.value)
         )
         return this.findOne(query)
+            .map {
+                println("Found auth device: $it")
+                it
+            }
+            .switchIfEmpty {
+                println("No auth device found for device id $deviceId and device secret $deviceSecret")
+                Mono.empty()
+            }
     }
 }

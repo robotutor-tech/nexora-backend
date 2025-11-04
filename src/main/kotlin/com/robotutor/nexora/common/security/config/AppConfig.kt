@@ -2,11 +2,8 @@ package com.robotutor.nexora.common.security.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-
 @ConfigurationProperties(prefix = "app.security")
 data class AppConfig(
-    val authServiceBaseUrl: String,
-    val iamServiceBaseUrl: String,
     val internalAccessToken: String,
     val opaBaseUrl: String,
     val unSecuredPath: List<String> = emptyList(),

@@ -12,7 +12,6 @@ import java.time.Instant
 class ZoneTest {
     @Test
     fun `create should initialize fields and emit ZoneCreatedEvent`() {
-        val fixedInstant = Instant.parse("2023-01-01T00:00:00Z")
         val zone = Zone.create(
             zoneId = ZoneId("zone-0001"),
             premisesId = PremisesId("prem-1"),
