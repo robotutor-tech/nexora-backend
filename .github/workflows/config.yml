@@ -23,23 +23,23 @@ jobs:
           java-version: '21'
           distribution: zulu
 
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: '8.10'
-          arguments: build
-        env:
-          USERNAME: ${{ secrets.ACTOR }}
-          TOKEN: ${{ secrets.PAT_TOKEN }}
-
       - name: Unit test
         run: ./gradlew clean test
 
-      - name: Docker login
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker buildx create --use
-          docker buildx inspect --bootstrap
+#      - name: Build with Gradle
+#        uses: gradle/gradle-build-action@v2
+#        with:
+#          gradle-version: '8.10'
+#          arguments: build
+#        env:
+#          USERNAME: ${{ secrets.ACTOR }}
+#          TOKEN: ${{ secrets.PAT_TOKEN }}
 
-      - name: Docker build and push
-        run: bash ./build.sh
+#      - name: Docker login
+#        run: |
+#          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+#          docker buildx create --use
+#          docker buildx inspect --bootstrap
+#
+#      - name: Docker build and push
+#        run: bash ./build.sh

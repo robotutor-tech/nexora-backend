@@ -1,19 +1,9 @@
 #!/bin/bash
-tag=$(curl https://hub.docker.com/v2/repositories/shiviraj/nexora-backend/tags | jq -r '.results | sort_by(.last_updated) | last(.[-2]).name')
-
-if [ $tag == "null" ]; then
-    echo "Failed to retrieve tags from Docker Hub. Setting default as 0.0.0"
-    tag=0.0.0
-fi
-echo current tag: $tag
-majorTag=$(echo $tag | cut -d '.' -f 1-2 )
-minorTag=$(echo $tag | cut -d '.' -f 3)
-((minorTag+=1))
-
-newTag=$(echo $majorTag.$minorTag)
+newTag=$(date +%y.%m.%d)
 echo new tag: $newTag
 
 ./gradlew clean build
 
-docker buildx build --no-cache --platform=linux/arm64,linux/amd64 -t shiviraj/nexora-backend:latest --push .
-docker buildx build --no-cache --platform=linux/arm64,linux/amd64 -t shiviraj/nexora-backend:$newTag --push .
+docker build -t shiviraj/nexora-backend:latest -t shiviraj/nexora-backend:$newTag .
+docker push shiviraj/nexora-backend:latest
+docker push shiviraj/nexora-backend:$newTag
