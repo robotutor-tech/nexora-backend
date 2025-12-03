@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.widget.domain.entity
 import com.robotutor.nexora.modules.widget.application.command.CreateWidgetCommand
 import com.robotutor.nexora.modules.widget.domain.event.WidgetCreatedEvent
 import com.robotutor.nexora.modules.widget.domain.event.WidgetEvent
-import com.robotutor.nexora.shared.domain.event.DomainAggregate
+import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant
 
@@ -17,7 +17,7 @@ data class Widget(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
     val version: Long? = null
-) : DomainAggregate<WidgetEvent>() {
+) : AggregateRoot<Widget, WidgetId, WidgetEvent>(widgetId) {
     companion object {
         fun create(widgetId: WidgetId, createWidgetCommand: CreateWidgetCommand, actorData: ActorData): Widget {
             val widget = Widget(
@@ -28,7 +28,7 @@ data class Widget(
                 zoneId = createWidgetCommand.zoneId,
                 type = createWidgetCommand.widgetType
             )
-            widget.addDomainEvent(WidgetCreatedEvent(widgetId = widget.widgetId))
+            widget.addEvent(WidgetCreatedEvent(widgetId = widget.widgetId))
             return widget
         }
     }

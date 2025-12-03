@@ -5,9 +5,9 @@ import com.robotutor.nexora.annotation.IntegrationTest
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.TOKEN_COLLECTION
 import com.robotutor.nexora.modules.user.builder.TokenDocumentBuilder
 import com.robotutor.nexora.modules.user.builder.UserDocumentBuilder
-import com.robotutor.nexora.modules.user.domain.exception.NexoraError
-import com.robotutor.nexora.modules.user.infrastructure.persistence.document.USER_COLLECTION
-import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
+import com.robotutor.nexora.context.user.domain.exception.NexoraError
+import com.robotutor.nexora.context.user.infrastructure.persistence.document.USER_COLLECTION
+import com.robotutor.nexora.context.user.interfaces.dto.UserResponse
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
 import io.kotest.matchers.shouldBe
 import io.mockk.clearAllMocks

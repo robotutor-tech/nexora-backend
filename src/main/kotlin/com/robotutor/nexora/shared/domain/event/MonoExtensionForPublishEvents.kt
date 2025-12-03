@@ -1,30 +1,33 @@
 package com.robotutor.nexora.shared.domain.event
 
 import com.robotutor.nexora.common.security.createFlux
+import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.DomainEvent
 import reactor.core.publisher.Mono
 
-fun <D : DomainEvent, T : DomainAggregate<D>> Mono<T>.publishEvents(eventPublisher: EventPublisher<D>): Mono<T> {
+
+fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(eventPublisher: EventPublisher<D>): Mono<T> {
     return flatMap { domain ->
-        createFlux(domain.getDomainEvents())
+        createFlux(domain.domainEvents)
             .flatMap { event -> eventPublisher.publish(event) }
             .collectList()
             .map {
-                domain.clearDomainEvents()
+                domain.clearEvents()
                 domain
             }
     }
 }
 
-fun <D : DomainEvent, T : Any> Mono<T>.publishEvents(
+fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(
     eventPublisher: EventPublisher<D>,
-    domainAggregate: DomainAggregate<D>
+    aggregate: AggregateRoot<T, ID, D>
 ): Mono<T> {
     return flatMap { result ->
-        createFlux(domainAggregate.getDomainEvents())
+        createFlux(aggregate.domainEvents)
             .flatMap { event -> eventPublisher.publish(event) }
             .collectList()
             .map {
-                domainAggregate.clearDomainEvents()
+                aggregate.clearEvents()
                 result
             }
     }
@@ -36,13 +39,19 @@ fun <D : DomainEvent, T : D> Mono<T>.publishEvent(eventPublisher: EventPublisher
     }
 }
 
-fun <T : DomainEvent, R : Any> Mono<R>.publishEvent(eventPublisher: EventPublisher<T>, event: T): Mono<R> {
+fun <T : DomainEvent, R : Any> Mono<R>.publishEvent(
+    eventPublisher: EventPublisher<T>,
+    event: T
+): Mono<R> {
     return flatMap { result ->
         eventPublisher.publish(event).map { result }
     }
 }
 
-fun <D : DomainEvent, T : Any> Mono<T>.publishEvents(eventPublisher: EventPublisher<D>, events: List<D>): Mono<T> {
+fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(
+    eventPublisher: EventPublisher<D>,
+    events: List<D>
+): Mono<T> {
     return flatMap { result ->
         createFlux(events)
             .flatMap { event -> eventPublisher.publish(event) }

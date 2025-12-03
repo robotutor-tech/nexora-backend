@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.device.domain.entity
 
 import com.robotutor.nexora.modules.device.domain.event.DeviceCreatedEvent
 import com.robotutor.nexora.modules.device.domain.event.DeviceEvent
-import com.robotutor.nexora.shared.domain.event.DomainAggregate
+import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant
 
@@ -20,7 +20,7 @@ class Device(
     val createdBy: ActorId,
     val createdAt: Instant = Instant.now(),
     val version: Long? = null
-) : DomainAggregate<DeviceEvent>() {
+) : AggregateRoot<Device, DeviceId, DeviceEvent>(deviceId) {
 
     fun updateFeedIds(feedIds: FeedIds): Device {
         this.feedIds = feedIds
@@ -52,7 +52,7 @@ class Device(
                 type = type,
                 createdBy = createdBy
             )
-            device.addDomainEvent(DeviceCreatedEvent(device.deviceId, device.modelNo, zoneId))
+            device.addEvent(DeviceCreatedEvent(device.deviceId, device.modelNo, zoneId))
             return device
         }
     }

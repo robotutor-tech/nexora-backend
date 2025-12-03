@@ -1,5 +1,7 @@
 package com.robotutor.nexora.shared.domain.event
 
-interface EventMapper<T: DomainEvent> {
+import com.robotutor.nexora.shared.domain.DomainEvent
+
+interface EventMapper<T : DomainEvent> {
     fun toEventMessage(event: T): EventMessage
 }

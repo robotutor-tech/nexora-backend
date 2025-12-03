@@ -9,7 +9,6 @@ import com.robotutor.nexora.modules.automation.domain.entity.config.FeedControlC
 import com.robotutor.nexora.modules.automation.domain.entity.objects.ComparisonOperator
 import com.robotutor.nexora.modules.automation.domain.exception.NexoraError
 import com.robotutor.nexora.modules.automation.domain.repository.RuleRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
@@ -30,10 +29,10 @@ import java.time.Instant
 class RuleUseCaseTest {
     private val ruleRepository = mockk<RuleRepository>()
     private val idGeneratorService = mockk<IdGeneratorService>()
-    private val resourceCreatedEventPublisher = mockk<EventPublisher<ResourceCreatedEvent>>()
+    private val resourceCreatedEventPublisherDeprecated = mockk<EventPublisherDeprecated<ResourceCreatedEvent>>()
     private val configValidation = mockk<ConfigValidation>()
 
-    private val ruleUseCase = RuleUseCase(ruleRepository, idGeneratorService, resourceCreatedEventPublisher, configValidation)
+    private val ruleUseCase = RuleUseCase(ruleRepository, idGeneratorService, resourceCreatedEventPublisherDeprecated, configValidation)
 
     private val actorData = ActorData(
         actorId = ActorId("actor-1"),
@@ -66,7 +65,7 @@ class RuleUseCaseTest {
         every { ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, actorData.premisesId, config) } returns Mono.empty()
         every { idGeneratorService.generateId(any(), any<Class<RuleId>>()) } returns Mono.just(ruleId)
         every { ruleRepository.save(any()) } answers { Mono.just(firstArg()) }
-        every { resourceCreatedEventPublisher.publish(any()) } returns Mono.just(Unit)
+        every { resourceCreatedEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 
         val mono = ruleUseCase.createRule(command, actorData)
 
@@ -86,7 +85,7 @@ class RuleUseCaseTest {
             ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, actorData.premisesId, config)
             idGeneratorService.generateId(com.robotutor.nexora.modules.automation.domain.entity.IdType.RULE_ID, RuleId::class.java)
             ruleRepository.save(any())
-            resourceCreatedEventPublisher.publish(any())
+            resourceCreatedEventPublisherDeprecated.publish(any())
         }
     }
 
@@ -116,7 +115,7 @@ class RuleUseCaseTest {
         verify(exactly = 0) {
             idGeneratorService.generateId(any(), any<Class<RuleId>>())
             ruleRepository.save(any())
-            resourceCreatedEventPublisher.publish(any())
+            resourceCreatedEventPublisherDeprecated.publish(any())
         }
     }
 

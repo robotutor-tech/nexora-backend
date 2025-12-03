@@ -12,7 +12,6 @@ import com.robotutor.nexora.modules.premises.domain.entity.IdType
 import com.robotutor.nexora.modules.premises.domain.entity.Premises
 import com.robotutor.nexora.modules.premises.domain.event.PremisesEvent
 import com.robotutor.nexora.modules.premises.domain.repository.PremisesRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.testUtils.assertNextWith
@@ -32,14 +31,14 @@ class PremisesUseCaseTest {
     private val premisesRepository = mockk<PremisesRepository>()
     private val premisesResourceFacade = mockk<PremisesResourceFacade>()
     private val actorResourceFacade = mockk<ActorResourceFacade>()
-    private val eventPublisher = mockk<EventPublisher<PremisesEvent>>()
+    private val eventPublisherDeprecated = mockk<EventPublisherDeprecated<PremisesEvent>>()
 
     private val premisesUseCase = PremisesUseCase(
         idGeneratorService,
         premisesRepository,
         premisesResourceFacade,
         actorResourceFacade,
-        eventPublisher
+        eventPublisherDeprecated
     )
 
     @BeforeEach
@@ -74,7 +73,7 @@ class PremisesUseCaseTest {
         every { idGeneratorService.generateId(IdType.PREMISE_ID, PremisesId::class.java) } returns Mono.just(generatedPremisesId)
         every { premisesRepository.save(any()) } answers { Mono.just(firstArg()) }
         // No domain events yet in Premises.register, so eventPublisher.publish won't be invoked; mock anyway
-        every { eventPublisher.publish(any()) } returns Mono.just(Unit)
+        every { eventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
         every { premisesResourceFacade.register(RegisterPremisesResourceCommand(generatedPremisesId, owner)) } returns Mono.just(actorWithRoles)
 
         val mono = premisesUseCase.createPremises(cmd)

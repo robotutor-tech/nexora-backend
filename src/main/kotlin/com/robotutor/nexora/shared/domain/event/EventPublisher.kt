@@ -1,5 +1,6 @@
 package com.robotutor.nexora.shared.domain.event
 
+import com.robotutor.nexora.shared.domain.DomainEvent
 import reactor.core.publisher.Mono
 
 interface EventPublisher<T : DomainEvent> {

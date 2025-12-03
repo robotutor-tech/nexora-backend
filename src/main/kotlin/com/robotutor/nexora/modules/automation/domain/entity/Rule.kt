@@ -6,12 +6,12 @@ import com.robotutor.nexora.modules.automation.domain.entity.config.ConditionCon
 import com.robotutor.nexora.modules.automation.domain.entity.config.Config
 import com.robotutor.nexora.modules.automation.domain.entity.config.TriggerConfig
 import com.robotutor.nexora.modules.automation.domain.event.AutomationEvent
-import com.robotutor.nexora.shared.domain.event.DomainAggregate
+import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.SequenceId
-import com.robotutor.nexora.shared.domain.validation
+import com.robotutor.nexora.shared.domain.utility.validation
 import java.time.Instant
 
 data class Rule(
@@ -24,7 +24,7 @@ data class Rule(
     val createdOn: Instant = Instant.now(),
     val updatedOn: Instant = Instant.now(),
     val version: Long? = null,
-) : DomainAggregate<AutomationEvent>() {
+) : AggregateRoot<Rule, RuleId, AutomationEvent>(ruleId) {
     init {
         val isConfigValid = when (type) {
             RuleType.ACTION -> config is ActionConfig

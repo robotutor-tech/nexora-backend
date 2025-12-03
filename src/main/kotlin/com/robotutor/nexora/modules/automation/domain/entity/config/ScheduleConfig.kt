@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.automation.domain.entity.config
 
-import com.robotutor.nexora.shared.domain.validation
+import com.robotutor.nexora.shared.domain.utility.validation
 import java.time.DayOfWeek
 
 sealed class ScheduleSubConfig(val type: ScheduleSubConfigType)

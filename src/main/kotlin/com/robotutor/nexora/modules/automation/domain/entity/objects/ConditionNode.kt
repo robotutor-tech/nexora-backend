@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.automation.domain.entity.objects
 
 import com.robotutor.nexora.modules.automation.domain.entity.RuleId
-import com.robotutor.nexora.shared.domain.validation
+import com.robotutor.nexora.shared.domain.utility.validation
 
 sealed interface ConditionNode
 

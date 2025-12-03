@@ -7,7 +7,6 @@ import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
 import com.robotutor.nexora.modules.widget.domain.event.WidgetEvent
 import com.robotutor.nexora.modules.widget.domain.repository.WidgetRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
@@ -25,14 +24,14 @@ import java.time.Instant
 class WidgetUseCaseTest {
     private val widgetRepository = mockk<WidgetRepository>()
     private val idGeneratorService = mockk<IdGeneratorService>()
-    private val widgetEventPublisher = mockk<EventPublisher<WidgetEvent>>()
-    private val resourceEventPublisher = mockk<EventPublisher<ResourceCreatedEvent>>()
+    private val widgetEventPublisherDeprecated = mockk<EventPublisherDeprecated<WidgetEvent>>()
+    private val resourceEventPublisherDeprecated = mockk<EventPublisherDeprecated<ResourceCreatedEvent>>()
 
     private val widgetUseCase = WidgetUseCase(
         widgetRepository = widgetRepository,
         idGeneratorService = idGeneratorService,
-        widgetEventPublisher = widgetEventPublisher,
-        eventPublisher = resourceEventPublisher
+        widgetEventPublisherDeprecated = widgetEventPublisherDeprecated,
+        eventPublisherDeprecated = resourceEventPublisherDeprecated
     )
 
     @BeforeEach
@@ -67,8 +66,8 @@ class WidgetUseCaseTest {
 
         every { idGeneratorService.generateId(IdType.WIDGET_ID, WidgetId::class.java) } returns Mono.just(generatedWidgetId)
         every { widgetRepository.save(any()) } answers { Mono.just(firstArg()) }
-        every { resourceEventPublisher.publish(any()) } returns Mono.just(Unit)
-        every { widgetEventPublisher.publish(any()) } returns Mono.just(Unit)
+        every { resourceEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
+        every { widgetEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 
         val result = widgetUseCase.createWidget(command, actorData)
 
@@ -86,8 +85,8 @@ class WidgetUseCaseTest {
         verify(exactly = 1) {
             idGeneratorService.generateId(IdType.WIDGET_ID, WidgetId::class.java)
             widgetRepository.save(any())
-            resourceEventPublisher.publish(any())
-            widgetEventPublisher.publish(any())
+            resourceEventPublisherDeprecated.publish(any())
+            widgetEventPublisherDeprecated.publish(any())
         }
     }
 

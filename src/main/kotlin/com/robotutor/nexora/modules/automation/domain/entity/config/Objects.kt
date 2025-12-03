@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.automation.domain.entity.config
 
-import com.robotutor.nexora.shared.domain.validation
+import com.robotutor.nexora.shared.domain.utility.validation
 
 data class Time(val hour: Int, val minute: Int) {
     init {

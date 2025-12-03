@@ -54,13 +54,13 @@ class RegisterDeviceUseCase(
             .flatMap { device ->
                 actorFacade.registerDeviceActor(device)
                     .flatMap { actorData ->
-                        val resourceCreatedEvent = ResourceCreatedEvent(
-                            resourceType = ResourceType.DEVICE,
-                            resourceId = ResourceId(device.deviceId.value)
-                        )
+//                        val resourceCreatedEvent = ResourceCreatedEvent(
+//                            resourceType = ResourceType.DEVICE,
+//                            resourceId = ResourceId(device.deviceId.value)
+//                        )
                         authDeviceFacade.register(device, actorData)
-                            .publishEvents(eventPublisher, device)
-                            .publishEvent(resourceCreatedEventPublisher, resourceCreatedEvent)
+//                            .publishEvents(eventPublisher, device)
+//                            .publishEvent(resourceCreatedEventPublisher, resourceCreatedEvent)
                             .contextWrite {
                                 it.put(ActorData::class.java, actorData)
                                     .put(DeviceData::class.java, actorData.principal)

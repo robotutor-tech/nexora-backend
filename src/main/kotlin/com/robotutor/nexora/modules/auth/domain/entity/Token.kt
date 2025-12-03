@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.auth.domain.entity
 
 import com.robotutor.nexora.modules.auth.domain.event.AuthEvent
-import com.robotutor.nexora.shared.domain.event.DomainAggregate
+import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import java.time.Instant
 import java.util.*
@@ -15,7 +15,7 @@ data class Token(
     val issuedAt: Instant,
     var expiresAt: Instant,
     var otherTokenId: TokenId? = null,
-) : DomainAggregate<AuthEvent>() {
+) : AggregateRoot<Token, TokenId, AuthEvent>(tokenId) {
 
     fun updateOtherTokenId(tokenId: TokenId): Token {
         this.otherTokenId = tokenId

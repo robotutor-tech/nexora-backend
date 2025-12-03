@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.iam.domain.entity
 
-import com.robotutor.nexora.shared.domain.event.DomainAggregate
-import com.robotutor.nexora.shared.domain.event.DomainEvent
+import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.DomainEvent
 import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant
 
@@ -15,7 +15,7 @@ data class Actor(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
     val version: Long? = null
-) : DomainAggregate<DomainEvent>() {
+) : AggregateRoot<Actor, ActorId, DomainEvent>(actorId) {
     companion object {
         fun create(
             actorId: ActorId,

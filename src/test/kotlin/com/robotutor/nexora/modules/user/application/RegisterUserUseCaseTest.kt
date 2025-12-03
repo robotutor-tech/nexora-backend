@@ -9,7 +9,6 @@ import com.robotutor.nexora.modules.user.domain.entity.User
 import com.robotutor.nexora.modules.user.domain.event.UserEvent
 import com.robotutor.nexora.modules.user.domain.exception.NexoraError
 import com.robotutor.nexora.modules.user.domain.repository.UserRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
@@ -27,12 +26,12 @@ class RegisterUserUseCaseTest {
     private val userRepository = mockk<UserRepository>()
     private val idGeneratorService = mockk<IdGeneratorService>()
     private val registerAuthUser = mockk<RegisterAuthUser>()
-    private val eventPublisher = mockk<EventPublisher<UserEvent>>()
+    private val eventPublisherDeprecated = mockk<EventPublisherDeprecated<UserEvent>>()
     private val registerUserUseCase = RegisterUserUseCase(
         userRepository,
         idGeneratorService,
         registerAuthUser,
-        eventPublisher
+        eventPublisherDeprecated
     )
 
     @BeforeEach
@@ -63,7 +62,7 @@ class RegisterUserUseCaseTest {
         every { idGeneratorService.generateId(any(), any<Class<SequenceId>>()) } returns Mono.just(userId)
         every { userRepository.save(any()) } returns Mono.just(user)
         every { registerAuthUser.register(any()) } returns Mono.just(registerAuthUserCommand)
-        every { eventPublisher.publish(any()) } returns Mono.just(Unit)
+        every { eventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 
         val result = registerUserUseCase.register(command)
 
@@ -75,7 +74,7 @@ class RegisterUserUseCaseTest {
             userRepository.save(any())
             registerAuthUser.register(any())
             userRepository.findByEmail(email)
-            eventPublisher.publish(any())
+            eventPublisherDeprecated.publish(any())
         }
     }
 
@@ -104,7 +103,7 @@ class RegisterUserUseCaseTest {
         verify(exactly = 0) {
             userRepository.save(any())
             registerAuthUser.register(any())
-            eventPublisher.publish(any())
+            eventPublisherDeprecated.publish(any())
         }
     }
 

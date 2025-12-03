@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.domain.model
 
-import com.robotutor.nexora.shared.domain.validation
+import com.robotutor.nexora.shared.domain.utility.validation
 
 data class ModelNo(val value: String)
 data class SerialNo(val value: String)

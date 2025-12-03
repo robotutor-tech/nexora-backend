@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.iam.domain.entity
 
-import com.robotutor.nexora.shared.domain.event.DomainAggregate
-import com.robotutor.nexora.shared.domain.event.DomainEvent
+import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.DomainEvent
 import com.robotutor.nexora.shared.domain.model.ActionType
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.ResourceId
@@ -21,7 +21,7 @@ data class Entitlement(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
     val version: Long? = null,
-) : DomainAggregate<DomainEvent>() {
+) : AggregateRoot<Entitlement, EntitlementId, DomainEvent>(entitlementId) {
     companion object {
         fun create(
             entitlementId: EntitlementId,

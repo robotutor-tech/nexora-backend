@@ -1,5 +1,5 @@
 package com.robotutor.nexora.shared.infrastructure.persistence.document
 
-import com.robotutor.nexora.shared.domain.event.DomainModel
+import com.robotutor.nexora.shared.domain.Aggregate
 
-interface MongoDocument<D : DomainModel>
+interface MongoDocument<A : Aggregate>

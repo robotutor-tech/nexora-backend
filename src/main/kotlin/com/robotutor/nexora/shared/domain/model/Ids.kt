@@ -1,6 +1,7 @@
 package com.robotutor.nexora.shared.domain.model
 
-import com.robotutor.nexora.shared.domain.validation
+import com.robotutor.nexora.shared.domain.utility.validation
+
 
 interface SequenceId {
     val value: String

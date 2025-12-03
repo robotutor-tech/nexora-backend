@@ -1,10 +1,10 @@
 package com.robotutor.nexora.modules.premises.domain.entity
 
 import com.robotutor.nexora.modules.premises.domain.event.PremisesEvent
-import com.robotutor.nexora.shared.domain.event.DomainAggregate
+import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.UserId
-import com.robotutor.nexora.shared.domain.model.Name
 import java.time.Instant
 
 data class Premises(
@@ -14,7 +14,7 @@ data class Premises(
     val owner: UserId,
     val createdAt: Instant = Instant.now(),
     val version: Long? = null
-) : DomainAggregate<PremisesEvent>() {
+) : AggregateRoot<Premises, PremisesId, PremisesEvent>(premisesId) {
     companion object {
         fun register(premisesId: PremisesId, name: Name, address: Address, owner: UserId): Premises {
             //TODO: add domain event

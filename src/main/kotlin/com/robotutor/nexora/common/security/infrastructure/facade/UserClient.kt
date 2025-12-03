@@ -1,8 +1,8 @@
 package com.robotutor.nexora.common.security.infrastructure.facade
 
 import com.robotutor.nexora.common.security.application.ports.UserDataRetriever
+import com.robotutor.nexora.context.user.interfaces.UserController
 import com.robotutor.nexora.shared.domain.model.UserData
-import com.robotutor.nexora.modules.user.interfaces.controller.UserController
 import com.robotutor.nexora.shared.domain.model.Email
 import com.robotutor.nexora.shared.domain.model.Name
 import com.robotutor.nexora.shared.domain.model.UserId
