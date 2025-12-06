@@ -3,9 +3,9 @@ package com.robotutor.nexora.context.user.infrastructure.persistence.repository
 import com.robotutor.nexora.context.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
 import com.robotutor.nexora.context.user.domain.vo.Email
+import com.robotutor.nexora.context.user.domain.vo.UserId
 import com.robotutor.nexora.context.user.infrastructure.persistence.document.UserDocument
 import com.robotutor.nexora.context.user.infrastructure.persistence.mapper.UserDocumentMapper
-import com.robotutor.nexora.shared.domain.model.UserId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria

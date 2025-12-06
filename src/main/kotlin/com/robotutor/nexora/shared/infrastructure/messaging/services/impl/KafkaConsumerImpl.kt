@@ -3,8 +3,8 @@ package com.robotutor.nexora.shared.infrastructure.messaging.services.impl
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.UserData
-import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer
 import com.robotutor.nexora.shared.infrastructure.messaging.services.KafkaEventPublisher
+import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess

@@ -2,6 +2,7 @@ package com.robotutor.nexora.shared.interfaces.mapper
 
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.interfaces.dto.*
+import com.robotutor.nexora.context.user.domain.vo.UserId
 
 object PrincipalContextMapper {
     fun toPrincipalContextResponse(context: PrincipalContext): PrincipalContextResponse {

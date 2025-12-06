@@ -11,12 +11,12 @@ import com.robotutor.nexora.shared.domain.model.InternalData
 import com.robotutor.nexora.shared.domain.model.PrincipalData
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.common.security.domain.model.ValidateTokenResult
-import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.context.iam.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.model.DeviceData
 import com.robotutor.nexora.shared.domain.model.InternalContext
 import com.robotutor.nexora.shared.domain.model.InvitationData
-import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer.serialize
+import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.ReactiveContext.putPremisesId
@@ -36,9 +36,6 @@ import reactor.util.context.Context
 import java.time.Instant
 import java.util.UUID.randomUUID
 
-const val TRACE_ID = "x-trace-id"
-const val PREMISES_ID = "x-premises-id"
-const val START_TIME = "startTime"
 
 @Component
 @Order(2)
@@ -78,7 +75,7 @@ class AuthFilter(
     private fun authorize(exchange: ServerWebExchange): Mono<ValidateTokenResult> {
         val authHeader = exchange.request.headers.getFirst(AUTHORIZATION)
 
-        if (routeValidator.isUnsecured(exchange.request) || authHeader == appConfig.internalAccessToken) {
+        if (routeValidator.isUnsecured(exchange.request) || authHeader == "Bearer ${appConfig.internalAccessToken}") {
             return createMono(
                 ValidateTokenResult(
                     isValid = true,

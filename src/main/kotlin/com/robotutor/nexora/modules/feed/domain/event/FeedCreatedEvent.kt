@@ -12,4 +12,4 @@ data class FeedCreatedEvent(
     val type: FeedType,
     val widgetType: WidgetType,
     val zoneId: ZoneId
-) : FeedEvent("feed.created")
+) : FeedEvent

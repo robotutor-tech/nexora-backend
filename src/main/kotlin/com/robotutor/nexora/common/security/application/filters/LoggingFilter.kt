@@ -22,10 +22,10 @@ class LoggingFilter : WebFilter {
         val additionalDetails = mapOf("method" to exchange.request.method, "path" to exchange.request.uri.path)
 
         val traceId = getTraceIdFromExchange(exchange)
-        exchange.attributes.put(TRACE_ID, traceId)
-        exchange.attributes.put(START_TIME, startTime)
+        exchange.attributes[TRACE_ID] = traceId
+        exchange.attributes[START_TIME] = startTime
 
-        exchange.response.headers.add("x-trace-id", traceId)
+        exchange.response.headers.add(TRACE_ID, traceId)
         return chain.filter(exchange)
             .contextWrite { writeContextOnChain(it, exchange) }
             .doFinally {

@@ -6,4 +6,4 @@ import com.robotutor.nexora.shared.domain.model.ZoneId
 data class ZoneCreatedEvent(
     val zoneId: ZoneId,
     val name: Name
-) : ZoneEvent("zone.created")
+) : ZoneEvent

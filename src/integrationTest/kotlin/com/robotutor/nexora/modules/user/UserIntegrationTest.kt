@@ -7,7 +7,7 @@ import com.robotutor.nexora.modules.user.builder.TokenDocumentBuilder
 import com.robotutor.nexora.modules.user.builder.UserDocumentBuilder
 import com.robotutor.nexora.context.user.domain.exception.NexoraError
 import com.robotutor.nexora.context.user.infrastructure.persistence.document.USER_COLLECTION
-import com.robotutor.nexora.context.user.interfaces.dto.UserResponse
+import com.robotutor.nexora.context.user.interfaces.controller.view.UserResponse
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
 import io.kotest.matchers.shouldBe
 import io.mockk.clearAllMocks

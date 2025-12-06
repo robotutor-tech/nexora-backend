@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.logger
 
-import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer.serialize
+import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
 import org.slf4j.LoggerFactory
 
 class Logger(className: Class<out Any>) {

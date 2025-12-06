@@ -3,7 +3,7 @@ spring:
     name: NEXORA-BACKEND
   data:
     mongodb:
-      uri: ${MONGODB_URL:mongodb://username:password@localhost:27018/nexora}
+      uri: ${MONGODB_URL:mongodb://username:password@localhost:27018/nexora?authSource=admin}
       auto-index-creation: true
     redis:
       host: ${REDIS_HOST:localhost}
@@ -29,7 +29,12 @@ app:
     opa-base-url: ${OPA_BASE_URL:http://localhost:8181}
     internal-access-token: ${INTERNAL_ACCESS_TOKEN:internalAccessToken123}
     un-secured-path:
-      - "/users"
+      - "/orchestration/users/register"
       - "/auth/login"
       - "/auth/login/device"
       - "/auth/validate"
+  orchestration:
+    iam:
+      base-url: ${IAM_BASE_URL:http://localhost:${server.port}}
+    user:
+      base-url: ${USER_BASE_URL:http://localhost:${server.port}}

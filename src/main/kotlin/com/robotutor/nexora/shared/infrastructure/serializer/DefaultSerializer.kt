@@ -1,6 +1,4 @@
-package com.robotutor.nexora.shared.infrastructure.jackson
-
-import com.robotutor.nexora.shared.infrastructure.serializer.ObjectMapperCache
+package com.robotutor.nexora.shared.infrastructure.serializer
 
 object DefaultSerializer {
     fun serialize(obj: Any?): String {

@@ -1,20 +1,31 @@
 package com.robotutor.nexora.orchestration.client
 
-import com.robotutor.nexora.orchestration.client.view.IAMIdentityResponse
+import com.robotutor.nexora.orchestration.client.view.IAMAccountResponse
 import com.robotutor.nexora.orchestration.client.view.UserResponse
 import com.robotutor.nexora.orchestration.config.IamConfig
 import com.robotutor.nexora.shared.infrastructure.webclient.WebClientWrapper
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
 @Component
 class IAMClient(private val webClient: WebClientWrapper, private val iamConfig: IamConfig) {
-    fun registerIdentity(userResponse: UserResponse, password: String): Mono<IAMIdentityResponse> {
+    @Value("\${app.security.internal-access-token}")
+    lateinit var internalAccessToken: String
+
+    fun registerAccount(userResponse: UserResponse, password: String): Mono<IAMAccountResponse> {
+        val payload = mapOf(
+            "credentialId" to userResponse.email,
+            "secret" to password,
+            "kind" to "PASSWORD",
+            "type" to "HUMAN"
+        )
         return webClient.post(
             baseUrl = iamConfig.baseUrl,
             path = iamConfig.path,
-            body = mapOf("email" to userResponse.email, "userId" to userResponse.userId, "password" to password),
-            returnType = IAMIdentityResponse::class.java
+            body = payload,
+            returnType = IAMAccountResponse::class.java,
+            headers = mapOf("Authorization" to "Bearer $internalAccessToken")
         )
     }
 }

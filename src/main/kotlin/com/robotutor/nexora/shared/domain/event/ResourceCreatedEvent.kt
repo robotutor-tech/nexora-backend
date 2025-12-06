@@ -7,5 +7,5 @@ import com.robotutor.nexora.shared.domain.DomainEvent
 data class ResourceCreatedEvent(
     val resourceType: ResourceType,
     val resourceId: ResourceId,
-) : DomainEvent("shared.resource.created")
+) : DomainEvent
 

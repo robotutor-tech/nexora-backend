@@ -53,11 +53,11 @@ class WebClientWrapper(private val webClient: WebClient) {
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToMono(returnType)
-                    .retryWhen(
-                        Retry.backoff(3, Duration.ofSeconds(2))
-                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                    )
+//                    .retryWhen(
+//                        Retry.backoff(3, Duration.ofSeconds(2))
+//                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+//                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
+//                    )
                     .logOnSuccess(
                         logger = logger,
                         message = "GET request to Service successful",
@@ -109,11 +109,11 @@ class WebClientWrapper(private val webClient: WebClient) {
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToMono(returnType)
-                    .retryWhen(
-                        Retry.backoff(3, Duration.ofSeconds(2))
-                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                    )
+//                    .retryWhen(
+//                        Retry.backoff(3, Duration.ofSeconds(2))
+//                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+//                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
+//                    )
                     .logOnSuccess(
                         logger = logger,
                         message = "GET request to Service successful",
@@ -168,11 +168,11 @@ class WebClientWrapper(private val webClient: WebClient) {
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToMono(returnType)
-                    .retryWhen(
-                        Retry.backoff(3, Duration.ofSeconds(2))
-                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
-                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
-                    )
+//                    .retryWhen(
+//                        Retry.backoff(3, Duration.ofSeconds(2))
+//                            .filter { it is WebClientRequestException || it is WebClientResponseException && it.statusCode.is5xxServerError }
+//                            .onRetryExhaustedThrow { _, signal -> signal.failure() }
+//                    )
                     .logOnSuccess(
                         logger = logger,
                         message = "POST request to Service successful",

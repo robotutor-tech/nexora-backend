@@ -9,7 +9,7 @@ import com.robotutor.nexora.modules.feed.infrastructure.messaging.message.Device
 import com.robotutor.nexora.modules.feed.infrastructure.messaging.message.FeedCreatedMessage
 import com.robotutor.nexora.modules.feed.infrastructure.messaging.message.FeedValueUpdatedMessage
 import com.robotutor.nexora.shared.domain.event.EventMapper
-import com.robotutor.nexora.shared.domain.event.EventMessage
+import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
 
 object FeedEventMapper : EventMapper<FeedEvent> {
     override fun toEventMessage(event: FeedEvent): EventMessage {

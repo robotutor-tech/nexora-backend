@@ -1,11 +1,7 @@
 package com.robotutor.nexora.common.security.application.strategy.factory
 
-import com.robotutor.nexora.common.security.application.strategy.ActorDataRetrieverStrategy
-import com.robotutor.nexora.common.security.application.strategy.DataRetrieverStrategy
-import com.robotutor.nexora.common.security.application.strategy.InternalUserDataRetrieverStrategy
-import com.robotutor.nexora.common.security.application.strategy.InvitationDataRetrieverStrategy
-import com.robotutor.nexora.common.security.application.strategy.UserDataRetrieverStrategy
-import com.robotutor.nexora.modules.auth.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.common.security.application.strategy.*
+import com.robotutor.nexora.context.iam.domain.entity.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import com.robotutor.nexora.shared.domain.model.PrincipalData
 import org.springframework.stereotype.Service

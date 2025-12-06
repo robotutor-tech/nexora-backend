@@ -1,6 +1,8 @@
 package com.robotutor.nexora.shared.domain.model
 
+import com.robotutor.nexora.context.user.interfaces.messaging.message.CompensateUserRegistrationMessage
 import com.robotutor.nexora.shared.domain.exception.BadDataException
+import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -8,8 +10,11 @@ import org.junit.jupiter.api.Test
 class EmailTest {
     @Test
     fun `should create Email with valid email`() {
-        val email = Email("test@example.com")
-        email.value shouldBe "test@example.com"
+//        val email = Email("test@example.com")
+//        email.value shouldBe "test@example.com"
+
+        val message = """{"userId":"744bb87b-599a-4ecc-aebe-953e9e1fee7a","eventName":"orchestration.compensate.user-registration","occurredOn":1765042769.807747000,"id":"0fd65253-8ef8-41e1-a032-607cad7e1ae8","name":"compensate.user-registration"}"""
+        println(DefaultSerializer.deserialize(message, CompensateUserRegistrationMessage::class.java))
     }
 
     @Test

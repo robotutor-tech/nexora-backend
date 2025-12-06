@@ -1,6 +1,8 @@
 package com.robotutor.nexora.shared.domain.exception
 
-data class PolicyViolationException(
-    val errorCode: String,
-    override val message: String,
-) : BaseException(errorCode, message)
+import org.springframework.http.HttpStatus
+
+class PolicyViolationException(
+    serviceError: ServiceError,
+    details: Map<String, Any> = emptyMap()
+) : BaseException(serviceError, HttpStatus.UNPROCESSABLE_ENTITY, details)

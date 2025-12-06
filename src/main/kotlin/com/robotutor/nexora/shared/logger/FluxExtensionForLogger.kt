@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.logger
 
-import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer
+import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import com.robotutor.nexora.shared.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.shared.logger.ReactiveContext.getTraceId
 import com.robotutor.nexora.shared.logger.models.RequestDetails

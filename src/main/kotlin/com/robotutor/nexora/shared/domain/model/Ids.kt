@@ -28,6 +28,7 @@ data class PremisesId(override val value: String) : ResourceId(value)
 
 data class RoleId(override val value: String) : SequenceId
 
+@Deprecated("Use AccountId instead")
 data class UserId(override val value: String) : SequenceId
 
 data class ZoneId(override val value: String) : ResourceId(value)

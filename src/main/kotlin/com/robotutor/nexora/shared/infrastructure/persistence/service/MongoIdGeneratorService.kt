@@ -31,4 +31,17 @@ class MongoIdGeneratorService(private val mongoTemplate: ReactiveMongoTemplate) 
                 clazz.getDeclaredConstructor(String::class.java).newInstance(it)
             }
     }
+
+    override fun generateId(idType: IdSequenceType): Mono<String> {
+        return mongoTemplate.findAndModify(
+            Query.query(Criteria.where("idType").`is`(idType.name)),
+            Update().inc("sequence", 1),
+            FindAndModifyOptions.options().returnNew(true).upsert(true),
+            IdSequence::class.java,
+        )
+            .retryOptimisticLockingFailure()
+            .map { idSequence ->
+                idSequence.sequence.toString().padStart(idType.length, '0')
+            }
+    }
 }

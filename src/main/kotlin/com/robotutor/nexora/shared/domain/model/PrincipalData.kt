@@ -1,5 +1,6 @@
 package com.robotutor.nexora.shared.domain.model
 
+import com.robotutor.nexora.context.user.domain.vo.UserId
 import java.time.Instant
 
 sealed interface PrincipalData

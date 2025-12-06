@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.user.domain.repository
 
 import com.robotutor.nexora.context.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.context.user.domain.vo.Email
-import com.robotutor.nexora.shared.domain.model.UserId
+import com.robotutor.nexora.context.user.domain.vo.UserId
 import reactor.core.publisher.Mono
 
 interface UserRepository {

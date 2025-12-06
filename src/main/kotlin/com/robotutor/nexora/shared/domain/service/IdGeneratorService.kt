@@ -6,4 +6,5 @@ import reactor.core.publisher.Mono
 
 interface IdGeneratorService {
     fun <T : SequenceId> generateId(idType: IdSequenceType, clazz: Class<T>): Mono<T>
+    fun generateId(idType: IdSequenceType): Mono<String>
 }

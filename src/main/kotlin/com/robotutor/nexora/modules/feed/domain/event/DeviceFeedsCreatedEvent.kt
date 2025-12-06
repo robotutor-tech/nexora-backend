@@ -5,4 +5,4 @@ import com.robotutor.nexora.shared.domain.model.FeedId
 
 data class DeviceFeedsCreatedEvent(
     val deviceId: DeviceId, val feedIds: List<FeedId>
-) : FeedEvent("device.feeds-created")
+) : FeedEvent

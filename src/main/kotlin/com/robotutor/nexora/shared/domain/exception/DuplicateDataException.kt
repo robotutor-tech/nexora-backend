@@ -1,6 +1,8 @@
 package com.robotutor.nexora.shared.domain.exception
 
+import org.springframework.http.HttpStatus
+
 class DuplicateDataException(
     serviceError: ServiceError,
     details: Map<String, Any> = emptyMap()
-) : BaseException(serviceError, details)
+) : BaseException(serviceError, HttpStatus.CONFLICT, details)

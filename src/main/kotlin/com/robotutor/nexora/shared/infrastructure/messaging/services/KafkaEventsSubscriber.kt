@@ -2,13 +2,13 @@ package com.robotutor.nexora.shared.infrastructure.messaging.services
 
 import com.robotutor.nexora.common.security.createFlux
 import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.shared.infrastructure.jackson.DefaultSerializer
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaController
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEvent
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEventListener
 import com.robotutor.nexora.shared.infrastructure.messaging.services.impl.KafkaArgumentResolverConfigurer
 import com.robotutor.nexora.shared.infrastructure.messaging.services.impl.KafkaConfigurer
 import com.robotutor.nexora.shared.infrastructure.messaging.services.impl.KafkaConsumerImpl
+import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import jakarta.annotation.PostConstruct
 import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Service

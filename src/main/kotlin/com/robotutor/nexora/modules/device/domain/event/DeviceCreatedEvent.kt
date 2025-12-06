@@ -8,4 +8,4 @@ data class DeviceCreatedEvent(
     val deviceId: DeviceId,
     val modelNo: ModelNo,
     val zoneId: ZoneId
-) : DeviceEvent("device.created")
+) : DeviceEvent

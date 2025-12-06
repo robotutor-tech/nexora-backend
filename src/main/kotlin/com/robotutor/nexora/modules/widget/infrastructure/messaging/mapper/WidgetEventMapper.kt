@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.widget.domain.event.WidgetCreatedEvent
 import com.robotutor.nexora.modules.widget.domain.event.WidgetEvent
 import com.robotutor.nexora.modules.widget.infrastructure.messaging.message.WidgetCreatedEventMessage
 import com.robotutor.nexora.shared.domain.event.EventMapper
-import com.robotutor.nexora.shared.domain.event.EventMessage
+import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
 
 object WidgetEventMapper : EventMapper<WidgetEvent> {
     override fun toEventMessage(event: WidgetEvent): EventMessage {

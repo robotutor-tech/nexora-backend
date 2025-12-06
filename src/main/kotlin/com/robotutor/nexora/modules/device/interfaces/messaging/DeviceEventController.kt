@@ -9,10 +9,10 @@ import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEven
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEventListener
 import reactor.core.publisher.Mono
 
+@Suppress("UNUSED")
 @KafkaController
 class DeviceEventController(private val updateDeviceFeedsUseCase: UpdateDeviceFeedsUseCase) {
 
-    @Suppress("UNUSED")
     @KafkaEventListener(["feed.device.feeds-created"])
     fun deviceFeedsUpdate(@KafkaEvent eventMessage: DeviceFeedsCreatedMessage): Mono<Device> {
         return updateDeviceFeedsUseCase.updateFeeds(

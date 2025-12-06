@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.device.infrastructure.facade
 
-import com.robotutor.nexora.modules.auth.interfaces.controller.AuthController
-import com.robotutor.nexora.modules.auth.interfaces.controller.dto.AuthDeviceRegisterRequest
+import com.robotutor.nexora.context.iam.interfaces.controller.AccountController
+import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthDeviceRegisterRequest
 import com.robotutor.nexora.modules.device.application.facade.AuthDeviceFacade
 import com.robotutor.nexora.modules.device.application.facade.dto.AuthDevice
 import com.robotutor.nexora.modules.device.domain.entity.Device
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class AuthDeviceApiFacade(private val authController: AuthController) : AuthDeviceFacade {
+class AuthDeviceApiFacade(private val authController: AccountController) : AuthDeviceFacade {
     override fun register(device: Device, actorData: ActorData): Mono<AuthDevice> {
         val request = AuthDeviceRegisterRequest(
             deviceId = device.deviceId.value,
@@ -20,8 +20,9 @@ class AuthDeviceApiFacade(private val authController: AuthController) : AuthDevi
         )
         return ContextDataResolver.getInvitationData()
             .flatMap { invitationData ->
-                authController.registerDevice(request = request, invitationData = invitationData)
+//                authController.register(request = request, invitationData = invitationData)
+                Mono.empty()
             }
-            .map { AuthDevice(deviceId = it.deviceId, deviceSecret = it.deviceSecret) }
+//            .map { AuthDevice(deviceId = it.deviceId, deviceSecret = it.deviceSecret) }
     }
 }
