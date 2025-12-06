@@ -1,14 +1,15 @@
 package com.robotutor.nexora.context.iam.domain.repository
 
-import com.robotutor.nexora.context.iam.domain.entity.Token
-import com.robotutor.nexora.context.iam.domain.entity.TokenId
+import com.robotutor.nexora.context.iam.domain.aggregate.TokenAggregate
+import com.robotutor.nexora.context.iam.domain.vo.TokenId
+import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.Instant
 
 interface TokenRepository {
-    fun save(token: Token): Mono<Token>
-    fun findByTokenId(tokenId: TokenId): Mono<Token>
-    fun findAllByTokenIdIn(tokenIds: List<TokenId>): Flux<Token>
-    fun findByValueAndExpiredAtAfter(tokenValue: String, expiresAt: Instant): Mono<Token>
+    fun save(tokenAggregate: TokenAggregate): Mono<TokenAggregate>
+    fun findByTokenId(tokenId: TokenId): Mono<TokenAggregate>
+    fun findAllByTokenIdIn(tokenIds: List<TokenId>): Flux<TokenAggregate>
+    fun findByValueAndExpiredAtAfter(tokenValue: TokenValue, expiresAt: Instant): Mono<TokenAggregate>
 }

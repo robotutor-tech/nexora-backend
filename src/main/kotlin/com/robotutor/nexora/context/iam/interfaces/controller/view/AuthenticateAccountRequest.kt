@@ -1,14 +1,14 @@
 package com.robotutor.nexora.context.iam.interfaces.controller.view
 
-import jakarta.validation.constraints.Email
+import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
 import jakarta.validation.constraints.NotBlank
 
-
-data class AuthLoginRequest(
-    @field:Email(message = "Email should be valid")
-    val email: String,
-    @field:NotBlank(message = "Password is required")
-    val password: String
+data class AuthenticateAccountRequest(
+    @field:NotBlank(message = "CredentialId should not be blank")
+    val credentialId: String,
+    @field:NotBlank(message = "Credential secret should not be blank")
+    val secret: String,
+    val kind: CredentialKind
 )
 
 data class ActorLoginRequest(

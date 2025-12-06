@@ -2,6 +2,7 @@ package com.robotutor.nexora.context.iam.domain.entity
 
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.event.InvitationAcceptedEvent
+import com.robotutor.nexora.context.iam.domain.vo.TokenId
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
 import java.time.Instant

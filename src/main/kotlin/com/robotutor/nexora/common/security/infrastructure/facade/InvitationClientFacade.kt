@@ -9,15 +9,16 @@ import reactor.core.publisher.Mono
 @Service("SecurityInvitationClientFacade")
 class InvitationClientFacade(private val invitationController: InvitationController) : InvitationDataRetriever {
     override fun getInvitationData(invitationId: InvitationId): Mono<InvitationData> {
-        return invitationController.getInvitation(invitationId.value)
-            .map {
-                InvitationData(
-                    invitationId = InvitationId(it.invitationId),
-                    premisesId = PremisesId(it.premisesId),
-                    name = Name(it.name),
-                    zoneId = ZoneId(it.zoneId),
-                    invitedBy = ActorId(it.invitedBy)
-                )
-            }
+        return Mono.empty()
+//        return invitationController.getInvitation(invitationId.value)
+//            .map {
+//                InvitationData(
+//                    invitationId = InvitationId(it.invitationId),
+//                    premisesId = PremisesId(it.premisesId),
+//                    name = Name(it.name),
+//                    zoneId = ZoneId(it.zoneId),
+//                    invitedBy = ActorId(it.invitedBy)
+//                )
+//            }
     }
 }

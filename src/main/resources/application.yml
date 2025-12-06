@@ -30,8 +30,8 @@ app:
     internal-access-token: ${INTERNAL_ACCESS_TOKEN:internalAccessToken123}
     un-secured-path:
       - "/orchestration/users/register"
-      - "/auth/login"
-      - "/auth/login/device"
+      - "/iam/accounts/authenticate"
+      - "/iam/tokens/validate"
       - "/auth/validate"
   orchestration:
     iam:

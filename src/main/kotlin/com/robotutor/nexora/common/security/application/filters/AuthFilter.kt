@@ -11,7 +11,7 @@ import com.robotutor.nexora.shared.domain.model.InternalData
 import com.robotutor.nexora.shared.domain.model.PrincipalData
 import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.common.security.domain.model.ValidateTokenResult
-import com.robotutor.nexora.context.iam.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.context.iam.domain.aggregate.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.model.DeviceData
 import com.robotutor.nexora.shared.domain.model.InternalContext
@@ -79,14 +79,16 @@ class AuthFilter(
             return createMono(
                 ValidateTokenResult(
                     isValid = true,
-                    principalType = TokenPrincipalType.INTERNAL,
+                    principalType = TokenPrincipalType.ACCOUNT,
                     principal = InternalContext(""),
                     expiresIn = 300,
                 )
             )
         }
 
-        if (authHeader.isNullOrBlank()) return createMonoError(UnAuthorizedException(NexoraError.NEXORA0101))
+        if (authHeader.isNullOrBlank() || !authHeader.startsWith("Bearer ")) {
+            return createMonoError(UnAuthorizedException(NexoraError.NEXORA0101))
+        }
 
         return tokenValidator.validate(authHeader)
     }

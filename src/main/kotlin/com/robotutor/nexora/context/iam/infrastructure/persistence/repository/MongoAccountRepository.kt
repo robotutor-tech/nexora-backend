@@ -2,6 +2,8 @@ package com.robotutor.nexora.context.iam.infrastructure.persistence.repository
 
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
+import com.robotutor.nexora.context.iam.domain.vo.CredentialId
+import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.AccountDocument
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.AccountDocumentMapper
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
@@ -21,5 +23,15 @@ class MongoAccountRepository(
     override fun save(accountAggregate: AccountAggregate): Mono<AccountAggregate> {
         val query = Query(Criteria.where("accountId").`is`(accountAggregate.accountId.value))
         return this.findAndReplace(query, accountAggregate)
+    }
+
+    override fun findByCredentialIdAndKind(credentialId: CredentialId, kind: CredentialKind): Mono<AccountAggregate> {
+        val query = Query(
+            Criteria.where("credentials").elemMatch(
+                Criteria.where("credentialId").`is`(credentialId.value)
+                    .and("kind").`is`(kind.name)
+            )
+        )
+        return this.findOne(query)
     }
 }

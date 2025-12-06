@@ -1,9 +1,13 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
+import com.robotutor.nexora.context.iam.application.usecase.AuthenticateAccountUseCase
 import com.robotutor.nexora.context.iam.application.usecase.RegisterAccountUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AccountMapper
+import com.robotutor.nexora.context.iam.interfaces.controller.mapper.TokenMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
+import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
+import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -12,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/iam/accounts")
 class AccountController(
-    private val registerAccountUseCase: RegisterAccountUseCase
+    private val registerAccountUseCase: RegisterAccountUseCase,
+    private val authenticateAccountUseCase: AuthenticateAccountUseCase
 ) {
 
     @PostMapping("/register")
@@ -24,12 +29,12 @@ class AccountController(
             .map { AccountMapper.toAccountResponse(it) }
     }
 
-//    @PostMapping("/login")
-//    fun login(@RequestBody @Validated authLoginRequest: AuthLoginRequest): Mono<TokenResponsesDto> {
-//        val loginCommand = AccountMapper.toLoginCommand(authLoginRequest)
-//        return authUserUseCase.login(loginCommand)
-//            .map { TokenMapper.toTokenResponsesDto(it) }
-//    }
+    @PostMapping("/authenticate")
+    fun authenticate(@RequestBody @Validated authenticateAccountRequest: AuthenticateAccountRequest): Mono<TokenResponses> {
+        val command = AccountMapper.toAuthenticateAccountCommand(authenticateAccountRequest)
+        return authenticateAccountUseCase.execute(command)
+            .map { TokenMapper.toTokenResponses(it) }
+    }
 //
 //    @PostMapping("/login/actor")
 //    fun actorLogin(
@@ -51,15 +56,7 @@ class AccountController(
 //            .map { TokenMapper.toTokenResponsesDto(it) }
 //    }
 //
-//    @GetMapping("/validate")
-//    fun validate(@RequestHeader("authorization") token: String = ""): Mono<TokenValidationResultDto> {
-//        if (!token.startsWith("Bearer ")) {
-//            return createMonoError(UnAuthorizedException(NexoraError.NEXORA0206))
-//        }
-//        val validateTokenCommand = TokenMapper.toValidateTokenCommand(token)
-//        return validateTokenUseCase.validate(validateTokenCommand)
-//            .map { TokenMapper.toValidateTokenResultDto(it) }
-//    }
+
 //
 //    @GetMapping("/refresh")
 //    fun refresh(@RequestHeader("authorization") token: String = ""): Mono<TokenResponsesDto> {

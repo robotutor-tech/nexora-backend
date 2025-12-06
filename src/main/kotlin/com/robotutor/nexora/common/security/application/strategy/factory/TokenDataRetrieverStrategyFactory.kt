@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.application.strategy.factory
 
 import com.robotutor.nexora.common.security.application.strategy.*
-import com.robotutor.nexora.context.iam.domain.entity.TokenPrincipalType
+import com.robotutor.nexora.context.iam.domain.aggregate.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.model.PrincipalContext
 import com.robotutor.nexora.shared.domain.model.PrincipalData
 import org.springframework.stereotype.Service
@@ -16,10 +16,10 @@ class TokenDataRetrieverStrategyFactory(
     fun getStrategy(tokenPrincipalType: TokenPrincipalType): DataRetrieverStrategy<PrincipalContext, PrincipalData> {
         @Suppress("UNCHECKED_CAST")
         return when (tokenPrincipalType) {
-            TokenPrincipalType.USER -> userDataRetrieverStrategy
-            TokenPrincipalType.INTERNAL -> internalUserDataRetrieverStrategy
+            TokenPrincipalType.ACCOUNT -> internalUserDataRetrieverStrategy
+//            TokenPrincipalType.INTERNAL -> internalUserDataRetrieverStrategy
             TokenPrincipalType.ACTOR -> actorDataRetrieverStrategy
-            TokenPrincipalType.INVITATION -> invitationDataRetrieverStrategy
+//            TokenPrincipalType.INVITATION -> invitationDataRetrieverStrategy
         } as DataRetrieverStrategy<PrincipalContext, PrincipalData>
     }
 }

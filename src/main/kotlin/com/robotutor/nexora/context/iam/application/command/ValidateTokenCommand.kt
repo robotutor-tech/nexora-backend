@@ -1,3 +1,5 @@
 package com.robotutor.nexora.context.iam.application.command
 
-data class ValidateTokenCommand(val token: String)
+import com.robotutor.nexora.context.iam.domain.vo.TokenValue
+
+data class ValidateTokenCommand(val tokenValue: TokenValue)
