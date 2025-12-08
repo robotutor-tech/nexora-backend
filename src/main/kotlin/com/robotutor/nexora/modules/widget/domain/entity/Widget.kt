@@ -5,6 +5,7 @@ import com.robotutor.nexora.modules.widget.domain.event.WidgetCreatedEvent
 import com.robotutor.nexora.modules.widget.domain.event.WidgetEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
 data class Widget(

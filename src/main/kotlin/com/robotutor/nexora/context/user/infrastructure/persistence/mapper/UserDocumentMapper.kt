@@ -5,7 +5,7 @@ import com.robotutor.nexora.context.user.domain.vo.Email
 import com.robotutor.nexora.context.user.domain.vo.Mobile
 import com.robotutor.nexora.context.user.domain.vo.UserId
 import com.robotutor.nexora.context.user.infrastructure.persistence.document.UserDocument
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 

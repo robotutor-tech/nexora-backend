@@ -8,7 +8,7 @@ import com.robotutor.nexora.modules.automation.domain.entity.config.TriggerConfi
 import com.robotutor.nexora.modules.automation.domain.event.AutomationEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.ActorData
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.SequenceId
 import com.robotutor.nexora.shared.domain.utility.validation

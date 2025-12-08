@@ -33,8 +33,11 @@ app:
       - "/iam/accounts/authenticate"
       - "/iam/tokens/validate"
       - "/auth/validate"
+    iam-base-url: ${app.orchestration.iam.base-url}
   orchestration:
     iam:
       base-url: ${IAM_BASE_URL:http://localhost:${server.port}}
     user:
       base-url: ${USER_BASE_URL:http://localhost:${server.port}}
+    premises:
+      base-url: ${PREMISES_BASE_URL:http://localhost:${server.port}}

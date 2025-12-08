@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleResponse
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.config.ConfigMapper
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 
 object RuleMapper {
     fun toCreateRuleCommand(request: RuleRequest): CreateRuleCommand {

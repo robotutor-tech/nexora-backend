@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.widget.domain.entity.Widget
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
 import com.robotutor.nexora.modules.widget.infrastructure.persistence.document.WidgetDocument
 import com.robotutor.nexora.shared.domain.model.FeedId
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.ZoneId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper

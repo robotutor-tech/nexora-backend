@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.automation.domain.entity
 
 import com.robotutor.nexora.modules.automation.domain.entity.objects.ConditionNode
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.SequenceId
 import java.time.Instant

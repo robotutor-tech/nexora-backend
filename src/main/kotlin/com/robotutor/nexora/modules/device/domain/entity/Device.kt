@@ -4,6 +4,7 @@ import com.robotutor.nexora.modules.device.domain.event.DeviceCreatedEvent
 import com.robotutor.nexora.modules.device.domain.event.DeviceEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
 class Device(

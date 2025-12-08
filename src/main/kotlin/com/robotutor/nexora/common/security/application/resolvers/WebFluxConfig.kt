@@ -6,13 +6,13 @@ import org.springframework.web.reactive.result.method.annotation.ArgumentResolve
 
 @Component
 class WebFluxConfig(
-    private val userDataResolver: UserDataResolver,
+    private val accountDataResolver: AccountDataResolver,
     private val actorDataResolver: ActorDataResolver,
     private val invitationDataResolver: InvitationDataResolver,
     private val deviceDataResolver: DeviceDataResolver,
 ) : WebFluxConfigurer {
     override fun configureArgumentResolvers(configurer: ArgumentResolverConfigurer) {
-        configurer.addCustomResolver(userDataResolver)
+        configurer.addCustomResolver(accountDataResolver)
         configurer.addCustomResolver(actorDataResolver)
         configurer.addCustomResolver(invitationDataResolver)
         configurer.addCustomResolver(deviceDataResolver)

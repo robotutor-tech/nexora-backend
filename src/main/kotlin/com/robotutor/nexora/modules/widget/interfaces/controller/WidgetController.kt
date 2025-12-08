@@ -27,7 +27,7 @@ class WidgetController(private val widgetUseCase: WidgetUseCase) {
 //        return widgetService.createWidget(widgetRequest, premisesActorData).map { WidgetView.from(it) }
 //    }
 //
-    @RequireAccess(ActionType.LIST, ResourceType.WIDGET)
+    @RequireAccess(ActionType.READ, ResourceType.WIDGET)
     @GetMapping
     fun getWidgets(actorData: ActorData, resourcesData: ResourcesData): Flux<WidgetResponse> {
         val widgetIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.WIDGET).map { WidgetId(it) }

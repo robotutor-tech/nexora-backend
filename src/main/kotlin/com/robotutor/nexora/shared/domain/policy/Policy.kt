@@ -5,5 +5,4 @@ import reactor.core.publisher.Mono
 
 interface Policy<T : Command> {
     fun evaluate(command: T): Mono<PolicyResult>
-    fun getName(): String
 }

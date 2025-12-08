@@ -5,6 +5,7 @@ import com.robotutor.nexora.context.iam.domain.event.InvitationAcceptedEvent
 import com.robotutor.nexora.context.iam.domain.vo.TokenId
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
 data class Invitation(

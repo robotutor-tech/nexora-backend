@@ -18,9 +18,9 @@ class UserUseCase(
 ) {
     val logger = Logger(this::class.java)
 
-    fun getUser(getUserCommand: GetUserQuery): Mono<UserAggregate> {
-        return userRepository.findByUserId(getUserCommand.userId)
-            .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0202)))
+    fun execute(query: GetUserQuery): Mono<UserAggregate> {
+        return userRepository.findByAccountId(query.accountId)
+            .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0205)))
             .logOnSuccess(logger, "Successfully retrieved user")
             .logOnError(logger, "", "Failed to retrieve user")
     }

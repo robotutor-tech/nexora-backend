@@ -2,6 +2,7 @@ package com.robotutor.nexora.shared.application.service
 
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
+import com.robotutor.nexora.common.security.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError
 import com.robotutor.nexora.shared.domain.model.ActorData
@@ -28,6 +29,17 @@ object ContextDataResolver {
             val userData = context.getOrEmpty<UserData>(UserData::class.java)
             if (userData.isPresent) {
                 createMono(userData.get())
+            } else {
+                createMonoError(DataNotFoundException(SharedNexoraError.NEXORA0102))
+            }
+        }
+    }
+
+    fun getAccountData(): Mono<AccountData> {
+        return Mono.deferContextual { context ->
+            val accountDataOptional = context.getOrEmpty<AccountData>(AccountData::class.java)
+            if (accountDataOptional.isPresent) {
+                createMono(accountDataOptional.get())
             } else {
                 createMonoError(DataNotFoundException(SharedNexoraError.NEXORA0102))
             }

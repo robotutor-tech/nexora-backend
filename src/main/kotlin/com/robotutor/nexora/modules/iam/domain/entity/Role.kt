@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.iam.domain.entity
 
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.DomainEvent
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.model.RoleId
 import com.robotutor.nexora.shared.domain.model.RoleType

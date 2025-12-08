@@ -1,21 +1,19 @@
 package com.robotutor.nexora.common.security.application.filters
 
 import com.robotutor.nexora.common.security.application.ports.TokenValidator
+import com.robotutor.nexora.common.security.domain.vo.TokenValidationResult
 import com.robotutor.nexora.common.security.application.strategy.factory.TokenDataRetrieverStrategyFactory
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.shared.domain.model.ActorData
-import com.robotutor.nexora.shared.domain.model.InternalData
-import com.robotutor.nexora.shared.domain.model.PrincipalData
-import com.robotutor.nexora.shared.domain.model.UserData
-import com.robotutor.nexora.common.security.domain.model.ValidateTokenResult
+import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.common.security.domain.vo.ActorData
+import com.robotutor.nexora.common.security.domain.vo.InternalData
+import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
+import com.robotutor.nexora.common.security.domain.vo.PrincipalData
 import com.robotutor.nexora.context.iam.domain.aggregate.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.domain.model.DeviceData
-import com.robotutor.nexora.shared.domain.model.InternalContext
-import com.robotutor.nexora.shared.domain.model.InvitationData
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.shared.logger.Logger
@@ -44,7 +42,6 @@ class AuthFilter(
     private val appConfig: AppConfig,
     private val exceptionHandlerRegistry: ExceptionHandlerRegistry,
     private val tokenValidator: TokenValidator,
-    private val tokenDataRetrieverStrategyFactory: TokenDataRetrieverStrategyFactory
 ) : WebFilter {
     val logger = Logger(this::class.java)
 
@@ -52,14 +49,13 @@ class AuthFilter(
         return authorize(exchange)
             .contextWrite { writeContextOnChain(it, exchange) }
             .flatMap { tokenResult ->
-                tokenDataRetrieverStrategyFactory.getStrategy(tokenResult.principalType)
-                    .getPrincipalData(tokenResult.principal)
-            }
-            .flatMap { principalData ->
                 val authenticationToken = UsernamePasswordAuthenticationToken("auth", null, listOf())
                 val content = SecurityContextImpl(authenticationToken)
                 chain.filter(exchange)
-                    .contextWrite { writeContextOnChain(setContextForResolvers(principalData, it, exchange), exchange) }
+                    .contextWrite {
+                        val principalData = tokenResult.principal.toPrincipalData()
+                        writeContextOnChain(setContextForResolvers(principalData, it, exchange), exchange)
+                    }
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
             }
             .onErrorResume {
@@ -72,15 +68,15 @@ class AuthFilter(
     }
 
 
-    private fun authorize(exchange: ServerWebExchange): Mono<ValidateTokenResult> {
+    private fun authorize(exchange: ServerWebExchange): Mono<TokenValidationResult> {
         val authHeader = exchange.request.headers.getFirst(AUTHORIZATION)
 
         if (routeValidator.isUnsecured(exchange.request) || authHeader == "Bearer ${appConfig.internalAccessToken}") {
             return createMono(
-                ValidateTokenResult(
+                TokenValidationResult(
                     isValid = true,
                     principalType = TokenPrincipalType.ACCOUNT,
-                    principal = InternalContext(""),
+                    principal = InternalPrincipalContext(appConfig.internalAccessToken),
                     expiresIn = 300,
                 )
             )
@@ -99,17 +95,11 @@ class AuthFilter(
         exchange: ServerWebExchange
     ): Context {
         return when (principalData) {
-            is UserData -> context.put(UserData::class.java, principalData)
+            is AccountData -> context.put(AccountData::class.java, principalData)
+            is ActorData -> context.put(ActorData::class.java, principalData)
             is InternalData -> context.put(InternalData::class.java, principalData)
-            is InvitationData -> context.put(InvitationData::class.java, principalData)
-            is DeviceData -> context.put(DeviceData::class.java, principalData)
-            is ActorData -> setContextForResolvers(
-                principalData.principal,
-                context.put(ActorData::class.java, principalData),
-                exchange
-            )
         }
-            .put(PrincipalData::class.java, principalData)
+            .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
     }
 }
 

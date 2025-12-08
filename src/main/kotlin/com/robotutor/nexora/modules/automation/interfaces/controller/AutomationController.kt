@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/automations")
 class AutomationController(private val automationUseCase: AutomationUseCase) {
 
-    @RequireAccess(ActionType.CREATE, ResourceType.AUTOMATION)
+    @RequireAccess(ActionType.WRITE, ResourceType.AUTOMATION)
     @PostMapping
     fun createAutomationRule(
         @RequestBody @Validated request: AutomationRequest,
@@ -34,10 +34,10 @@ class AutomationController(private val automationUseCase: AutomationUseCase) {
             .map { AutomationMapper.toAutomationResponse(it) }
     }
 
-    @RequireAccess(ActionType.LIST, ResourceType.AUTOMATION)
+    @RequireAccess(ActionType.READ, ResourceType.AUTOMATION)
     @GetMapping
     fun getAutomationRules(actorData: ActorData, data: ResourcesData): Flux<AutomationResponse> {
-        val automationIds = data.getResourceIds(ActionType.LIST, ResourceType.AUTOMATION)
+        val automationIds = data.getResourceIds(ActionType.READ, ResourceType.AUTOMATION)
             .map { AutomationId(it) }
         return automationUseCase.getAutomationRules(automationIds, actorData)
             .map { AutomationMapper.toAutomationResponse(it) }

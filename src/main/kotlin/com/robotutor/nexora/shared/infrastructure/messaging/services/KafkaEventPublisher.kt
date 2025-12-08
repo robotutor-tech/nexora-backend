@@ -1,8 +1,8 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.services
 
+import com.robotutor.nexora.common.security.domain.vo.AccountData
 import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
 import com.robotutor.nexora.shared.domain.model.ActorData
-import com.robotutor.nexora.shared.domain.model.UserData
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.ReactiveContext.getTraceId
@@ -39,7 +39,7 @@ class KafkaEventPublisher(
         val traceId = getTraceId(ctx)
         val exchangeDTO = ctx.get(ServerWebExchangeDTO::class.java)
         val actorData = ctx.getOrEmpty<ActorData>(ActorData::class.java)
-        val userData = ctx.getOrEmpty<UserData>(UserData::class.java)
+        val accountData = ctx.getOrEmpty<AccountData>(AccountData::class.java)
 
         val headers = mutableListOf<RecordHeader>()
         headers.add(RecordHeader("exchange", DefaultSerializer.serialize(exchangeDTO).toByteArray()))
@@ -49,9 +49,9 @@ class KafkaEventPublisher(
                 RecordHeader("actorData", DefaultSerializer.serialize(actorData.get()).toByteArray())
             )
         }
-        if (userData.isPresent) {
+        if (accountData.isPresent) {
             headers.add(
-                RecordHeader("userData", DefaultSerializer.serialize(userData.get()).toByteArray())
+                RecordHeader("accountData", DefaultSerializer.serialize(accountData.get()).toByteArray())
             )
         }
         return headers

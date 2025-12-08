@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/rules")
 class RuleController(private val ruleUseCase: RuleUseCase) {
 
-    @RequireAccess(ActionType.CREATE, ResourceType.AUTOMATION_RULE)
+    @RequireAccess(ActionType.WRITE, ResourceType.AUTOMATION_RULE)
     @PostMapping
     fun createTrigger(@RequestBody @Validated request: RuleRequest, actorData: ActorData): Mono<RuleResponse> {
         val command = RuleMapper.toCreateRuleCommand(request)
@@ -32,10 +32,10 @@ class RuleController(private val ruleUseCase: RuleUseCase) {
             .map { RuleMapper.toRuleResponse(it) }
     }
 
-    @RequireAccess(ActionType.LIST, ResourceType.AUTOMATION_RULE)
+    @RequireAccess(ActionType.READ, ResourceType.AUTOMATION_RULE)
     @GetMapping
     fun getRules(actorData: ActorData, resourcesData: ResourcesData): Flux<RuleResponse> {
-        val ruleIds = resourcesData.getResourceIds(ActionType.LIST, ResourceType.AUTOMATION_RULE)
+        val ruleIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.AUTOMATION_RULE)
             .map { RuleId(it) }
         return ruleUseCase.getRules(ruleIds, actorData)
             .map { RuleMapper.toRuleResponse(it) }

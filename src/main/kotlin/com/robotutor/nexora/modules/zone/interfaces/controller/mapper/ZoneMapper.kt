@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.zone.application.command.CreateZoneCommand
 import com.robotutor.nexora.modules.zone.domain.entity.Zone
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneRequest
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneResponse
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 
 object ZoneMapper {
     fun toCreateZoneCommand(request: ZoneRequest): CreateZoneCommand {

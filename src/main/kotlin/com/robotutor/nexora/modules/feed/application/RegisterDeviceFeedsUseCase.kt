@@ -1,20 +1,13 @@
 package com.robotutor.nexora.modules.feed.application
 
 import com.robotutor.nexora.common.security.createFlux
-import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.modules.feed.application.command.CreateDeviceFeedsCommand
-import com.robotutor.nexora.modules.feed.domain.entity.Feed
-import com.robotutor.nexora.modules.feed.domain.entity.FeedType
 import com.robotutor.nexora.modules.feed.domain.event.DeviceFeedsCreatedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
 import com.robotutor.nexora.modules.seed.SeedData.getCreateFeedCommands
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.model.ActorData
-import com.robotutor.nexora.shared.domain.model.FeedId
-import com.robotutor.nexora.shared.domain.model.Name
-import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess

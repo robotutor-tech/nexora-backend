@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.user.domain.vo.Email
 import com.robotutor.nexora.context.user.domain.vo.Mobile
 import com.robotutor.nexora.context.user.interfaces.controller.view.UserRequest
 import com.robotutor.nexora.context.user.interfaces.controller.view.UserResponse
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 
 object UserMapper {
     fun toRegisterUserCommand(userRequest: UserRequest): RegisterUserCommand {

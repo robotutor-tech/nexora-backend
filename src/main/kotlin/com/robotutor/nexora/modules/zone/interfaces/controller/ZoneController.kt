@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/zones")
 class ZoneController(private val zoneUseCase: ZoneUseCase) {
 
-    @RequireAccess(ActionType.CREATE, ResourceType.ZONE)
+    @RequireAccess(ActionType.WRITE, ResourceType.ZONE)
     @PostMapping
     fun createZone(@RequestBody @Validated request: ZoneRequest, actorData: ActorData): Mono<ZoneResponse> {
         val createZoneCommand = ZoneMapper.toCreateZoneCommand(request)
@@ -27,7 +27,7 @@ class ZoneController(private val zoneUseCase: ZoneUseCase) {
             .map { ZoneMapper.toZoneResponse(it) }
     }
 
-    @RequireAccess(ActionType.LIST, ResourceType.ZONE)
+    @RequireAccess(ActionType.READ, ResourceType.ZONE)
     @GetMapping
     fun getAllZones(actorData: ActorData, resourcesData: ResourcesData): Flux<ZoneResponse> {
         val zoneIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.ZONE).map { ZoneId(it) }

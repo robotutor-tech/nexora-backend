@@ -18,8 +18,4 @@ class RegisterUserPolicy(private val userRepository: UserRepository) : Policy<Re
             }
             .switchIfEmpty(createMono(PolicyResult.allow()))
     }
-
-    override fun getName(): String {
-        return "UserRegistrationPolicy"
-    }
 }

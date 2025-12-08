@@ -1,25 +1,29 @@
 package com.robotutor.nexora.common.security.application.strategy.factory
 
-import com.robotutor.nexora.common.security.application.strategy.*
-import com.robotutor.nexora.context.iam.domain.aggregate.TokenPrincipalType
-import com.robotutor.nexora.shared.domain.model.PrincipalContext
-import com.robotutor.nexora.shared.domain.model.PrincipalData
+import com.robotutor.nexora.common.security.application.strategy.AccountDataRetrieverStrategy
+import com.robotutor.nexora.common.security.application.strategy.ActorDataRetrieverStrategy
+import com.robotutor.nexora.common.security.application.strategy.DataRetrieverStrategy
+import com.robotutor.nexora.common.security.application.strategy.InternalDataRetrieverStrategy
+import com.robotutor.nexora.common.security.domain.vo.AccountPrincipalContext
+import com.robotutor.nexora.common.security.domain.vo.ActorPrincipalContext
+import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
+import com.robotutor.nexora.common.security.domain.vo.PrincipalContext
+import com.robotutor.nexora.common.security.domain.vo.PrincipalData
 import org.springframework.stereotype.Service
 
 @Service
 class TokenDataRetrieverStrategyFactory(
-    private val userDataRetrieverStrategy: UserDataRetrieverStrategy,
-    private val internalUserDataRetrieverStrategy: InternalUserDataRetrieverStrategy,
+    private val accountDataRetrieverStrategy: AccountDataRetrieverStrategy,
+    private val internalDataRetrieverStrategy: InternalDataRetrieverStrategy,
     private val actorDataRetrieverStrategy: ActorDataRetrieverStrategy,
-    private val invitationDataRetrieverStrategy: InvitationDataRetrieverStrategy,
+//    private val invitationDataRetrieverStrategy: InvitationDataRetrieverStrategy,
 ) {
-    fun getStrategy(tokenPrincipalType: TokenPrincipalType): DataRetrieverStrategy<PrincipalContext, PrincipalData> {
+    fun getStrategy(principalContext: PrincipalContext): DataRetrieverStrategy<PrincipalContext, PrincipalData> {
         @Suppress("UNCHECKED_CAST")
-        return when (tokenPrincipalType) {
-            TokenPrincipalType.ACCOUNT -> internalUserDataRetrieverStrategy
-//            TokenPrincipalType.INTERNAL -> internalUserDataRetrieverStrategy
-            TokenPrincipalType.ACTOR -> actorDataRetrieverStrategy
-//            TokenPrincipalType.INVITATION -> invitationDataRetrieverStrategy
+        return when (principalContext) {
+            is AccountPrincipalContext -> accountDataRetrieverStrategy
+            is ActorPrincipalContext -> actorDataRetrieverStrategy
+            is InternalPrincipalContext -> internalDataRetrieverStrategy
         } as DataRetrieverStrategy<PrincipalContext, PrincipalData>
     }
 }

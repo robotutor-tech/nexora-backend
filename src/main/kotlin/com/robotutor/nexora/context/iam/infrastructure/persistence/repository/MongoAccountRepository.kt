@@ -6,6 +6,7 @@ import com.robotutor.nexora.context.iam.domain.vo.CredentialId
 import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.AccountDocument
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.AccountDocumentMapper
+import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -32,6 +33,11 @@ class MongoAccountRepository(
                     .and("kind").`is`(kind.name)
             )
         )
+        return this.findOne(query)
+    }
+
+    override fun findByAccountId(accountId: AccountId): Mono<AccountAggregate> {
+        val query = Query(Criteria.where("accountId").`is`(accountId.value))
         return this.findOne(query)
     }
 }

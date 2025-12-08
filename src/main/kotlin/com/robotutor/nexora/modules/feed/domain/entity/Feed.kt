@@ -6,6 +6,7 @@ import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedValueUpdatedEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
 data class Feed(

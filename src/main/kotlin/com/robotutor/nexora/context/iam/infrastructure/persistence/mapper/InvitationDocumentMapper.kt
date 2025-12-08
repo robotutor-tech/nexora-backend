@@ -4,6 +4,7 @@ import com.robotutor.nexora.context.iam.domain.entity.Invitation
 import com.robotutor.nexora.context.iam.domain.vo.TokenId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.InvitationDocument
 import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument> {

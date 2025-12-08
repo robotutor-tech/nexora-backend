@@ -3,7 +3,7 @@
 //import com.robotutor.nexora.modules.user.domain.entity.User
 //import com.robotutor.nexora.shared.domain.model.Email
 //import com.robotutor.nexora.shared.domain.model.Mobile
-//import com.robotutor.nexora.shared.domain.model.Name
+//import com.robotutor.nexora.shared.domain.vo.Name
 //import com.robotutor.nexora.shared.domain.model.UserId
 //import java.time.Instant
 //

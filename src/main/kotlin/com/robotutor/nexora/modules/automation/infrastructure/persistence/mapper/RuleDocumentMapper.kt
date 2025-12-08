@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.RuleDocument
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.config.ConfigDocumentMapper
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 

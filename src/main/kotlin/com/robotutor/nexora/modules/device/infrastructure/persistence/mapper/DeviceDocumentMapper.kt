@@ -4,6 +4,7 @@ import com.robotutor.nexora.modules.device.domain.entity.Device
 import com.robotutor.nexora.modules.device.domain.entity.FeedIds
 import com.robotutor.nexora.modules.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object DeviceDocumentMapper : DocumentMapper<Device, DeviceDocument> {

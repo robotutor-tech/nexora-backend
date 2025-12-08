@@ -25,7 +25,13 @@ object AccountMapper {
     }
 
     fun toAccountResponse(account: AccountAggregate): AccountResponse {
-        return AccountResponse(accountId = account.accountId.value)
+        return AccountResponse(
+            accountId = account.accountId.value,
+            type = account.type,
+            status = account.status,
+            createdAt = account.createdAt,
+            updatedAt = account.updatedAt
+        )
     }
 
     fun toAuthenticateAccountCommand(authenticateAccountRequest: AuthenticateAccountRequest): AuthenticateAccountCommand {

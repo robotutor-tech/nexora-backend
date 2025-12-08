@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.device.interfaces.controller
 
 import com.robotutor.nexora.modules.device.application.DeviceUseCase
 import com.robotutor.nexora.modules.device.application.RegisterDeviceUseCase
-import com.robotutor.nexora.modules.device.application.facade.dto.AuthDevice
+import com.robotutor.nexora.modules.device.domain.entity.Device
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceRequest
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceResponse
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.HealthRequest
@@ -24,12 +24,12 @@ class DeviceController(
     fun registerDevice(
         @RequestBody @Validated deviceRequest: DeviceRequest,
         invitationData: InvitationData
-    ): Mono<AuthDevice> {
+    ): Mono<Device> {
         val createDeviceCommand = DeviceMapper.toCreateDeviceCommand(deviceRequest)
         return registerDeviceUseCase.register(createDeviceCommand, invitationData)
     }
 
-    @RequireAccess(ActionType.LIST, ResourceType.DEVICE)
+    @RequireAccess(ActionType.READ, ResourceType.DEVICE)
     @GetMapping
     fun getDevices(actorData: ActorData, resourcesData: ResourcesData): Flux<DeviceResponse> {
         val deviceIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.DEVICE).map { DeviceId(it) }

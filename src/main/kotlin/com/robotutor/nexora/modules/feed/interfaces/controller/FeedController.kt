@@ -29,7 +29,7 @@ class FeedController(private val feedUseCase: FeedUseCase) {
 //        return feedService.createFeed(feedRequest, premisesActorData).map { FeedView.from(it) }
 //    }
 
-    @RequireAccess(ActionType.LIST, ResourceType.FEED)
+    @RequireAccess(ActionType.READ, ResourceType.FEED)
     @GetMapping
     fun getFeeds(actorData: ActorData, resourcesData: ResourcesData): Flux<FeedResponse> {
         val feedIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.FEED).map { FeedId(it) }

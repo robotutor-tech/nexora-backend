@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.device.interfaces.controller.DeviceControlle
 import com.robotutor.nexora.shared.application.service.ContextDataResolver
 import com.robotutor.nexora.shared.domain.model.DeviceData
 import com.robotutor.nexora.shared.domain.model.DeviceId
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.model.PremisesId
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

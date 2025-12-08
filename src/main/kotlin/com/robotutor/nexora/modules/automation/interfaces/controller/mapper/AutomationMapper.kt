@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.automation.application.command.CreateAutomat
 import com.robotutor.nexora.modules.automation.domain.entity.*
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationResponse
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 
 object AutomationMapper {
     fun toCreateAutomationCommand(request: AutomationRequest): CreateAutomationCommand {

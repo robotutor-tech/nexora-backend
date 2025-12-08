@@ -4,9 +4,7 @@ import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
 import com.robotutor.nexora.context.iam.domain.aggregate.TokenAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.TokenPrincipalType
 import com.robotutor.nexora.context.iam.domain.aggregate.TokenType
-import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import com.robotutor.nexora.shared.infrastructure.persistence.document.PrincipalDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias

@@ -10,7 +10,7 @@ import com.robotutor.nexora.context.user.domain.vo.Mobile
 import com.robotutor.nexora.context.user.domain.vo.UserId
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.InvalidStateException
-import com.robotutor.nexora.shared.domain.model.Name
+import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
 data class UserAggregate(

@@ -1,5 +1,7 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
+import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
+import com.robotutor.nexora.context.iam.application.usecase.GetAccountUseCase
 import com.robotutor.nexora.context.iam.application.usecase.AuthenticateAccountUseCase
 import com.robotutor.nexora.context.iam.application.usecase.RegisterAccountUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
@@ -8,7 +10,10 @@ import com.robotutor.nexora.context.iam.interfaces.controller.mapper.TokenMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
+import com.robotutor.nexora.shared.domain.vo.AccountId
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,7 +24,8 @@ import reactor.core.publisher.Mono
 @RequestMapping("/iam/accounts")
 class AccountController(
     private val registerAccountUseCase: RegisterAccountUseCase,
-    private val authenticateAccountUseCase: AuthenticateAccountUseCase
+    private val authenticateAccountUseCase: AuthenticateAccountUseCase,
+    private val getAccountUseCase: GetAccountUseCase
 ) {
 
     @PostMapping("/register")
@@ -34,6 +40,12 @@ class AccountController(
         val command = AccountMapper.toAuthenticateAccountCommand(authenticateAccountRequest)
         return authenticateAccountUseCase.execute(command)
             .map { TokenMapper.toTokenResponses(it) }
+    }
+
+    @GetMapping("/{accountId}")
+    fun getAccount(@PathVariable accountId: String): Mono<AccountResponse> {
+        val query = GetAccountQuery(AccountId(accountId))
+        return getAccountUseCase.execute(query).map { AccountMapper.toAccountResponse(it) }
     }
 //
 //    @PostMapping("/login/actor")
