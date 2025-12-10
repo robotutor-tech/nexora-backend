@@ -65,7 +65,7 @@ class RuleUseCase(
                     .publishEvent(resourceCreatedEventPublisher, event)
             }
             .logOnSuccess(logger, "Successfully created new Rule")
-            .logOnError(logger, "", "Failed to create new Rule")
+            .logOnError(logger, "Failed to create new Rule")
     }
 
     fun getRules(triggersIds: List<RuleId>, actorData: ActorData): Flux<Rule> {

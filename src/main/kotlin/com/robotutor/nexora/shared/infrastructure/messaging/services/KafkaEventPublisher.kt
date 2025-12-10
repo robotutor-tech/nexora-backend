@@ -32,7 +32,7 @@ class KafkaEventPublisher(
             reactiveKafkaProducerTemplate.send(producerRecord)
         }
             .logOnSuccess(logger, "Successfully published kafka topic to ${message.eventName}")
-            .logOnError(logger, "", "Failed to publish kafka topic to ${message.eventName}")
+            .logOnError(logger,  "Failed to publish kafka topic to ${message.eventName}")
     }
 
     private fun createHeadersRecord(ctx: ContextView): MutableList<RecordHeader> {

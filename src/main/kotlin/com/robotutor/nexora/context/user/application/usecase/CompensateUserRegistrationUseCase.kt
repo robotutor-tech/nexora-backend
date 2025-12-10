@@ -24,6 +24,6 @@ class CompensateUserRegistrationUseCase(
         return userRepository.deleteByUserId(command.userId)
             .publishEvent(eventPublisher, UserRegistrationCompensatedEvent(command.userId))
             .logOnSuccess(logger, "Successfully compensate user registration", mapOf("userId" to command.userId))
-            .logOnError(logger, "", "Failed to compensate user registration", mapOf("userId" to command.userId))
+            .logOnError(logger, "Failed to compensate user registration", mapOf("userId" to command.userId))
     }
 }

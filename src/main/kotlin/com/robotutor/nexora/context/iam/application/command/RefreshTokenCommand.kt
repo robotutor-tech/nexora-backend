@@ -1,3 +1,5 @@
 package com.robotutor.nexora.context.iam.application.command
 
-data class RefreshTokenCommand(val token: String)
+import com.robotutor.nexora.context.iam.domain.vo.TokenValue
+
+data class RefreshTokensCommand(val token: TokenValue)

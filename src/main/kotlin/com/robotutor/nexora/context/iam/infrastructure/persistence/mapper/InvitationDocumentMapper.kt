@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.iam.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.context.iam.domain.entity.Invitation
-import com.robotutor.nexora.context.iam.domain.vo.TokenId
+import com.robotutor.nexora.context.iam.domain.vo.SessionId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.InvitationDocument
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.vo.Name
@@ -18,7 +18,7 @@ object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument>
             invitedBy = domain.invitedBy.value,
             createdAt = domain.createdAt,
             status = domain.status,
-            tokenId = domain.tokenId.value,
+            tokenId = domain.sessionId.value,
             version = domain.version
         )
     }
@@ -33,7 +33,7 @@ object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument>
             createdAt = document.createdAt,
             status = document.status,
             version = document.version,
-            tokenId = TokenId(document.tokenId)
+            sessionId = SessionId(document.tokenId)
         )
     }
 }

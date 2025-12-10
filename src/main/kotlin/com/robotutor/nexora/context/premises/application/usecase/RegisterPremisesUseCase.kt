@@ -40,6 +40,6 @@ class RegisterPremisesUseCase(
             .flatMap { premisesAggregate -> premisesRepository.save(premisesAggregate).map { premisesAggregate } }
             .publishEvents(eventPublisher)
             .logOnSuccess(logger = logger, message = "Successfully registered premises")
-            .logOnError(logger, "", "Failed to register premises")
+            .logOnError(logger, "Failed to register premises")
     }
 }

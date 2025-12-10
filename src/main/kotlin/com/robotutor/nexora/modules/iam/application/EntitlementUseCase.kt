@@ -37,7 +37,7 @@ class EntitlementUseCase(
             }
             .flatMap { entitlement -> entitlementRepository.save(entitlement).map { entitlement } }
             .logOnSuccess(logger, "Successfully created new Entitlement")
-            .logOnError(logger, "", "Failed to create new Entitlement")
+            .logOnError(logger,  "Failed to create new Entitlement")
     }
 
     fun getEntitlements(resourceType: ResourceType, action: ActionType, actorData: ActorData): Flux<Entitlement> {

@@ -21,7 +21,7 @@ class UserUseCase(
     fun execute(query: GetUserQuery): Mono<UserAggregate> {
         return userRepository.findByAccountId(query.accountId)
             .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0205)))
-            .logOnSuccess(logger, "Successfully retrieved user")
-            .logOnError(logger, "", "Failed to retrieve user")
+            .logOnSuccess(logger, "Successfully retrieved user", mapOf("accountId" to query.accountId))
+            .logOnError(logger, "Failed to retrieve user", mapOf("accountId" to query.accountId))
     }
 }

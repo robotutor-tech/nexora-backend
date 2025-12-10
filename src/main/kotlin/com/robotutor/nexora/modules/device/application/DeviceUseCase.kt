@@ -39,7 +39,7 @@ class DeviceUseCase(
             .flatMap { device -> deviceRepository.save(device).map { device } }
 //            .publishEvents()
             .logOnSuccess(logger, "Successfully updated feedIds for deviceId")
-            .logOnError(logger, "", "Failed to add audit message")
+            .logOnError(logger, "Failed to add audit message")
     }
 
     fun updateDeviceHealth(health: DeviceHealth, deviceData: DeviceData): Mono<Device> {
@@ -48,7 +48,7 @@ class DeviceUseCase(
             .flatMap { device -> deviceRepository.save(device).map { device } }
             //            .publishEvents()
             .logOnSuccess(logger, "Successfully updated health for deviceId ${deviceData.deviceId}")
-            .logOnError(logger, "", "Failed to update health for deviceId ${deviceData.deviceId}")
+            .logOnError(logger, "Failed to update health for deviceId ${deviceData.deviceId}")
     }
 
     private fun getDevice(deviceId: DeviceId, premisesId: PremisesId): Mono<Device> {

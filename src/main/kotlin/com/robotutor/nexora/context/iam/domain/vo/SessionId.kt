@@ -4,14 +4,14 @@ import com.robotutor.nexora.shared.domain.utility.validation
 import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.util.UUID
 
-data class TokenId(val value: String) : ValueObject() {
+data class SessionId(val value: String) : ValueObject() {
     init {
         validate()
     }
 
     companion object {
-        fun generate(): TokenId {
-            return TokenId(UUID.randomUUID().toString())
+        fun generate(): SessionId {
+            return SessionId(UUID.randomUUID().toString())
         }
     }
 

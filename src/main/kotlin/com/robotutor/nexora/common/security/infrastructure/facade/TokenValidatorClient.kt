@@ -28,7 +28,6 @@ class TokenValidatorClient(private val webClient: WebClientWrapper, private val 
             .map {
                 TokenValidationResult(
                     isValid = it.isValid,
-                    principalType = it.principalType,
                     expiresIn = it.expiresIn,
                     principal = when (it.principal) {
                         is AccountTokenPrincipalContextResponse -> AccountPrincipalContext(

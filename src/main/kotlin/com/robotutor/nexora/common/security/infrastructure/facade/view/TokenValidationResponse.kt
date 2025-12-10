@@ -3,11 +3,9 @@ package com.robotutor.nexora.common.security.infrastructure.facade.view
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
-import com.robotutor.nexora.context.iam.domain.aggregate.TokenPrincipalType
 
 data class TokenValidationResponse(
     val isValid: Boolean,
-    val principalType: TokenPrincipalType,
     val principal: TokenPrincipalContextResponse,
     val expiresIn: Number,
 )

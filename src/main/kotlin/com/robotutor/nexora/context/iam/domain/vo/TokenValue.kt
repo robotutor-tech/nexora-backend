@@ -13,7 +13,7 @@ data class TokenValue(val value: String) : ValueObject() {
     companion object {
         fun generate(length: Int = 120): TokenValue {
             val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9') + "_-".split("")
-            val token = List(length) { chars.random() }.joinToString("").substring(0)
+            val token = List(length) { chars.random() }.joinToString("")
             val fullToken = token + Instant.now().epochSecond.toString()
             return TokenValue(fullToken.substring(fullToken.length - length))
         }

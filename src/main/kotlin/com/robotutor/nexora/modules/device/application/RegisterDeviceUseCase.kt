@@ -59,6 +59,6 @@ class RegisterDeviceUseCase(
 //                    }
 //            }
             .logOnSuccess(logger, "Successfully registered new Device")
-            .logOnError(logger, "", "Failed to register new Device")
+            .logOnError(logger, "Failed to register new Device")
     }
 }

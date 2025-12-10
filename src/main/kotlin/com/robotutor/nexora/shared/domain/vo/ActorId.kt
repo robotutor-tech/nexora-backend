@@ -15,4 +15,8 @@ data class ActorId(val value: String) : ValueObject() {
     companion object {
         fun generate() = ActorId(value = UUID.randomUUID().toString())
     }
+
+    override fun toString(): String {
+        return value
+    }
 }

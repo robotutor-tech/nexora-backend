@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.iam.domain.entity
 
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.event.InvitationAcceptedEvent
-import com.robotutor.nexora.context.iam.domain.vo.TokenId
+import com.robotutor.nexora.context.iam.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.vo.Name
@@ -14,7 +14,7 @@ data class Invitation(
     val name: Name,
     val zoneId: ZoneId,
     val invitedBy: ActorId,
-    val tokenId: TokenId,
+    val sessionId: SessionId,
     val createdAt: Instant = Instant.now(),
     var status: InvitationStatus = InvitationStatus.INVITED,
     val version: Long? = null
@@ -32,7 +32,7 @@ data class Invitation(
             name: Name,
             zoneId: ZoneId,
             invitedBy: ActorId,
-            tokenId: TokenId
+            sessionId: SessionId
         ): Invitation {
             return Invitation(
                 invitationId = invitationId,
@@ -40,7 +40,7 @@ data class Invitation(
                 name = name,
                 zoneId = zoneId,
                 invitedBy = invitedBy,
-                tokenId = tokenId,
+                sessionId = sessionId,
             )
         }
     }

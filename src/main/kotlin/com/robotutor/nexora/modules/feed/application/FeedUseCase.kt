@@ -47,7 +47,7 @@ class FeedUseCase(
             }
             .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully created new Feed")
-            .logOnError(logger, "", "Failed to create new Feed")
+            .logOnError(logger,  "Failed to create new Feed")
     }
 
     fun getFeedByFeedId(feedId: FeedId, actorData: ActorData): Mono<Feed> {

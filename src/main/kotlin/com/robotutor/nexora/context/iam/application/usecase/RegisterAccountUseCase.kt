@@ -5,7 +5,7 @@ import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.repository.AccountIdGenerator
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
-import com.robotutor.nexora.context.iam.domain.service.SecretService
+import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
 import com.robotutor.nexora.context.iam.domain.vo.Credential
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvents
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 class RegisterAccountUseCase(
     private val accountIdGenerator: AccountIdGenerator,
     private val accountRepository: AccountRepository,
-    private val secretService: SecretService,
+    private val secretService: SecretEncoder,
     private val eventPublisher: EventPublisher<IAMEvent>
 ) {
     private val logger = Logger(this::class.java)
@@ -42,6 +42,6 @@ class RegisterAccountUseCase(
             .flatMap { accountAggregate -> accountRepository.save(accountAggregate).map { accountAggregate } }
             .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully registered account")
-            .logOnError(logger, "", "Failed to register account")
+            .logOnError(logger, "Failed to register account")
     }
 }

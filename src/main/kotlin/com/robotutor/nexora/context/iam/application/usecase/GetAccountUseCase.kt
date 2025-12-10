@@ -21,7 +21,7 @@ class GetAccountUseCase(
     fun execute(query: GetAccountQuery): Mono<AccountAggregate> {
         return accountRepository.findByAccountId(query.accountId)
             .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0203)))
-            .logOnSuccess(logger, "Successfully retrieved account with accountId: ${query.accountId}")
-            .logOnError(logger, "", "Failed to retrieve account with accountId: ${query.accountId}")
+            .logOnSuccess(logger, "Successfully retrieved account", mapOf("accountId" to query.accountId))
+            .logOnError(logger, "Failed to retrieve account", mapOf("accountId" to query.accountId))
     }
 }

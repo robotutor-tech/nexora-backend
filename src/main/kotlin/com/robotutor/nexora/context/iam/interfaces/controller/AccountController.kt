@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.iam.application.usecase.AuthenticateAccountU
 import com.robotutor.nexora.context.iam.application.usecase.RegisterAccountUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AccountMapper
-import com.robotutor.nexora.context.iam.interfaces.controller.mapper.TokenMapper
+import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
@@ -39,7 +39,7 @@ class AccountController(
     fun authenticate(@RequestBody @Validated authenticateAccountRequest: AuthenticateAccountRequest): Mono<TokenResponses> {
         val command = AccountMapper.toAuthenticateAccountCommand(authenticateAccountRequest)
         return authenticateAccountUseCase.execute(command)
-            .map { TokenMapper.toTokenResponses(it) }
+            .map { SessionMapper.toTokenResponses(it) }
     }
 
     @GetMapping("/{accountId}")

@@ -47,7 +47,7 @@ class ZoneUseCase(
             }
             .publishEvents(zoneEventPublisher)
             .logOnSuccess(logger, "Successfully created zone")
-            .logOnError(logger, "", "Failed to create zone")
+            .logOnError(logger,  "Failed to create zone")
     }
 
     fun getAllZones(actorData: ActorData, zoneIds: List<ZoneId>): Flux<Zone> {

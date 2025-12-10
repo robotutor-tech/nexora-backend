@@ -13,10 +13,10 @@ import java.time.Instant
 
 fun <T> Mono<T>.logOnError(
     logger: Logger,
-    errorCode: String? = null,
     errorMessage: String,
     additionalDetails: Map<String, Any?> = emptyMap(),
     searchableFields: Map<String, Any?> = emptyMap(),
+    errorCode: String? = null,
     skipAdditionalDetails: Boolean = false,
 ): Mono<T> {
     return doOnEach { signal ->

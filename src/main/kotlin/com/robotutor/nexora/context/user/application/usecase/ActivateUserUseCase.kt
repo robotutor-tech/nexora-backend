@@ -24,7 +24,7 @@ class ActivateUserUseCase(
             .map { user -> user.activate(command.accountId) }
             .flatMap { user -> userRepository.save(user).map { user } }
             .publishEvents(eventPublisher)
-            .logOnSuccess(logger, "Successfully activated user")
-            .logOnError(logger, "", "Failed to activate user")
+            .logOnSuccess(logger, "Successfully activated user", mapOf("accountId" to command.accountId))
+            .logOnError(logger, "Failed to activate user", mapOf("accountId" to command.accountId))
     }
 }

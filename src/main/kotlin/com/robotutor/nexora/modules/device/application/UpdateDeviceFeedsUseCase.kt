@@ -20,7 +20,7 @@ class UpdateDeviceFeedsUseCase(private val deviceRepository: DeviceRepository) {
             .map { device -> device.updateFeedIds(feedIds) }
             .flatMap { device -> deviceRepository.save(device).map { device } }
             .logOnSuccess(logger, "Successfully updated feedIds for deviceId", mapOf("deviceId" to deviceId))
-            .logOnError(logger, "", "Failed to add audit message", mapOf("deviceId" to deviceId))
+            .logOnError(logger,  "Failed to add audit message", mapOf("deviceId" to deviceId))
     }
 
 }

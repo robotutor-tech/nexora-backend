@@ -5,6 +5,7 @@ import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.ActorDocument
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.ActorDocumentMapper
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -26,5 +27,16 @@ class MongoActorRepository(
     override fun findAllByAccountId(accountId: AccountId): Flux<ActorAggregate> {
         val query = Query(Criteria.where("accountId").`is`(accountId.value))
         return this.findAll(query)
+    }
+
+    override fun findByAccountIdAndPremisesId(
+        accountId: AccountId,
+        premisesId: PremisesId
+    ): Mono<ActorAggregate> {
+        val query = Query(
+            Criteria.where("accountId").`is`(accountId.value)
+                .and("premisesId").`is`(premisesId.value)
+        )
+        return this.findOne(query)
     }
 }

@@ -2,7 +2,6 @@ package com.robotutor.nexora.common.security.application.filters
 
 import com.robotutor.nexora.common.security.application.ports.TokenValidator
 import com.robotutor.nexora.common.security.domain.vo.TokenValidationResult
-import com.robotutor.nexora.common.security.application.strategy.factory.TokenDataRetrieverStrategyFactory
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
@@ -12,7 +11,6 @@ import com.robotutor.nexora.common.security.domain.vo.ActorData
 import com.robotutor.nexora.common.security.domain.vo.InternalData
 import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
 import com.robotutor.nexora.common.security.domain.vo.PrincipalData
-import com.robotutor.nexora.context.iam.domain.aggregate.TokenPrincipalType
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
@@ -75,7 +73,6 @@ class AuthFilter(
             return createMono(
                 TokenValidationResult(
                     isValid = true,
-                    principalType = TokenPrincipalType.ACCOUNT,
                     principal = InternalPrincipalContext(appConfig.internalAccessToken),
                     expiresIn = 300,
                 )

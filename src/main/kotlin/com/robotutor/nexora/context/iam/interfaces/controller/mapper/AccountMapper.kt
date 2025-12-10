@@ -1,18 +1,13 @@
 package com.robotutor.nexora.context.iam.interfaces.controller.mapper
 
-import com.robotutor.nexora.context.iam.application.command.ActorLoginCommand
 import com.robotutor.nexora.context.iam.application.command.AuthenticateAccountCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterAccountCommand
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.vo.CredentialId
 import com.robotutor.nexora.context.iam.domain.vo.CredentialSecret
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
-import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorLoginRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
-import com.robotutor.nexora.shared.domain.model.ActorId
-import com.robotutor.nexora.shared.domain.model.RoleId
-import com.robotutor.nexora.shared.domain.model.UserData
 
 object AccountMapper {
     fun toRegisterAccountCommand(request: RegisterAccountRequest): RegisterAccountCommand {
@@ -39,19 +34,6 @@ object AccountMapper {
             credentialId = CredentialId(authenticateAccountRequest.credentialId),
             secret = CredentialSecret(authenticateAccountRequest.secret),
             kind = authenticateAccountRequest.kind
-        )
-    }
-
-    fun toActorLoginCommand(
-        actorLoginRequest: ActorLoginRequest,
-        userData: UserData,
-        token: String
-    ): ActorLoginCommand {
-        return ActorLoginCommand(
-            actorId = ActorId(actorLoginRequest.actorId),
-            roleId = RoleId(actorLoginRequest.roleId),
-            userData = userData,
-            token = token.removePrefix("Bearer ")
         )
     }
 }

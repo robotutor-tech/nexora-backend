@@ -30,6 +30,6 @@ class RegisterUserUseCase(
             .flatMap { user -> userRepository.save(user).map { user } }
             .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully registered user")
-            .logOnError(logger, "", "Failed to registered user")
+            .logOnError(logger, "Failed to registered user")
     }
 }

@@ -43,6 +43,6 @@ class RegisterDeviceFeedsUseCase(
             }
             .publishEvent(eventPublisher)
             .logOnSuccess(logger, "Successfully created device feeds for ${createDeviceFeedsCommand.deviceId}")
-            .logOnError(logger, "", "Failed to create device feeds for ${createDeviceFeedsCommand.deviceId}")
+            .logOnError(logger,  "Failed to create device feeds for ${createDeviceFeedsCommand.deviceId}")
     }
 }

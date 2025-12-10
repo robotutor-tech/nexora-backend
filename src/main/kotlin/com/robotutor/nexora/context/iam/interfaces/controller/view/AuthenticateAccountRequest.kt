@@ -11,11 +11,9 @@ data class AuthenticateAccountRequest(
     val kind: CredentialKind
 )
 
-data class ActorLoginRequest(
-    @field:NotBlank(message = "Actor id is required")
-    val actorId: String,
-    @field:NotBlank(message = "Role id is required")
-    val roleId: String
+data class AuthenticateActorRequest(
+    @field:NotBlank(message = "PremisesId is required")
+    val premisesId: String,
 )
 
 data class DeviceLoginRequest(

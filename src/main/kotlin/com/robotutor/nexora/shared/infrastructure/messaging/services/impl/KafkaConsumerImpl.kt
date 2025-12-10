@@ -35,7 +35,7 @@ class KafkaConsumerImpl(
                     .contextWrite { ctx -> writeContext(receiverRecord.headers(), ctx) }
                     .doFinally { receiverRecord.receiverOffset().acknowledge() }
                     .logOnSuccess(logger, "Successfully consumed kafka topic to $topic")
-                    .logOnError(logger, "", "Failed to consume kafka topic to $topic")
+                    .logOnError(logger, "Failed to consume kafka topic to $topic")
                     .onErrorResume { Mono.empty() }
             }, 8)
     }
