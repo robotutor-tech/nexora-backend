@@ -19,7 +19,7 @@ data class Automation(
     val createdOn: Instant = Instant.now(),
     val expiresOn: Instant = Instant.parse("9999-12-31T00:00:00.00Z"),
     val updatedOn: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 )
 
 enum class AutomationState {

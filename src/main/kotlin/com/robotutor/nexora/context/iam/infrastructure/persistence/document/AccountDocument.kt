@@ -28,7 +28,7 @@ data class AccountDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long?
+    val version: Long
 ) : MongoDocument<AccountAggregate>
 
 data class CredentialDocument(

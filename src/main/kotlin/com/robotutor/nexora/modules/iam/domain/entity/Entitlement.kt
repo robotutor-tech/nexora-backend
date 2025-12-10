@@ -20,7 +20,7 @@ data class Entitlement(
     val status: EntitlementStatus = EntitlementStatus.ACTIVE,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null,
+    val version: Long = 0,
 ) : AggregateRoot<Entitlement, EntitlementId, DomainEvent>(entitlementId) {
     companion object {
         fun create(

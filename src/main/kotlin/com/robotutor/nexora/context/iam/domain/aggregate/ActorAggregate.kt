@@ -20,7 +20,7 @@ data class ActorAggregate(
     val status: ActorStatus = ActorStatus.ACTIVE,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null,
+    val version: Long = 0,
 ) : AggregateRoot<ActorAggregate, ActorId, IAMEvent>(actorId) {
     companion object {
         fun register(

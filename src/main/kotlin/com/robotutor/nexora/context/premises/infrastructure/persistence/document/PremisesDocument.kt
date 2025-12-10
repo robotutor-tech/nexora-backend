@@ -26,7 +26,7 @@ data class PremisesDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long? = null
+    val version: Long = 0
 ) : MongoDocument<PremisesAggregate>
 
 data class RegisteredByDocument(

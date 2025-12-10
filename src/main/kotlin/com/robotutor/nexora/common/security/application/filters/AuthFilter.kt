@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.application.filters
 
-import com.robotutor.nexora.common.security.application.ports.TokenValidator
-import com.robotutor.nexora.common.security.domain.vo.TokenValidationResult
+import com.robotutor.nexora.common.security.application.ports.SessionValidator
+import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.createMono
 import com.robotutor.nexora.common.security.createMonoError
@@ -39,7 +39,7 @@ class AuthFilter(
     private val routeValidator: RouteValidator,
     private val appConfig: AppConfig,
     private val exceptionHandlerRegistry: ExceptionHandlerRegistry,
-    private val tokenValidator: TokenValidator,
+    private val sessionValidator: SessionValidator,
 ) : WebFilter {
     val logger = Logger(this::class.java)
 
@@ -66,12 +66,12 @@ class AuthFilter(
     }
 
 
-    private fun authorize(exchange: ServerWebExchange): Mono<TokenValidationResult> {
+    private fun authorize(exchange: ServerWebExchange): Mono<SessionValidationResult> {
         val authHeader = exchange.request.headers.getFirst(AUTHORIZATION)
 
         if (routeValidator.isUnsecured(exchange.request) || authHeader == "Bearer ${appConfig.internalAccessToken}") {
             return createMono(
-                TokenValidationResult(
+                SessionValidationResult(
                     isValid = true,
                     principal = InternalPrincipalContext(appConfig.internalAccessToken),
                     expiresIn = 300,
@@ -83,7 +83,7 @@ class AuthFilter(
             return createMonoError(UnAuthorizedException(NexoraError.NEXORA0101))
         }
 
-        return tokenValidator.validate(authHeader)
+        return sessionValidator.validate(authHeader)
     }
 
     private fun setContextForResolvers(

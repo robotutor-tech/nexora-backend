@@ -37,6 +37,6 @@ data class RuleDocument(
     val createdOn: Instant,
     val updatedOn: Instant,
     @Version
-    val version: Long?,
+    val version: Long,
 ) : MongoDocument<Rule>
 

@@ -17,7 +17,7 @@ data class Invitation(
     val sessionId: SessionId,
     val createdAt: Instant = Instant.now(),
     var status: InvitationStatus = InvitationStatus.INVITED,
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<Invitation, InvitationId, IAMEvent>(invitationId) {
     fun markAsAccepted(): Invitation {
         this.status = InvitationStatus.ACCEPTED

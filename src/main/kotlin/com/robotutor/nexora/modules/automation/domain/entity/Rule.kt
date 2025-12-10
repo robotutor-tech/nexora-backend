@@ -23,7 +23,7 @@ data class Rule(
     val config: Config,
     val createdOn: Instant = Instant.now(),
     val updatedOn: Instant = Instant.now(),
-    val version: Long? = null,
+    val version: Long = 0,
 ) : AggregateRoot<Rule, RuleId, AutomationEvent>(ruleId) {
     init {
         val isConfigValid = when (type) {

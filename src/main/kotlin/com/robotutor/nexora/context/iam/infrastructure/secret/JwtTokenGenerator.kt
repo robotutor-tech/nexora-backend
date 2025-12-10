@@ -1,9 +1,11 @@
 package com.robotutor.nexora.context.iam.infrastructure.secret
 
+import com.robotutor.nexora.context.iam.domain.exception.NexoraError
 import com.robotutor.nexora.context.iam.domain.service.TokenGenerator
 import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
 import com.robotutor.nexora.context.iam.domain.vo.TokenPayload
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -30,19 +32,23 @@ class JwtTokenGenerator : TokenGenerator {
     }
 
     override fun validateAccessToken(tokenValue: TokenValue): TokenPayload {
-        val claims = Jwts.parserBuilder()
-            .setSigningKey(getKey())
-            .build()
-            .parseClaimsJws(tokenValue.value)
-            .body
+        try {
+            val claims = Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(tokenValue.value)
+                .body
 
-        return TokenPayload(
-            sessionPrincipal = DefaultSerializer.deserialize(
-                claims["principal"] as String,
-                SessionPrincipal::class.java
-            ),
-            expiresAt = claims.expiration.toInstant()
-        )
+            return TokenPayload(
+                sessionPrincipal = DefaultSerializer.deserialize(
+                    claims["principal"] as String,
+                    SessionPrincipal::class.java
+                ),
+                expiresAt = claims.expiration.toInstant()
+            )
+        } catch (e: Exception) {
+            throw UnAuthorizedException(NexoraError.NEXORA0205)
+        }
     }
 
     private fun getKey() = Keys.hmacShaKeyFor(secret.padStart(48, '0').toByteArray())

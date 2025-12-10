@@ -29,5 +29,5 @@ data class RoleDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long? = null,
+    val version: Long = 0,
 ) : MongoDocument<RoleAggregate>

@@ -17,7 +17,7 @@ data class Feed(
     val type: FeedType,
     val createdAt: Instant = Instant.now(),
     var updatedAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<Feed, FeedId, FeedEvent>(feedId) {
 
     fun updateValue(newValue: Int): Feed {

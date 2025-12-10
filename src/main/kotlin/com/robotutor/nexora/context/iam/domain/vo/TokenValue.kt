@@ -11,11 +11,11 @@ data class TokenValue(val value: String) : ValueObject() {
     }
 
     companion object {
-        fun generate(length: Int = 120): TokenValue {
+        fun generate(length: Int = 240): TokenValue {
             val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9') + "_-".split("")
             val token = List(length) { chars.random() }.joinToString("")
             val fullToken = token + Instant.now().epochSecond.toString()
-            return TokenValue(fullToken.substring(fullToken.length - length))
+            return TokenValue(fullToken.padEnd(length + 10, '0').substring(fullToken.length - length))
         }
     }
 

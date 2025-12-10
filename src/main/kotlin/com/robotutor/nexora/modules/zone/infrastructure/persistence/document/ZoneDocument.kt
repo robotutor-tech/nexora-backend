@@ -25,5 +25,5 @@ data class ZoneDocument(
     val createdBy: String,
     val createdAt: Instant,
     @Version
-    val version: Long? = null
+    val version: Long = 0
 ) : MongoDocument<Zone>

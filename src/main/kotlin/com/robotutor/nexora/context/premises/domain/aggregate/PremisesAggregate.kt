@@ -18,7 +18,7 @@ data class PremisesAggregate(
     val registeredBy: AccountData,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<PremisesAggregate, PremisesId, PremisesEvent>(premisesId) {
     init {
         validation(registeredBy.type == AccountType.HUMAN) { "Only humans can create premises" }

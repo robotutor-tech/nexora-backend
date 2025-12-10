@@ -29,7 +29,6 @@ class CreateSessionUseCase(
     fun execute(command: CreateSessionCommand): Mono<SessionTokens> {
         val tokenPayload = TokenPayload(
             sessionPrincipal = command.sessionPrincipal,
-            expiresAt = Instant.now().plusSeconds(3600)
         )
         val accessToken = tokenGenerator.generateAccessToken(tokenPayload)
         val refreshToken = TokenValue.generate()

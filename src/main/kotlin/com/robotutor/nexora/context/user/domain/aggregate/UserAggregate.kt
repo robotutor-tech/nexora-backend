@@ -22,7 +22,7 @@ data class UserAggregate(
     val mobile: Mobile,
     val registeredAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<UserAggregate, UserId, UserEvent>(userId) {
 
     init {

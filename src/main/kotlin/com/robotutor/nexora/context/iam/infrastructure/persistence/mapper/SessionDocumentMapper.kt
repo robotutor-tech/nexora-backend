@@ -14,6 +14,7 @@ import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMap
 object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument> {
     override fun toMongoDocument(domain: SessionAggregate): SessionDocument {
         return SessionDocument(
+            id = domain.getObjectId(),
             sessionId = domain.sessionId.value,
             sessionPrincipal = toSessionPrincipalDocument(domain.sessionPrincipal),
             refreshTokenHash = domain.refreshTokenHash.hashedValue,
@@ -22,22 +23,24 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
             issuedAt = domain.issuedAt,
             lastRefreshAt = domain.lastRefreshAt,
             expiresAt = domain.expiresAt,
-            version = domain.version
+            version = domain.getVersion()
         )
     }
 
     override fun toDomainModel(document: SessionDocument): SessionAggregate {
-        return SessionAggregate(
+        val domain = SessionAggregate(
             sessionId = SessionId(document.sessionId),
             sessionPrincipal = toPrincipalContext(document.sessionPrincipal),
-            refreshTokenHash = HashedTokenValue(document.refreshTokenHash),
-            refreshCount = document.refreshCount,
-            status = document.status,
+            refreshTokenHashValue = HashedTokenValue(document.refreshTokenHash),
+            refreshCountValue = document.refreshCount,
+            statusValue = document.status,
             issuedAt = document.issuedAt,
-            lastRefreshAt = document.lastRefreshAt,
+            lastRefreshAtValue = document.lastRefreshAt,
             expiresAt = document.expiresAt,
-            version = document.version
         )
+        domain.setVersion(document.version)
+        domain.setObjectId(document.id)
+        return domain
     }
 
     private fun toSessionPrincipalDocument(principal: SessionPrincipal): SessionPrincipalDocument {

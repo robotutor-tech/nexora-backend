@@ -14,7 +14,7 @@ data class AuthDevice(
     val secret: DeviceSecret,
     val createdAt: Instant = Instant.now(),
     var updatedAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<AuthDevice, DeviceId, IAMEvent>(deviceId) {
     companion object {
         fun register(deviceId: DeviceId, actorId: ActorId, roleId: RoleId): AuthDevice {

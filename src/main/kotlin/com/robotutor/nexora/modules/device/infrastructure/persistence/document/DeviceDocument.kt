@@ -34,5 +34,5 @@ data class DeviceDocument(
     val createdBy: String,
     val createdAt: Instant,
     @Version
-    val version: Long?
+    val version: Long
 ) : MongoDocument<Device>

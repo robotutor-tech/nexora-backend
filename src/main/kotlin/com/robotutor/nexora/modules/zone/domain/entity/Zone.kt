@@ -15,7 +15,7 @@ data class Zone(
     val name: Name,
     val createdBy: ActorId,
     val createdAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<Zone, ZoneId, ZoneEvent>(zoneId) {
     companion object {
         fun create(zoneId: ZoneId, premisesId: PremisesId, name: Name, createdBy: ActorId): Zone {

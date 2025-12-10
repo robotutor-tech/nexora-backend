@@ -8,7 +8,7 @@ data class AppConfig(
     val opaBaseUrl: String,
     val unSecuredPath: List<String> = emptyList(),
     val iamBaseUrl: String = "",
-    val validatePath: String = "/iam/tokens/validate",
+    val validatePath: String = "/iam/sessions/validate",
     val accountPath: String = "/iam/accounts/{accountId}",
     val invitationDevicesPath: String = "/auth/invitations/{invitationId}/devices",
     val actorPath: String = "/iam/actors/{actorId}/roles/{roleId}",

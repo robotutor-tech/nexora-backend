@@ -17,7 +17,7 @@ data class Widget(
     val type: WidgetType,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<Widget, WidgetId, WidgetEvent>(widgetId) {
     companion object {
         fun create(widgetId: WidgetId, createWidgetCommand: CreateWidgetCommand, actorData: ActorData): Widget {

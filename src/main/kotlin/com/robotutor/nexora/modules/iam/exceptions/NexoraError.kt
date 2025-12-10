@@ -8,7 +8,7 @@ enum class NexoraError(override val errorCode: String, override val message: Str
     NEXORA0202("NEXORA-0202", "Invalid credentials."),
     NEXORA0203("NEXORA-0203", "Account not found."),
     NEXORA0204("NEXORA-0204", "Premises resource creation denied"),
-    NEXORA0205("NEXORA-0205", "Invalid credentials for actor authentication."),
-    NEXORA0206("NEXORA-0202", "Policy creation request is invalid."),
+    NEXORA0205("NEXORA-0205", "Session token is invalid or expired."),
+    NEXORA0206("NEXORA-0206", "Session is inactive or refresh limit exceeded."),
     NEXORA0207("NEXORA-0202", "Policy creation request is invalid."),
 }

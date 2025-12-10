@@ -29,5 +29,5 @@ data class WidgetDocument(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
     @Version
-    val version: Long? = null
+    val version: Long = 0
 ) : MongoDocument<Widget>

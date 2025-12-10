@@ -5,11 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
 import com.robotutor.nexora.context.iam.domain.aggregate.SessionAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.SessionStatus
-import com.robotutor.nexora.context.iam.domain.vo.AccountPrincipal
-import com.robotutor.nexora.context.iam.domain.vo.ActorPrincipal
-import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
-import com.robotutor.nexora.context.iam.domain.vo.SessionId
-import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -18,7 +13,6 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 const val SESSION_COLLECTION = "sessions"
 
@@ -26,7 +20,7 @@ const val SESSION_COLLECTION = "sessions"
 @Document(SESSION_COLLECTION)
 data class SessionDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val sessionId: String,
     val sessionPrincipal: SessionPrincipalDocument,

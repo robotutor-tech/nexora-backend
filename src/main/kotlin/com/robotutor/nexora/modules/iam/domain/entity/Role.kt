@@ -15,7 +15,7 @@ data class Role(
     val roleType: RoleType,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<Role, RoleId, DomainEvent>(roleId) {
     companion object {
         fun create(roleId: RoleId, premisesId: PremisesId, name: Name, roleType: RoleType): Role {

@@ -16,7 +16,7 @@ data class RoleAggregate(
     val type: RoleType,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null,
+    val version: Long = 0,
 ) : AggregateRoot<RoleAggregate, RoleId, IAMEvent>(roleId) {
     companion object {
         fun register(name: Name, premisesId: PremisesId, type: RoleType, permissions: List<Permission>): RoleAggregate {

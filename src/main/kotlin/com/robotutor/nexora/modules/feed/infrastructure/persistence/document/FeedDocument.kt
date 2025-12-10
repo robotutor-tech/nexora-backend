@@ -28,6 +28,6 @@ data class FeedDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long?
+    val version: Long
 ) : MongoDocument<Feed>
 

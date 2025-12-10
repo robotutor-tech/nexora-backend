@@ -16,7 +16,8 @@ class GetPremisesWorkflow(
         return iamClient.getActors(accountData)
             .collectList()
             .flatMapMany { actorResponse ->
-                premisesClient.getPremises(actorResponse.map { it.premisesId })
+                if (actorResponse.isEmpty()) Flux.empty()
+                else premisesClient.getPremises(actorResponse.map { it.premisesId })
             }
     }
 }

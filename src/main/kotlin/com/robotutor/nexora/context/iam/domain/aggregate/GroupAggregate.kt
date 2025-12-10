@@ -16,7 +16,7 @@ data class GroupAggregate(
     val type: GroupType,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null,
+    val version: Long = 0,
 ) : AggregateRoot<GroupAggregate, GroupId, IAMEvent>(groupId) {
     companion object {
         fun register(name: Name, premisesId: PremisesId, type: GroupType, roleIds: List<RoleId>): GroupAggregate {

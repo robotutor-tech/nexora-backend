@@ -30,5 +30,5 @@ data class AutomationDocument(
     val expiresOn: Instant,
     val updatedOn: Instant,
     @Version
-    val version: Long?
+    val version: Long
 )

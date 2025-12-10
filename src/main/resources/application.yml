@@ -32,7 +32,7 @@ app:
       - "/orchestration/users/register"
       - "/iam/accounts/authenticate"
       - "/iam/sessions/validate"
-      - "/auth/validate"
+      - "/iam/sessions/refresh"
     iam-base-url: ${app.orchestration.iam.base-url}
     jwt:
       secret: ${JWT_SECRET:secret}

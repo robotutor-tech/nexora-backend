@@ -14,7 +14,7 @@ data class AccountAggregate(
     val status: AccountStatus = AccountStatus.ACTIVE,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long? = null,
+    val version: Long = 0
 ) : AggregateRoot<AccountAggregate, AccountId, IAMEvent>(accountId) {
     companion object {
         fun register(accountId: AccountId, type: AccountType, credentials: List<Credential>): AccountAggregate {

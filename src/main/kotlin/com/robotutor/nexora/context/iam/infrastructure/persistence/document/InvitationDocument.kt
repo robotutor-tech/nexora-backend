@@ -29,5 +29,5 @@ data class InvitationDocument(
     val createdAt: Instant,
     val status: InvitationStatus,
     @Version
-    val version: Long?
+    val version: Long
 ) : MongoDocument<Invitation>

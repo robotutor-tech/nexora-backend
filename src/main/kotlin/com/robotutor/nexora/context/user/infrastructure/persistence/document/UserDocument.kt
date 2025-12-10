@@ -30,5 +30,5 @@ data class UserDocument(
     val registeredAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long? = null
+    val version: Long = 0
 ) : MongoDocument<UserAggregate>

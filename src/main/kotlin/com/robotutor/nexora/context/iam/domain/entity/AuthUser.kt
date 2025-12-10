@@ -12,7 +12,7 @@ data class AuthUser(
     val password: HashedPassword,
     val createdAt: Instant = Instant.now(),
     var updatedAt: Instant = Instant.now(),
-    val version: Long? = null
+    val version: Long = 0
 ) : AggregateRoot<AuthUser, UserId, IAMEvent>(userId) {
     companion object {
         fun register(userId: UserId, email: Email, password: HashedPassword): AuthUser {
