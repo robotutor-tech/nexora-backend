@@ -12,6 +12,7 @@ import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMap
 object ActorDocumentMapper : DocumentMapper<ActorAggregate, ActorDocument> {
     override fun toMongoDocument(domain: ActorAggregate): ActorDocument {
         return ActorDocument(
+            id = domain.getObjectId(),
             actorId = domain.actorId.value,
             premisesId = domain.premisesId.value,
             accountId = domain.accountId.value,
@@ -21,7 +22,7 @@ object ActorDocumentMapper : DocumentMapper<ActorAggregate, ActorDocument> {
             status = domain.status,
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt,
-            version = domain.version
+            version = domain.getVersion()
         )
     }
 
@@ -36,7 +37,6 @@ object ActorDocumentMapper : DocumentMapper<ActorAggregate, ActorDocument> {
             status = document.status,
             createdAt = document.createdAt,
             updatedAt = document.updatedAt,
-            version = document.version
-        )
+        ).setObjectIdAndVersion(document.id, document.version)
     }
 }

@@ -20,7 +20,6 @@ class RegisterAccountUseCase(
     private val accountIdGenerator: AccountIdGenerator,
     private val accountRepository: AccountRepository,
     private val secretService: SecretEncoder,
-    private val eventPublisher: EventPublisher<IAMEvent>
 ) {
     private val logger = Logger(this::class.java)
 
@@ -40,7 +39,6 @@ class RegisterAccountUseCase(
                 )
             }
             .flatMap { accountAggregate -> accountRepository.save(accountAggregate).map { accountAggregate } }
-            .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully registered account")
             .logOnError(logger, "Failed to register account")
     }

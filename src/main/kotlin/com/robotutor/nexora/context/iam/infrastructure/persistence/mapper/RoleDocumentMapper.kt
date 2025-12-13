@@ -10,6 +10,7 @@ import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMap
 object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
     override fun toMongoDocument(domain: RoleAggregate): RoleDocument {
         return RoleDocument(
+            id = domain.getObjectId(),
             roleId = domain.roleId.value,
             name = domain.name.value,
             premisesId = domain.premisesId.value,
@@ -17,7 +18,7 @@ object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
             permissions = domain.permissions,
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt,
-            version = domain.version,
+            version = domain.getVersion(),
         )
     }
 
@@ -30,7 +31,6 @@ object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
             type = document.type,
             createdAt = document.createdAt,
             updatedAt = document.updatedAt,
-            version = document.version,
-        )
+        ).setObjectIdAndVersion(document.id, document.version)
     }
 }

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.zone.domain.repository
 
 import com.robotutor.nexora.modules.zone.domain.entity.Zone
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.model.ZoneId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

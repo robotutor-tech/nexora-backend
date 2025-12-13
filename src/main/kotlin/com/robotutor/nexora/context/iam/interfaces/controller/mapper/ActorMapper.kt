@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.interfaces.controller.mapper
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.command.AuthenticateActorCommand
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue

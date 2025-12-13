@@ -5,12 +5,14 @@ import com.robotutor.nexora.context.iam.domain.vo.SessionId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.InvitationDocument
 import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument> {
     override fun toMongoDocument(domain: Invitation): InvitationDocument {
         return InvitationDocument(
-            id = null,
+            id = domain.getObjectId(),
             invitationId = domain.invitationId.value,
             premisesId = domain.premisesId.value,
             name = domain.name.value,
@@ -19,7 +21,7 @@ object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument>
             createdAt = domain.createdAt,
             status = domain.status,
             tokenId = domain.sessionId.value,
-            version = domain.version
+            version = domain.getVersion(),
         )
     }
 
@@ -32,9 +34,8 @@ object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument>
             invitedBy = ActorId(document.invitedBy),
             createdAt = document.createdAt,
             status = document.status,
-            version = document.version,
             sessionId = SessionId(document.tokenId)
-        )
+        ).setObjectIdAndVersion(document.id, document.version)
     }
 }
 

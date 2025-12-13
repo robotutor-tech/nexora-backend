@@ -20,15 +20,15 @@ object UserMapper {
     fun toUserResponse(userAggregate: UserAggregate): UserResponse {
         return UserResponse(
             userId = userAggregate.userId.value,
-            accountId = userAggregate.accountId?.value,
-            state = userAggregate.state.name,
+            accountId = userAggregate.accountId()?.value,
+            state = userAggregate.state().name,
             name = userAggregate.name.value,
             email = userAggregate.email.value,
             mobile = userAggregate.mobile.value,
             isEmailVerified = userAggregate.email.isVerified,
             isMobileVerified = userAggregate.mobile.isVerified,
             registeredAt = userAggregate.registeredAt,
-            updatedAt = userAggregate.updatedAt
+            updatedAt = userAggregate.updatedAt()
         )
     }
 }

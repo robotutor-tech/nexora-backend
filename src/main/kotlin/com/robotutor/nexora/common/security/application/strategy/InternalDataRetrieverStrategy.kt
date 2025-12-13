@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.application.strategy
 
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.common.security.domain.vo.InternalData
+import com.robotutor.nexora.shared.utility.createMono
+import com.robotutor.nexora.shared.domain.vo.InternalData
 import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

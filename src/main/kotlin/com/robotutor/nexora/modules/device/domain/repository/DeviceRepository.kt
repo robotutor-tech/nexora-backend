@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.device.domain.repository
 
 import com.robotutor.nexora.modules.device.domain.entity.Device
 import com.robotutor.nexora.shared.domain.model.DeviceId
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.user.application.policy
 
-import com.robotutor.nexora.common.security.createMono
+import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.context.user.application.command.RegisterUserCommand
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.domain.policy.Policy

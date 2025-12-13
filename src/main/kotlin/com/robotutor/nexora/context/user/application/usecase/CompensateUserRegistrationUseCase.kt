@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.user.application.usecase
 
 import com.robotutor.nexora.context.user.application.command.CompensateUserRegistrationCommand
 import com.robotutor.nexora.context.user.domain.aggregate.UserAggregate
-import com.robotutor.nexora.context.user.domain.event.UserEvent
+import com.robotutor.nexora.context.user.domain.event.UserBusinessEvent
 import com.robotutor.nexora.context.user.domain.event.UserRegistrationCompensatedEvent
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.domain.event.EventPublisher
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
 @Service
 class CompensateUserRegistrationUseCase(
     private val userRepository: UserRepository,
-    private val eventPublisher: EventPublisher<UserEvent>
+    private val eventPublisher: EventPublisher<UserBusinessEvent>
 ) {
     private val logger = Logger(this::class.java)
 

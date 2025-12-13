@@ -4,7 +4,6 @@ import com.robotutor.nexora.shared.domain.vo.ValueObject
 import com.robotutor.nexora.shared.domain.utility.validation
 import java.util.UUID
 
-
 data class UserId(val value: String) : ValueObject() {
     init {
         validate()

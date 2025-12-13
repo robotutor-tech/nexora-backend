@@ -1,3 +1,5 @@
 package com.robotutor.nexora.shared.domain
 
-interface DomainEvent
+interface Event
+interface DomainEvent : Event
+interface BusinessEvent : Event

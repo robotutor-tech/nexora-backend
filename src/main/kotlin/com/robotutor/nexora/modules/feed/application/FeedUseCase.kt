@@ -1,6 +1,7 @@
 package com.robotutor.nexora.modules.feed.application
 
-import com.robotutor.nexora.common.security.createMonoError
+import com.robotutor.nexora.shared.utility.createMonoError
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
 import com.robotutor.nexora.modules.feed.application.command.FeedValueUpdateCommand
 import com.robotutor.nexora.modules.feed.domain.entity.Feed

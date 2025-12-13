@@ -2,11 +2,7 @@ package com.robotutor.nexora.context.iam.domain.vo
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.robotutor.nexora.common.security.domain.vo.AccountData
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
-import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.ActorId
-import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.*
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

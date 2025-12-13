@@ -1,6 +1,6 @@
 //package com.robotutor.nexora.context.iam.application
 //
-//import com.robotutor.nexora.common.security.createMonoError
+//import com.robotutor.nexora.shared.utility.createMonoError
 //import com.robotutor.nexora.context.iam.application.command.InvitationCommand
 //import com.robotutor.nexora.context.iam.application.view.TokenResponse
 //import com.robotutor.nexora.context.iam.domain.entity.Invitation

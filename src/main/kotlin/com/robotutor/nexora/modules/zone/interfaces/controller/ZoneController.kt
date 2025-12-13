@@ -1,15 +1,15 @@
 package com.robotutor.nexora.modules.zone.interfaces.controller
 
-import com.robotutor.nexora.shared.application.annotation.RequireAccess
-import com.robotutor.nexora.shared.domain.model.ResourcesData
 import com.robotutor.nexora.modules.zone.application.ZoneUseCase
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneRequest
 import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneResponse
 import com.robotutor.nexora.modules.zone.interfaces.controller.mapper.ZoneMapper
+import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.shared.domain.model.ActionType
-import com.robotutor.nexora.shared.domain.model.ActorData
 import com.robotutor.nexora.shared.domain.model.ResourceType
+import com.robotutor.nexora.shared.domain.model.ResourcesData
 import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux

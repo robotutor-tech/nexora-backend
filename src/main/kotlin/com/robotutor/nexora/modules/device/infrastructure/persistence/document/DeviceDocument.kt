@@ -18,7 +18,7 @@ import java.time.Instant
 @TypeAlias("Device")
 data class DeviceDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val deviceId: String,
     @Indexed
@@ -34,5 +34,5 @@ data class DeviceDocument(
     val createdBy: String,
     val createdAt: Instant,
     @Version
-    val version: Long
+    val version: Long? = null
 ) : MongoDocument<Device>

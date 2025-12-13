@@ -3,8 +3,8 @@
 //import com.robotutor.nexora.common.security.application.ports.ActorDataRetriever
 //import com.robotutor.nexora.common.security.application.ports.ActorResponse
 //import com.robotutor.nexora.modules.iam.interfaces.controller.ActorController
-//import com.robotutor.nexora.shared.domain.model.ActorId
-//import com.robotutor.nexora.shared.domain.model.PremisesId
+//import com.robotutor.nexora.shared.domain.vo.ActorId
+//import com.robotutor.nexora.shared.domain.vo.PremisesId
 //import com.robotutor.nexora.shared.domain.model.Role
 //import com.robotutor.nexora.shared.domain.model.RoleId
 //import com.robotutor.nexora.shared.domain.vo.Name

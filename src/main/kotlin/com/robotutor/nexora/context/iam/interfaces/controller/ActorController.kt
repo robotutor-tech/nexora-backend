@@ -1,15 +1,17 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.context.iam.application.command.GetActorQuery
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.command.GetActorsQuery
 import com.robotutor.nexora.context.iam.application.usecase.AuthenticateActorUseCase
-import com.robotutor.nexora.context.iam.application.usecase.GetActorsUseCase
+import com.robotutor.nexora.context.iam.application.usecase.ActorUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,15 +26,20 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/iam/actors")
 class ActorController(
-    private val getActorsUseCase: GetActorsUseCase,
+    private val actorUseCase: ActorUseCase,
     private val authenticateActorUseCase: AuthenticateActorUseCase
 ) {
-
-
     @GetMapping
     fun getActors(@RequestParam accountId: String): Flux<ActorResponse> {
         val query = GetActorsQuery(AccountId(accountId))
-        return getActorsUseCase.execute(query)
+        return actorUseCase.execute(query)
+            .map { ActorMapper.toActorResponse(it) }
+    }
+
+    @GetMapping("/me")
+    fun getActor(actorData: ActorData): Mono<ActorResponse> {
+        val query = GetActorQuery(actorData.actorId, actorData.premisesId)
+        return actorUseCase.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }
 

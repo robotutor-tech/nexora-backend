@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.iam.interfaces.controller.view
 
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountStatus
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import java.time.Instant
 
 data class AccountResponse(

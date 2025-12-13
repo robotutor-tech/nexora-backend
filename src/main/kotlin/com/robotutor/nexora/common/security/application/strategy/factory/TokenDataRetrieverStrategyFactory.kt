@@ -8,7 +8,7 @@ import com.robotutor.nexora.common.security.domain.vo.AccountPrincipalContext
 import com.robotutor.nexora.common.security.domain.vo.ActorPrincipalContext
 import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
 import com.robotutor.nexora.common.security.domain.vo.PrincipalContext
-import com.robotutor.nexora.common.security.domain.vo.PrincipalData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import org.springframework.stereotype.Service
 
 @Service

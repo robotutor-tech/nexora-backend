@@ -25,7 +25,7 @@ const val RULE_COLLECTION = "rules"
 )
 @Document(RULE_COLLECTION)
 data class RuleDocument(
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val ruleId: String,
     @Indexed
@@ -37,6 +37,6 @@ data class RuleDocument(
     val createdOn: Instant,
     val updatedOn: Instant,
     @Version
-    val version: Long,
+    val version: Long? = null,
 ) : MongoDocument<Rule>
 

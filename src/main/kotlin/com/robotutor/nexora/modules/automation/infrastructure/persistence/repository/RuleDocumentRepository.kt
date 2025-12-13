@@ -8,7 +8,7 @@ import com.robotutor.nexora.modules.automation.domain.repository.RuleRepository
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.RuleDocument
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.RuleDocumentMapper
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.config.ConfigDocumentMapper
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria

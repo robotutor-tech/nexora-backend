@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.automation.application.validation
 
 import com.robotutor.nexora.modules.automation.domain.entity.config.Config
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

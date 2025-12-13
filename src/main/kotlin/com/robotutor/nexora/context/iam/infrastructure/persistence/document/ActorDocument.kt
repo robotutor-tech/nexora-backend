@@ -18,7 +18,7 @@ const val ACTOR_COLLECTION = "actors"
 @TypeAlias("Actor")
 data class ActorDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val actorId: String,
     @Indexed
@@ -31,5 +31,5 @@ data class ActorDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long = 0,
+    val version: Long? = null,
 ) : MongoDocument<ActorAggregate>

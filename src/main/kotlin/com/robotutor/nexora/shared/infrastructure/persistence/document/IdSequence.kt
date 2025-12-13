@@ -10,7 +10,7 @@ const val ID_SEQUENCE_COLLECTION = "idSequence"
 @Document(ID_SEQUENCE_COLLECTION)
 data class IdSequence(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val idType: String,
     val sequence: Long

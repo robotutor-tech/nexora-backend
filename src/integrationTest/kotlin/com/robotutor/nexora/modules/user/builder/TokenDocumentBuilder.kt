@@ -16,7 +16,7 @@ data class TokenDocumentBuilder(
     val tokenType: TokenType = TokenType.AUTHORIZATION,
     val issuedAt: Instant = Instant.parse("2023-01-01T00:00:00Z"),
     val expiresAt: Instant = Instant.parse("2023-02-01T00:00:00Z"),
-    val version: Long = 0
+    val version: Long? = null? = null
 ) {
     fun build(): TokenDocument {
         return TokenDocument(

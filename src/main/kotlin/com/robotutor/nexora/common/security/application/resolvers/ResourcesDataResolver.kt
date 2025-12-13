@@ -2,7 +2,7 @@ package com.robotutor.nexora.common.security.application.resolvers
 
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.common.security.application.ports.EntitlementFacade
-import com.robotutor.nexora.common.security.createMono
+import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.domain.model.ResourcesData
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
 @Component
 class ResourcesDataResolver(
     private val handlerMapping: RequestMappingHandlerMapping,
-    private val entitlementFacade: EntitlementFacade,
+//    private val entitlementFacade: EntitlementFacade,
 ) : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.parameterType == ResourcesData::class.java
@@ -33,8 +33,9 @@ class ResourcesDataResolver(
                 if (requirePolicy == null) {
                     createMono(ResourcesData(emptyList()))
                 } else {
-                    entitlementFacade.getEntitlements(requirePolicy).collectList()
-                        .map { ResourcesData(it) }
+                    createMono(ResourcesData(emptyList()))
+//                    entitlementFacade.getEntitlements(requirePolicy).collectList()
+//                        .map { ResourcesData(it) }
                 }
             } else {
                 createMono(ResourcesData(emptyList()))

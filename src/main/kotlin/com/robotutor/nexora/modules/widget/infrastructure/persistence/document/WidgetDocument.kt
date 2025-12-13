@@ -17,7 +17,7 @@ const val WIDGET_COLLECTION = "widgets"
 @Document(WIDGET_COLLECTION)
 data class WidgetDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val widgetId: String,
     @Indexed
@@ -29,5 +29,5 @@ data class WidgetDocument(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
     @Version
-    val version: Long = 0
+    val version: Long? = null
 ) : MongoDocument<Widget>

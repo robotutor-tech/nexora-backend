@@ -1,9 +1,9 @@
 //package com.robotutor.nexora.modules.zone.domain.entity
 //
 //import com.robotutor.nexora.modules.zone.domain.event.ZoneCreatedEvent
-//import com.robotutor.nexora.shared.domain.model.ActorId
+//import com.robotutor.nexora.shared.domain.vo.ActorId
 //import com.robotutor.nexora.shared.domain.vo.Name
-//import com.robotutor.nexora.shared.domain.model.PremisesId
+//import com.robotutor.nexora.shared.domain.vo.PremisesId
 //import com.robotutor.nexora.shared.domain.model.ZoneId
 //import io.kotest.matchers.shouldBe
 //import org.junit.jupiter.api.Test

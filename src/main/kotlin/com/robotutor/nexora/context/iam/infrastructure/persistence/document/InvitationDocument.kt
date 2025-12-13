@@ -17,7 +17,7 @@ const val INVITATION_COLLECTION = "invitations"
 @Document(INVITATION_COLLECTION)
 data class InvitationDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val invitationId: String,
     @Indexed
@@ -29,5 +29,5 @@ data class InvitationDocument(
     val createdAt: Instant,
     val status: InvitationStatus,
     @Version
-    val version: Long
+    val version: Long? = null
 ) : MongoDocument<Invitation>

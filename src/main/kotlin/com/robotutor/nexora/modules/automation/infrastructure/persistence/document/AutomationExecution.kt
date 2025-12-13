@@ -19,7 +19,7 @@ const val AUTOMATION_EXECUTION_COLLECTION = "automationExecutions"
     CompoundIndex(name = "resume_at_idx", def = "{'resumeAt':1, 'status':1}"),
 )
 data class AutomationExecution(
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val executionId: String,
     @Indexed
@@ -34,7 +34,7 @@ data class AutomationExecution(
     val completedAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long
+    val version: Long? = null
 )
 
 enum class ExecutionStatus {

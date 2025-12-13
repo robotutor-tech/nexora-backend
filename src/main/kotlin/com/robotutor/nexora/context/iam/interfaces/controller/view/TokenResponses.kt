@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.iam.interfaces.controller.view
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 
 data class TokenResponses(val token: String, val refreshToken: String)
 data class SessionValidateResponse(

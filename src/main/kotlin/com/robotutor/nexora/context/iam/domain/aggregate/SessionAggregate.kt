@@ -1,10 +1,10 @@
 package com.robotutor.nexora.context.iam.domain.aggregate
 
-import com.robotutor.nexora.context.iam.domain.event.IAMEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
+import com.robotutor.nexora.context.iam.domain.exception.NexoraError
 import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
 import com.robotutor.nexora.context.iam.domain.vo.SessionId
 import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
-import com.robotutor.nexora.modules.iam.exceptions.NexoraError
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import java.time.Instant
@@ -19,7 +19,7 @@ data class SessionAggregate(
     private var refreshTokenHashValue: HashedTokenValue,
     private var refreshCountValue: Int = 0,
     private var lastRefreshAtValue: Instant = Instant.now(),
-) : AggregateRoot<SessionAggregate, SessionId, IAMEvent>(sessionId) {
+) : AggregateRoot<SessionAggregate, SessionId, IAMDomainEvent>(sessionId) {
 
     val refreshTokenHash: HashedTokenValue get() = refreshTokenHashValue
     val refreshCount: Int get() = refreshCountValue

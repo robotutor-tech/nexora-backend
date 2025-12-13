@@ -17,7 +17,7 @@ const val USER_COLLECTION = "users"
 @Document(USER_COLLECTION)
 data class UserDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val userId: String,
     val accountId: String?,
@@ -30,5 +30,5 @@ data class UserDocument(
     val registeredAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long = 0
+    val version: Long? = null
 ) : MongoDocument<UserAggregate>

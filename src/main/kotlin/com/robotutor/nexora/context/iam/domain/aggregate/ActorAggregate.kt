@@ -1,5 +1,6 @@
 package com.robotutor.nexora.context.iam.domain.aggregate
 
+import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.vo.GroupId
 import com.robotutor.nexora.context.iam.domain.vo.RoleId
@@ -20,8 +21,7 @@ data class ActorAggregate(
     val status: ActorStatus = ActorStatus.ACTIVE,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long = 0,
-) : AggregateRoot<ActorAggregate, ActorId, IAMEvent>(actorId) {
+) : AggregateRoot<ActorAggregate, ActorId, IAMDomainEvent>(actorId) {
     companion object {
         fun register(
             accountId: AccountId,

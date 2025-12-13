@@ -10,7 +10,7 @@ import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMap
 object DeviceDocumentMapper : DocumentMapper<Device, DeviceDocument> {
     override fun toMongoDocument(domain: Device): DeviceDocument {
         return DeviceDocument(
-            id = null,
+            id = domain.getObjectId(),
             deviceId = domain.deviceId.value,
             premisesId = domain.premisesId.value,
             name = domain.name.value,
@@ -23,7 +23,7 @@ object DeviceDocumentMapper : DocumentMapper<Device, DeviceDocument> {
             os = domain.os,
             createdBy = domain.createdBy.value,
             createdAt = domain.createdAt,
-            version = domain.version
+            version = domain.getVersion(),
         )
     }
 
@@ -41,7 +41,6 @@ object DeviceDocumentMapper : DocumentMapper<Device, DeviceDocument> {
             os = document.os,
             createdBy = ActorId(document.createdBy),
             createdAt = document.createdAt,
-            version = document.version
-        )
+        ).setObjectIdAndVersion(document.id, document.version)
     }
 }

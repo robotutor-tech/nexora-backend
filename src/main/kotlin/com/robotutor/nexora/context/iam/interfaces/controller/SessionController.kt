@@ -25,6 +25,7 @@ class SessionController(
         val command = SessionMapper.toValidateSessionCommand(token)
         return validateSessionUseCase.execute(command)
             .map { SessionMapper.toValidateSessionResponse(it) }
+
     }
 
     @GetMapping("/refresh")

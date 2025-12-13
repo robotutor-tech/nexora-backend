@@ -4,12 +4,12 @@ import com.robotutor.nexora.modules.feed.domain.entity.Feed
 import com.robotutor.nexora.modules.feed.infrastructure.persistence.document.FeedDocument
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object FeedDocumentMapper : DocumentMapper<Feed, FeedDocument> {
     override fun toMongoDocument(domain: Feed): FeedDocument = FeedDocument(
-        id = null,
+        id = domain.getObjectId(),
         feedId = domain.feedId.value,
         premisesId = domain.premisesId.value,
         name = domain.name.value,
@@ -17,7 +17,7 @@ object FeedDocumentMapper : DocumentMapper<Feed, FeedDocument> {
         type = domain.type,
         createdAt = domain.createdAt,
         updatedAt = domain.updatedAt,
-        version = domain.version
+        version = domain.getVersion()
     )
 
     override fun toDomainModel(document: FeedDocument): Feed = Feed(
@@ -28,7 +28,6 @@ object FeedDocumentMapper : DocumentMapper<Feed, FeedDocument> {
         type = document.type,
         createdAt = document.createdAt,
         updatedAt = document.updatedAt,
-        version = document.version
-    )
+    ).setObjectIdAndVersion(document.id, document.version)
 }
 

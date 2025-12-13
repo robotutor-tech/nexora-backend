@@ -1,6 +1,5 @@
 package com.robotutor.nexora.context.iam.application.usecase
 
-import com.robotutor.nexora.common.security.createFlux
 import com.robotutor.nexora.context.iam.application.command.RegisterGroupCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterPremisesResourceCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterRoleCommand
@@ -10,10 +9,11 @@ import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupType
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleType
+import com.robotutor.nexora.context.iam.domain.exception.NexoraError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
-import com.robotutor.nexora.modules.iam.exceptions.NexoraError
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
+import com.robotutor.nexora.shared.utility.createFlux
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

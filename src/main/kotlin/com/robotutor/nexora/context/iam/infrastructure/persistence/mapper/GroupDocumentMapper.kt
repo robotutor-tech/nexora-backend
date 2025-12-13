@@ -11,6 +11,7 @@ import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMap
 object GroupDocumentMapper : DocumentMapper<GroupAggregate, GroupDocument> {
     override fun toMongoDocument(domain: GroupAggregate): GroupDocument {
         return GroupDocument(
+            id = domain.getObjectId(),
             groupId = domain.groupId.value,
             name = domain.name.value,
             premisesId = domain.premisesId.value,
@@ -18,7 +19,7 @@ object GroupDocumentMapper : DocumentMapper<GroupAggregate, GroupDocument> {
             roleIds = domain.roleIds.map { it.value }.toSet(),
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt,
-            version = domain.version,
+            version = domain.getVersion(),
         )
     }
 
@@ -31,7 +32,6 @@ object GroupDocumentMapper : DocumentMapper<GroupAggregate, GroupDocument> {
             type = document.type,
             createdAt = document.createdAt,
             updatedAt = document.updatedAt,
-            version = document.version,
-        )
+        ).setObjectIdAndVersion(document.id, document.version)
     }
 }

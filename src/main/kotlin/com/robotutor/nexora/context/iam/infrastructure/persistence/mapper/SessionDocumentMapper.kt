@@ -28,7 +28,7 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
     }
 
     override fun toDomainModel(document: SessionDocument): SessionAggregate {
-        val domain = SessionAggregate(
+        return SessionAggregate(
             sessionId = SessionId(document.sessionId),
             sessionPrincipal = toPrincipalContext(document.sessionPrincipal),
             refreshTokenHashValue = HashedTokenValue(document.refreshTokenHash),
@@ -37,20 +37,17 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
             issuedAt = document.issuedAt,
             lastRefreshAtValue = document.lastRefreshAt,
             expiresAt = document.expiresAt,
-        )
-        domain.setVersion(document.version)
-        domain.setObjectId(document.id)
-        return domain
+        ).setObjectIdAndVersion(document.id, document.version)
     }
 
     private fun toSessionPrincipalDocument(principal: SessionPrincipal): SessionPrincipalDocument {
         return when (principal) {
             is AccountPrincipal -> AccountPrincipalDocument(principal.accountId.value, principal.accountType)
             is ActorPrincipal -> ActorPrincipalDocument(
-                principal.accountPrincipal.accountId.value,
-                principal.actorId.value,
-                principal.premisesId.value,
-                principal.accountPrincipal.accountType
+                actorId = principal.actorId.value,
+                premisesId = principal.premisesId.value,
+                accountId = principal.accountPrincipal.accountId.value,
+                type = principal.accountPrincipal.accountType
             )
         }
     }

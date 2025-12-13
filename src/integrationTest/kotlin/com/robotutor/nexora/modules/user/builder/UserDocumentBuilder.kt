@@ -11,7 +11,7 @@ data class UserDocumentBuilder(
     val isEmailVerified: Boolean = false,
     val isMobileVerified: Boolean = false,
     val registeredAt: Instant = Instant.parse("2023-01-01T00:00:00Z"),
-    val version: Long = 0
+    val version: Long? = null
 ) {
     fun build(): UserDocument {
         return UserDocument(

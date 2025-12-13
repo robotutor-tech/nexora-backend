@@ -1,25 +1,24 @@
 package com.robotutor.nexora.context.premises.domain.aggregate
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
-import com.robotutor.nexora.context.premises.domain.event.PremisesEvent
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.context.premises.domain.event.PremisesDomainEvent
 import com.robotutor.nexora.context.premises.domain.event.PremisesRegisteredEvent
 import com.robotutor.nexora.context.premises.domain.vo.Address
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.model.PremisesId
 import com.robotutor.nexora.shared.domain.utility.validation
+import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.time.Instant
 
-data class PremisesAggregate(
+class PremisesAggregate private constructor(
     val premisesId: PremisesId,
     val name: Name,
     val address: Address,
     val registeredBy: AccountData,
-    val createdAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now(),
-    val version: Long = 0
-) : AggregateRoot<PremisesAggregate, PremisesId, PremisesEvent>(premisesId) {
+    val createdAt: Instant,
+    val updatedAt: Instant,
+) : AggregateRoot<PremisesAggregate, PremisesId, PremisesDomainEvent>(premisesId) {
     init {
         validation(registeredBy.type == AccountType.HUMAN) { "Only humans can create premises" }
     }
@@ -31,16 +30,22 @@ data class PremisesAggregate(
             address: Address,
             registeredBy: AccountData
         ): PremisesAggregate {
-            val premisesAggregate =
-                PremisesAggregate(premisesId = premisesId, name = name, address = address, registeredBy = registeredBy)
-            premisesAggregate.addEvent(
-                PremisesRegisteredEvent(
-                    premisesAggregate.premisesId,
-                    premisesAggregate.name,
-                    premisesAggregate.registeredBy
-                )
+            val premises = create(premisesId = premisesId, name = name, address = address, registeredBy = registeredBy)
+            premises.addEvent(
+                PremisesRegisteredEvent(premises.premisesId, premises.name, premises.registeredBy)
             )
-            return premisesAggregate
+            return premises
+        }
+
+        fun create(
+            premisesId: PremisesId,
+            name: Name,
+            address: Address,
+            registeredBy: AccountData,
+            createdAt: Instant = Instant.now(),
+            updatedAt: Instant = Instant.now(),
+        ): PremisesAggregate {
+            return PremisesAggregate(premisesId, name, address, registeredBy, createdAt, updatedAt)
         }
     }
 }

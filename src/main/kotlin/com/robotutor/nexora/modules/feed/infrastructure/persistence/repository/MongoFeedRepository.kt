@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.feed.domain.repository.FeedRepository
 import com.robotutor.nexora.modules.feed.infrastructure.persistence.mapper.FeedDocumentMapper
 import com.robotutor.nexora.modules.feed.infrastructure.persistence.document.FeedDocument
 import com.robotutor.nexora.shared.domain.model.FeedId
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.MongoRepository
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria

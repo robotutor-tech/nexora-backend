@@ -3,7 +3,7 @@ package com.robotutor.nexora.shared.domain
 
 interface Aggregate
 
-abstract class AggregateRoot<T, ID, E : DomainEvent>(id: ID) : Entity<T, ID>(id), Aggregate {
+abstract class AggregateRoot<T : AggregateRoot<T, ID, E>, ID, E : DomainEvent>(id: ID) : Entity<T, ID>(id), Aggregate {
     private val _domainEvents = mutableListOf<E>()
     val domainEvents: List<E> get() = _domainEvents
 
@@ -20,12 +20,18 @@ abstract class AggregateRoot<T, ID, E : DomainEvent>(id: ID) : Entity<T, ID>(id)
     private var _version: Long? = null      // Optimistic lock version
 
     fun getObjectId(): String? = _objectId
-    fun setObjectId(value: String?) {
-        _objectId = value
+    fun getVersion(): Long? = _version
+
+    @Suppress("UNCHECKED_CAST")
+    fun setObjectIdAndVersion(objectId: String?, version: Long?): T {
+        _objectId = objectId
+        _version = version
+        return this as T
     }
 
-    fun getVersion(): Long? = _version
-    fun setVersion(value: Long?) {
-        _version = value
+    // ---- clone ----
+    protected fun <A : AggregateRoot<A, ID, E>> A.clone(source: AggregateRoot<A, ID, E>): A {
+        this.setObjectIdAndVersion(source.getObjectId(), source.getVersion())
+        return this
     }
 }

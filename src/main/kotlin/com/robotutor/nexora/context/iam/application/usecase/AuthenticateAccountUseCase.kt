@@ -1,22 +1,22 @@
 package com.robotutor.nexora.context.iam.application.usecase
 
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.context.iam.application.command.AuthenticateAccountCommand
 import com.robotutor.nexora.context.iam.application.command.CreateSessionCommand
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.event.AccountAuthenticatedEvent
-import com.robotutor.nexora.context.iam.domain.event.IAMEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
+import com.robotutor.nexora.context.iam.domain.exception.NexoraError
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
 import com.robotutor.nexora.context.iam.domain.vo.AccountPrincipal
-import com.robotutor.nexora.modules.iam.exceptions.NexoraError
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.utility.createMono
+import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -25,7 +25,7 @@ class AuthenticateAccountUseCase(
     private val accountRepository: AccountRepository,
     private val secretService: SecretEncoder,
     private val createSessionUseCase: CreateSessionUseCase,
-    private val eventPublisher: EventPublisher<IAMEvent>
+    private val eventPublisher: EventPublisher<IAMBusinessEvent>
 ) {
     private val logger = Logger(this::class.java)
 

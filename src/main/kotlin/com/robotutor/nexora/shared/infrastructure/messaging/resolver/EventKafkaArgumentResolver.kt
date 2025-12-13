@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.resolver
 
-import com.robotutor.nexora.common.security.createMono
+import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEvent
 import com.robotutor.nexora.shared.infrastructure.messaging.services.impl.KafkaArgumentResolver
 import org.springframework.stereotype.Component

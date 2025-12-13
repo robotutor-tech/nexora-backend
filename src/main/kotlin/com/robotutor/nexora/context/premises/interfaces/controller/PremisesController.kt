@@ -1,15 +1,19 @@
 package com.robotutor.nexora.context.premises.interfaces.controller
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.premises.application.command.GetPremisesQuery
 import com.robotutor.nexora.context.premises.application.usecase.GetPremisesUseCase
 import com.robotutor.nexora.context.premises.application.usecase.RegisterPremisesUseCase
 import com.robotutor.nexora.context.premises.interfaces.controller.dto.PremisesCreateRequest
 import com.robotutor.nexora.context.premises.interfaces.controller.dto.PremisesResponse
 import com.robotutor.nexora.context.premises.interfaces.controller.mapper.PremisesMapper
+import com.robotutor.nexora.shared.application.annotation.RequireAccess
+import com.robotutor.nexora.shared.domain.model.ActionType
+import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,7 +28,6 @@ class PremisesController(
     private val registerPremisesUseCase: RegisterPremisesUseCase,
     private val getPremisesUseCase: GetPremisesUseCase
 ) {
-
     @PostMapping
     fun registerPremises(
         @RequestBody @Validated premisesRequest: PremisesCreateRequest,

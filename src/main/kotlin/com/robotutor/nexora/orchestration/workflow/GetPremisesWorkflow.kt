@@ -1,6 +1,6 @@
 package com.robotutor.nexora.orchestration.workflow
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.orchestration.client.IAMClient
 import com.robotutor.nexora.orchestration.client.PremisesClient
 import com.robotutor.nexora.orchestration.client.view.PremisesResponse

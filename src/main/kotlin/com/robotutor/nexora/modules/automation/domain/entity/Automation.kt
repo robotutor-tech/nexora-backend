@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.automation.domain.entity
 
 import com.robotutor.nexora.modules.automation.domain.entity.objects.ConditionNode
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.model.SequenceId
 import java.time.Instant
 
@@ -19,7 +19,7 @@ data class Automation(
     val createdOn: Instant = Instant.now(),
     val expiresOn: Instant = Instant.parse("9999-12-31T00:00:00.00Z"),
     val updatedOn: Instant = Instant.now(),
-    val version: Long = 0
+    val version: Long? = null
 )
 
 enum class AutomationState {

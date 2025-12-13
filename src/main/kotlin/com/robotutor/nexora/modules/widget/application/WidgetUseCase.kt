@@ -10,7 +10,7 @@ import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.model.ResourceId
 import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService

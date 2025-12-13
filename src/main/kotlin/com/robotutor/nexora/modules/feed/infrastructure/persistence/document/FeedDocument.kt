@@ -17,7 +17,7 @@ const val FEED_COLLECTION = "feeds"
 @Document(FEED_COLLECTION)
 data class FeedDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val feedId: String,
     @Indexed
@@ -28,6 +28,6 @@ data class FeedDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long
+    val version: Long? = null
 ) : MongoDocument<Feed>
 

@@ -1,9 +1,8 @@
 package com.robotutor.nexora.context.premises.infrastructure.persistence.document
 
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -17,7 +16,7 @@ const val PREMISES_COLLECTION = "premises"
 @Document(PREMISES_COLLECTION)
 data class PremisesDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val premisesId: String,
     val name: String,
@@ -26,7 +25,7 @@ data class PremisesDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long = 0
+    val version: Long? = null
 ) : MongoDocument<PremisesAggregate>
 
 data class RegisteredByDocument(

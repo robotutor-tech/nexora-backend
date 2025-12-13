@@ -12,31 +12,33 @@ import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMap
 object UserDocumentMapper : DocumentMapper<UserAggregate, UserDocument> {
     override fun toMongoDocument(domain: UserAggregate): UserDocument {
         return UserDocument(
+            id = domain.getObjectId(),
             userId = domain.userId.value,
-            accountId = domain.accountId?.value,
+            accountId = domain.accountId()?.value,
             name = domain.name.value,
             email = domain.email.value,
             mobile = domain.mobile.value,
             isEmailVerified = domain.email.isVerified,
             isMobileVerified = domain.mobile.isVerified,
             registeredAt = domain.registeredAt,
-            updatedAt = domain.updatedAt,
-            state = domain.state,
-            version = domain.version
+            updatedAt = domain.updatedAt(),
+            state = domain.state(),
+            version = domain.getVersion()
         )
     }
 
     override fun toDomainModel(document: UserDocument): UserAggregate {
-        return UserAggregate(
-            userId = UserId(document.userId),
-            accountId = document.accountId?.let { AccountId(it) },
-            name = Name(document.name),
-            email = Email(document.email, document.isEmailVerified),
-            mobile = Mobile(document.mobile, document.isMobileVerified),
-            registeredAt = document.registeredAt,
-            updatedAt = document.updatedAt,
-            state = document.state,
-            version = document.version
-        )
+        return UserAggregate
+            .create(
+                userId = UserId(document.userId),
+                accountId = document.accountId?.let { AccountId(it) },
+                name = Name(document.name),
+                email = Email(document.email, document.isEmailVerified),
+                mobile = Mobile(document.mobile, document.isMobileVerified),
+                registeredAt = document.registeredAt,
+                updatedAt = document.updatedAt,
+                state = document.state,
+            )
+            .setObjectIdAndVersion(document.id, document.version)
     }
 }

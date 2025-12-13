@@ -14,7 +14,7 @@ const val AUTOMATION_COLLECTION = "automations"
 @TypeAlias("Automation")
 @Document(AUTOMATION_COLLECTION)
 data class AutomationDocument(
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val automationId: String,
     @Indexed
@@ -30,5 +30,5 @@ data class AutomationDocument(
     val expiresOn: Instant,
     val updatedOn: Instant,
     @Version
-    val version: Long
+    val version: Long? = null
 )

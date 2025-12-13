@@ -20,7 +20,6 @@ class Device(
     val os: DeviceOS? = null,
     val createdBy: ActorId,
     val createdAt: Instant = Instant.now(),
-    val version: Long = 0
 ) : AggregateRoot<Device, DeviceId, DeviceEvent>(deviceId) {
 
     fun updateFeedIds(feedIds: FeedIds): Device {

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.orchestration.client
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.orchestration.client.view.ActorResponse
 import com.robotutor.nexora.orchestration.client.view.IAMAccountResponse
 import com.robotutor.nexora.orchestration.client.view.UserResponse

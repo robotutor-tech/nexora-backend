@@ -9,6 +9,7 @@ interface SequenceId {
 
 open class ResourceId(override val value: String) : SequenceId
 
+@Deprecated("Use ActorId instead from vo")
 data class ActorId(override val value: String) : SequenceId
 
 data class DeviceId(override val value: String) : ResourceId(value)

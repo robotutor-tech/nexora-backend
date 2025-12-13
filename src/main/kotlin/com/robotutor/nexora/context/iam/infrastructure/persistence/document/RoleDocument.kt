@@ -18,7 +18,7 @@ const val ROLE_COLLECTION = "roles"
 @TypeAlias("Role")
 data class RoleDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val roleId: String,
     @Indexed
@@ -29,5 +29,5 @@ data class RoleDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long = 0,
+    val version: Long? = null,
 ) : MongoDocument<RoleAggregate>

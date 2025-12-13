@@ -9,7 +9,6 @@ data class Permission(
     val selector: ResourceSelector
 )
 
-
 sealed class ResourceSelector {
     object All : ResourceSelector()
     data class ById(val resourceId: String) : ResourceSelector()

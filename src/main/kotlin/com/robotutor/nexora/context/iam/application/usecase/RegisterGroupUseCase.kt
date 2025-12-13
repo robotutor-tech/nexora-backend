@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class RegisterGroupUseCase(
-    private val groupRepository: GroupRepository
-) {
+class RegisterGroupUseCase(private val groupRepository: GroupRepository) {
     fun execute(command: RegisterGroupCommand): Mono<GroupAggregate> {
         val groupAggregate = GroupAggregate.register(command.name, command.premisesId, command.type, command.roleIds)
         return groupRepository.save(groupAggregate).map { groupAggregate }

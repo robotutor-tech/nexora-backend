@@ -6,6 +6,9 @@ import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedValueUpdatedEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.ActorData
+
 import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
@@ -17,7 +20,6 @@ data class Feed(
     val type: FeedType,
     val createdAt: Instant = Instant.now(),
     var updatedAt: Instant = Instant.now(),
-    val version: Long = 0
 ) : AggregateRoot<Feed, FeedId, FeedEvent>(feedId) {
 
     fun updateValue(newValue: Int): Feed {

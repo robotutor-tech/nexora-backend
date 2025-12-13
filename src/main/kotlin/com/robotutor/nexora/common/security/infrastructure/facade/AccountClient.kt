@@ -2,8 +2,8 @@ package com.robotutor.nexora.common.security.infrastructure.facade
 
 import com.robotutor.nexora.common.security.application.ports.AccountDataRetriever
 import com.robotutor.nexora.common.security.config.AppConfig
-import com.robotutor.nexora.common.security.domain.vo.AccountData
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
+import com.robotutor.nexora.common.security.infrastructure.facade.view.AccountResponse
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.infrastructure.webclient.WebClientWrapper
 import org.springframework.http.HttpHeaders
@@ -18,13 +18,8 @@ class AccountClient(private val webClient: WebClientWrapper, private val appConf
             path = appConfig.accountPath,
             uriVariables = mapOf("accountId" to accountId.value),
             headers = mapOf(HttpHeaders.AUTHORIZATION to "Bearer ${appConfig.internalAccessToken}"),
-            returnType = String::class.java
+            returnType = AccountResponse::class.java
         )
-            .map {
-                AccountData(
-                    accountId = accountId,
-                    type = AccountType.HUMAN,
-                )
-            }
+            .map { AccountData(accountId = AccountId(it.accountId), type = it.type) }
     }
 }

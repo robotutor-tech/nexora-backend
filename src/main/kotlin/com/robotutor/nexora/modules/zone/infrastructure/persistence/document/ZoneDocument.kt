@@ -16,7 +16,7 @@ const val ZONE_COLLECTION = "zones"
 @Document(ZONE_COLLECTION)
 data class ZoneDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val zoneId: String,
     @Indexed
@@ -25,5 +25,5 @@ data class ZoneDocument(
     val createdBy: String,
     val createdAt: Instant,
     @Version
-    val version: Long = 0
+    val version: Long? = null
 ) : MongoDocument<Zone>

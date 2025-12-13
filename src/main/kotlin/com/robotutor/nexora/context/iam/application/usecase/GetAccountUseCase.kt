@@ -1,14 +1,14 @@
 package com.robotutor.nexora.context.iam.application.usecase
 
-import com.robotutor.nexora.common.security.createMonoError
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
+import com.robotutor.nexora.context.iam.domain.exception.NexoraError
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
-import com.robotutor.nexora.modules.iam.exceptions.NexoraError
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

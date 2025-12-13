@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
 import com.robotutor.nexora.shared.application.service.ContextDataResolver
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.BindingContext

@@ -5,12 +5,13 @@ import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.RuleDocument
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.config.ConfigDocumentMapper
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object RuleDocumentMapper : DocumentMapper<Rule, RuleDocument> {
     override fun toMongoDocument(domain: Rule): RuleDocument {
         return RuleDocument(
+            id = domain.getObjectId(),
             ruleId = domain.ruleId.value,
             premisesId = domain.premisesId.value,
             name = domain.name.value,
@@ -19,7 +20,7 @@ object RuleDocumentMapper : DocumentMapper<Rule, RuleDocument> {
             config = ConfigDocumentMapper.toConfigDocument(domain.config),
             createdOn = domain.createdOn,
             updatedOn = domain.updatedOn,
-            version = domain.version,
+            version = domain.getVersion(),
         )
     }
 
@@ -33,7 +34,6 @@ object RuleDocumentMapper : DocumentMapper<Rule, RuleDocument> {
             config = ConfigDocumentMapper.toConfig(document.config),
             createdOn = document.createdOn,
             updatedOn = document.updatedOn,
-            version = document.version
-        )
+        ).setObjectIdAndVersion(document.id, document.version)
     }
 }

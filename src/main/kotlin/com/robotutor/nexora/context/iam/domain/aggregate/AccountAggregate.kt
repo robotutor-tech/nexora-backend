@@ -1,10 +1,11 @@
 package com.robotutor.nexora.context.iam.domain.aggregate
 
 import com.robotutor.nexora.context.iam.domain.event.AccountCreatedEvent
-import com.robotutor.nexora.context.iam.domain.event.IAMEvent
-import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
 import com.robotutor.nexora.context.iam.domain.vo.Credential
 import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import java.time.Instant
 
 data class AccountAggregate(
@@ -14,8 +15,7 @@ data class AccountAggregate(
     val status: AccountStatus = AccountStatus.ACTIVE,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-    val version: Long = 0
-) : AggregateRoot<AccountAggregate, AccountId, IAMEvent>(accountId) {
+) : AggregateRoot<AccountAggregate, AccountId, IAMDomainEvent>(accountId) {
     companion object {
         fun register(accountId: AccountId, type: AccountType, credentials: List<Credential>): AccountAggregate {
             val accountAggregate = AccountAggregate(accountId, type, credentials)
@@ -24,8 +24,6 @@ data class AccountAggregate(
         }
     }
 }
-
-enum class AccountType { HUMAN, MACHINE }
 
 enum class AccountStatus {
     ACTIVE,

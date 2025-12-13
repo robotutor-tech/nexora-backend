@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.application.command
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.application.command.Command
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId

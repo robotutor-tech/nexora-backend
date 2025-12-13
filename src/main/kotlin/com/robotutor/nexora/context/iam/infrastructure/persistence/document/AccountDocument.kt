@@ -2,10 +2,9 @@ package com.robotutor.nexora.context.iam.infrastructure.persistence.document
 
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountStatus
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
 import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -19,7 +18,7 @@ const val ACCOUNT_COLLECTION = "accounts"
 @Document(ACCOUNT_COLLECTION)
 data class AccountDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val accountId: String,
     val type: AccountType,
@@ -28,7 +27,7 @@ data class AccountDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long
+    val version: Long? = null
 ) : MongoDocument<AccountAggregate>
 
 data class CredentialDocument(

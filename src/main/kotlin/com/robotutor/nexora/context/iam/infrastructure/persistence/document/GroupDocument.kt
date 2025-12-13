@@ -17,7 +17,7 @@ const val GROUP_COLLECTION = "groups"
 @TypeAlias("Group")
 data class GroupDocument(
     @Id
-    var id: ObjectId? = null,
+    val id: String? = null,
     @Indexed(unique = true)
     val groupId: String,
     @Indexed
@@ -28,5 +28,5 @@ data class GroupDocument(
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
-    val version: Long = 0,
+    val version: Long? = null,
 ) : MongoDocument<GroupAggregate>

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.premises.interfaces.controller.mapper
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.premises.application.command.RegisterPremisesCommand
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.context.premises.domain.vo.Address

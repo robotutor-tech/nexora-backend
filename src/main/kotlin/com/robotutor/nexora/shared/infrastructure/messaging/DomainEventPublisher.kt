@@ -1,12 +1,14 @@
 package com.robotutor.nexora.shared.infrastructure.messaging
 
+import com.robotutor.nexora.shared.domain.BusinessEvent
 import com.robotutor.nexora.shared.domain.DomainEvent
+import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.event.EventMapper
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.infrastructure.messaging.services.KafkaEventPublisher
 import reactor.core.publisher.Mono
 
-open class DomainEventPublisher<T : DomainEvent>(
+open class EventPublisherImpl<T : Event>(
     val eventPublisher: KafkaEventPublisher, val mapper: EventMapper<T>
 ) : EventPublisher<T> {
     override fun <R : Any> publish(event: T, transformer: () -> R): Mono<R> {
@@ -15,3 +17,11 @@ open class DomainEventPublisher<T : DomainEvent>(
             .map { transformer() }
     }
 }
+
+open class DomainEventPublisher<T : DomainEvent>(
+    eventPublisher: KafkaEventPublisher, mapper: EventMapper<T>
+) : EventPublisherImpl<T>(eventPublisher, mapper)
+
+open class BusinessEventPublisher<T : BusinessEvent>(
+    eventPublisher: KafkaEventPublisher, mapper: EventMapper<T>
+) : EventPublisherImpl<T>(eventPublisher, mapper)

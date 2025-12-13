@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.widget.application.WidgetUseCase
 import com.robotutor.nexora.modules.widget.domain.entity.Widget
 import com.robotutor.nexora.modules.widget.interfaces.messaging.mapper.WidgetMapper
 import com.robotutor.nexora.modules.widget.interfaces.messaging.message.CreateWidgetMessage
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaController
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEvent
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEventListener

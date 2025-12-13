@@ -7,7 +7,7 @@ import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleRes
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.RuleMapper
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
 import com.robotutor.nexora.shared.domain.model.ActionType
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.model.ResourcesData
 import org.springframework.validation.annotation.Validated

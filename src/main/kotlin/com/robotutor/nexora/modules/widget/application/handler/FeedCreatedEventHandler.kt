@@ -4,7 +4,7 @@
 //import com.robotutor.nexora.modules.widget.application.command.CreateWidgetCommand
 //import com.robotutor.nexora.shared.domain.event.EventHandler
 //import com.robotutor.nexora.shared.domain.event.FeedCreatedEvent
-//import com.robotutor.nexora.shared.domain.model.ActorData
+//import com.robotutor.nexora.shared.domain.vo.ActorData
 //import org.springframework.stereotype.Service
 //import reactor.core.publisher.Mono
 //

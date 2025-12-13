@@ -1,10 +1,10 @@
 package com.robotutor.nexora.context.premises.application.policy
 
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
+import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.context.premises.application.command.RegisterPremisesCommand
 import com.robotutor.nexora.shared.domain.policy.Policy
 import com.robotutor.nexora.shared.domain.policy.PolicyResult
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

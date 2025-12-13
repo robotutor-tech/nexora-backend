@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.user.domain.aggregate
 
 import com.robotutor.nexora.context.user.domain.event.UserActivatedEvent
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.context.user.domain.event.UserEvent
+import com.robotutor.nexora.context.user.domain.event.UserDomainEvent
 import com.robotutor.nexora.context.user.domain.event.UserRegisteredEvent
 import com.robotutor.nexora.context.user.domain.exception.NexoraError
 import com.robotutor.nexora.context.user.domain.vo.Email
@@ -13,27 +13,51 @@ import com.robotutor.nexora.shared.domain.exception.InvalidStateException
 import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
-data class UserAggregate(
+class UserAggregate private constructor(
     val userId: UserId,
-    val accountId: AccountId? = null,
-    val state: UserState = UserState.REGISTERED,
+    private var accountId: AccountId? = null,
+    private var state: UserState,
     val name: Name,
     val email: Email,
     val mobile: Mobile,
-    val registeredAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now(),
-    val version: Long = 0
-) : AggregateRoot<UserAggregate, UserId, UserEvent>(userId) {
-
+    val registeredAt: Instant,
+    private var updatedAt: Instant,
+) : AggregateRoot<UserAggregate, UserId, UserDomainEvent>(userId) {
     init {
         validate()
     }
 
+    fun state(): UserState = state
+    fun accountId(): AccountId? = accountId
+    fun updatedAt(): Instant = updatedAt
+
     companion object {
         fun register(name: Name, email: Email, mobile: Mobile): UserAggregate {
-            val userAggregate = UserAggregate(userId = UserId.generate(), name = name, email = email, mobile = mobile)
+            val userAggregate = create(userId = UserId.generate(), name = name, email = email, mobile = mobile)
             userAggregate.addEvent(UserRegisteredEvent(userAggregate.userId))
             return userAggregate
+        }
+
+        fun create(
+            userId: UserId,
+            name: Name,
+            email: Email,
+            mobile: Mobile,
+            accountId: AccountId? = null,
+            state: UserState = UserState.REGISTERED,
+            registeredAt: Instant = Instant.now(),
+            updatedAt: Instant = Instant.now()
+        ): UserAggregate {
+            return UserAggregate(
+                userId = userId,
+                accountId = accountId,
+                state = state,
+                name = name,
+                email = email,
+                mobile = mobile,
+                registeredAt = registeredAt,
+                updatedAt = updatedAt
+            )
         }
     }
 
@@ -41,9 +65,11 @@ data class UserAggregate(
         if (state != UserState.REGISTERED) {
             throw InvalidStateException(NexoraError.NEXORA0204)
         }
-        val updated = copy(accountId = accountId, state = UserState.ACTIVE, updatedAt = Instant.now())
-        updated.addEvent(UserActivatedEvent(updated.userId, updated.accountId!!))
-        return updated
+        this.accountId = accountId
+        state = UserState.ACTIVE
+        updatedAt = Instant.now()
+        addEvent(UserActivatedEvent(userId, accountId))
+        return this
     }
 
     private fun validate() {

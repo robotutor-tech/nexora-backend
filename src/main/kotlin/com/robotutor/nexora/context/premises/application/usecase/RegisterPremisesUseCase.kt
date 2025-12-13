@@ -3,12 +3,9 @@ package com.robotutor.nexora.context.premises.application.usecase
 import com.robotutor.nexora.context.premises.application.command.RegisterPremisesCommand
 import com.robotutor.nexora.context.premises.application.policy.RegisterPremisesPolicy
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
-import com.robotutor.nexora.context.premises.domain.event.PremisesEvent
 import com.robotutor.nexora.context.premises.domain.exceptions.PremisesError
 import com.robotutor.nexora.context.premises.domain.repository.PremisesIdGenerator
 import com.robotutor.nexora.context.premises.domain.repository.PremisesRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
@@ -21,7 +18,6 @@ class RegisterPremisesUseCase(
     private val registerPremisesPolicy: RegisterPremisesPolicy,
     private val premisesIdGenerator: PremisesIdGenerator,
     private val premisesRepository: PremisesRepository,
-    private val eventPublisher: EventPublisher<PremisesEvent>
 ) {
     private val logger = Logger(this::class.java)
 
@@ -37,8 +33,7 @@ class RegisterPremisesUseCase(
                     address = command.address
                 )
             }
-            .flatMap { premisesAggregate -> premisesRepository.save(premisesAggregate).map { premisesAggregate } }
-            .publishEvents(eventPublisher)
+            .flatMap { premises -> premisesRepository.save(premises) }
             .logOnSuccess(logger = logger, message = "Successfully registered premises")
             .logOnError(logger, "Failed to register premises")
     }

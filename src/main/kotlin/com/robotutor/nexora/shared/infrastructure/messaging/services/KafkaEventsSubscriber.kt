@@ -1,7 +1,7 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.services
 
-import com.robotutor.nexora.common.security.createFlux
-import com.robotutor.nexora.common.security.createMono
+import com.robotutor.nexora.shared.utility.createFlux
+import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaController
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEvent
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEventListener

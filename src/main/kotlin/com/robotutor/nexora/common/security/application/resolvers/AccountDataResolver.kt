@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.application.service.ContextDataResolver
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component

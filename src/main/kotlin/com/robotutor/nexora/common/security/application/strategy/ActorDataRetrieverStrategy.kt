@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.application.strategy
 
-import com.robotutor.nexora.common.security.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.common.security.domain.vo.ActorPrincipalContext
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

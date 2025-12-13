@@ -3,6 +3,7 @@ package com.robotutor.nexora.context.iam.domain.vo
 import com.robotutor.nexora.shared.domain.utility.validation
 import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.time.Instant
+import kotlin.math.max
 
 data class TokenValue(val value: String) : ValueObject() {
 
@@ -15,7 +16,7 @@ data class TokenValue(val value: String) : ValueObject() {
             val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9') + "_-".split("")
             val token = List(length) { chars.random() }.joinToString("")
             val fullToken = token + Instant.now().epochSecond.toString()
-            return TokenValue(fullToken.padEnd(length + 10, '0').substring(fullToken.length - length))
+            return TokenValue(fullToken.padEnd(length + 10, '0').substring(max(0, fullToken.length - length)))
         }
     }
 

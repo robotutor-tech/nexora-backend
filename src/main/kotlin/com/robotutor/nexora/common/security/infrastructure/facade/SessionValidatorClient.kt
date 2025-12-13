@@ -11,13 +11,18 @@ import com.robotutor.nexora.common.security.infrastructure.facade.view.ActorSess
 import com.robotutor.nexora.common.security.infrastructure.facade.view.InternalSessionPrincipalResponse
 import com.robotutor.nexora.common.security.infrastructure.facade.view.SessionValidationResponse
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.ActorId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import com.robotutor.nexora.shared.infrastructure.webclient.WebClientWrapper
+import io.jsonwebtoken.io.Deserializer
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class SessionValidatorClient(private val webClient: WebClientWrapper, private val appConfig: AppConfig) : SessionValidator {
+class SessionValidatorClient(private val webClient: WebClientWrapper, private val appConfig: AppConfig) :
+    SessionValidator {
     override fun validate(token: String): Mono<SessionValidationResult> {
         return webClient.get(
             baseUrl = appConfig.iamBaseUrl,
@@ -25,7 +30,7 @@ class SessionValidatorClient(private val webClient: WebClientWrapper, private va
             headers = mapOf(HttpHeaders.AUTHORIZATION to token),
             returnType = SessionValidationResponse::class.java
         )
-            .map {
+            .map{
                 SessionValidationResult(
                     isValid = it.isValid,
                     expiresIn = it.expiresIn,
@@ -36,8 +41,10 @@ class SessionValidatorClient(private val webClient: WebClientWrapper, private va
                         )
 
                         is ActorSessionPrincipalResponse -> ActorPrincipalContext(
-                            actorId = it.principal.actorId,
-                            roleId = it.principal.roleId
+                            actorId = ActorId(it.principal.actorId),
+                            premisesId = PremisesId(it.principal.premisesId),
+                            accountId = AccountId(it.principal.accountId),
+                            type = it.principal.accountType
                         )
 
                         is InternalSessionPrincipalResponse -> InternalPrincipalContext(it.principal.id)

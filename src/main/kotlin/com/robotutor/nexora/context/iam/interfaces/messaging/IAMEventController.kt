@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.interfaces.messaging
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.usecase.RegisterPremisesResourceUseCase
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.interfaces.messaging.mapper.IAMMapper
@@ -12,10 +12,7 @@ import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")
 @KafkaController
-class IAMEventController(
-    private val registerPremisesResourceUseCase: RegisterPremisesResourceUseCase,
-) {
-
+class IAMEventController(private val registerPremisesResourceUseCase: RegisterPremisesResourceUseCase) {
     @KafkaEventListener(["premises.registered"])
     fun registerPremisesResource(
         @KafkaEvent eventMessage: PremisesRegisteredMessage,

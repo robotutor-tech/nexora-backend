@@ -2,11 +2,10 @@ package com.robotutor.nexora.context.iam.infrastructure.persistence.document
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountType
 import com.robotutor.nexora.context.iam.domain.aggregate.SessionAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.SessionStatus
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

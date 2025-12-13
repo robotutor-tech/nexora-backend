@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.automation.application
 
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.common.security.createMonoError
+import com.robotutor.nexora.shared.utility.createMono
+import com.robotutor.nexora.shared.utility.createMonoError
 import com.robotutor.nexora.modules.automation.application.command.CreateRuleCommand
 import com.robotutor.nexora.modules.automation.application.validation.ConfigValidation
 import com.robotutor.nexora.modules.automation.domain.entity.Rule
@@ -16,7 +16,7 @@ import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.model.ResourceId
 import com.robotutor.nexora.shared.domain.model.ResourceType
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService

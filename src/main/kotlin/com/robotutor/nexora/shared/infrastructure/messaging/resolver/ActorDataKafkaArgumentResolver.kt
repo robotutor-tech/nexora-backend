@@ -1,8 +1,8 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.resolver
 
-import com.robotutor.nexora.shared.infrastructure.messaging.services.impl.KafkaArgumentResolver
 import com.robotutor.nexora.shared.application.service.ContextDataResolver
-import com.robotutor.nexora.shared.domain.model.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.infrastructure.messaging.services.impl.KafkaArgumentResolver
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 import java.lang.reflect.Parameter

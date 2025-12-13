@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.resolver
 
-import com.robotutor.nexora.common.security.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.application.service.ContextDataResolver
 import com.robotutor.nexora.shared.infrastructure.messaging.services.impl.KafkaArgumentResolver
 import org.springframework.stereotype.Component

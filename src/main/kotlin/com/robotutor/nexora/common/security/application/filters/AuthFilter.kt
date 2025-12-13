@@ -3,14 +3,14 @@ package com.robotutor.nexora.common.security.application.filters
 import com.robotutor.nexora.common.security.application.ports.SessionValidator
 import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
 import com.robotutor.nexora.common.security.config.AppConfig
-import com.robotutor.nexora.common.security.createMono
-import com.robotutor.nexora.common.security.createMonoError
+import com.robotutor.nexora.shared.utility.createMono
+import com.robotutor.nexora.shared.utility.createMonoError
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.common.security.domain.vo.AccountData
-import com.robotutor.nexora.common.security.domain.vo.ActorData
-import com.robotutor.nexora.common.security.domain.vo.InternalData
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.InternalData
 import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
-import com.robotutor.nexora.common.security.domain.vo.PrincipalData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
@@ -93,8 +93,9 @@ class AuthFilter(
     ): Context {
         return when (principalData) {
             is AccountData -> context.put(AccountData::class.java, principalData)
-            is ActorData -> context.put(ActorData::class.java, principalData)
             is InternalData -> context.put(InternalData::class.java, principalData)
+            is ActorData -> context.put(ActorData::class.java, principalData)
+                .put(AccountData::class.java, AccountData(principalData.accountId, principalData.type))
         }
             .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
     }

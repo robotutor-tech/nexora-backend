@@ -1,10 +1,13 @@
 package com.robotutor.nexora.context.iam.domain.entity
 
-import com.robotutor.nexora.context.iam.domain.event.IAMEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
 import com.robotutor.nexora.context.iam.domain.event.InvitationAcceptedEvent
 import com.robotutor.nexora.context.iam.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.vo.ActorId
+import com.robotutor.nexora.shared.domain.model.InvitationId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.model.ZoneId
 import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 
@@ -17,8 +20,7 @@ data class Invitation(
     val sessionId: SessionId,
     val createdAt: Instant = Instant.now(),
     var status: InvitationStatus = InvitationStatus.INVITED,
-    val version: Long = 0
-) : AggregateRoot<Invitation, InvitationId, IAMEvent>(invitationId) {
+) : AggregateRoot<Invitation, InvitationId, IAMDomainEvent>(invitationId) {
     fun markAsAccepted(): Invitation {
         this.status = InvitationStatus.ACCEPTED
         this.addEvent(InvitationAcceptedEvent(invitationId))

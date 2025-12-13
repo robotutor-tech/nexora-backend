@@ -21,8 +21,7 @@ import java.time.Instant
 @Service
 class CreateSessionUseCase(
     private val sessionRepository: SessionRepository,
-    private val eventPublisher: EventPublisher<IAMEvent>,
-    private val tokenGenerator: TokenGenerator,
+    private val tokenGenerator: TokenGenerator
 ) {
     private val logger = Logger(this::class.java)
 
@@ -39,7 +38,6 @@ class CreateSessionUseCase(
 
         return sessionRepository.save(session)
             .map { session }
-            .publishEvents(eventPublisher)
             .logOnSuccess(
                 logger,
                 "Successfully generated session",
@@ -48,5 +46,4 @@ class CreateSessionUseCase(
             .logOnError(logger, "Failed to generate session for", mapOf("sessionPrincipal" to command.sessionPrincipal))
             .map { SessionTokens(accessToken, refreshToken) }
     }
-
 }

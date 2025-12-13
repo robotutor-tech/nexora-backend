@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.modules.automation.domain.entity.RuleType
 import com.robotutor.nexora.modules.automation.domain.entity.config.Config
-import com.robotutor.nexora.shared.domain.model.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
