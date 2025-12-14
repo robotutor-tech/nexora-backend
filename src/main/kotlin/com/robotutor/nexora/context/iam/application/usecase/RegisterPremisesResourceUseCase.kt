@@ -101,31 +101,31 @@ class RegisterPremisesResourceUseCase(
                 command.premisesId,
                 Name("FULL_ACCESS"),
                 RoleType.FULL_ACCESS,
-                permissionSeedProvider.getDefaultPermissions(RoleType.FULL_ACCESS)
+                permissionSeedProvider.getDefaultPermissions(RoleType.FULL_ACCESS, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
                 Name("FULL_READ"),
                 RoleType.FULL_READ,
-                permissionSeedProvider.getDefaultPermissions(RoleType.FULL_READ)
+                permissionSeedProvider.getDefaultPermissions(RoleType.FULL_READ, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
                 Name("FULL_WRITE"),
                 RoleType.FULL_WRITE,
-                permissionSeedProvider.getDefaultPermissions(RoleType.FULL_WRITE)
+                permissionSeedProvider.getDefaultPermissions(RoleType.FULL_WRITE, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
                 Name("READ_ONLY"),
                 RoleType.READ_ONLY,
-                permissionSeedProvider.getDefaultPermissions(RoleType.READ_ONLY)
+                permissionSeedProvider.getDefaultPermissions(RoleType.READ_ONLY, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
                 Name("CONTROL_ONLY"),
                 RoleType.CONTROL_ONLY,
-                permissionSeedProvider.getDefaultPermissions(RoleType.CONTROL_ONLY)
+                permissionSeedProvider.getDefaultPermissions(RoleType.CONTROL_ONLY, command.premisesId)
             ),
         )
     }

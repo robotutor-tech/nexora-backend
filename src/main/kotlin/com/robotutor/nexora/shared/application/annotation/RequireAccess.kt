@@ -1,7 +1,7 @@
 package com.robotutor.nexora.shared.application.annotation
 
-import com.robotutor.nexora.shared.domain.model.ActionType
-import com.robotutor.nexora.shared.domain.model.ResourceType
+import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 
 
 @Target(AnnotationTarget.FUNCTION)

@@ -1,7 +1,6 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
-import com.robotutor.nexora.common.security.application.ports.EntitlementFacade
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.domain.model.ResourcesData
 import org.springframework.core.MethodParameter

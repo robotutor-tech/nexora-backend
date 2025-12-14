@@ -17,8 +17,8 @@ import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
 import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.model.ResourceId
-import com.robotutor.nexora.shared.domain.model.ResourceType
+import com.robotutor.nexora.shared.domain.vo.ResourceId
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError

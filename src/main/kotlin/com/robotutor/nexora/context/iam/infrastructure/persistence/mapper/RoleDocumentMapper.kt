@@ -1,10 +1,13 @@
 package com.robotutor.nexora.context.iam.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
+import com.robotutor.nexora.context.iam.domain.vo.Permission
 import com.robotutor.nexora.context.iam.domain.vo.RoleId
+import com.robotutor.nexora.context.iam.infrastructure.persistence.document.PermissionDocument
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.RoleDocument
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
@@ -15,7 +18,9 @@ object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
             name = domain.name.value,
             premisesId = domain.premisesId.value,
             type = domain.type,
-            permissions = domain.permissions,
+            permissions = domain.permissions.map {
+                PermissionDocument(resourceType = it.resourceType, action = it.action, resource = it.resource.value)
+            }.toSet(),
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt,
             version = domain.getVersion(),
@@ -27,7 +32,14 @@ object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
             roleId = RoleId(document.roleId),
             name = Name(document.name),
             premisesId = PremisesId(document.premisesId),
-            permissions = document.permissions,
+            permissions = document.permissions.map {
+                Permission(
+                    action = it.action,
+                    resourceType = it.resourceType,
+                    resource = ResourceId(it.resource),
+                    premisesId = PremisesId(document.premisesId)
+                )
+            }.toSet(),
             type = document.type,
             createdAt = document.createdAt,
             updatedAt = document.updatedAt,

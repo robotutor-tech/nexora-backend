@@ -1,6 +1,8 @@
 package com.robotutor.nexora.shared.domain.model
 
+import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 
 data class ResourcesData(val entitlements: List<ResourceEntitlement>) {
     fun getResourceIds(action: ActionType, resourceType: ResourceType): List<String> {

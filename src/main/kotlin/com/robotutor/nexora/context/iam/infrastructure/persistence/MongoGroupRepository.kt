@@ -3,12 +3,14 @@ package com.robotutor.nexora.context.iam.infrastructure.persistence
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupAggregate
 import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
 import com.robotutor.nexora.context.iam.domain.repository.GroupRepository
+import com.robotutor.nexora.context.iam.domain.vo.GroupId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.GroupDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.GroupDocumentRepository
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
@@ -22,5 +24,10 @@ class MongoGroupRepository(
             .retryOptimisticLockingFailure()
             .map { GroupDocumentMapper.toDomainModel(it) }
             .publishEvents(eventPublisher, groupAggregate)
+    }
+
+    override fun findAllByGroupIds(groupIds: Set<GroupId>): Flux<GroupAggregate> {
+        return groupDocumentRepository.findAllByGroupIdIn(groupIds.map { it.value })
+            .map { GroupDocumentMapper.toDomainModel(it) }
     }
 }

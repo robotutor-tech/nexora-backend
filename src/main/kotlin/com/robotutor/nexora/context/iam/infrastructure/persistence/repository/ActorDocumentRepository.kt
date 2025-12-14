@@ -11,4 +11,5 @@ interface ActorDocumentRepository : ReactiveCrudRepository<ActorDocument, String
     fun findAllByAccountId(accountId: String): Flux<ActorDocument>
     fun findByAccountIdAndPremisesId(accountId: String, premisesId: String): Mono<ActorDocument>
     fun findByActorIdAndPremisesId(actorId: String, premisesId: String): Mono<ActorDocument>
+    fun findByActorId(actorId: String): Mono<ActorDocument>
 }

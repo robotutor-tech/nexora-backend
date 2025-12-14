@@ -11,8 +11,8 @@ import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.model.ResourceId
-import com.robotutor.nexora.shared.domain.model.ResourceType
+import com.robotutor.nexora.shared.domain.vo.ResourceId
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux

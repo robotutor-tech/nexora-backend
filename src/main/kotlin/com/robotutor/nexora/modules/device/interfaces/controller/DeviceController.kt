@@ -5,9 +5,9 @@ import com.robotutor.nexora.modules.device.application.RegisterDeviceUseCase
 import com.robotutor.nexora.modules.device.interfaces.controller.dto.DeviceResponse
 import com.robotutor.nexora.modules.device.interfaces.controller.mapper.DeviceMapper
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
-import com.robotutor.nexora.shared.domain.model.ActionType
+import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.model.DeviceId
-import com.robotutor.nexora.shared.domain.model.ResourceType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.model.ResourcesData
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.web.bind.annotation.GetMapping

@@ -12,4 +12,5 @@ interface ActorRepository {
     fun findAllByAccountId(accountId: AccountId): Flux<ActorAggregate>
     fun findByAccountIdAndPremisesId(accountId: AccountId, premisesId: PremisesId): Mono<ActorAggregate>
     fun findByActorIdAndPremisesId(actorId: ActorId, premisesId: PremisesId): Mono<ActorAggregate>
+    fun findByActorId(actorId: ActorId): Mono<ActorAggregate>
 }

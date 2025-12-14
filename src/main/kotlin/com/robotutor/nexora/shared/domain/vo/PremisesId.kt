@@ -8,7 +8,7 @@ data class PremisesId(val value: String) : ValueObject() {
     }
 
     override fun validate() {
-        validation(value.isNotBlank()) { "Account id must not be blank" }
+        validation(value.isNotBlank()) { "PremisesId must not be blank" }
     }
 
     override fun toString(): String {

@@ -1,6 +1,7 @@
 package com.robotutor.nexora.context.premises.interfaces.controller
 
 import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.context.premises.application.command.GetAllPremisesQuery
 import com.robotutor.nexora.context.premises.application.command.GetPremisesQuery
 import com.robotutor.nexora.context.premises.application.usecase.GetPremisesUseCase
 import com.robotutor.nexora.context.premises.application.usecase.RegisterPremisesUseCase
@@ -8,8 +9,8 @@ import com.robotutor.nexora.context.premises.interfaces.controller.dto.PremisesC
 import com.robotutor.nexora.context.premises.interfaces.controller.dto.PremisesResponse
 import com.robotutor.nexora.context.premises.interfaces.controller.mapper.PremisesMapper
 import com.robotutor.nexora.shared.application.annotation.RequireAccess
-import com.robotutor.nexora.shared.domain.model.ActionType
-import com.robotutor.nexora.shared.domain.model.ResourceType
+import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -39,16 +40,17 @@ class PremisesController(
     }
 
     @GetMapping
-    fun getPremises(@RequestParam premisesIds: List<String>): Flux<PremisesResponse> {
-        val query = GetPremisesQuery(premisesIds.map { PremisesId(it) })
+    fun getAllPremises(@RequestParam premisesIds: List<String>): Flux<PremisesResponse> {
+        val query = GetAllPremisesQuery(premisesIds.map { PremisesId(it) })
         return getPremisesUseCase.execute(query)
             .map { PremisesMapper.toPremisesResponse(it) }
     }
 
-//    @RequireAccess(ActionType.READ, ResourceType.PREMISES, "premisesId")
-//    @GetMapping("/{premisesId}")
-//    fun getPremisesDetails(@PathVariable premisesId: String): Mono<PremisesResponse> {
-//        return premisesUseCase.getPremisesDetails(PremisesId(premisesId))
-//            .map { premises -> PremisesMapper.toPremisesResponse(premises) }
-//    }
+    @RequireAccess(ActionType.READ, ResourceType.PREMISES, "premisesId")
+    @GetMapping("/{premisesId}")
+    fun getPremisesDetails(@PathVariable premisesId: String): Mono<PremisesResponse> {
+        val query = GetPremisesQuery(PremisesId(premisesId))
+        return getPremisesUseCase.execute(query)
+            .map { premises -> PremisesMapper.toPremisesResponse(premises) }
+    }
 }

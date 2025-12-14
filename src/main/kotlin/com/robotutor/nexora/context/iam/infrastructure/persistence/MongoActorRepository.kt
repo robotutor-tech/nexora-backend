@@ -42,4 +42,9 @@ class MongoActorRepository(
         return actorDocumentRepository.findByActorIdAndPremisesId(actorId.value, premisesId.value)
             .map { ActorDocumentMapper.toDomainModel(it) }
     }
+
+    override fun findByActorId(actorId: ActorId): Mono<ActorAggregate> {
+        return actorDocumentRepository.findByActorId(actorId.value)
+            .map { ActorDocumentMapper.toDomainModel(it) }
+    }
 }

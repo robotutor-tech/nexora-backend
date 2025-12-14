@@ -13,5 +13,6 @@ data class AppConfig(
     val invitationDevicesPath: String = "/auth/invitations/{invitationId}/devices",
     val actorPath: String = "/iam/actors/{actorId}/roles/{roleId}",
     val entitlementPath: String = "/iam/entitlements",
-    val opaPath: String = "/v1/data/authz/allow"
+    val opaPath: String = "/v1/data/authz/allow",
+    val authorizeResourcePath: String = "/iam/authorize"
 )

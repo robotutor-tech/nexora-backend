@@ -2,9 +2,9 @@ package com.robotutor.nexora.context.iam.infrastructure.persistence.document
 
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleType
-import com.robotutor.nexora.context.iam.domain.vo.Permission
+import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -24,10 +24,16 @@ data class RoleDocument(
     @Indexed
     val premisesId: String,
     val name: String,
-    val permissions: Set<Permission>,
+    val permissions: Set<PermissionDocument>,
     val type: RoleType,
     val createdAt: Instant,
     val updatedAt: Instant,
     @Version
     val version: Long? = null,
 ) : MongoDocument<RoleAggregate>
+
+data class PermissionDocument(
+    val resourceType: ResourceType,
+    val action: ActionType,
+    val resource: String,
+)

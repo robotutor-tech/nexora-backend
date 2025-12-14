@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 fun <T> Flux<T>.logOnError(
     logger: Logger,
-    errorCode: String? = null,
     errorMessage: String,
+    errorCode: String? = null,
     additionalDetails: Map<String, Any?> = emptyMap(),
     searchableFields: Map<String, Any?> = emptyMap(),
     skipAdditionalDetails: Boolean = false,
