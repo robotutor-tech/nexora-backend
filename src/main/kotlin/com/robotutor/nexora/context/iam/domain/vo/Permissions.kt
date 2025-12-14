@@ -12,6 +12,6 @@ data class Permissions(
         if (overridePermission != null) {
             return overridePermission.effect == PermissionEffect.ALLOW
         }
-        return permissions.find { it.isEqual(resource) } != null
+        return permissions.any { it.isEqual(resource) }
     }
 }

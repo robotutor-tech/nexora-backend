@@ -1,4 +1,4 @@
-package com.robotutor.nexora.modules.zone.domain.entity
+package com.robotutor.nexora.context.zone.domain.entity
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test

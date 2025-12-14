@@ -1,6 +1,6 @@
-//package com.robotutor.nexora.modules.zone.domain.entity
+//package com.robotutor.nexora.context.zone.domain.entity
 //
-//import com.robotutor.nexora.modules.zone.domain.event.ZoneCreatedEvent
+//import com.robotutor.nexora.context.zone.domain.event.ZoneCreatedEvent
 //import com.robotutor.nexora.shared.domain.vo.ActorId
 //import com.robotutor.nexora.shared.domain.vo.Name
 //import com.robotutor.nexora.shared.domain.vo.PremisesId

@@ -1,10 +1,10 @@
-//package com.robotutor.nexora.modules.zone.interfaces.controller
+//package com.robotutor.nexora.context.zone.interfaces.controller
 //
-//import com.robotutor.nexora.modules.zone.application.ZoneUseCase
-//import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneRequest
-//import com.robotutor.nexora.modules.zone.interfaces.controller.dto.ZoneResponse
+//import com.robotutor.nexora.context.zone.application.ZoneUseCase
+//import com.robotutor.nexora.context.zone.interfaces.controller.dto.ZoneRequest
+//import com.robotutor.nexora.context.zone.interfaces.controller.dto.ZoneResponse
 //import com.robotutor.nexora.shared.domain.model.*
-//import com.robotutor.nexora.modules.zone.domain.entity.Zone
+//import com.robotutor.nexora.context.zone.domain.entity.Zone
 //import com.robotutor.nexora.testUtils.assertNextWith
 //import io.kotest.matchers.shouldBe
 //import io.mockk.clearAllMocks

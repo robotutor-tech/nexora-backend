@@ -3,7 +3,11 @@ package com.robotutor.nexora.modules.device.domain.entity
 import com.robotutor.nexora.modules.device.domain.event.DeviceCreatedEvent
 import com.robotutor.nexora.modules.device.domain.event.DeviceEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.model.DeviceId
+import com.robotutor.nexora.shared.domain.model.ModelNo
+import com.robotutor.nexora.shared.domain.model.SerialNo
+import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.vo.*
 import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 

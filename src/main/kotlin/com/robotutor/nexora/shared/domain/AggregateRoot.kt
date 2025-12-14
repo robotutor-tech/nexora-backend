@@ -1,6 +1,5 @@
 package com.robotutor.nexora.shared.domain
 
-
 interface Aggregate
 
 abstract class AggregateRoot<T : AggregateRoot<T, ID, E>, ID, E : DomainEvent>(id: ID) : Entity<T, ID>(id), Aggregate {
@@ -27,11 +26,5 @@ abstract class AggregateRoot<T : AggregateRoot<T, ID, E>, ID, E : DomainEvent>(i
         _objectId = objectId
         _version = version
         return this as T
-    }
-
-    // ---- clone ----
-    protected fun <A : AggregateRoot<A, ID, E>> A.clone(source: AggregateRoot<A, ID, E>): A {
-        this.setObjectIdAndVersion(source.getObjectId(), source.getVersion())
-        return this
     }
 }
