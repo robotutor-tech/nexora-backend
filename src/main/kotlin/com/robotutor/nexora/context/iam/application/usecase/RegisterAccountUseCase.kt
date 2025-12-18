@@ -2,13 +2,10 @@ package com.robotutor.nexora.context.iam.application.usecase
 
 import com.robotutor.nexora.context.iam.application.command.RegisterAccountCommand
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
-import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.repository.AccountIdGenerator
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
 import com.robotutor.nexora.context.iam.domain.vo.Credential
-import com.robotutor.nexora.shared.domain.event.EventPublisher
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -38,7 +35,7 @@ class RegisterAccountUseCase(
                     ),
                 )
             }
-            .flatMap { accountAggregate -> accountRepository.save(accountAggregate).map { accountAggregate } }
+            .flatMap { accountAggregate -> accountRepository.save(accountAggregate) }
             .logOnSuccess(logger, "Successfully registered account")
             .logOnError(logger, "Failed to register account")
     }

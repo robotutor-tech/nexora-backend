@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.zone.infrastructure.persistence.document
 
-import com.robotutor.nexora.context.zone.domain.entity.Zone
+import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -23,6 +23,8 @@ data class ZoneDocument(
     val name: String,
     val createdBy: String,
     val createdAt: Instant,
+    val updatedAt: Instant,
     @Version
     val version: Long? = null
-) : MongoDocument<Zone>
+) : MongoDocument<ZoneAggregate> {
+}

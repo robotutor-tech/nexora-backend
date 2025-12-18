@@ -1,6 +1,8 @@
 package com.robotutor.nexora.shared.domain
 
-abstract class Entity<T, ID>(val id: ID) {
+import com.robotutor.nexora.shared.domain.vo.Identifier
+
+abstract class Entity<T, ID: Identifier>(open val id: ID) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

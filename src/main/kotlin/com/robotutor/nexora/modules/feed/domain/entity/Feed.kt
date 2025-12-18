@@ -10,6 +10,7 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ActorData
 
 import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 import java.time.Instant
 
 data class Feed(

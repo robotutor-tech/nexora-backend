@@ -1,17 +1,12 @@
 package com.robotutor.nexora.modules.seed
 
 
-import com.robotutor.nexora.modules.device.domain.entity.DeviceType
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
 import com.robotutor.nexora.modules.feed.domain.entity.FeedType
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
 import com.robotutor.nexora.shared.domain.vo.Name
 
 object SeedData {
-
-    fun getDeviceType(): DeviceType {
-        return DeviceType.DEVICE
-    }
 
     fun getCreateFeedCommands(): List<CreateFeedCommand> {
         return listOf(

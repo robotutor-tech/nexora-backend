@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.feed.domain.event
 
-import com.robotutor.nexora.shared.domain.model.DeviceId
+import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.model.FeedId
 
 data class DeviceFeedsCreatedEvent(

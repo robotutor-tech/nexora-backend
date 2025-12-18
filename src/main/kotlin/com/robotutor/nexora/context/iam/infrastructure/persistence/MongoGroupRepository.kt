@@ -6,8 +6,8 @@ import com.robotutor.nexora.context.iam.domain.repository.GroupRepository
 import com.robotutor.nexora.context.iam.domain.vo.GroupId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.GroupDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.GroupDocumentRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoGroupRepository(
     private val groupDocumentRepository: GroupDocumentRepository,
-    private val eventPublisher: EventPublisher<IAMDomainEvent>,
+    private val eventPublisher: DomainEventPublisher<IAMDomainEvent>,
 ) : GroupRepository {
     override fun save(groupAggregate: GroupAggregate): Mono<GroupAggregate> {
         val groupDocument = GroupDocumentMapper.toMongoDocument(groupAggregate)

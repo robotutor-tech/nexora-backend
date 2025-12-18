@@ -2,6 +2,7 @@ package com.robotutor.nexora.orchestration.client
 
 import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.orchestration.client.view.ActorResponse
+import com.robotutor.nexora.orchestration.client.view.DeviceResponse
 import com.robotutor.nexora.orchestration.client.view.IAMAccountResponse
 import com.robotutor.nexora.orchestration.client.view.UserResponse
 import com.robotutor.nexora.orchestration.config.IamConfig
@@ -30,6 +31,21 @@ class IAMClient(private val webClient: WebClientWrapper, private val iamConfig: 
             body = payload,
             returnType = IAMAccountResponse::class.java,
             headers = mapOf("Authorization" to "Bearer $internalAccessToken")
+        )
+    }
+
+    fun registerAccount(deviceResponse: DeviceResponse, secret: String): Mono<IAMAccountResponse> {
+        val payload = mapOf(
+            "credentialId" to deviceResponse.deviceId,
+            "secret" to secret,
+            "kind" to "API_SECRET",
+            "type" to "MACHINE"
+        )
+        return webClient.post(
+            baseUrl = iamConfig.baseUrl,
+            path = iamConfig.accountRegisterPath,
+            body = payload,
+            returnType = IAMAccountResponse::class.java,
         )
     }
 

@@ -1,21 +1,18 @@
 package com.robotutor.nexora.shared.domain.model
 
+import com.robotutor.nexora.shared.domain.vo.Identifier
 
-interface SequenceId {
-    val value: String
+
+interface SequenceId : Identifier {
+    override val value: String
 }
 
 @Deprecated("Use ResourceId instead from vo")
-open class ResourceId(override val value: String) : SequenceId
+open class ResourceId(override val value: String) : SequenceId, Identifier
 
-@Deprecated("Use DeviceId instead from vo")
-data class DeviceId(override val value: String) : ResourceId(value)
 
 @Deprecated("Use FeedId instead from vo")
-data class FeedId(override val value: String) : ResourceId(value)
+data class FeedId(override val value: String) : ResourceId(value), Identifier
 
 @Deprecated("Use InvitationId instead from vo")
 data class InvitationId(override val value: String) : SequenceId
-
-@Deprecated("Use ZoneId instead from vo")
-data class ZoneId(override val value: String) : ResourceId(value)

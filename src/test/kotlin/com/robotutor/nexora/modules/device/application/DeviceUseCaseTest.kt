@@ -1,8 +1,8 @@
 //package com.robotutor.nexora.modules.device.application
 //
-//import com.robotutor.nexora.modules.device.domain.entity.Device
-//import com.robotutor.nexora.modules.device.domain.entity.FeedIds
-//import com.robotutor.nexora.modules.device.domain.repository.DeviceRepository
+//import com.robotutor.nexora.context.device.domain.entity.Device
+//import com.robotutor.nexora.context.device.domain.entity.FeedIds
+//import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 //import com.robotutor.nexora.shared.domain.model.*
 //import io.kotest.matchers.shouldBe
 //import io.mockk.clearAllMocks

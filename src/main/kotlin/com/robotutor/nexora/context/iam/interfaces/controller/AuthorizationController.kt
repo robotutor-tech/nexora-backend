@@ -2,8 +2,10 @@ package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.usecase.AuthorizeResourceUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AuthorizationMapper
-import com.robotutor.nexora.context.iam.interfaces.controller.view.ResourceRequest
-import com.robotutor.nexora.context.iam.interfaces.controller.view.ResourceResponse
+import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceRequest
+import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceResponse
+import com.robotutor.nexora.context.iam.interfaces.controller.view.GetAuthorizedResourcesRequest
+import com.robotutor.nexora.context.iam.interfaces.controller.view.GetAuthorizedResourcesResponse
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,18 +15,30 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/iam/authorize")
+@RequestMapping("/iam/resources")
 class AuthorizationController(
     private val authorizeResourceUseCase: AuthorizeResourceUseCase,
 ) {
     @PostMapping
-    fun authorize(
-        @RequestBody @Validated resourceRequest: ResourceRequest,
+    fun getResources(
+        @RequestBody @Validated getAuthorizedResourcesRequest: GetAuthorizedResourcesRequest,
         actorData: ActorData
-    ): Mono<ResourceResponse> {
-        val command = AuthorizationMapper.toAuthorizeResourceCommand(resourceRequest, actorData)
+    ): Mono<GetAuthorizedResourcesResponse> {
+        val query = AuthorizationMapper.toGetAuthorizedResourceQuery(getAuthorizedResourcesRequest, actorData)
+        return authorizeResourceUseCase.execute(query)
+            .map { AuthorizationMapper.toAuthorizedResourcesResponse(it) }
+    }
+
+    @PostMapping("/authorize")
+    fun authorize(
+        @RequestBody @Validated authorizeResourceRequest: AuthorizeResourceRequest,
+        actorData: ActorData
+    ): Mono<AuthorizeResourceResponse> {
+        val command = AuthorizationMapper.toAuthorizeResourceCommand(authorizeResourceRequest, actorData)
         return authorizeResourceUseCase.execute(command)
             .map { AuthorizationMapper.toResourceResponse(it) }
     }
+
+
 }
 

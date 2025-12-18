@@ -4,7 +4,7 @@
 //import com.robotutor.nexora.shared.domain.vo.ActorId
 //import com.robotutor.nexora.shared.domain.vo.Name
 //import com.robotutor.nexora.shared.domain.vo.PremisesId
-//import com.robotutor.nexora.shared.domain.model.ZoneId
+//import com.robotutor.nexora.shared.domain.vo.ZoneId
 //import io.kotest.matchers.shouldBe
 //import org.junit.jupiter.api.Test
 //import java.time.Instant

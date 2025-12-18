@@ -4,9 +4,11 @@ import com.robotutor.nexora.shared.utility.createFlux
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.DomainEvent
 import com.robotutor.nexora.shared.domain.Event
+import com.robotutor.nexora.shared.domain.vo.Identifier
+import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import reactor.core.publisher.Mono
 
-fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(eventPublisher: EventPublisher<D>): Mono<T> {
+fun <D : DomainEvent, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(eventPublisher: DomainEventPublisher<D>): Mono<T> {
     return flatMap { domain ->
         createFlux(domain.domainEvents)
             .flatMap { event -> eventPublisher.publish(event) }
@@ -18,13 +20,15 @@ fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEven
     }
 }
 
-fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(
-    eventPublisher: EventPublisher<D>,
+fun <D : DomainEvent, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(
+    eventPublisher: DomainEventPublisher<D>,
     aggregate: AggregateRoot<T, ID, D>
 ): Mono<T> {
     return flatMap { result ->
         createFlux(aggregate.domainEvents)
-            .flatMap { event -> eventPublisher.publish(event) }
+            .flatMap { event ->
+                eventPublisher.publish(event)
+            }
             .collectList()
             .map {
                 aggregate.clearEvents()
@@ -33,8 +37,8 @@ fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEven
     }
 }
 
-fun <D : DomainEvent, ID : Any, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(
-    eventPublisher: EventPublisher<D>,
+fun <D : DomainEvent, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(
+    eventPublisher: DomainEventPublisher<D>,
     events: List<D>
 ): Mono<T> {
     return flatMap { result ->

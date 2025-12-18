@@ -8,9 +8,11 @@ import com.robotutor.nexora.shared.domain.vo.ResourceType
 data class Permission(
     val action: ActionType,
     val resourceType: ResourceType,
-    val resource: ResourceId,
+    val resourceId: ResourceId,
     val premisesId: PremisesId
 ) {
+
+
     fun isEqual(resource: Resource): Boolean {
         return premisesId == resource.premisesId &&
                 action == resource.action &&
@@ -18,7 +20,11 @@ data class Permission(
                 isResourceEqual(resource.resourceId)
     }
 
+    fun isEqual(actionType: ActionType, resourceType: ResourceType): Boolean {
+        return action == actionType && this.resourceType == resourceType
+    }
+
     private fun isResourceEqual(other: ResourceId): Boolean {
-        return resource == ResourceId.ALL || resource == other
+        return resourceId == ResourceId.ALL || resourceId == other
     }
 }

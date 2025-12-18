@@ -1,11 +1,13 @@
 package com.robotutor.nexora.modules.feed.interfaces.controller
 
 import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.application.annotation.RequireAccess
+import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.modules.feed.application.FeedUseCase
 import com.robotutor.nexora.modules.feed.interfaces.controller.dto.FeedResponse
 import com.robotutor.nexora.modules.feed.interfaces.controller.dto.FeedValueRequest
 import com.robotutor.nexora.modules.feed.interfaces.controller.mapper.FeedMapper
+import com.robotutor.nexora.shared.application.annotation.ResourceId
+import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.vo.ResourceType
@@ -33,17 +35,17 @@ class FeedController(private val feedUseCase: FeedUseCase) {
 //        return feedService.createFeed(feedRequest, premisesActorData).map { FeedView.from(it) }
 //    }
 
-    @RequireAccess(ActionType.READ, ResourceType.FEED)
+    @Authorize(ActionType.READ, ResourceType.FEED)
     @GetMapping
     fun getFeeds(actorData: ActorData, resourcesData: ResourcesData): Flux<FeedResponse> {
         val feedIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.FEED).map { FeedId(it) }
         return feedUseCase.getFeeds(actorData, feedIds).map { FeedMapper.toFeedResponse(it) }
     }
 
-    @RequireAccess(ActionType.CONTROL, ResourceType.FEED, "feedId")
+    @Authorize(ActionType.CONTROL, ResourceType.FEED, ResourceSelector.SPECIFIC)
     @PatchMapping("/{feedId}/value")
     fun updateFeedValue(
-        @PathVariable feedId: String,
+        @PathVariable @ResourceId feedId: String,
         @RequestBody @Validated feedRequest: FeedValueRequest,
         actorData: ActorData
     ): Mono<FeedResponse> {
@@ -51,9 +53,9 @@ class FeedController(private val feedUseCase: FeedUseCase) {
         return feedUseCase.updateFeedValue(feedValueUpdateCommand, actorData).map { FeedMapper.toFeedResponse(it) }
     }
 
-    @RequireAccess(ActionType.READ, ResourceType.FEED, "feedId")
+    @Authorize(ActionType.READ, ResourceType.FEED, ResourceSelector.SPECIFIC)
     @GetMapping("/{feedId}")
-    fun getFeed(@PathVariable feedId: String, actorData: ActorData): Mono<FeedResponse> {
+    fun getFeed(@PathVariable @ResourceId feedId: String, actorData: ActorData): Mono<FeedResponse> {
         return feedUseCase.getFeedByFeedId(FeedId(feedId), actorData)
             .map { FeedMapper.toFeedResponse(it) }
     }

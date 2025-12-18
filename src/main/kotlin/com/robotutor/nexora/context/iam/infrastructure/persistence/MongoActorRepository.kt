@@ -5,11 +5,11 @@ import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.ActorDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.ActorDocumentRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoActorRepository(
     private val actorDocumentRepository: ActorDocumentRepository,
-    private val eventPublisher: EventPublisher<IAMDomainEvent>,
+    private val eventPublisher: DomainEventPublisher<IAMDomainEvent>,
 ) : ActorRepository {
     override fun save(actorAggregate: ActorAggregate): Mono<ActorAggregate> {
         val actorDocument = ActorDocumentMapper.toMongoDocument(actorAggregate)

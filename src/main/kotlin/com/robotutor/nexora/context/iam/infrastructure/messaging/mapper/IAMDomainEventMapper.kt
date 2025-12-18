@@ -23,12 +23,9 @@ object IAMDomainEventMapper : EventMapper<IAMDomainEvent> {
     }
 
     private fun toAccountCreatedEventMessage(event: AccountCreatedEvent): AccountCreatedEventMessage {
-        val credential = event.account.credentials.find { credential -> credential.kind == CredentialKind.PASSWORD }!!
+        val kind = if (event.account.type == AccountType.HUMAN) CredentialKind.PASSWORD else CredentialKind.API_SECRET
+        val credential = event.account.credentials.find { credential -> credential.kind == kind }!!
         val type = if (event.account.type == AccountType.HUMAN) "human" else "machine"
-        return AccountCreatedEventMessage(
-            event.account.accountId.value,
-            credential.credentialId.value,
-            type
-        )
+        return AccountCreatedEventMessage(event.account.accountId.value, credential.credentialId.value, type)
     }
 }

@@ -6,3 +6,6 @@ sealed class OrchestrationEventMessage(name: String) : EventMessage("orchestrati
 
 data class CompensateUserRegistrationEventMessage(val userId: String) :
     OrchestrationEventMessage("compensate.user-registration")
+
+data class CompensateDeviceRegistrationEventMessage(val deviceId: String) :
+    OrchestrationEventMessage("compensate.device-registration")

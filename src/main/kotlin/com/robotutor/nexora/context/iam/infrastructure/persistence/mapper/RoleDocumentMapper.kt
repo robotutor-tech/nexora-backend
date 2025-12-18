@@ -19,7 +19,7 @@ object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
             premisesId = domain.premisesId.value,
             type = domain.type,
             permissions = domain.permissions.map {
-                PermissionDocument(resourceType = it.resourceType, action = it.action, resource = it.resource.value)
+                PermissionDocument(resourceType = it.resourceType, action = it.action, resource = it.resourceId.value)
             }.toSet(),
             createdAt = domain.createdAt,
             updatedAt = domain.updatedAt,
@@ -36,7 +36,7 @@ object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
                 Permission(
                     action = it.action,
                     resourceType = it.resourceType,
-                    resource = ResourceId(it.resource),
+                    resourceId = ResourceId(it.resource),
                     premisesId = PremisesId(document.premisesId)
                 )
             }.toSet(),

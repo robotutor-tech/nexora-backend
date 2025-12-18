@@ -12,4 +12,8 @@ data class Name(val value: String) : ValueObject() {
             "Name must be between 4 and 30 characters long"
         }
     }
+
+    override fun toString(): String {
+        return value
+    }
 }

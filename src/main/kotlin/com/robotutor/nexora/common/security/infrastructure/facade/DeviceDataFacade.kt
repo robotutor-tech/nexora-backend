@@ -1,10 +1,10 @@
 //package com.robotutor.nexora.common.security.infrastructure.facade
 //
 //import com.robotutor.nexora.common.security.application.ports.DeviceDataRetriever
-//import com.robotutor.nexora.modules.device.interfaces.controller.DeviceController
+//import com.robotutor.nexora.context.device.interfaces.controller.DeviceController
 //import com.robotutor.nexora.shared.application.service.ContextDataResolver
 //import com.robotutor.nexora.shared.domain.model.DeviceData
-//import com.robotutor.nexora.shared.domain.model.DeviceId
+//import com.robotutor.nexora.context.device.domain.vo.DeviceId
 //import com.robotutor.nexora.shared.domain.vo.Name
 //import com.robotutor.nexora.shared.domain.vo.PremisesId
 //import org.springframework.stereotype.Service

@@ -15,10 +15,8 @@ data class Credential(
 }
 
 enum class CredentialKind {
-    API_KEY,
+    API_SECRET,
     PASSWORD,
-    OAUTH,
-    API_TOKEN
 }
 
 data class CredentialSecret(val value: String) : ValueObject() {

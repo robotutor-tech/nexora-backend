@@ -1,15 +1,17 @@
 package com.robotutor.nexora.context.zone.interfaces.controller
 
-import com.robotutor.nexora.context.zone.application.ZoneUseCase
+import com.robotutor.nexora.context.zone.application.usecase.CreateZoneUseCase
+import com.robotutor.nexora.context.zone.application.usecase.ZoneUseCase
 import com.robotutor.nexora.context.zone.interfaces.controller.dto.ZoneRequest
 import com.robotutor.nexora.context.zone.interfaces.controller.dto.ZoneResponse
 import com.robotutor.nexora.context.zone.interfaces.controller.mapper.ZoneMapper
-import com.robotutor.nexora.shared.application.annotation.RequireAccess
+import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.application.annotation.ResourceId
+import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.domain.model.ResourcesData
-import com.robotutor.nexora.shared.domain.model.ZoneId
 import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -17,28 +19,32 @@ import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/zones")
-class ZoneController(private val zoneUseCase: ZoneUseCase) {
+class ZoneController(
+    private val createZoneUseCase: CreateZoneUseCase,
+    private val zoneUseCase: ZoneUseCase
+) {
 
-    @RequireAccess(ActionType.WRITE, ResourceType.ZONE)
+    @Authorize(ActionType.WRITE, ResourceType.ZONE)
     @PostMapping
     fun createZone(@RequestBody @Validated request: ZoneRequest, actorData: ActorData): Mono<ZoneResponse> {
-        val createZoneCommand = ZoneMapper.toCreateZoneCommand(request)
-        return zoneUseCase.createZone(createZoneCommand, actorData)
+        val command = ZoneMapper.toCreateZoneCommand(request, actorData)
+        return createZoneUseCase.execute(command)
             .map { ZoneMapper.toZoneResponse(it) }
     }
 
-    @RequireAccess(ActionType.READ, ResourceType.ZONE)
+    @Authorize(ActionType.READ, ResourceType.ZONE)
     @GetMapping
-    fun getAllZones(actorData: ActorData, resourcesData: ResourcesData): Flux<ZoneResponse> {
-        val zoneIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.ZONE).map { ZoneId(it) }
-        return zoneUseCase.getAllZones(actorData, zoneIds)
+    fun getAllZones(resources: AuthorizedResources): Flux<ZoneResponse> {
+        val query = ZoneMapper.getZonesQuery(resources)
+        return zoneUseCase.execute(query)
             .map { ZoneMapper.toZoneResponse(it) }
     }
 
-//    @RequireAccess(ActionType.READ, ResourceType.ZONE, "zoneId")
-//    @GetMapping("/{zoneId}")
-//    fun getZone(@PathVariable zoneId: String, actorData: ActorData): Mono<ZoneResponse> {
-//        return zoneUseCase.getZone(ZoneId(zoneId), actorData)
-//            .map { ZoneMapper.toZoneResponse(it) }
-//    }
+    @Authorize(ActionType.READ, ResourceType.ZONE, ResourceSelector.SPECIFIC)
+    @GetMapping("/{zoneId}")
+    fun getZone(@PathVariable @ResourceId zoneId: String, actorData: ActorData): Mono<ZoneResponse> {
+        val query = ZoneMapper.getZoneQuery(zoneId, actorData)
+        return zoneUseCase.execute(query)
+            .map { ZoneMapper.toZoneResponse(it) }
+    }
 }

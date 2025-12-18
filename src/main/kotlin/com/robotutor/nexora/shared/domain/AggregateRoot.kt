@@ -1,8 +1,13 @@
 package com.robotutor.nexora.shared.domain
 
-interface Aggregate
+import com.robotutor.nexora.shared.domain.vo.Identifier
 
-abstract class AggregateRoot<T : AggregateRoot<T, ID, E>, ID, E : DomainEvent>(id: ID) : Entity<T, ID>(id), Aggregate {
+interface Aggregate
+abstract class AggregateId<T, ID : Identifier>(override val id: ID) : Entity<T, ID>(id)
+
+abstract class AggregateRoot<T : AggregateRoot<T, ID, E>, ID : Identifier, E : DomainEvent>(
+    id: ID
+) : Aggregate, AggregateId<T, ID>(id) {
     private val _domainEvents = mutableListOf<E>()
     val domainEvents: List<E> get() = _domainEvents
 

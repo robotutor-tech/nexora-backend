@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.widget.interfaces.controller
 
-import com.robotutor.nexora.shared.application.annotation.RequireAccess
+import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.modules.widget.application.WidgetUseCase
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
 import com.robotutor.nexora.modules.widget.interfaces.controller.dto.WidgetResponse
@@ -27,7 +27,7 @@ class WidgetController(private val widgetUseCase: WidgetUseCase) {
 //        return widgetService.createWidget(widgetRequest, premisesActorData).map { WidgetView.from(it) }
 //    }
 //
-    @RequireAccess(ActionType.READ, ResourceType.WIDGET)
+    @Authorize(ActionType.READ, ResourceType.WIDGET)
     @GetMapping
     fun getWidgets(actorData: ActorData, resourcesData: ResourcesData): Flux<WidgetResponse> {
         val widgetIds = resourcesData.getResourceIds(ActionType.READ, ResourceType.WIDGET).map { WidgetId(it) }

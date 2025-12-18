@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.widget.application.command.CreateWidgetComma
 import com.robotutor.nexora.modules.widget.interfaces.messaging.message.CreateWidgetMessage
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 
 object WidgetMapper {
     fun toCreateWidgetCommand(message: CreateWidgetMessage): CreateWidgetCommand {

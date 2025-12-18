@@ -1,7 +1,5 @@
 package com.robotutor.nexora.modules.feed.application
 
-import com.robotutor.nexora.shared.utility.createMonoError
-import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.modules.feed.application.command.CreateFeedCommand
 import com.robotutor.nexora.modules.feed.application.command.FeedValueUpdateCommand
 import com.robotutor.nexora.modules.feed.domain.entity.Feed
@@ -12,15 +10,17 @@ import com.robotutor.nexora.modules.feed.domain.repository.FeedRepository
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
-import com.robotutor.nexora.shared.domain.model.*
+import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
-import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceId
+import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -48,7 +48,7 @@ class FeedUseCase(
                         ResourceCreatedEvent(ResourceType.FEED, ResourceId(feed.feedId.value))
                     )
             }
-            .publishEvents(eventPublisher)
+//            .publishEvents(eventPublisher)
             .logOnSuccess(logger, "Successfully created new Feed")
             .logOnError(logger,  "Failed to create new Feed")
     }
@@ -62,6 +62,6 @@ class FeedUseCase(
         return getFeedByFeedId(feedValueUpdateCommand.feedId, actorData)
             .map { feed -> feed.updateValue(feedValueUpdateCommand.value) }
             .flatMap { feed -> feedRepository.save(feed).map { feed } }
-            .publishEvents(eventPublisher)
+//            .publishEvents(eventPublisher)
     }
 }

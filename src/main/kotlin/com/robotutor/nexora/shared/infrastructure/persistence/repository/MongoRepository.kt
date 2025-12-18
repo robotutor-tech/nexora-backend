@@ -6,7 +6,6 @@ import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMap
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.mongodb.core.FindAndReplaceOptions
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
-import org.springframework.data.mongodb.core.findAndRemove
 import org.springframework.data.mongodb.core.query.Query
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

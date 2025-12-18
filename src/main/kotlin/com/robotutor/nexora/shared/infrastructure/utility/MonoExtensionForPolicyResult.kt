@@ -19,7 +19,7 @@ fun Mono<PolicyResult>.errorOnDenied(
                 PolicyViolationException(
                     ErrorResponse(
                         errorCode = error.errorCode,
-                        message = "${error.message} due to ${policyResult.getReasons().joinToString(", ")}}"
+                        message = "${error.message} due to ${policyResult.getReasons().joinToString(", ")}"
                     )
                 )
             )

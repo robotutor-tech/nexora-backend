@@ -2,7 +2,7 @@ package com.robotutor.nexora.shared.domain.vo
 
 import com.robotutor.nexora.shared.domain.utility.validation
 
-data class AccountId(val value: String) : ValueObject() {
+data class AccountId(override val value: String) : Identifier, ValueObject() {
     init {
         validate()
     }

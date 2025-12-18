@@ -28,7 +28,7 @@ object ActorDocumentMapper : DocumentMapper<ActorAggregate, ActorDocument> {
                     PermissionDocument(
                         resourceType = it.permission.resourceType,
                         action = it.permission.action,
-                        resource = it.permission.resource.value
+                        resource = it.permission.resourceId.value
                     ),
                     effect = it.effect
                 )

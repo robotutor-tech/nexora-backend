@@ -5,7 +5,7 @@ import com.robotutor.nexora.context.iam.domain.entity.Invitation
 import com.robotutor.nexora.context.iam.interfaces.controller.view.InvitationRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.InvitationResponse
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 
 object InvitationMapper {
     fun toInvitationCommand(invitationRequest: InvitationRequest): InvitationCommand {

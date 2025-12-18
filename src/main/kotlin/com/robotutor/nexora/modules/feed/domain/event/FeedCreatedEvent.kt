@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.feed.domain.entity.FeedType
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 
 data class FeedCreatedEvent(
     val feedId: FeedId,

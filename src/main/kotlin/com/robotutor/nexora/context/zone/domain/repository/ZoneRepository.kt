@@ -1,13 +1,17 @@
 package com.robotutor.nexora.context.zone.domain.repository
 
-import com.robotutor.nexora.context.zone.domain.entity.Zone
+import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
+import com.robotutor.nexora.shared.domain.vo.ZoneId
+import com.robotutor.nexora.shared.domain.specification.Specification
+import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.model.ZoneId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 interface ZoneRepository {
-    fun save(zone: Zone): Mono<Zone>
-    fun findAllByPremisesIdAndZoneIdIn(premisesId: PremisesId, zoneIds: List<ZoneId>): Flux<Zone>
-//    fun findByZoneIdAndPremisesId(zoneId: ZoneId, premisesId: PremisesId): Mono<Zone>
+    fun save(zone: ZoneAggregate): Mono<ZoneAggregate>
+    fun findAllByPremisesIdAndZoneIdIn(premisesId: PremisesId, zoneIds: List<ZoneId>): Flux<ZoneAggregate>
+    fun findByPremisesIdAndName(premisesId: PremisesId, name: Name): Mono<ZoneAggregate>
+    fun findByZoneIdAndPremisesId(zoneId: ZoneId, premisesId: PremisesId): Mono<ZoneAggregate>
+    fun findAll(specification: Specification<ZoneAggregate>): Flux<ZoneAggregate>
 }

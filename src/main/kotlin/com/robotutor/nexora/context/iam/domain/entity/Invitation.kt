@@ -7,7 +7,7 @@ import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.model.InvitationId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.domain.vo.Name
 import java.time.Instant
 

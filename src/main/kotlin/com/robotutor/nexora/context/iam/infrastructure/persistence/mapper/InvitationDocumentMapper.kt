@@ -7,6 +7,7 @@ import com.robotutor.nexora.shared.domain.model.*
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ActorId
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object InvitationDocumentMapper : DocumentMapper<Invitation, InvitationDocument> {

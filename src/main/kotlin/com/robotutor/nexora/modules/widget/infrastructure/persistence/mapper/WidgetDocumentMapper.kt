@@ -6,7 +6,7 @@ import com.robotutor.nexora.modules.widget.infrastructure.persistence.document.W
 import com.robotutor.nexora.shared.domain.model.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.model.ZoneId
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object WidgetDocumentMapper : DocumentMapper<Widget, WidgetDocument> {

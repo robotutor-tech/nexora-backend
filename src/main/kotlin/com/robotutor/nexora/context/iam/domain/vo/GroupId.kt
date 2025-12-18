@@ -1,10 +1,11 @@
 package com.robotutor.nexora.context.iam.domain.vo
 
 import com.robotutor.nexora.shared.domain.utility.validation
+import com.robotutor.nexora.shared.domain.vo.Identifier
 import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.util.UUID
 
-data class GroupId(val value: String) : ValueObject() {
+data class GroupId(override val value: String) : Identifier, ValueObject() {
     init {
         validate()
     }
