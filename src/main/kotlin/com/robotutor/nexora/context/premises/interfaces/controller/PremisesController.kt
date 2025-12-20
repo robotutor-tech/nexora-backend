@@ -5,8 +5,8 @@ import com.robotutor.nexora.context.premises.application.command.GetAllPremisesQ
 import com.robotutor.nexora.context.premises.application.command.GetPremisesQuery
 import com.robotutor.nexora.context.premises.application.usecase.GetPremisesUseCase
 import com.robotutor.nexora.context.premises.application.usecase.RegisterPremisesUseCase
-import com.robotutor.nexora.context.premises.interfaces.controller.dto.PremisesCreateRequest
-import com.robotutor.nexora.context.premises.interfaces.controller.dto.PremisesResponse
+import com.robotutor.nexora.context.premises.interfaces.controller.view.PremisesCreateRequest
+import com.robotutor.nexora.context.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.context.premises.interfaces.controller.mapper.PremisesMapper
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.application.annotation.ResourceId

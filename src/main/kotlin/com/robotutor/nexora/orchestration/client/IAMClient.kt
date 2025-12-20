@@ -37,4 +37,13 @@ class IAMClient(private val webClient: WebClientWrapper, private val iamConfig: 
             queryParams = queryParams
         )
     }
+
+    fun registerActorForOwner(premisesId: String): Mono<ActorResponse> {
+        return webClient.post(
+            baseUrl = iamConfig.baseUrl,
+            path = iamConfig.premisesOwnerRegisterPath,
+            body = mapOf("premisesId" to premisesId),
+            returnType = ActorResponse::class.java
+        )
+    }
 }

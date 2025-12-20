@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.premises.interfaces.controller.dto
+package com.robotutor.nexora.orchestration.controller.view
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -21,9 +21,10 @@ data class AddressRequest(
     val postalCode: String
 )
 
-data class PremisesCreateRequest(
+data class PremisesRegistrationRequest(
     @field:NotBlank(message = "Name is required")
     @field:Size(min = 2, max = 30, message = "Name should not be less than 2 char or more than 30 char")
     val name: String,
     val address: AddressRequest
 )
+

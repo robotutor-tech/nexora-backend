@@ -6,6 +6,7 @@ import com.robotutor.nexora.context.premises.domain.repository.PremisesRepositor
 import com.robotutor.nexora.context.premises.infrastructure.persistence.mapper.PremisesDocumentMapper
 import com.robotutor.nexora.context.premises.infrastructure.persistence.repository.PremisesDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
@@ -33,6 +34,11 @@ class MongoPremisesRepository(
 
     override fun findByPremisesId(premisesId: PremisesId): Mono<PremisesAggregate> {
         return premisesDocumentRepository.findByPremisesId(premisesId.value)
+            .map { PremisesDocumentMapper.toDomainModel(it) }
+    }
+
+    override fun deleteByPremisesIdAndOwnerId(premisesId: PremisesId, ownerId: AccountId): Mono<PremisesAggregate> {
+        return premisesDocumentRepository.deleteByPremisesIdAndOwnerId(premisesId.value, ownerId.value)
             .map { PremisesDocumentMapper.toDomainModel(it) }
     }
 }

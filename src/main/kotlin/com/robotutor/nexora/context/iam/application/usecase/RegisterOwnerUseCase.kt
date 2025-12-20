@@ -1,9 +1,8 @@
 package com.robotutor.nexora.context.iam.application.usecase
 
 import com.robotutor.nexora.context.iam.application.command.RegisterGroupCommand
-import com.robotutor.nexora.context.iam.application.command.RegisterPremisesResourceCommand
+import com.robotutor.nexora.context.iam.application.command.RegisterOwnerCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterRoleCommand
-import com.robotutor.nexora.context.iam.application.policy.RegisterPremisesResourcePolicy
 import com.robotutor.nexora.context.iam.application.seed.PermissionSeedProvider
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupType
@@ -11,30 +10,23 @@ import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleType
 import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
 import com.robotutor.nexora.context.iam.domain.event.PremisesResourceCreatedEvent
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.infrastructure.messaging.BusinessEventPublisher
-import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class RegisterPremisesResourceUseCase(
-    private val registerPremisesResourcePolicy: RegisterPremisesResourcePolicy,
+class RegisterOwnerUseCase(
     private val registerRoleUseCase: RegisterRoleUseCase,
     private val registerGroupUseCase: RegisterGroupUseCase,
     private val actorRepository: ActorRepository,
     private val permissionSeedProvider: PermissionSeedProvider,
     private val eventPublisher: BusinessEventPublisher<IAMBusinessEvent>
 ) {
-    fun execute(command: RegisterPremisesResourceCommand): Mono<ActorAggregate> {
-        return registerPremisesResourcePolicy.evaluate(command)
-            .errorOnDenied(NexoraError.NEXORA0204)
-            .flatMap {
-                registerRoleUseCase.execute(createDefaultRoles(command)).collectList()
-            }
+    fun execute(command: RegisterOwnerCommand): Mono<ActorAggregate> {
+        return registerRoleUseCase.execute(createDefaultRoles(command)).collectList()
             .flatMap { roles ->
                 registerGroupUseCase.execute(createDefaultGroups(command, roles)).collectList()
                     .map { Pair(it, roles) }
@@ -52,7 +44,7 @@ class RegisterPremisesResourceUseCase(
     }
 
     private fun createDefaultGroups(
-        command: RegisterPremisesResourceCommand,
+        command: RegisterOwnerCommand,
         roles: List<RoleAggregate>
     ): List<RegisterGroupCommand> {
         return listOf(
@@ -96,7 +88,7 @@ class RegisterPremisesResourceUseCase(
         )
     }
 
-    private fun createDefaultRoles(command: RegisterPremisesResourceCommand): List<RegisterRoleCommand> {
+    private fun createDefaultRoles(command: RegisterOwnerCommand): List<RegisterRoleCommand> {
         return listOf(
             RegisterRoleCommand(
                 command.premisesId,

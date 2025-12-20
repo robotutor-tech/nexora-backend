@@ -4,3 +4,4 @@ import com.robotutor.nexora.shared.domain.DomainEvent
 
 sealed interface OrchestrationEvent : DomainEvent
 data class CompensateAccountRegistrationEvent(val accountId: String) : OrchestrationEvent
+data class CompensatePremisesRegistrationEvent(val premisesId: String) : OrchestrationEvent

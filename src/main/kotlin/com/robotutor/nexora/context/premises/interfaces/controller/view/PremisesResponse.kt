@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.premises.interfaces.controller.dto
+package com.robotutor.nexora.context.premises.interfaces.controller.view
 
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesState
 import java.time.Instant

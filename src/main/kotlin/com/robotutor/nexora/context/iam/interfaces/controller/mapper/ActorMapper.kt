@@ -2,10 +2,12 @@ package com.robotutor.nexora.context.iam.interfaces.controller.mapper
 
 import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.command.AuthenticateActorCommand
+import com.robotutor.nexora.context.iam.application.command.RegisterOwnerCommand
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateActorRequest
+import com.robotutor.nexora.context.iam.interfaces.controller.view.OwnerCreationRequest
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 
 object ActorMapper {
@@ -29,6 +31,16 @@ object ActorMapper {
             premisesId = PremisesId(authenticateActorRequest.premisesId),
             token = TokenValue(token.removePrefix("Bearer ")),
             accountData = accountData
+        )
+    }
+
+    fun toRegisterOwnerCommand(
+        eventMessage: OwnerCreationRequest,
+        accountData: AccountData
+    ): RegisterOwnerCommand {
+        return RegisterOwnerCommand(
+            premisesId = PremisesId(eventMessage.premisesId),
+            owner = accountData
         )
     }
 }

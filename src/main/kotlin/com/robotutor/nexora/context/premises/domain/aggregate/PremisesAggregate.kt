@@ -1,21 +1,19 @@
 package com.robotutor.nexora.context.premises.domain.aggregate
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.premises.domain.event.PremisesDomainEvent
 import com.robotutor.nexora.context.premises.domain.event.PremisesRegisteredEvent
 import com.robotutor.nexora.context.premises.domain.exceptions.PremisesError
 import com.robotutor.nexora.context.premises.domain.vo.Address
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.InvalidStateException
-import com.robotutor.nexora.shared.domain.utility.validation
-import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.time.Instant
 
 class PremisesAggregate private constructor(
     val premisesId: PremisesId,
-    val registeredBy: AccountData,
+    val ownerId: AccountId,
     val createdAt: Instant,
     val name: Name,
     val address: Address,
@@ -26,20 +24,17 @@ class PremisesAggregate private constructor(
     fun getState(): PremisesState = state
     fun getUpdatedAt(): Instant = updatedAt
 
-    init {
-        validation(registeredBy.type == AccountType.HUMAN) { "Only humans can create premises" }
-    }
 
     companion object {
         fun register(
             premisesId: PremisesId,
             name: Name,
             address: Address,
-            registeredBy: AccountData
+            ownerId: AccountId,
         ): PremisesAggregate {
-            val premises = create(premisesId = premisesId, name = name, address = address, registeredBy = registeredBy)
+            val premises = create(premisesId = premisesId, name = name, address = address, ownerId = ownerId)
             premises.addEvent(
-                PremisesRegisteredEvent(premises.premisesId, premises.name, premises.registeredBy)
+                PremisesRegisteredEvent(premises.premisesId, premises.name, premises.ownerId)
             )
             return premises
         }
@@ -48,14 +43,14 @@ class PremisesAggregate private constructor(
             premisesId: PremisesId,
             name: Name,
             address: Address,
-            registeredBy: AccountData,
+            ownerId: AccountId,
             state: PremisesState = PremisesState.REGISTERED,
             createdAt: Instant = Instant.now(),
             updatedAt: Instant = Instant.now(),
         ): PremisesAggregate {
             return PremisesAggregate(
                 premisesId = premisesId,
-                registeredBy = registeredBy,
+                ownerId = ownerId,
                 createdAt = createdAt,
                 name = name,
                 address = address,

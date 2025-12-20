@@ -1,10 +1,8 @@
 package com.robotutor.nexora.context.premises.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.context.premises.domain.vo.Address
 import com.robotutor.nexora.context.premises.infrastructure.persistence.document.AddressDocument
-import com.robotutor.nexora.context.premises.infrastructure.persistence.document.RegisteredByDocument
 import com.robotutor.nexora.context.premises.infrastructure.persistence.document.PremisesDocument
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.AccountId
@@ -18,7 +16,7 @@ object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocume
             premisesId = domain.premisesId.value,
             name = domain.name.value,
             address = toAddressDocument(domain.address),
-            registeredBy = toCreatedByDocument(domain.registeredBy),
+            ownerId = domain.ownerId.value,
             state = domain.getState(),
             createdAt = domain.createdAt,
             updatedAt = domain.getUpdatedAt(),
@@ -32,7 +30,7 @@ object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocume
                 premisesId = PremisesId(document.premisesId),
                 name = Name(document.name),
                 address = toAddress(document.address),
-                registeredBy = toCreatedBy(document.registeredBy),
+                ownerId = AccountId(document.ownerId),
                 state = document.state,
                 createdAt = document.createdAt,
                 updatedAt = document.updatedAt,
@@ -40,9 +38,6 @@ object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocume
             .setObjectIdAndVersion(document.id, document.version)
     }
 
-    private fun toCreatedBy(createdBy: RegisteredByDocument): AccountData {
-        return AccountData(AccountId(createdBy.accountId), createdBy.type)
-    }
 
     private fun toAddress(address: AddressDocument): Address {
         return Address(
@@ -52,10 +47,6 @@ object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocume
             country = address.country,
             postalCode = address.postalCode
         )
-    }
-
-    private fun toCreatedByDocument(createdBy: AccountData): RegisteredByDocument {
-        return RegisteredByDocument(accountId = createdBy.accountId.value, type = createdBy.type)
     }
 
     private fun toAddressDocument(address: Address): AddressDocument {

@@ -29,7 +29,7 @@ class RegisterPremisesUseCase(
                 PremisesAggregate.register(
                     premisesId = premisesId,
                     name = command.name,
-                    registeredBy = command.owner,
+                    ownerId = command.owner.accountId,
                     address = command.address
                 )
             }

@@ -6,5 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class IamConfig(
     val baseUrl: String = "",
     val accountRegisterPath: String = "/iam/accounts/register",
+    val premisesOwnerRegisterPath: String = "/iam/premises-owners/register",
     val getActorPath: String = "/iam/actors"
 )
