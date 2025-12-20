@@ -1,9 +1,9 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
-import com.robotutor.nexora.context.iam.application.usecase.GetAccountUseCase
-import com.robotutor.nexora.context.iam.application.usecase.AuthenticateAccountUseCase
-import com.robotutor.nexora.context.iam.application.usecase.RegisterAccountUseCase
+import com.robotutor.nexora.context.iam.application.usecase.account.GetAccountUseCase
+import com.robotutor.nexora.context.iam.application.usecase.account.AuthenticateAccountUseCase
+import com.robotutor.nexora.context.iam.application.usecase.account.RegisterAccountUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AccountMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper

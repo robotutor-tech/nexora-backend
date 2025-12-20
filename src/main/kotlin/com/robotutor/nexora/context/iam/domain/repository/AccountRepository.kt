@@ -10,4 +10,5 @@ interface AccountRepository {
     fun save(accountAggregate: AccountAggregate): Mono<AccountAggregate>
     fun findByCredentialIdAndKind(credentialId: CredentialId, kind: CredentialKind): Mono<AccountAggregate>
     fun findByAccountId(accountId: AccountId): Mono<AccountAggregate>
+    fun deleteByAccountId(accountId: AccountId): Mono<AccountAggregate>
 }

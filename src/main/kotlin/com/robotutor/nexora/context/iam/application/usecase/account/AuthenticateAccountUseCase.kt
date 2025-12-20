@@ -1,7 +1,8 @@
-package com.robotutor.nexora.context.iam.application.usecase
+package com.robotutor.nexora.context.iam.application.usecase.account
 
 import com.robotutor.nexora.context.iam.application.command.AuthenticateAccountCommand
 import com.robotutor.nexora.context.iam.application.command.CreateSessionCommand
+import com.robotutor.nexora.context.iam.application.usecase.CreateSessionUseCase
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.event.AccountAuthenticatedEvent
 import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent

@@ -9,11 +9,14 @@ import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupType
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleType
+import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
+import com.robotutor.nexora.context.iam.domain.event.PremisesResourceCreatedEvent
 import com.robotutor.nexora.context.iam.domain.exception.NexoraError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
+import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.infrastructure.messaging.BusinessEventPublisher
 import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
-import com.robotutor.nexora.shared.utility.createFlux
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -23,20 +26,17 @@ class RegisterPremisesResourceUseCase(
     private val registerRoleUseCase: RegisterRoleUseCase,
     private val registerGroupUseCase: RegisterGroupUseCase,
     private val actorRepository: ActorRepository,
-    private val permissionSeedProvider: PermissionSeedProvider
+    private val permissionSeedProvider: PermissionSeedProvider,
+    private val eventPublisher: BusinessEventPublisher<IAMBusinessEvent>
 ) {
     fun execute(command: RegisterPremisesResourceCommand): Mono<ActorAggregate> {
         return registerPremisesResourcePolicy.evaluate(command)
             .errorOnDenied(NexoraError.NEXORA0204)
             .flatMap {
-                createFlux(createDefaultRoles(command))
-                    .flatMap { registerGroupCommand -> registerRoleUseCase.execute(registerGroupCommand) }
-                    .collectList()
+                registerRoleUseCase.execute(createDefaultRoles(command)).collectList()
             }
             .flatMap { roles ->
-                createFlux(createDefaultGroups(command, roles))
-                    .flatMap { registerGroupCommand -> registerGroupUseCase.execute(registerGroupCommand) }
-                    .collectList()
+                registerGroupUseCase.execute(createDefaultGroups(command, roles)).collectList()
                     .map { Pair(it, roles) }
             }
             .map { pair ->
@@ -47,7 +47,8 @@ class RegisterPremisesResourceUseCase(
                     groupIds = pair.first.map { it.groupId }
                 )
             }
-            .flatMap { actorAggregate -> actorRepository.save(actorAggregate).map { actorAggregate } }
+            .flatMap { actorAggregate -> actorRepository.save(actorAggregate) }
+            .publishEvent(eventPublisher, PremisesResourceCreatedEvent(command.premisesId, command.owner.accountId))
     }
 
     private fun createDefaultGroups(

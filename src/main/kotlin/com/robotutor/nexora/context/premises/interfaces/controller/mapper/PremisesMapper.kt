@@ -25,7 +25,8 @@ object PremisesMapper {
             name = premisesAggregate.name.value,
             address = toAddressResponse(premisesAggregate.address),
             createdAt = premisesAggregate.createdAt,
-            updatedAt = premisesAggregate.updatedAt
+            state = premisesAggregate.getState(),
+            updatedAt = premisesAggregate.getUpdatedAt()
         )
     }
 

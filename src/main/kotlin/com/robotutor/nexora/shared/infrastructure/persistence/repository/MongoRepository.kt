@@ -48,3 +48,9 @@ fun <T> Mono<T>.retryOptimisticLockingFailure(): Mono<T> {
         Retry.fixedDelay(5, Duration.ofMillis(500))
             .filter { it is OptimisticLockingFailureException })
 }
+
+fun <T> Flux<T>.retryOptimisticLockingFailure(): Flux<T> {
+    return retryWhen(
+        Retry.fixedDelay(5, Duration.ofMillis(500))
+            .filter { it is OptimisticLockingFailureException })
+}

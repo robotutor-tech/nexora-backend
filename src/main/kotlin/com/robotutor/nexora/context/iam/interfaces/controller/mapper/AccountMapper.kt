@@ -23,9 +23,9 @@ object AccountMapper {
         return AccountResponse(
             accountId = account.accountId.value,
             type = account.type,
-            status = account.status,
+            status = account.getStatus(),
             createdAt = account.createdAt,
-            updatedAt = account.updatedAt
+            updatedAt = account.getUpdatedAt()
         )
     }
 

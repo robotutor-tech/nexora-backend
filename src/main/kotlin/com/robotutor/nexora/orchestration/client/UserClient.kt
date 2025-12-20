@@ -1,5 +1,6 @@
 package com.robotutor.nexora.orchestration.client
 
+import com.robotutor.nexora.orchestration.client.view.IAMAccountResponse
 import com.robotutor.nexora.orchestration.client.view.UserResponse
 import com.robotutor.nexora.orchestration.config.UserConfig
 import com.robotutor.nexora.orchestration.controller.view.UserRegistrationRequest
@@ -16,11 +17,16 @@ class UserClient(
     @Value("\${app.security.internal-access-token}")
     lateinit var internalAccessToken: String
 
-    fun registerUser(user: UserRegistrationRequest): Mono<UserResponse> {
+    fun registerUser(user: UserRegistrationRequest, account: IAMAccountResponse): Mono<UserResponse> {
         return webClient.post(
             baseUrl = userConfig.baseUrl,
             path = userConfig.path,
-            body = mapOf("email" to user.email, "name" to user.name, "mobile" to user.mobile),
+            body = mapOf(
+                "accountId" to account.accountId,
+                "email" to user.email,
+                "name" to user.name,
+                "mobile" to user.mobile
+            ),
             returnType = UserResponse::class.java,
             headers = mapOf("Authorization" to "Bearer $internalAccessToken")
         )

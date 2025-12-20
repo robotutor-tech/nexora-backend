@@ -19,8 +19,9 @@ object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocume
             name = domain.name.value,
             address = toAddressDocument(domain.address),
             registeredBy = toCreatedByDocument(domain.registeredBy),
+            state = domain.getState(),
             createdAt = domain.createdAt,
-            updatedAt = domain.updatedAt,
+            updatedAt = domain.getUpdatedAt(),
             version = domain.getVersion()
         )
     }
@@ -32,6 +33,7 @@ object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocume
                 name = Name(document.name),
                 address = toAddress(document.address),
                 registeredBy = toCreatedBy(document.registeredBy),
+                state = document.state,
                 createdAt = document.createdAt,
                 updatedAt = document.updatedAt,
             )

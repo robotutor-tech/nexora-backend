@@ -11,6 +11,7 @@ import com.robotutor.nexora.context.device.interfaces.controller.dto.ActivateDev
 import com.robotutor.nexora.context.device.interfaces.controller.dto.DeviceMetaDataResponse
 import com.robotutor.nexora.context.device.interfaces.controller.dto.DeviceResponse
 import com.robotutor.nexora.context.device.interfaces.controller.dto.RegisterDeviceRequest
+import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ZoneId
@@ -18,6 +19,7 @@ import com.robotutor.nexora.shared.domain.vo.ZoneId
 object DeviceMapper {
     fun toRegisterDeviceCommand(request: RegisterDeviceRequest, actorData: ActorData): RegisterDeviceCommand {
         return RegisterDeviceCommand(
+            accountId = AccountId(request.accountId),
             name = Name(request.name),
             zoneId = ZoneId(request.zoneId),
             premisesId = actorData.premisesId,

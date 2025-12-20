@@ -44,6 +44,7 @@ data class SessionDocument(
     JsonSubTypes.Type(value = ActorPrincipalDocument::class, name = "ACTOR")
 )
 sealed interface SessionPrincipalDocument
+
 data class AccountPrincipalDocument(
     val accountId: String,
     val type: AccountType

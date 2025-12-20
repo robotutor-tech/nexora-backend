@@ -7,9 +7,10 @@ import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.AccountId
 
 data class RegisterUserCommand(
+    val accountId: AccountId,
     val email: Email,
     val name: Name,
-    val mobile: Mobile
+    val mobile: Mobile,
 ) : Command
 
 data class GetUserQuery(val accountId: AccountId) : Command

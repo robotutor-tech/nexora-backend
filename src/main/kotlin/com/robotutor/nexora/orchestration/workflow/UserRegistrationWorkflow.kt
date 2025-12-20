@@ -2,9 +2,10 @@ package com.robotutor.nexora.orchestration.workflow
 
 import com.robotutor.nexora.orchestration.client.IAMClient
 import com.robotutor.nexora.orchestration.client.UserClient
+import com.robotutor.nexora.orchestration.client.view.AccountPayload
 import com.robotutor.nexora.orchestration.client.view.UserResponse
 import com.robotutor.nexora.orchestration.controller.view.UserRegistrationRequest
-import com.robotutor.nexora.orchestration.messaging.event.CompensateUserRegistrationEvent
+import com.robotutor.nexora.orchestration.messaging.event.CompensateAccountRegistrationEvent
 import com.robotutor.nexora.orchestration.messaging.event.OrchestrationEvent
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import org.springframework.stereotype.Service
@@ -17,12 +18,17 @@ class UserRegistrationWorkflow(
     private val eventPublisher: EventPublisher<OrchestrationEvent>,
 ) {
     fun registerUser(user: UserRegistrationRequest): Mono<UserResponse> {
-        return userClient.registerUser(user)
-            .flatMap { userResponse ->
-                iamClient.registerAccount(userResponse, user.password)
-                    .map { userResponse }
+        val payload = AccountPayload(
+            user.email,
+            user.password,
+            "PASSWORD",
+            "HUMAN"
+        )
+        return iamClient.registerAccount(payload)
+            .flatMap { iamAccount ->
+                userClient.registerUser(user, iamAccount)
                     .onErrorResume { throwable ->
-                        eventPublisher.publish(CompensateUserRegistrationEvent(userResponse.userId), throwable)
+                        eventPublisher.publish(CompensateAccountRegistrationEvent(iamAccount.accountId), throwable)
                     }
             }
     }

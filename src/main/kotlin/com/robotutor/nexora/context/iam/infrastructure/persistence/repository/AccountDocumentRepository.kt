@@ -11,6 +11,7 @@ import java.time.Instant
 @Repository
 interface AccountDocumentRepository : ReactiveCrudRepository<AccountDocument, String> {
     fun findByAccountId(accountId: String): Mono<AccountDocument>
+    fun deleteByAccountId(accountId: String): Mono<AccountDocument>
     fun findByCredentials_CredentialIdAndCredentials_Kind(
         credentialId: String,
         kind: CredentialKind

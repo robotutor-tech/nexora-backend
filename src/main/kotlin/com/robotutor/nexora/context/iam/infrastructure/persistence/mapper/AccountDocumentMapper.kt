@@ -25,15 +25,15 @@ object AccountDocumentMapper : DocumentMapper<AccountAggregate, AccountDocument>
                     metadata = it.metadata
                 )
             },
-            status = domain.status,
+            status = domain.getStatus(),
             createdAt = domain.createdAt,
-            updatedAt = domain.updatedAt,
+            updatedAt = domain.getUpdatedAt(),
             version = domain.getVersion(),
         )
     }
 
     override fun toDomainModel(document: AccountDocument): AccountAggregate {
-        return AccountAggregate(
+        return AccountAggregate.create(
             accountId = AccountId(document.accountId),
             type = document.type,
             credentials = document.credentials.map {

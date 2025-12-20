@@ -1,5 +1,6 @@
 package com.robotutor.nexora.context.premises.interfaces.controller.dto
 
+import com.robotutor.nexora.context.premises.domain.aggregate.PremisesState
 import java.time.Instant
 
 data class AddressResponse(
@@ -14,6 +15,7 @@ data class PremisesResponse(
     val premisesId: String,
     val name: String,
     val address: AddressResponse,
+    val state: PremisesState,
     val createdAt: Instant,
     val updatedAt: Instant
 )

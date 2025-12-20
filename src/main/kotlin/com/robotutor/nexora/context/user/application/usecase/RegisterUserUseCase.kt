@@ -22,7 +22,14 @@ class RegisterUserUseCase(
     fun execute(command: RegisterUserCommand): Mono<UserAggregate> {
         return registerUserPolicy.evaluate(command)
             .errorOnDenied(NexoraError.NEXORA0201)
-            .map { UserAggregate.register(name = command.name, email = command.email, mobile = command.mobile) }
+            .map {
+                UserAggregate.register(
+                    accountId = command.accountId,
+                    name = command.name,
+                    email = command.email,
+                    mobile = command.mobile
+                )
+            }
             .flatMap { user -> userRepository.save(user) }
             .logOnSuccess(logger, "Successfully registered user")
             .logOnError(logger, "Failed to registered user")

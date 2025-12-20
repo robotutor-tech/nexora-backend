@@ -7,5 +7,6 @@ import reactor.core.publisher.Mono
 
 interface RoleRepository {
     fun save(roleAggregate: RoleAggregate): Mono<RoleAggregate>
+    fun saveAll(roleAggregates: List<RoleAggregate>): Flux<RoleAggregate>
     fun findAllByRoleIds(roleIds: Set<RoleId>): Flux<RoleAggregate>
 }

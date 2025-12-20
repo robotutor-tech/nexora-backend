@@ -26,6 +26,14 @@ class MongoGroupRepository(
             .publishEvents(eventPublisher, groupAggregate)
     }
 
+    override fun saveAll(groupAggregates: List<GroupAggregate>): Flux<GroupAggregate> {
+        val groupDocuments = groupAggregates.map { GroupDocumentMapper.toMongoDocument(it) }
+        return groupDocumentRepository.saveAll(groupDocuments)
+            .retryOptimisticLockingFailure()
+            .map { GroupDocumentMapper.toDomainModel(it) }
+            .publishEvents(eventPublisher, groupAggregates)
+    }
+
     override fun findAllByGroupIds(groupIds: Set<GroupId>): Flux<GroupAggregate> {
         return groupDocumentRepository.findAllByGroupIdIn(groupIds.map { it.value })
             .map { GroupDocumentMapper.toDomainModel(it) }

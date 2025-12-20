@@ -30,7 +30,7 @@ class DeviceController(
     @PostMapping
     fun registerDevice(
         @RequestBody @Validated request: RegisterDeviceRequest,
-        actorData: ActorData,
+        actorData: ActorData
     ): Mono<DeviceResponse> {
         val command = DeviceMapper.toRegisterDeviceCommand(request, actorData)
         return registerDeviceUseCase.execute(command)

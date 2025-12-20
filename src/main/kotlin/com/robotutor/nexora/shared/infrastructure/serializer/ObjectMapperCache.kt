@@ -1,5 +1,6 @@
 package com.robotutor.nexora.shared.infrastructure.serializer
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.module.SimpleModule
@@ -11,6 +12,7 @@ import org.springframework.http.HttpMethod
 
 object ObjectMapperCache {
     val objectMapper: ObjectMapper = jacksonObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .registerModule(JavaTimeModule())
         .registerModule(SimpleModule().apply {
             addSerializer(HttpMethod::class.java, HttpMethodSerializer())
@@ -18,10 +20,5 @@ object ObjectMapperCache {
         })
         .registerKotlinModule()
         .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-        .apply {
-//            addMixIn(PrincipalData::class.java, PrincipalDataMixin::class.java)
-//            addMixIn(ActorPrincipalData::class.java, ActorPrincipalDataMixin::class.java)
-//            addMixIn(ActorPrincipalContext::class.java, ActorPrincipalContextMixin::class.java)
-//            addMixIn(PrincipalContext::class.java, PrincipalContextMixin::class.java)
-        }
+
 }

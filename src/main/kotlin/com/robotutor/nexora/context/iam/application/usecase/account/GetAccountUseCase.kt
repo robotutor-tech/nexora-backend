@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.iam.application.usecase
+package com.robotutor.nexora.context.iam.application.usecase.account
 
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate

@@ -26,6 +26,14 @@ class MongoRoleRepository(
             .publishEvents(eventPublisher, roleAggregate)
     }
 
+    override fun saveAll(roleAggregates: List<RoleAggregate>): Flux<RoleAggregate> {
+        val roleDocuments = roleAggregates.map { roleAggregate -> RoleDocumentMapper.toMongoDocument(roleAggregate) }
+        return roleDocumentRepository.saveAll(roleDocuments)
+            .retryOptimisticLockingFailure()
+            .map { RoleDocumentMapper.toDomainModel(it) }
+            .publishEvents(eventPublisher, roleAggregates)
+    }
+
     override fun findAllByRoleIds(roleIds: Set<RoleId>): Flux<RoleAggregate> {
         return roleDocumentRepository.findAllByRoleIdIn(roleIds.map { it.value })
             .map { RoleDocumentMapper.toDomainModel(it) }

@@ -7,5 +7,6 @@ import reactor.core.publisher.Mono
 
 interface GroupRepository {
     fun save(groupAggregate: GroupAggregate): Mono<GroupAggregate>
+    fun saveAll(groupAggregates: List<GroupAggregate>): Flux<GroupAggregate>
     fun findAllByGroupIds(groupIds: Set<GroupId>): Flux<GroupAggregate>
 }

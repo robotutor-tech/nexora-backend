@@ -20,7 +20,7 @@ data class UserDocument(
     val id: String? = null,
     @Indexed(unique = true)
     val userId: String,
-    val accountId: String?,
+    val accountId: String,
     val name: String,
     val email: String,
     val mobile: String,
