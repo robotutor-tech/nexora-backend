@@ -5,7 +5,7 @@ import com.robotutor.nexora.context.iam.application.command.CreateSessionCommand
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.event.ActorAuthenticatedEvent
 import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.context.iam.domain.vo.ActorPrincipal
 import com.robotutor.nexora.shared.domain.event.EventPublisher
@@ -28,7 +28,7 @@ class AuthenticateActorUseCase(
 
     fun execute(command: AuthenticateActorCommand): Mono<SessionTokens> {
         return actorRepository.findByAccountIdAndPremisesId(command.accountData.accountId, command.premisesId)
-            .switchIfEmpty(createMonoError(UnAuthorizedException(NexoraError.NEXORA0202)))
+            .switchIfEmpty(createMonoError(UnAuthorizedException(IAMError.NEXORA0202)))
             .flatMap { actor ->
                 val createSessionCommand = CreateSessionCommand(
                     ActorPrincipal(command.accountData, actor.actorId, actor.premisesId)

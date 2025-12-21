@@ -1,17 +1,20 @@
 package com.robotutor.nexora.shared.infrastructure.persistence.mapper
 
+import com.robotutor.nexora.shared.domain.Aggregate
 import com.robotutor.nexora.shared.domain.specification.AndSpecification
+import com.robotutor.nexora.shared.domain.specification.IdInSpecification
+import com.robotutor.nexora.shared.domain.specification.IdNotInSpecification
 import com.robotutor.nexora.shared.domain.specification.NotSpecification
 import com.robotutor.nexora.shared.domain.specification.OrSpecification
 import com.robotutor.nexora.shared.domain.specification.Specification
 import org.springframework.data.mongodb.core.query.Criteria
 
-abstract class BaseMongoSpecificationTranslator<D>
-    : SpecificationTranslator<D, Criteria> {
+abstract class BaseMongoSpecificationTranslator<A : Aggregate, S : Specification<A>>(val identifierKey: String) :
+    SpecificationTranslator<A, Criteria> {
 
-    final override fun translate(specification: Specification<D>): Criteria =
+    @Suppress("UNCHECKED_CAST")
+    final override fun translate(specification: Specification<A>): Criteria =
         when (specification) {
-
             is AndSpecification ->
                 Criteria().andOperator(translate(specification.left), translate(specification.right))
 
@@ -21,8 +24,14 @@ abstract class BaseMongoSpecificationTranslator<D>
             is NotSpecification ->
                 Criteria().norOperator(translate(specification.spec))
 
-            else -> translateLeaf(specification)
+            is IdInSpecification<*, *> -> if (specification.allowed.isEmpty()) Criteria()
+            else Criteria.where(identifierKey).`in`(specification.allowed.map { it.value })
+
+            is IdNotInSpecification<*, *> -> if (specification.denied.isEmpty()) Criteria()
+            else Criteria.where(identifierKey).nin(specification.denied.map { it.value })
+
+            else -> translateLeaf(specification as S)
         }
 
-    protected abstract fun translateLeaf(specification: Specification<D>): Criteria
+    protected abstract fun translateLeaf(specification: S): Criteria
 }

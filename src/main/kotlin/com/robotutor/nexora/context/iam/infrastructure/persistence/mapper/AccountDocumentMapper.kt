@@ -7,6 +7,7 @@ import com.robotutor.nexora.context.iam.domain.vo.HashedCredentialSecret
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.AccountDocument
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.CredentialDocument
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object AccountDocumentMapper : DocumentMapper<AccountAggregate, AccountDocument> {
@@ -15,7 +16,8 @@ object AccountDocumentMapper : DocumentMapper<AccountAggregate, AccountDocument>
             id = domain.getObjectId(),
             accountId = domain.accountId.value,
             type = domain.type,
-            credentials = domain.credentials.map {
+            createdBy = domain.createdBy?.value,
+            credentials = domain.getCredentials().map {
                 CredentialDocument(
                     kind = it.kind,
                     credentialId = it.credentialId.value,
@@ -36,6 +38,7 @@ object AccountDocumentMapper : DocumentMapper<AccountAggregate, AccountDocument>
         return AccountAggregate.create(
             accountId = AccountId(document.accountId),
             type = document.type,
+            createdBy = document.createdBy?.let { ActorId(it) },
             credentials = document.credentials.map {
                 Credential(
                     kind = it.kind,

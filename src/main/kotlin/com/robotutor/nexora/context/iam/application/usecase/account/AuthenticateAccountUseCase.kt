@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.iam.application.usecase.CreateSessionUseCase
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.event.AccountAuthenticatedEvent
 import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
 import com.robotutor.nexora.context.iam.domain.vo.AccountPrincipal
@@ -33,13 +33,12 @@ class AuthenticateAccountUseCase(
     fun execute(command: AuthenticateAccountCommand): Mono<SessionTokens> {
         return accountRepository.findByCredentialIdAndKind(command.credentialId, command.kind)
             .flatMap { account ->
-                val credential =
-                    account.credentials.find { it.kind == command.kind && it.credentialId == command.credentialId }
-                val matchResult = credential?.let { !secretService.matches(command.secret, credential.secret) } ?: false
+                val credential = account.getCredential(command.kind, command.credentialId)
+                val matchResult = secretService.matches(command.secret, credential.secret)
                 if (matchResult) {
-                    createMonoError(UnAuthorizedException(NexoraError.NEXORA0202))
-                } else {
                     createMono(account)
+                } else {
+                    createMonoError(UnAuthorizedException(IAMError.NEXORA0202))
                 }
             }
             .flatMap { account ->

@@ -19,6 +19,7 @@ import java.time.Instant
 
 class DeviceAggregate private constructor(
     val deviceId: DeviceId,
+    val accountId: AccountId,
     val premisesId: PremisesId,
     val zoneId: ZoneId,
     val registeredBy: ActorId,
@@ -28,14 +29,12 @@ class DeviceAggregate private constructor(
     private var state: DeviceState,
     private var feedIds: Set<FeedId>,
     private var health: DeviceHealth,
-    private var accountId: AccountId?,
     private var updatedAt: Instant,
 ) : AggregateRoot<DeviceAggregate, DeviceId, DeviceDomainEvent>(deviceId) {
 
     fun getHealth(): DeviceHealth = health
     fun getState(): DeviceState = state
     fun getFeedIds(): Set<FeedId> = feedIds
-    fun getAccountId(): AccountId? = accountId
     fun getUpdatedAt(): Instant = updatedAt
     fun getName(): Name = name
     fun getMetaData(): DeviceMetaData? = metaData
@@ -44,7 +43,6 @@ class DeviceAggregate private constructor(
         if (state != DeviceState.REGISTERED) {
             throw InvalidStateException(NexoraError.NEXORA0401)
         }
-        this.accountId = accountId
         this.state = DeviceState.COMMISSIONED
         this.updatedAt = Instant.now()
         addEvent(DeviceCommissionedEvent(deviceId, accountId, premisesId))
@@ -63,12 +61,14 @@ class DeviceAggregate private constructor(
 
     companion object {
         fun register(
+            accountId: AccountId,
             premisesId: PremisesId,
             name: Name,
             registeredBy: ActorId,
             zoneId: ZoneId,
         ): DeviceAggregate {
             val device = create(
+                accountId = accountId,
                 deviceId = DeviceId.generate(),
                 premisesId = premisesId,
                 name = name,
@@ -85,7 +85,7 @@ class DeviceAggregate private constructor(
             name: Name,
             zoneId: ZoneId,
             registeredBy: ActorId,
-            accountId: AccountId? = null,
+            accountId: AccountId,
             feedIds: Set<FeedId> = emptySet(),
             state: DeviceState = DeviceState.REGISTERED,
             health: DeviceHealth = DeviceHealth.OFFLINE,

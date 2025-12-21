@@ -3,7 +3,7 @@ package com.robotutor.nexora.context.iam.application.usecase.account
 import com.robotutor.nexora.context.iam.application.command.RegisterAccountCommand
 import com.robotutor.nexora.context.iam.application.policy.RegisterAccountPolicy
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.AccountIdGenerator
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
@@ -26,7 +26,7 @@ class RegisterAccountUseCase(
 
     fun execute(command: RegisterAccountCommand): Mono<AccountAggregate> {
         return registerAccountPolicy.evaluate(command)
-            .errorOnDenied(NexoraError.NEXORA0201)
+            .errorOnDenied(IAMError.NEXORA0201)
             .flatMap { accountIdGenerator.generate() }
             .map { accountId ->
                 AccountAggregate.register(
@@ -39,6 +39,7 @@ class RegisterAccountUseCase(
                             secret = secretService.encode(command.secret)
                         )
                     ),
+                    createdBy = command.createdBy
                 )
             }
             .flatMap { accountAggregate -> accountRepository.save(accountAggregate) }

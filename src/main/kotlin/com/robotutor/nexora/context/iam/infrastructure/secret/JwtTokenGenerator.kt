@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.infrastructure.secret
 
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.service.TokenGenerator
 import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
 import com.robotutor.nexora.context.iam.domain.vo.TokenPayload
@@ -47,7 +47,7 @@ class JwtTokenGenerator : TokenGenerator {
                 expiresAt = claims.expiration.toInstant()
             )
         } catch (e: Exception) {
-            throw UnAuthorizedException(NexoraError.NEXORA0205)
+            throw UnAuthorizedException(IAMError.NEXORA0205)
         }
     }
 

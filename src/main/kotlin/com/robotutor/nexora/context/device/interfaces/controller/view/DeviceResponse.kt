@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.device.interfaces.controller.dto
+package com.robotutor.nexora.context.device.interfaces.controller.view
 
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceHealth
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceState
@@ -6,6 +6,7 @@ import java.time.Instant
 
 data class DeviceResponse(
     val deviceId: String,
+    val accountId: String,
     val premisesId: String,
     val name: String,
     val state: DeviceState,

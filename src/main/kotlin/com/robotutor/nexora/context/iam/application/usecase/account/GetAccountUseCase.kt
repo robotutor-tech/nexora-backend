@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.iam.application.usecase.account
 
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.logger.Logger
@@ -20,7 +20,7 @@ class GetAccountUseCase(
 
     fun execute(query: GetAccountQuery): Mono<AccountAggregate> {
         return accountRepository.findByAccountId(query.accountId)
-            .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0203)))
+            .switchIfEmpty(createMonoError(DataNotFoundException(IAMError.NEXORA0203)))
             .logOnSuccess(logger, "Successfully retrieved account", mapOf("accountId" to query.accountId))
             .logOnError(logger, "Failed to retrieve account", mapOf("accountId" to query.accountId))
     }

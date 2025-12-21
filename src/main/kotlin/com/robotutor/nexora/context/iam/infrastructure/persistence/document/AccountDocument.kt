@@ -22,6 +22,7 @@ data class AccountDocument(
     @Indexed(unique = true)
     val accountId: String,
     val type: AccountType,
+    val createdBy: String?,
     val credentials: List<CredentialDocument>,
     val status: AccountStatus,
     val createdAt: Instant,

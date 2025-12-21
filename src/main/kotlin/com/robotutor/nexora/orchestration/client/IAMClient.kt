@@ -18,12 +18,16 @@ class IAMClient(private val webClient: WebClientWrapper, private val iamConfig: 
     lateinit var internalAccessToken: String
 
     fun registerAccount(payload: AccountPayload): Mono<IAMAccountResponse> {
+        val headers = mutableMapOf<String, String>()
+        if (payload.type == "HUMAN") headers["Authorization"] = "Bearer $internalAccessToken"
+        val path =
+            if (payload.type == "HUMAN") iamConfig.registerHumanAccountPath else iamConfig.registerMachineAccountPath
         return webClient.post(
             baseUrl = iamConfig.baseUrl,
-            path = iamConfig.accountRegisterPath,
+            path = path,
             body = payload,
             returnType = IAMAccountResponse::class.java,
-            headers = mapOf("Authorization" to "Bearer $internalAccessToken")
+            headers = headers
         )
     }
 

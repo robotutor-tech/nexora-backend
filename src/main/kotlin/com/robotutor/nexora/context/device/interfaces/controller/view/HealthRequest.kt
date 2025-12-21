@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.device.interfaces.controller.dto
+package com.robotutor.nexora.context.device.interfaces.controller.view
 
 data class HealthRequest(
     val health: Health,

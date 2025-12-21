@@ -22,7 +22,15 @@ class RegisterDeviceUseCase(
     fun execute(command: RegisterDeviceCommand): Mono<DeviceAggregate> {
         return registerDevicePolicy.evaluate(command)
             .errorOnDenied(NexoraError.NEXORA0401)
-            .map { DeviceAggregate.register(command.premisesId, command.name, command.registeredBy, command.zoneId) }
+            .map {
+                DeviceAggregate.register(
+                    command.accountId,
+                    command.premisesId,
+                    command.name,
+                    command.registeredBy,
+                    command.zoneId
+                )
+            }
             .flatMap { device -> deviceRepository.save(device) }
             .logOnSuccess(logger, "Successfully registered new Device", mapOf("name" to command.name))
             .logOnError(logger, "Failed to register new Device", mapOf("name" to command.name))

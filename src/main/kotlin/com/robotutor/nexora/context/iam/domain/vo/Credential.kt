@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.iam.domain.vo
 
-import com.robotutor.nexora.shared.domain.vo.ValueObject
 import com.robotutor.nexora.shared.domain.utility.validation
+import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.time.Instant
 
 data class Credential(
@@ -12,6 +12,9 @@ data class Credential(
     val updatedAt: Instant = Instant.now(),
     val metadata: Map<String, String> = emptyMap()
 ) : ValueObject() {
+    fun rotate(newSecret: HashedCredentialSecret): Credential {
+        return copy(secret = newSecret, updatedAt = Instant.now())
+    }
 }
 
 enum class CredentialKind {
@@ -26,6 +29,12 @@ data class CredentialSecret(val value: String) : ValueObject() {
 
     override fun validate() {
         validation(value.isNotBlank()) { "Credential secret must not be blank" }
+    }
+
+    companion object {
+        fun generate(): CredentialSecret {
+            return CredentialSecret(TokenValue.generate(54).value)
+        }
     }
 }
 

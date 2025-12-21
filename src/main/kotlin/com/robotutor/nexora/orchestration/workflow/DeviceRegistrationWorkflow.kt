@@ -29,11 +29,7 @@ class DeviceRegistrationWorkflow(
             .flatMap { iamAccount ->
                 deviceClient.registerDevice(device, iamAccount)
                     .map {
-                        DeviceRegistrationResponse.from(
-                            it,
-//                    payload.credentialId,
-                            payload.secret
-                        )
+                        DeviceRegistrationResponse.from(it, payload.credentialId, payload.secret)
                     }
                     .onErrorResume { throwable ->
                         eventPublisher.publish(CompensateAccountRegistrationEvent(iamAccount.accountId), throwable)

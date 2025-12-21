@@ -20,7 +20,7 @@ object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
         return DeviceDocument(
             id = domain.getObjectId(),
             deviceId = domain.deviceId.value,
-            accountId = domain.getAccountId()?.value,
+            accountId = domain.accountId.value,
             premisesId = domain.premisesId.value,
             name = domain.getName().value,
             feedIds = domain.getFeedIds().map { it.value }.toSet(),
@@ -38,7 +38,7 @@ object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
     override fun toDomainModel(document: DeviceDocument): DeviceAggregate {
         return DeviceAggregate.create(
             deviceId = DeviceId(document.deviceId),
-            accountId = document.accountId?.let { AccountId(it) },
+            accountId = AccountId(document.accountId),
             premisesId = PremisesId(document.premisesId),
             name = Name(document.name),
             feedIds = document.feedIds.map { FeedId(it) }.toSet(),

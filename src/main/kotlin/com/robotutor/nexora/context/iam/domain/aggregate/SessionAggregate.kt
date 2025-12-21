@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.iam.domain.aggregate
 
 import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
 import com.robotutor.nexora.context.iam.domain.vo.SessionId
 import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
@@ -43,7 +43,7 @@ data class SessionAggregate(
 
     fun refresh(refreshTokenHash: HashedTokenValue): SessionAggregate {
         if (!canRefresh()) {
-            throw UnAuthorizedException(NexoraError.NEXORA0206)
+            throw UnAuthorizedException(IAMError.NEXORA0206)
         } else {
             refreshCountValue += 1
             lastRefreshAtValue = Instant.now()

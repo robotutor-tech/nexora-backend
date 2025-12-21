@@ -1,20 +1,22 @@
 package com.robotutor.nexora.context.device.interfaces.controller.mapper
 
 import com.robotutor.nexora.context.device.application.command.ActivateDeviceCommand
+import com.robotutor.nexora.context.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.context.device.application.command.RegisterDeviceCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetaData
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
-import com.robotutor.nexora.context.device.interfaces.controller.dto.ActivateDeviceRequest
-import com.robotutor.nexora.context.device.interfaces.controller.dto.DeviceMetaDataResponse
-import com.robotutor.nexora.context.device.interfaces.controller.dto.DeviceResponse
-import com.robotutor.nexora.context.device.interfaces.controller.dto.RegisterDeviceRequest
+import com.robotutor.nexora.context.device.interfaces.controller.view.ActivateDeviceRequest
+import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataResponse
+import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
+import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ZoneId
+import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 
 object DeviceMapper {
     fun toRegisterDeviceCommand(request: RegisterDeviceRequest, actorData: ActorData): RegisterDeviceCommand {
@@ -30,6 +32,7 @@ object DeviceMapper {
     fun toDeviceResponse(device: DeviceAggregate): DeviceResponse {
         return DeviceResponse(
             deviceId = device.deviceId.value,
+            accountId = device.accountId.value,
             premisesId = device.premisesId.value,
             name = device.getName().value,
             state = device.getState(),
@@ -69,5 +72,9 @@ object DeviceMapper {
                 serialNo = SerialNo(request.serialNo)
             )
         )
+    }
+
+    fun toGetDevicesQuery(resources: AuthorizedResources, actorData: ActorData): GetDevicesQuery {
+        return GetDevicesQuery(actorData.actorId, resources.toResources(DeviceId::class.java))
     }
 }

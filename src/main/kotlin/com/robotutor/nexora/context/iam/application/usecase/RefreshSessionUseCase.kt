@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.iam.application.usecase
 
 import com.robotutor.nexora.context.iam.application.command.RefreshSessionCommand
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
-import com.robotutor.nexora.context.iam.domain.exception.NexoraError
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.SessionRepository
 import com.robotutor.nexora.context.iam.domain.service.TokenGenerator
 import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
@@ -26,7 +26,7 @@ class RefreshSessionUseCase(
     fun execute(command: RefreshSessionCommand): Mono<SessionTokens> {
         val hashedTokenValue = HashedTokenValue.create(command.token)
         return sessionRepository.findByTokenValueAndExpiredAtAfter(hashedTokenValue)
-            .switchIfEmpty(createMonoError(UnAuthorizedException(NexoraError.NEXORA0205)))
+            .switchIfEmpty(createMonoError(UnAuthorizedException(IAMError.NEXORA0205)))
             .flatMap { session ->
                 val refreshToken = TokenValue.generate()
                 val refreshedSession = session.refresh(HashedTokenValue.create(refreshToken))

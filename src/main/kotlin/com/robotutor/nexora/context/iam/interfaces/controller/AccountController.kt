@@ -1,18 +1,23 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
+import com.robotutor.nexora.context.iam.application.usecase.account.RotateCredentialUseCase
 import com.robotutor.nexora.context.iam.application.usecase.account.GetAccountUseCase
 import com.robotutor.nexora.context.iam.application.usecase.account.AuthenticateAccountUseCase
 import com.robotutor.nexora.context.iam.application.usecase.account.RegisterAccountUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AccountMapper
+import com.robotutor.nexora.context.iam.interfaces.controller.mapper.CredentialMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
+import com.robotutor.nexora.context.iam.interfaces.controller.view.CredentialRotatedResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,12 +30,23 @@ import reactor.core.publisher.Mono
 class AccountController(
     private val registerAccountUseCase: RegisterAccountUseCase,
     private val authenticateAccountUseCase: AuthenticateAccountUseCase,
-    private val getAccountUseCase: GetAccountUseCase
+    private val getAccountUseCase: GetAccountUseCase,
+    private val rotateCredentialUseCase: RotateCredentialUseCase
 ) {
 
     @PostMapping("/register")
-    fun register(@RequestBody @Validated registerAccountRequest: RegisterAccountRequest): Mono<AccountResponse> {
-        val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest)
+    fun registerMachine(@RequestBody @Validated registerAccountRequest: RegisterAccountRequest): Mono<AccountResponse> {
+        val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, null)
+        return registerAccountUseCase.execute(command)
+            .map { AccountMapper.toAccountResponse(it) }
+    }
+
+    @PostMapping("/register/machine")
+    fun registerMachine(
+        @RequestBody @Validated registerAccountRequest: RegisterAccountRequest,
+        actorData: ActorData
+    ): Mono<AccountResponse> {
+        val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, actorData)
         return registerAccountUseCase.execute(command)
             .map { AccountMapper.toAccountResponse(it) }
     }
@@ -47,6 +63,15 @@ class AccountController(
         val query = GetAccountQuery(AccountId(accountId))
         return getAccountUseCase.execute(query).map { AccountMapper.toAccountResponse(it) }
     }
+
+    @PatchMapping("/{accountId}/credentials/rotate")
+    fun rotateCredentials(@PathVariable accountId: String, actorData: ActorData): Mono<CredentialRotatedResponse> {
+        val command = AccountMapper.toRotateCredentialsCommand(accountId, actorData)
+        return rotateCredentialUseCase.execute(command)
+            .map { CredentialMapper.toCredentialRotatedResponse(it) }
+    }
+
+
 //
 //    @PostMapping("/login/actor")
 //    fun actorLogin(
