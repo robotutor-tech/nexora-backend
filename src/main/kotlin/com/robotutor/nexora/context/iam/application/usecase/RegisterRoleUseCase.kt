@@ -10,14 +10,14 @@ import reactor.core.publisher.Mono
 @Service
 class RegisterRoleUseCase(private val roleRepository: RoleRepository) {
     fun execute(command: RegisterRoleCommand): Mono<RoleAggregate> {
-        val roleAggregate = RoleAggregate.register(command.name, command.premisesId, command.type, command.permissions)
-        return roleRepository.save(roleAggregate)
+        val role = RoleAggregate.register(command.name, command.premisesId, command.type, command.permissions)
+        return roleRepository.save(role)
     }
 
     fun execute(commands: List<RegisterRoleCommand>): Flux<RoleAggregate> {
-        val roleAggregates = commands.map { command ->
+        val roles = commands.map { command ->
             RoleAggregate.register(command.name, command.premisesId, command.type, command.permissions)
         }
-        return roleRepository.saveAll(roleAggregates)
+        return roleRepository.saveAll(roles)
     }
 }

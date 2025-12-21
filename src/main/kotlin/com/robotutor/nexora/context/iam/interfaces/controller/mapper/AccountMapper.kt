@@ -38,7 +38,6 @@ object AccountMapper {
         return AuthenticateAccountCommand(
             credentialId = CredentialId(authenticateAccountRequest.credentialId),
             secret = CredentialSecret(authenticateAccountRequest.secret),
-            kind = authenticateAccountRequest.kind
         )
     }
 

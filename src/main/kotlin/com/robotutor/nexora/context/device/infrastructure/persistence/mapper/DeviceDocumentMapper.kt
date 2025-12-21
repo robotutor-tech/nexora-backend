@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.device.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetaData
+import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetadata
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
@@ -26,7 +26,7 @@ object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
             feedIds = domain.getFeedIds().map { it.value }.toSet(),
             state = domain.getState(),
             health = domain.getHealth(),
-            metaData = domain.getMetaData()?.let { toMetadataDocument(it) },
+            metaData = domain.getMetadata()?.let { toMetadataDocument(it) },
             zoneId = domain.zoneId.value,
             registeredBy = domain.registeredBy.value,
             createdAt = domain.createdAt,
@@ -52,14 +52,14 @@ object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
         ).setObjectIdAndVersion(document.id, document.version)
     }
 
-    private fun toDeviceMetaData(metaDataDocument: DeviceMetaDataDocument): DeviceMetaData = DeviceMetaData(
+    private fun toDeviceMetaData(metaDataDocument: DeviceMetaDataDocument): DeviceMetadata = DeviceMetadata(
         osName = Name(metaDataDocument.osName),
         osVersion = Name(metaDataDocument.osVersion),
         modelNo = ModelNo(metaDataDocument.modelNo),
         serialNo = SerialNo(metaDataDocument.serialNo)
     )
 
-    private fun toMetadataDocument(metaData: DeviceMetaData): DeviceMetaDataDocument {
+    private fun toMetadataDocument(metaData: DeviceMetadata): DeviceMetaDataDocument {
         return DeviceMetaDataDocument(
             osName = metaData.osName.value,
             osVersion = metaData.osVersion.value,

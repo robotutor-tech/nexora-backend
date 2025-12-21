@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono
 interface DeviceDocumentRepository : ReactiveCrudRepository<DeviceDocument, String> {
     fun deleteByDeviceId(deviceId: String): Mono<DeviceDocument>
     fun findByDeviceId(deviceId: String): Mono<DeviceDocument>
+    fun findByAccountId(accountId: String): Mono<DeviceDocument>
 }

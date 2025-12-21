@@ -1,7 +1,6 @@
 package com.robotutor.nexora.context.iam.domain.aggregate
 
 import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
-import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.vo.Permission
 import com.robotutor.nexora.context.iam.domain.vo.RoleId
 import com.robotutor.nexora.shared.domain.AggregateRoot
@@ -38,5 +37,6 @@ enum class RoleType {
     FULL_WRITE,
     READ_ONLY,
     CONTROL_ONLY,
+    DEVICE_ACCESS,
     CUSTOM,
 }

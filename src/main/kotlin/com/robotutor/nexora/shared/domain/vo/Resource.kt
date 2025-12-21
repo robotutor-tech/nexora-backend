@@ -12,8 +12,9 @@ enum class ResourceType {
 }
 
 enum class ActionType {
+    CREATE,
     READ,
     CONTROL,
-    WRITE,
+    UPDATE,
     DELETE,
 }

@@ -31,9 +31,9 @@ class AuthenticateAccountUseCase(
     private val logger = Logger(this::class.java)
 
     fun execute(command: AuthenticateAccountCommand): Mono<SessionTokens> {
-        return accountRepository.findByCredentialIdAndKind(command.credentialId, command.kind)
+        return accountRepository.findByCredentialId(command.credentialId)
             .flatMap { account ->
-                val credential = account.getCredential(command.kind, command.credentialId)
+                val credential = account.getCredential(command.credentialId)
                 val matchResult = secretService.matches(command.secret, credential.secret)
                 if (matchResult) {
                     createMono(account)

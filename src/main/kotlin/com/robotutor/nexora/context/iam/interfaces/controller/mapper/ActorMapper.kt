@@ -2,13 +2,16 @@ package com.robotutor.nexora.context.iam.interfaces.controller.mapper
 
 import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.command.AuthenticateActorCommand
+import com.robotutor.nexora.context.iam.application.command.RegisterMachineActorCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterOwnerCommand
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateActorRequest
+import com.robotutor.nexora.context.iam.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.OwnerCreationRequest
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.ResourceId
 
 object ActorMapper {
     fun toActorResponse(actorAggregate: ActorAggregate): ActorResponse {
@@ -41,6 +44,14 @@ object ActorMapper {
         return RegisterOwnerCommand(
             premisesId = PremisesId(eventMessage.premisesId),
             owner = accountData
+        )
+    }
+
+    fun toRegisterMachineActorCommand(actorRequest: MachineActorRequest, accountData: AccountData): RegisterMachineActorCommand {
+        return RegisterMachineActorCommand(
+            premisesId = PremisesId(actorRequest.premisesId),
+            owner = accountData,
+            deviceId = ResourceId(actorRequest.deviceId)
         )
     }
 }

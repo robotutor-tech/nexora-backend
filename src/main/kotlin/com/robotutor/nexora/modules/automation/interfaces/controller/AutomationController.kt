@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/automations")
 class AutomationController(private val automationUseCase: AutomationUseCase) {
 
-    @Authorize(ActionType.WRITE, ResourceType.AUTOMATION)
+    @Authorize(ActionType.UPDATE, ResourceType.AUTOMATION)
     @PostMapping
     fun createAutomationRule(
         @RequestBody @Validated request: AutomationRequest,

@@ -9,7 +9,7 @@ import com.robotutor.nexora.shared.domain.specification.OrSpecification
 import com.robotutor.nexora.shared.domain.specification.Specification
 import org.springframework.data.mongodb.core.query.Criteria
 
-abstract class BaseMongoSpecificationTranslator<A : Aggregate, S : Specification<A>>(val identifierKey: String) :
+abstract class BaseSpecificationTranslator<A : Aggregate, S : Specification<A>>(val identifierKey: String) :
     SpecificationTranslator<A, Criteria> {
 
     @Suppress("UNCHECKED_CAST")

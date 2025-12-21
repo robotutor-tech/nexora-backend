@@ -2,6 +2,7 @@ package com.robotutor.nexora.orchestration.client
 
 import com.robotutor.nexora.orchestration.client.view.AccountPayload
 import com.robotutor.nexora.orchestration.client.view.ActorResponse
+import com.robotutor.nexora.orchestration.client.view.DeviceResponse
 import com.robotutor.nexora.orchestration.client.view.IAMAccountResponse
 import com.robotutor.nexora.orchestration.config.IamConfig
 import com.robotutor.nexora.shared.domain.vo.AccountData
@@ -47,6 +48,15 @@ class IAMClient(private val webClient: WebClientWrapper, private val iamConfig: 
             baseUrl = iamConfig.baseUrl,
             path = iamConfig.premisesOwnerRegisterPath,
             body = mapOf("premisesId" to premisesId),
+            returnType = ActorResponse::class.java
+        )
+    }
+
+    fun registerActorForDevice(device: DeviceResponse): Mono<ActorResponse> {
+        return webClient.post(
+            baseUrl = iamConfig.baseUrl,
+            path = iamConfig.machineActor,
+            body = mapOf("premisesId" to device.premisesId, "deviceId" to device.deviceId),
             returnType = ActorResponse::class.java
         )
     }

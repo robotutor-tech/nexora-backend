@@ -14,7 +14,6 @@
 **Request**:
 ```json
 {
-  "premisesId": "PREM-001",
   "zoneId": "ZONE-001",
   "deviceName": "Living Room Sensor"
 }
@@ -66,13 +65,10 @@
 **Request**:
 ```json
 {
-  "deviceId": "DEV-001",
-  "premisesId": "PREM-001",
-  "metadata": {
-    "firmware": "v1.2.3",
-    "capabilities": ["temperature", "humidity"]
-  },
-  "actorId": "ACTOR-001"
+  "modelNo": "String",
+  "serialNo": "String",
+  "osName": "String",
+  "osVersion": "String"
 }
 ```
 
@@ -80,6 +76,11 @@
 - Create an Actor representation of the Device within the Premises
 - Assign roles and permissions (feeds)
 - Prepare device for activation
+
+### Step 1: Validate Device Metadata and get Device
+**Device BC**:
+- Request: `GetDevice(deviceId)`
+
 
 ### Step 1: Create Actor for Device (IAM BC)
 **Actor**: Orchestration Service

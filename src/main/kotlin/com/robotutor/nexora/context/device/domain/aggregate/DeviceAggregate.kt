@@ -2,8 +2,9 @@ package com.robotutor.nexora.context.device.domain.aggregate
 
 import com.robotutor.nexora.context.device.domain.event.DeviceCommissionedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceDomainEvent
+import com.robotutor.nexora.context.device.domain.event.DeviceMetadataUpdatedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceRegisteredEvent
-import com.robotutor.nexora.context.device.domain.exception.NexoraError
+import com.robotutor.nexora.context.device.domain.exception.DeviceError
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
@@ -25,7 +26,7 @@ class DeviceAggregate private constructor(
     val registeredBy: ActorId,
     val createdAt: Instant,
     private var name: Name,
-    private var metaData: DeviceMetaData?,
+    private var metadata: DeviceMetadata?,
     private var state: DeviceState,
     private var feedIds: Set<FeedId>,
     private var health: DeviceHealth,
@@ -37,11 +38,11 @@ class DeviceAggregate private constructor(
     fun getFeedIds(): Set<FeedId> = feedIds
     fun getUpdatedAt(): Instant = updatedAt
     fun getName(): Name = name
-    fun getMetaData(): DeviceMetaData? = metaData
+    fun getMetadata(): DeviceMetadata? = metadata
 
     fun commission(accountId: AccountId): DeviceAggregate {
         if (state != DeviceState.REGISTERED) {
-            throw InvalidStateException(NexoraError.NEXORA0401)
+            throw InvalidStateException(DeviceError.NEXORA0401)
         }
         this.state = DeviceState.COMMISSIONED
         this.updatedAt = Instant.now()
@@ -49,12 +50,22 @@ class DeviceAggregate private constructor(
         return this
     }
 
-    fun activate(metaData: DeviceMetaData): DeviceAggregate {
+    fun updateMetadata(metadata: DeviceMetadata): DeviceAggregate {
+        if (state != DeviceState.REGISTERED) {
+            throw InvalidStateException(DeviceError.NEXORA0402)
+        }
+        this.metadata = metadata
+        this.updatedAt = Instant.now()
+        addEvent(DeviceMetadataUpdatedEvent(deviceId, metadata))
+        return this
+    }
+
+    fun activate(metaData: DeviceMetadata): DeviceAggregate {
         if (state != DeviceState.COMMISSIONED) {
-            throw InvalidStateException(NexoraError.NEXORA0403)
+            throw InvalidStateException(DeviceError.NEXORA0403)
         }
         this.state = DeviceState.ACTIVE
-        this.metaData = metaData
+        this.metadata = metaData
         this.updatedAt = Instant.now()
         return this
     }
@@ -89,7 +100,7 @@ class DeviceAggregate private constructor(
             feedIds: Set<FeedId> = emptySet(),
             state: DeviceState = DeviceState.REGISTERED,
             health: DeviceHealth = DeviceHealth.OFFLINE,
-            metaData: DeviceMetaData? = null,
+            metaData: DeviceMetadata? = null,
             createdAt: Instant = Instant.now(),
             updatedAt: Instant = Instant.now(),
         ): DeviceAggregate {
@@ -100,7 +111,7 @@ class DeviceAggregate private constructor(
                 feedIds = feedIds,
                 state = state,
                 health = health,
-                metaData = metaData,
+                metadata = metaData,
                 zoneId = zoneId,
                 accountId = accountId,
                 registeredBy = registeredBy,
@@ -133,7 +144,7 @@ enum class DeviceHealth {
     OFFLINE,
 }
 
-data class DeviceMetaData(
+data class DeviceMetadata(
     val osName: Name,
     val osVersion: Name,
     val modelNo: ModelNo,

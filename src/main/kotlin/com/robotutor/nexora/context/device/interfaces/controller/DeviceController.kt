@@ -3,19 +3,23 @@ package com.robotutor.nexora.context.device.interfaces.controller
 import com.robotutor.nexora.context.device.application.usecase.DeviceUseCase
 import com.robotutor.nexora.context.device.application.usecase.ActivateDeviceUseCase
 import com.robotutor.nexora.context.device.application.usecase.RegisterDeviceUseCase
+import com.robotutor.nexora.context.device.application.usecase.ValidateMetaDataUseCase
 import com.robotutor.nexora.context.device.interfaces.controller.view.ActivateDeviceRequest
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
 import com.robotutor.nexora.context.device.interfaces.controller.mapper.DeviceMapper
+import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.application.annotation.ResourceId
 import com.robotutor.nexora.shared.application.annotation.ResourceSelector
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -30,8 +34,9 @@ class DeviceController(
     private val registerDeviceUseCase: RegisterDeviceUseCase,
     private val activateDeviceUseCase: ActivateDeviceUseCase,
     private val deviceUseCase: DeviceUseCase,
+    private val updateMetaDataUseCase: ValidateMetaDataUseCase,
 ) {
-    @Authorize(ActionType.WRITE, ResourceType.DEVICE)
+    @Authorize(ActionType.UPDATE, ResourceType.DEVICE)
     @PostMapping
     fun registerDevice(
         @RequestBody @Validated request: RegisterDeviceRequest,
@@ -50,7 +55,7 @@ class DeviceController(
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
-    @Authorize(ActionType.WRITE, ResourceType.DEVICE, ResourceSelector.SPECIFIC)
+    @Authorize(ActionType.UPDATE, ResourceType.DEVICE, ResourceSelector.SPECIFIC)
     @PostMapping("/{deviceId}/activate")
     fun activateDevice(
         @PathVariable @ResourceId deviceId: String,
@@ -61,6 +66,21 @@ class DeviceController(
         return activateDeviceUseCase.execute(command)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
+
+    @PatchMapping("/metadata")
+    fun validateMetaData(@RequestBody metadata: DeviceMetaDataRequest, accountData: AccountData): Mono<DeviceResponse> {
+        val command = DeviceMapper.toUpdateMetaDataCommand(metadata, accountData)
+        return updateMetaDataUseCase.execute(command)
+            .map { DeviceMapper.toDeviceResponse(it) }
+    }
+
+//    @Authorize(ActionType.UPDATE, ResourceType.DEVICE, ResourceSelector.SPECIFIC)
+//    @PatchMapping("/{deviceId}/commission")
+//    fun validateMetaData(@PathVariable @ResourceId deviceId: String, actorData: ActorData): Mono<DeviceResponse> {
+//        val command = DeviceMapper.toUpdateMetaDataCommand(metadata, accountData)
+//        return updateMetaDataUseCase.execute(command)
+//            .map { DeviceMapper.toDeviceResponse(it) }
+//    }
 
 
 //    @GetMapping("/{deviceId}")

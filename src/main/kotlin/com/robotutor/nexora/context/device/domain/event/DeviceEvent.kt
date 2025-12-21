@@ -1,5 +1,6 @@
 package com.robotutor.nexora.context.device.domain.event
 
+import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetadata
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.BusinessEvent
 import com.robotutor.nexora.shared.domain.DomainEvent
@@ -14,6 +15,8 @@ sealed interface DeviceDomainEvent : DomainEvent, DeviceEvent
 data class DeviceRegisteredEvent(val deviceId: DeviceId, val name: Name, val premisesId: PremisesId) : DeviceDomainEvent
 data class DeviceCommissionedEvent(val deviceId: DeviceId, val accountId: AccountId, val premisesId: PremisesId) :
     DeviceDomainEvent
+
+data class DeviceMetadataUpdatedEvent(val deviceId: DeviceId, val metadata: DeviceMetadata) : DeviceDomainEvent
 
 
 sealed interface DeviceBusinessEvent : BusinessEvent, DeviceEvent

@@ -3,14 +3,20 @@ package com.robotutor.nexora.context.iam.infrastructure.persistence
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
+import com.robotutor.nexora.context.iam.infrastructure.persistence.document.ActorDocument
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.ActorDocumentMapper
+import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.ActorSpecificationTranslator
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.ActorDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.findOne
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -18,6 +24,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoActorRepository(
     private val actorDocumentRepository: ActorDocumentRepository,
+    private val reactiveMongoTemplate: ReactiveMongoTemplate,
     private val eventPublisher: DomainEventPublisher<IAMDomainEvent>,
 ) : ActorRepository {
     override fun save(actorAggregate: ActorAggregate): Mono<ActorAggregate> {
@@ -45,6 +52,12 @@ class MongoActorRepository(
 
     override fun findByActorId(actorId: ActorId): Mono<ActorAggregate> {
         return actorDocumentRepository.findByActorId(actorId.value)
+            .map { ActorDocumentMapper.toDomainModel(it) }
+    }
+
+    override fun findBySpecification(specification: Specification<ActorAggregate>): Mono<ActorAggregate> {
+        val query = Query(ActorSpecificationTranslator.translate(specification))
+        return reactiveMongoTemplate.findOne<ActorDocument>(query)
             .map { ActorDocumentMapper.toDomainModel(it) }
     }
 }

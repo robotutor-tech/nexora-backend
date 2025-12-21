@@ -3,6 +3,7 @@ package com.robotutor.nexora.context.iam.application.usecase
 import com.robotutor.nexora.context.iam.application.command.RegisterGroupCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterOwnerCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterRoleCommand
+import com.robotutor.nexora.context.iam.application.policy.RegisterPremisesOwnerPolicy
 import com.robotutor.nexora.context.iam.application.seed.PermissionSeedProvider
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupType
@@ -10,10 +11,12 @@ import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleType
 import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
 import com.robotutor.nexora.context.iam.domain.event.PremisesResourceCreatedEvent
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.infrastructure.messaging.BusinessEventPublisher
+import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -23,10 +26,15 @@ class RegisterOwnerUseCase(
     private val registerGroupUseCase: RegisterGroupUseCase,
     private val actorRepository: ActorRepository,
     private val permissionSeedProvider: PermissionSeedProvider,
-    private val eventPublisher: BusinessEventPublisher<IAMBusinessEvent>
+    private val eventPublisher: BusinessEventPublisher<IAMBusinessEvent>,
+    private val registerPremisesOwnerPolicy: RegisterPremisesOwnerPolicy
 ) {
     fun execute(command: RegisterOwnerCommand): Mono<ActorAggregate> {
-        return registerRoleUseCase.execute(createDefaultRoles(command)).collectList()
+        return registerPremisesOwnerPolicy.evaluate(command)
+            .errorOnDenied(IAMError.NEXORA0201)
+            .flatMap {
+                registerRoleUseCase.execute(createDefaultRoles(command)).collectList()
+            }
             .flatMap { roles ->
                 registerGroupUseCase.execute(createDefaultGroups(command, roles)).collectList()
                     .map { Pair(it, roles) }

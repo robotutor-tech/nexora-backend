@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.device.application.command
 
-import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetaData
+import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetadata
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.shared.application.command.Command
 import com.robotutor.nexora.shared.domain.vo.AccountId
@@ -12,5 +12,5 @@ data class ActivateDeviceCommand(
     val deviceId: DeviceId,
     val accountId: AccountId,
     val accountType: AccountType,
-    val metaData: DeviceMetaData
+    val metaData: DeviceMetadata
 ) : Command

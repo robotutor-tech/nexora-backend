@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.device.domain.policy
+package com.robotutor.nexora.context.device.application.policy
 
 import com.robotutor.nexora.context.device.application.command.RegisterDeviceCommand
 import com.robotutor.nexora.shared.domain.policy.Policy

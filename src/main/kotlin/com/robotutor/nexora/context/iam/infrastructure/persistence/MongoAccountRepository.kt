@@ -4,8 +4,6 @@ import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.vo.CredentialId
-import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
-import com.robotutor.nexora.context.iam.infrastructure.messaging.IAMDomainEventPublisher
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.AccountDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.AccountDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
@@ -28,8 +26,8 @@ class MongoAccountRepository(
             .publishEvents(eventPublisher, accountAggregate)
     }
 
-    override fun findByCredentialIdAndKind(credentialId: CredentialId, kind: CredentialKind): Mono<AccountAggregate> {
-        return accountDocumentRepository.findByCredentials_CredentialIdAndCredentials_Kind(credentialId.value, kind)
+    override fun findByCredentialId(credentialId: CredentialId): Mono<AccountAggregate> {
+        return accountDocumentRepository.findByCredentials_CredentialId(credentialId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
 

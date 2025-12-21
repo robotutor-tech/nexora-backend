@@ -3,15 +3,18 @@ package com.robotutor.nexora.context.device.interfaces.controller.mapper
 import com.robotutor.nexora.context.device.application.command.ActivateDeviceCommand
 import com.robotutor.nexora.context.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.context.device.application.command.RegisterDeviceCommand
+import com.robotutor.nexora.context.device.application.command.UpdateMetaDataCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetaData
+import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetadata
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
 import com.robotutor.nexora.context.device.interfaces.controller.view.ActivateDeviceRequest
+import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataResponse
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.Name
@@ -38,7 +41,7 @@ object DeviceMapper {
             state = device.getState(),
             health = device.getHealth(),
             feeds = device.getFeedIds().map { it.value },
-            metaData = device.getMetaData()?.let { toDeviceMetaDataResponse(it) },
+            metaData = device.getMetadata()?.let { toDeviceMetaDataResponse(it) },
             zoneId = device.zoneId.value,
             registeredBy = device.registeredBy.value,
             createdAt = device.createdAt,
@@ -46,7 +49,7 @@ object DeviceMapper {
         )
     }
 
-    private fun toDeviceMetaDataResponse(deviceMetaData: DeviceMetaData): DeviceMetaDataResponse {
+    private fun toDeviceMetaDataResponse(deviceMetaData: DeviceMetadata): DeviceMetaDataResponse {
         return DeviceMetaDataResponse(
             osName = deviceMetaData.osName.value,
             osVersion = deviceMetaData.osVersion.value,
@@ -65,7 +68,7 @@ object DeviceMapper {
             deviceId = DeviceId(deviceId),
             accountId = actorData.accountId,
             accountType = actorData.type,
-            metaData = DeviceMetaData(
+            metaData = DeviceMetadata(
                 osName = Name(request.osName),
                 osVersion = Name(request.osVersion),
                 modelNo = ModelNo(request.modelNo),
@@ -76,5 +79,17 @@ object DeviceMapper {
 
     fun toGetDevicesQuery(resources: AuthorizedResources, actorData: ActorData): GetDevicesQuery {
         return GetDevicesQuery(actorData.actorId, resources.toResources(DeviceId::class.java))
+    }
+
+    fun toUpdateMetaDataCommand(metadata: DeviceMetaDataRequest, accountData: AccountData): UpdateMetaDataCommand {
+        return UpdateMetaDataCommand(
+            accountId = accountData.accountId,
+            metadata = DeviceMetadata(
+                modelNo = ModelNo(metadata.modelNo),
+                serialNo = SerialNo(metadata.serialNo),
+                osName = Name(metadata.osName),
+                osVersion = Name(metadata.osVersion),
+            )
+        )
     }
 }

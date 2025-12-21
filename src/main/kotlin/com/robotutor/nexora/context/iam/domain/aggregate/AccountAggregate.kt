@@ -83,8 +83,8 @@ class AccountAggregate private constructor(
         return this
     }
 
-    fun getCredential(kind: CredentialKind, credentialId: CredentialId): Credential {
-        return credentials.find { it.kind == kind && it.credentialId == credentialId }
+    fun getCredential(credentialId: CredentialId): Credential {
+        return credentials.find { it.credentialId == credentialId }
             ?: throw BadDataException(IAMError.NEXORA0202)
     }
 

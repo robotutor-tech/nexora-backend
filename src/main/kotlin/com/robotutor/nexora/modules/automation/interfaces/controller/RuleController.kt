@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/rules")
 class RuleController(private val ruleUseCase: RuleUseCase) {
 
-    @Authorize(ActionType.WRITE, ResourceType.AUTOMATION_RULE)
+    @Authorize(ActionType.UPDATE, ResourceType.AUTOMATION_RULE)
     @PostMapping
     fun createTrigger(@RequestBody @Validated request: RuleRequest, actorData: ActorData): Mono<RuleResponse> {
         val command = RuleMapper.toCreateRuleCommand(request)

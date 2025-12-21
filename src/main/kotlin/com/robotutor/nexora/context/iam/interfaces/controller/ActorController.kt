@@ -5,10 +5,12 @@ import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.command.GetActorsQuery
 import com.robotutor.nexora.context.iam.application.usecase.AuthenticateActorUseCase
 import com.robotutor.nexora.context.iam.application.usecase.ActorUseCase
+import com.robotutor.nexora.context.iam.application.usecase.RegisterMachineActorUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
+import com.robotutor.nexora.context.iam.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorData
@@ -27,7 +29,8 @@ import reactor.core.publisher.Mono
 @RequestMapping("/iam/actors")
 class ActorController(
     private val actorUseCase: ActorUseCase,
-    private val authenticateActorUseCase: AuthenticateActorUseCase
+    private val authenticateActorUseCase: AuthenticateActorUseCase,
+    private val registerMachineActorUseCase: RegisterMachineActorUseCase
 ) {
     @GetMapping
     fun getActors(@RequestParam accountId: String): Flux<ActorResponse> {
@@ -52,6 +55,16 @@ class ActorController(
         val command = ActorMapper.toAuthenticateActorCommand(authenticateActorRequest, accountData, token)
         return authenticateActorUseCase.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
+    }
+
+    @PostMapping("/machine")
+    fun registerMachineActor(
+        @RequestBody @Validated actorRequest: MachineActorRequest,
+        accountData: AccountData
+    ): Mono<ActorResponse> {
+        val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, accountData)
+        return registerMachineActorUseCase.execute(command)
+            .map { ActorMapper.toActorResponse(it) }
     }
 
 //    @PostMapping("/login/device")

@@ -11,4 +11,5 @@ enum class IAMError(override val errorCode: String, override val message: String
     NEXORA0206("NEXORA-0206", "Session is inactive or refresh limit exceeded."),
     NEXORA0207("NEXORA-0207", "Account is not in REGISTERED state."),
     NEXORA0208("NEXORA-0208", "Credential rotation denied"),
+    NEXORA0209("NEXORA-0209", "Actor registration denied"),
 }

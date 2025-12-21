@@ -24,7 +24,7 @@ class ZoneController(
     private val zoneUseCase: ZoneUseCase
 ) {
 
-    @Authorize(ActionType.WRITE, ResourceType.ZONE)
+    @Authorize(ActionType.CREATE, ResourceType.ZONE)
     @PostMapping
     fun createZone(@RequestBody @Validated request: ZoneRequest, actorData: ActorData): Mono<ZoneResponse> {
         val command = ZoneMapper.toCreateZoneCommand(request, actorData)

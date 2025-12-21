@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.device.application.usecase
 
 import com.robotutor.nexora.context.device.application.command.ActivateDeviceCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.context.device.domain.policy.ActivateDevicePolicy
+import com.robotutor.nexora.context.device.application.policy.ActivateDevicePolicy
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

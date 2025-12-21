@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.device.domain.policy
+package com.robotutor.nexora.context.device.application.policy
 
 import com.robotutor.nexora.context.device.application.command.ActivateDeviceCommand
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
@@ -11,6 +11,6 @@ import reactor.core.publisher.Mono
 class ActivateDevicePolicy(private val deviceRepository: DeviceRepository) : Policy<ActivateDeviceCommand> {
     override fun evaluate(command: ActivateDeviceCommand): Mono<PolicyResult> {
         return deviceRepository.findByDeviceId(command.deviceId)
-            .map { device -> PolicyResult.allow() }
+            .map { PolicyResult.allow() }
     }
 }

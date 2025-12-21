@@ -3,6 +3,7 @@ package com.robotutor.nexora.orchestration.client
 import com.robotutor.nexora.orchestration.client.view.DeviceResponse
 import com.robotutor.nexora.orchestration.client.view.IAMAccountResponse
 import com.robotutor.nexora.orchestration.config.DeviceConfig
+import com.robotutor.nexora.orchestration.controller.view.RegisterDeviceActorRequest
 import com.robotutor.nexora.orchestration.controller.view.DeviceRegistrationRequest
 import com.robotutor.nexora.shared.infrastructure.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
@@ -20,6 +21,15 @@ class DeviceClient(
             path = deviceConfig.path,
             body = payload,
             returnType = DeviceResponse::class.java,
+        )
+    }
+
+    fun updateDeviceMetaData(device: RegisterDeviceActorRequest): Mono<DeviceResponse> {
+        return webClient.patch(
+            baseUrl = deviceConfig.baseUrl,
+            path = deviceConfig.metadataPath,
+            body = device,
+            returnType = DeviceResponse::class.java
         )
     }
 }

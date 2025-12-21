@@ -8,5 +8,6 @@ data class IamConfig(
     val registerHumanAccountPath: String = "/iam/accounts/register",
     val registerMachineAccountPath: String = "/iam/accounts/register/machine",
     val premisesOwnerRegisterPath: String = "/iam/premises-owners/register",
+    val machineActor: String = "/iam/actors/machine",
     val getActorPath: String = "/iam/actors"
 )

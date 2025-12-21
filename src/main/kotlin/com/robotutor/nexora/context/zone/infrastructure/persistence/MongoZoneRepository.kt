@@ -5,7 +5,7 @@ import com.robotutor.nexora.context.zone.domain.event.ZoneDomainEvent
 import com.robotutor.nexora.context.zone.domain.repository.ZoneRepository
 import com.robotutor.nexora.context.zone.infrastructure.persistence.document.ZoneDocument
 import com.robotutor.nexora.context.zone.infrastructure.persistence.mapper.ZoneDocumentMapper
-import com.robotutor.nexora.context.zone.infrastructure.persistence.mapper.ZoneMongoSpecificationTranslator
+import com.robotutor.nexora.context.zone.infrastructure.persistence.mapper.ZoneSpecificationTranslator
 import com.robotutor.nexora.context.zone.infrastructure.persistence.repository.ZoneDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.specification.Specification
@@ -48,7 +48,7 @@ class MongoZoneRepository(
     }
 
     override fun findAll(specification: Specification<ZoneAggregate>): Flux<ZoneAggregate> {
-        val query = Query(ZoneMongoSpecificationTranslator.translate(specification))
+        val query = Query(ZoneSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.find<ZoneDocument>(query)
             .map { ZoneDocumentMapper.toDomainModel(it) }
     }

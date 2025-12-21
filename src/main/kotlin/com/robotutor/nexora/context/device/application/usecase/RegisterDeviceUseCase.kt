@@ -2,8 +2,8 @@ package com.robotutor.nexora.context.device.application.usecase
 
 import com.robotutor.nexora.context.device.application.command.RegisterDeviceCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.context.device.domain.exception.NexoraError
-import com.robotutor.nexora.context.device.domain.policy.RegisterDevicePolicy
+import com.robotutor.nexora.context.device.domain.exception.DeviceError
+import com.robotutor.nexora.context.device.application.policy.RegisterDevicePolicy
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
 import com.robotutor.nexora.shared.logger.Logger
@@ -21,7 +21,7 @@ class RegisterDeviceUseCase(
 
     fun execute(command: RegisterDeviceCommand): Mono<DeviceAggregate> {
         return registerDevicePolicy.evaluate(command)
-            .errorOnDenied(NexoraError.NEXORA0401)
+            .errorOnDenied(DeviceError.NEXORA0401)
             .map {
                 DeviceAggregate.register(
                     command.accountId,
