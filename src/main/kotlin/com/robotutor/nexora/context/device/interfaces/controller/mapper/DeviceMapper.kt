@@ -1,9 +1,8 @@
 package com.robotutor.nexora.context.device.interfaces.controller.mapper
 
-import com.robotutor.nexora.context.device.application.command.ActivateDeviceCommand
 import com.robotutor.nexora.context.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.context.device.application.command.RegisterDeviceCommand
-import com.robotutor.nexora.context.device.application.command.UpdateMetaDataCommand
+import com.robotutor.nexora.context.device.application.command.CommissionDeviceCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetadata
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
@@ -53,31 +52,12 @@ object DeviceMapper {
         )
     }
 
-    fun toActivateDeviceCommand(
-        deviceId: String,
-        request: ActivateDeviceRequest,
-        actorData: ActorData
-    ): ActivateDeviceCommand {
-        return ActivateDeviceCommand(
-            premisesId = actorData.premisesId,
-            deviceId = DeviceId(deviceId),
-            accountId = actorData.accountId,
-            accountType = actorData.type,
-            metaData = DeviceMetadata(
-                osName = Name(request.osName),
-                osVersion = Name(request.osVersion),
-                modelNo = ModelNo(request.modelNo),
-                serialNo = SerialNo(request.serialNo)
-            )
-        )
-    }
-
     fun toGetDevicesQuery(resources: AuthorizedResources, actorData: ActorData): GetDevicesQuery {
         return GetDevicesQuery(actorData.actorId, resources.toResources(DeviceId::class.java))
     }
 
-    fun toUpdateMetaDataCommand(metadata: DeviceMetaDataRequest, actorData: ActorData): UpdateMetaDataCommand {
-        return UpdateMetaDataCommand(
+    fun toCommissionDeviceCommand(metadata: DeviceMetaDataRequest, actorData: ActorData): CommissionDeviceCommand {
+        return CommissionDeviceCommand(
             actorData = actorData,
             metadata = DeviceMetadata(
                 modelNo = ModelNo(metadata.modelNo),

@@ -6,6 +6,7 @@ import com.robotutor.nexora.context.device.infrastructure.messaging.message.Devi
 import com.robotutor.nexora.context.device.infrastructure.messaging.message.DeviceRegisteredEventMessage
 import com.robotutor.nexora.context.device.infrastructure.messaging.message.DeviceRegistrationCompensatedEventMessage
 import com.robotutor.nexora.context.device.infrastructure.messaging.message.DeviceRegistrationFailedEventMessage
+import com.robotutor.nexora.context.device.infrastructure.messaging.message.FeedRegisteredEventMessage
 import com.robotutor.nexora.shared.domain.event.EventMapper
 import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
 
@@ -17,6 +18,7 @@ object DeviceEventMapper : EventMapper<DeviceEvent> {
             is DeviceRegistrationFailedEvent -> toDeviceRegistrationFailedEventMessage(event)
             is DeviceCommissionedEvent -> toDeviceCommissionedEventMessage(event)
             is DeviceMetadataUpdatedEvent -> toDeviceMetadataUpdatedEventMessage(event)
+            is FeedRegisteredEvent -> toFeedRegisteredEventMessage(event)
         }
     }
 
@@ -50,5 +52,9 @@ object DeviceEventMapper : EventMapper<DeviceEvent> {
             premisesId = event.premisesId.value,
             name = event.name.value
         )
+    }
+
+    private fun toFeedRegisteredEventMessage(event: FeedRegisteredEvent): FeedRegisteredEventMessage {
+        return FeedRegisteredEventMessage(deviceId = event.deviceId.value, feedId = event.feedId.value)
     }
 }

@@ -36,6 +36,11 @@ class DeviceAggregate private constructor(
     fun getName(): Name = name
     fun getMetadata(): DeviceMetadata? = metadata
 
+    fun updateFeeds(feedIds: Set<FeedId>): DeviceAggregate {
+        this.feedIds = feedIds
+        return this
+    }
+
     fun commission(accountId: AccountId): DeviceAggregate {
         if (state != DeviceState.REGISTERED) {
             throw InvalidStateException(DeviceError.NEXORA0401)

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.widget.interfaces.messaging.message
 
-import com.robotutor.nexora.modules.feed.domain.entity.FeedType
+import com.robotutor.nexora.context.device.domain.aggregate.FeedType
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
 
 data class CreateWidgetMessage(

@@ -1,9 +1,9 @@
-package com.robotutor.nexora.modules.feed.infrastructure.persistence.document
+package com.robotutor.nexora.context.device.infrastructure.persistence.document
 
-import com.robotutor.nexora.modules.feed.domain.entity.Feed
-import com.robotutor.nexora.modules.feed.domain.entity.FeedType
+import com.robotutor.nexora.context.device.domain.aggregate.FeedAggregate
+import com.robotutor.nexora.context.device.domain.aggregate.FeedType
+import com.robotutor.nexora.context.device.domain.vo.FeedMode
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -13,21 +13,23 @@ import java.time.Instant
 
 const val FEED_COLLECTION = "feeds"
 
-@TypeAlias("Feed")
 @Document(FEED_COLLECTION)
+@TypeAlias("Feed")
 data class FeedDocument(
     @Id
     val id: String? = null,
     @Indexed(unique = true)
     val feedId: String,
-    @Indexed
+    val deviceId: String,
     val premisesId: String,
-    val name: String,
-    val value: Int,
-    val type: FeedType,
     val createdAt: Instant,
     val updatedAt: Instant,
+    val type: FeedType,
+    val min: Int,
+    val max: Int,
+    val mode: FeedMode,
+    val value: Int,
     @Version
     val version: Long? = null
-) : MongoDocument<Feed>
+) : MongoDocument<FeedAggregate>
 
