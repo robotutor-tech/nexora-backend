@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.automation.application.facade
 
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 import reactor.core.publisher.Mono
 
 interface FeedFacade {

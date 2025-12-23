@@ -13,4 +13,5 @@ interface DeviceRepository {
     fun deleteByDeviceId(deviceId: DeviceId): Mono<DeviceAggregate>
     fun findAll(specification: Specification<DeviceAggregate>): Flux<DeviceAggregate>
     fun findByAccountId(accountId: AccountId): Mono<DeviceAggregate>
+    fun findBySpecification(specification: Specification<DeviceAggregate>): Mono<DeviceAggregate>
 }

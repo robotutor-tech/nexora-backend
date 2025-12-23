@@ -7,7 +7,7 @@ import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
 import com.robotutor.nexora.context.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.context.device.infrastructure.persistence.document.DeviceMetaDataDocument
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.Name

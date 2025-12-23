@@ -3,7 +3,7 @@ package com.robotutor.nexora.context.device.interfaces.controller
 import com.robotutor.nexora.context.device.application.usecase.DeviceUseCase
 import com.robotutor.nexora.context.device.application.usecase.ActivateDeviceUseCase
 import com.robotutor.nexora.context.device.application.usecase.RegisterDeviceUseCase
-import com.robotutor.nexora.context.device.application.usecase.ValidateMetaDataUseCase
+import com.robotutor.nexora.context.device.application.usecase.UpdateMetaDataUseCase
 import com.robotutor.nexora.context.device.interfaces.controller.view.ActivateDeviceRequest
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
@@ -34,7 +34,7 @@ class DeviceController(
     private val registerDeviceUseCase: RegisterDeviceUseCase,
     private val activateDeviceUseCase: ActivateDeviceUseCase,
     private val deviceUseCase: DeviceUseCase,
-    private val updateMetaDataUseCase: ValidateMetaDataUseCase,
+    private val updateMetaDataUseCase: UpdateMetaDataUseCase,
 ) {
     @Authorize(ActionType.UPDATE, ResourceType.DEVICE)
     @PostMapping
@@ -68,8 +68,8 @@ class DeviceController(
     }
 
     @PatchMapping("/metadata")
-    fun validateMetaData(@RequestBody metadata: DeviceMetaDataRequest, accountData: AccountData): Mono<DeviceResponse> {
-        val command = DeviceMapper.toUpdateMetaDataCommand(metadata, accountData)
+    fun validateMetaData(@RequestBody metadata: DeviceMetaDataRequest, actorData: ActorData): Mono<DeviceResponse> {
+        val command = DeviceMapper.toUpdateMetaDataCommand(metadata, actorData)
         return updateMetaDataUseCase.execute(command)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
@@ -89,11 +89,11 @@ class DeviceController(
 //            .map { DeviceMapper.toDeviceResponse(it) }
 //    }
 
-//    @GetMapping("/me")
-//    fun getDevice(deviceData: DeviceData): Mono<DeviceResponse> {
-//        return deviceUseCase.getDevice(deviceData.deviceId)
-//            .map { DeviceMapper.toDeviceResponse(it) }
-//    }
+    @GetMapping("/me")
+    fun getDevice(accountData: AccountData): Mono<DeviceResponse> {
+        return deviceUseCase.execute(accountData.accountId)
+            .map { DeviceMapper.toDeviceResponse(it) }
+    }
 
 //    @PatchMapping("/health")
 //    fun getDevice(@RequestBody @Validated healthRequest: HealthRequest, deviceData: DeviceData): Mono<DeviceResponse> {

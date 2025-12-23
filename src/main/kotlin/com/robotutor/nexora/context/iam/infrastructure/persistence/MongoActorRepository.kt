@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.iam.infrastructure.persistence
 
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
-import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMEventPublisher
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.ActorDocument
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.ActorDocumentMapper
@@ -12,7 +12,6 @@ import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.findOne
@@ -25,7 +24,7 @@ import reactor.core.publisher.Mono
 class MongoActorRepository(
     private val actorDocumentRepository: ActorDocumentRepository,
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
-    private val eventPublisher: DomainEventPublisher<IAMDomainEvent>,
+    private val eventPublisher: IAMEventPublisher,
 ) : ActorRepository {
     override fun save(actorAggregate: ActorAggregate): Mono<ActorAggregate> {
         val actorDocument = ActorDocumentMapper.toMongoDocument(actorAggregate)

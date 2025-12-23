@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.user.domain.aggregate
 
-import com.robotutor.nexora.context.user.domain.event.UserDomainEvent
+import com.robotutor.nexora.context.user.domain.event.UserEvent
 import com.robotutor.nexora.context.user.domain.event.UserRegisteredEvent
 import com.robotutor.nexora.context.user.domain.vo.Email
 import com.robotutor.nexora.context.user.domain.vo.Mobile
@@ -19,7 +19,7 @@ class UserAggregate private constructor(
     val registeredAt: Instant,
     private var state: UserState,
     private var updatedAt: Instant,
-) : AggregateRoot<UserAggregate, UserId, UserDomainEvent>(userId) {
+) : AggregateRoot<UserAggregate, UserId, UserEvent>(userId) {
 
     fun state(): UserState = state
     fun updatedAt(): Instant = updatedAt

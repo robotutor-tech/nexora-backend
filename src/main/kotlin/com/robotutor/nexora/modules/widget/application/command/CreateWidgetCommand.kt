@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.widget.application.command
 
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ZoneId
 

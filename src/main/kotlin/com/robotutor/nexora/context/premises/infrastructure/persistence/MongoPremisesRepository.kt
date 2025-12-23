@@ -1,14 +1,13 @@
 package com.robotutor.nexora.context.premises.infrastructure.persistence
 
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
-import com.robotutor.nexora.context.premises.domain.event.PremisesDomainEvent
+import com.robotutor.nexora.context.premises.domain.event.PremisesEventPublisher
 import com.robotutor.nexora.context.premises.domain.repository.PremisesRepository
 import com.robotutor.nexora.context.premises.infrastructure.persistence.mapper.PremisesDocumentMapper
 import com.robotutor.nexora.context.premises.infrastructure.persistence.repository.PremisesDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -17,7 +16,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoPremisesRepository(
     val premisesDocumentRepository: PremisesDocumentRepository,
-    val eventPublisher: DomainEventPublisher<PremisesDomainEvent>,
+    val eventPublisher: PremisesEventPublisher,
 ) : PremisesRepository {
     override fun save(premisesAggregate: PremisesAggregate): Mono<PremisesAggregate> {
         val premisesDocument = PremisesDocumentMapper.toMongoDocument(premisesAggregate)

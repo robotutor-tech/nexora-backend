@@ -13,8 +13,11 @@ import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountRespon
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.CredentialRotatedResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
+import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -41,6 +44,7 @@ class AccountController(
             .map { AccountMapper.toAccountResponse(it) }
     }
 
+    @Authorize(ActionType.CREATE, ResourceType.DEVICE)
     @PostMapping("/register/machine")
     fun registerMachine(
         @RequestBody @Validated registerAccountRequest: RegisterAccountRequest,

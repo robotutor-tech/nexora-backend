@@ -9,7 +9,7 @@ import com.robotutor.nexora.modules.feed.interfaces.controller.mapper.FeedMapper
 import com.robotutor.nexora.shared.application.annotation.ResourceId
 import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.model.ResourcesData
 import org.springframework.validation.annotation.Validated

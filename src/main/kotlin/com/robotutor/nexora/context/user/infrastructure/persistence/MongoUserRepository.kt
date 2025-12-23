@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.user.infrastructure.persistence
 
 import com.robotutor.nexora.context.user.domain.aggregate.UserAggregate
-import com.robotutor.nexora.context.user.domain.event.UserDomainEvent
+import com.robotutor.nexora.context.user.domain.event.UserEventPublisher
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
 import com.robotutor.nexora.context.user.domain.vo.Email
 import com.robotutor.nexora.context.user.domain.vo.UserId
@@ -9,7 +9,6 @@ import com.robotutor.nexora.context.user.infrastructure.persistence.mapper.UserD
 import com.robotutor.nexora.context.user.infrastructure.persistence.repository.UserDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
@@ -17,7 +16,7 @@ import reactor.core.publisher.Mono
 @Component
 class MongoUserRepository(
     private val userDocumentRepository: UserDocumentRepository,
-    private val eventPublisher: DomainEventPublisher<UserDomainEvent>,
+    private val eventPublisher: UserEventPublisher,
 ) : UserRepository {
     override fun save(userAggregate: UserAggregate): Mono<UserAggregate> {
         val userDocument = UserDocumentMapper.toMongoDocument(userAggregate)

@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/users")
 class UserController(val registerUserUseCase: RegisterUserUseCase, private val getUserUseCase: GetUserUseCase) {
 
-    @PostMapping
+    @PostMapping("/register")
     @ResponseStatus(code = HttpStatus.CREATED)
     fun register(@RequestBody @Validated userRequest: UserRequest): Mono<UserResponse> {
         val command = UserMapper.toRegisterUserCommand(userRequest)

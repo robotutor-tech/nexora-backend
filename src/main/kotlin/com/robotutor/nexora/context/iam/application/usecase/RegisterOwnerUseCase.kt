@@ -9,13 +9,14 @@ import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupType
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleType
-import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
-import com.robotutor.nexora.context.iam.domain.event.PremisesResourceCreatedEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMEventPublisher
+import com.robotutor.nexora.context.iam.domain.event.PremisesOwnerRegisteredEvent
+import com.robotutor.nexora.context.iam.domain.event.PremisesOwnerRegistrationFailedEvent
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.shared.domain.event.publishEvent
+import com.robotutor.nexora.shared.domain.event.publishEventOnError
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.infrastructure.messaging.BusinessEventPublisher
 import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -26,7 +27,7 @@ class RegisterOwnerUseCase(
     private val registerGroupUseCase: RegisterGroupUseCase,
     private val actorRepository: ActorRepository,
     private val permissionSeedProvider: PermissionSeedProvider,
-    private val eventPublisher: BusinessEventPublisher<IAMBusinessEvent>,
+    private val eventPublisher: IAMEventPublisher,
     private val registerPremisesOwnerPolicy: RegisterPremisesOwnerPolicy
 ) {
     fun execute(command: RegisterOwnerCommand): Mono<ActorAggregate> {
@@ -48,7 +49,8 @@ class RegisterOwnerUseCase(
                 )
             }
             .flatMap { actorAggregate -> actorRepository.save(actorAggregate) }
-            .publishEvent(eventPublisher, PremisesResourceCreatedEvent(command.premisesId, command.owner.accountId))
+            .publishEvent(eventPublisher, PremisesOwnerRegisteredEvent(command.premisesId))
+            .publishEventOnError(eventPublisher, PremisesOwnerRegistrationFailedEvent(command.premisesId))
     }
 
     private fun createDefaultGroups(

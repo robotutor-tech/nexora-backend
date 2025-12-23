@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.feed.domain.repository
 
 import com.robotutor.nexora.modules.feed.domain.entity.Feed
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

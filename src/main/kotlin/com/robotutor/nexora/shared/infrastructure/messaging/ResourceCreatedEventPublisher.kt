@@ -8,4 +8,4 @@ import org.springframework.stereotype.Service
 @Service
 class ResourceCreatedEventPublisher(
     eventPublisher: KafkaEventPublisher, mapper: EventMapper<ResourceCreatedEvent>
-) : DomainEventPublisher<ResourceCreatedEvent>(eventPublisher, mapper)
+) : EventPublisherImpl<ResourceCreatedEvent>(eventPublisher, mapper)

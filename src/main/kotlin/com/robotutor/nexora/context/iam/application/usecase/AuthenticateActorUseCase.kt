@@ -4,7 +4,7 @@ import com.robotutor.nexora.context.iam.application.command.AuthenticateActorCom
 import com.robotutor.nexora.context.iam.application.command.CreateSessionCommand
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.event.ActorAuthenticatedEvent
-import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.context.iam.domain.vo.ActorPrincipal
@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono
 class AuthenticateActorUseCase(
     private val createSessionUseCase: CreateSessionUseCase,
     private val actorRepository: ActorRepository,
-    private val eventPublisher: EventPublisher<IAMBusinessEvent>,
+    private val eventPublisher: EventPublisher<IAMEvent>,
 ) {
     private val logger = Logger(this::class.java)
 

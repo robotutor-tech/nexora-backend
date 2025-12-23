@@ -1,9 +1,10 @@
 package com.robotutor.nexora.modules.automation.domain.entity
 
 import com.robotutor.nexora.modules.automation.domain.entity.objects.ConditionNode
+import com.robotutor.nexora.shared.domain.vo.Identifier
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.model.SequenceId
+import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.time.Instant
 
 data class Automation(
@@ -41,4 +42,4 @@ data class Rules(val ruleIds: List<RuleId>) {
 
 data class Conditions(val conditionNode: ConditionNode?)
 
-data class AutomationId(override val value: String) : SequenceId
+data class AutomationId(override val value: String) : Identifier, ValueObject()

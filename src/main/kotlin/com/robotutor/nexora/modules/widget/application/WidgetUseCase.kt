@@ -30,8 +30,8 @@ class WidgetUseCase(
     }
 
     fun createWidget(createWidgetCommand: CreateWidgetCommand, actorData: ActorData): Mono<Widget> {
-        return idGeneratorService.generateId(IdType.WIDGET_ID, WidgetId::class.java)
-            .map { widgetId -> Widget.create(widgetId, createWidgetCommand, actorData) }
+        return idGeneratorService.generateId(IdType.WIDGET_ID)
+            .map { widgetId -> Widget.create(WidgetId(widgetId), createWidgetCommand, actorData) }
             .flatMap { widget ->
                 val event = ResourceCreatedEvent(ResourceType.WIDGET, ResourceId(widget.widgetId.value))
                 widgetRepository.save(widget).map { widget }

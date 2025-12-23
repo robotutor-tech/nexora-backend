@@ -4,7 +4,7 @@ import com.robotutor.nexora.modules.feed.application.command.FeedValueUpdateComm
 import com.robotutor.nexora.modules.feed.domain.entity.Feed
 import com.robotutor.nexora.modules.feed.interfaces.controller.dto.FeedResponse
 import com.robotutor.nexora.modules.feed.interfaces.controller.dto.FeedValueRequest
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 
 object FeedMapper {
     fun toFeedResponse(feed: Feed): FeedResponse {

@@ -5,7 +5,7 @@ import com.robotutor.nexora.annotation.IntegrationTest
 import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.TOKEN_COLLECTION
 import com.robotutor.nexora.modules.user.builder.TokenDocumentBuilder
 import com.robotutor.nexora.modules.user.builder.UserDocumentBuilder
-import com.robotutor.nexora.context.user.domain.exception.NexoraError
+import com.robotutor.nexora.context.user.domain.exception.UserError
 import com.robotutor.nexora.context.user.infrastructure.persistence.document.USER_COLLECTION
 import com.robotutor.nexora.context.user.interfaces.controller.view.UserResponse
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
@@ -125,7 +125,7 @@ class UserIntegrationTest(
             .is4xxClientError
             .expectBody(ErrorResponse::class.java)
             .returnResult()
-            .responseBody!! shouldBe ErrorResponse(NexoraError.NEXORA0201.errorCode, NexoraError.NEXORA0201.message)
+            .responseBody!! shouldBe ErrorResponse(UserError.NEXORA0201.errorCode, UserError.NEXORA0201.message)
     }
 
     @Test

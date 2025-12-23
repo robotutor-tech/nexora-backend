@@ -3,7 +3,7 @@ package com.robotutor.nexora.context.iam.domain.aggregate
 import com.robotutor.nexora.context.iam.domain.event.AccountActivatedEvent
 import com.robotutor.nexora.context.iam.domain.event.AccountCreatedEvent
 import com.robotutor.nexora.context.iam.domain.event.CredentialUpdatedEvent
-import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.vo.Credential
 import com.robotutor.nexora.context.iam.domain.vo.CredentialId
@@ -25,7 +25,7 @@ class AccountAggregate private constructor(
     val createdAt: Instant,
     private var status: AccountStatus,
     private var updatedAt: Instant,
-) : AggregateRoot<AccountAggregate, AccountId, IAMDomainEvent>(accountId) {
+) : AggregateRoot<AccountAggregate, AccountId, IAMEvent>(accountId) {
 
     fun getStatus(): AccountStatus = status
     fun getUpdatedAt(): Instant = updatedAt

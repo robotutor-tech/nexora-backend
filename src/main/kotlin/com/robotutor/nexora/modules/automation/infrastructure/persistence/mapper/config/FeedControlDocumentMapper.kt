@@ -2,7 +2,7 @@ package com.robotutor.nexora.modules.automation.infrastructure.persistence.mappe
 
 import com.robotutor.nexora.modules.automation.domain.entity.config.FeedControlConfig
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.FeedControlConfigDocument
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 
 object FeedControlDocumentMapper : Mapper<FeedControlConfig, FeedControlConfigDocument> {
     override fun toDocument(config: FeedControlConfig): FeedControlConfigDocument {

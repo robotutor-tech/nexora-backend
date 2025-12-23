@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.widget.infrastructure.persistence.mapper
 import com.robotutor.nexora.modules.widget.domain.entity.Widget
 import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
 import com.robotutor.nexora.modules.widget.infrastructure.persistence.document.WidgetDocument
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ZoneId

@@ -4,12 +4,7 @@ import com.robotutor.nexora.modules.widget.application.command.CreateWidgetComma
 import com.robotutor.nexora.modules.widget.domain.event.WidgetCreatedEvent
 import com.robotutor.nexora.modules.widget.domain.event.WidgetEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.model.*
-import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.Identifier
-import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.ZoneId
+import com.robotutor.nexora.shared.domain.vo.*
 import java.time.Instant
 
 data class Widget(
@@ -38,7 +33,7 @@ data class Widget(
     }
 }
 
-data class WidgetId(override val value: String) : Identifier, SequenceId
+data class WidgetId(override val value: String) : Identifier, ValueObject()
 
 enum class WidgetType {
     TOGGLE,

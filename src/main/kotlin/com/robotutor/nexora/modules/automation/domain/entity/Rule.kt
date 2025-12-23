@@ -7,11 +7,8 @@ import com.robotutor.nexora.modules.automation.domain.entity.config.Config
 import com.robotutor.nexora.modules.automation.domain.entity.config.TriggerConfig
 import com.robotutor.nexora.modules.automation.domain.event.AutomationEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.model.SequenceId
 import com.robotutor.nexora.shared.domain.utility.validation
+import com.robotutor.nexora.shared.domain.vo.*
 import java.time.Instant
 
 data class Rule(
@@ -47,7 +44,7 @@ data class Rule(
     }
 }
 
-data class RuleId(override val value: String) : SequenceId
+data class RuleId(override val value: String) : Identifier, ValueObject()
 
 enum class RuleType {
     ACTION,

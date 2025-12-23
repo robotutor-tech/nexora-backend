@@ -1,14 +1,13 @@
 package com.robotutor.nexora.context.iam.infrastructure.persistence
 
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
-import com.robotutor.nexora.context.iam.domain.event.IAMDomainEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMEventPublisher
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.vo.CredentialId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.AccountDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.AccountDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
@@ -16,7 +15,7 @@ import reactor.core.publisher.Mono
 @Component
 class MongoAccountRepository(
     private val accountDocumentRepository: AccountDocumentRepository,
-    private val eventPublisher: DomainEventPublisher<IAMDomainEvent>,
+    private val eventPublisher: IAMEventPublisher,
 ) : AccountRepository {
     override fun save(accountAggregate: AccountAggregate): Mono<AccountAggregate> {
         val accountDocument = AccountDocumentMapper.toMongoDocument(accountAggregate)

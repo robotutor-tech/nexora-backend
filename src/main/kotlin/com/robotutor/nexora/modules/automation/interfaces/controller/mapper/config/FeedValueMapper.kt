@@ -3,7 +3,7 @@ package com.robotutor.nexora.modules.automation.interfaces.controller.mapper.con
 import com.robotutor.nexora.modules.automation.domain.entity.config.FeedValueConfig
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.config.request.FeedValueConfigRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.config.response.FeedValueConfigResponse
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 
 object FeedValueMapper : Mapper<FeedValueConfig, FeedValueConfigResponse, FeedValueConfigRequest> {
     override fun toConfigResponse(config: FeedValueConfig): FeedValueConfigResponse {

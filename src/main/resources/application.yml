@@ -29,19 +29,11 @@ app:
     opa-base-url: ${OPA_BASE_URL:http://localhost:8181}
     internal-access-token: ${INTERNAL_ACCESS_TOKEN:internalAccessToken123}
     un-secured-path:
-      - "/orchestration/users/register"
+      - "/users/register"
+      - "/iam/accounts/register"
       - "/iam/accounts/authenticate"
       - "/iam/sessions/validate"
       - "/iam/sessions/refresh"
     iam-base-url: ${app.orchestration.iam.base-url}
     jwt:
       secret: ${JWT_SECRET:secret}
-  orchestration:
-    device:
-      base-url: ${DEVICE_BASE_URL:http://localhost:${server.port}}
-    iam:
-      base-url: ${IAM_BASE_URL:http://localhost:${server.port}}
-    user:
-      base-url: ${USER_BASE_URL:http://localhost:${server.port}}
-    premises:
-      base-url: ${PREMISES_BASE_URL:http://localhost:${server.port}}

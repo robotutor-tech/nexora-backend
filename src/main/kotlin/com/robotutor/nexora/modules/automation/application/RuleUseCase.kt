@@ -56,8 +56,8 @@ class RuleUseCase(
                     .switchIfEmpty(createMono(createRuleCommand.config))
             }
             .flatMap {
-                idGeneratorService.generateId(IdType.RULE_ID, RuleId::class.java)
-                    .map { ruleId -> Rule.create(ruleId, createRuleCommand, actorData) }
+                idGeneratorService.generateId(IdType.RULE_ID)
+                    .map { ruleId -> Rule.create(RuleId(ruleId), createRuleCommand, actorData) }
             }
             .flatMap { rule ->
                 val event = ResourceCreatedEvent(ResourceType.AUTOMATION_RULE, ResourceId(rule.ruleId.value))

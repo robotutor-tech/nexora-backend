@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.automation.domain.entity.config
 
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 
 data class FeedValueConfig(val feedId: FeedId, val value: Int) : ActionConfig, RuleConfigType(ConfigType.FEED_VALUE) {
     init {

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.premises.domain.aggregate
 
-import com.robotutor.nexora.context.premises.domain.event.PremisesDomainEvent
+import com.robotutor.nexora.context.premises.domain.event.PremisesEvent
 import com.robotutor.nexora.context.premises.domain.event.PremisesRegisteredEvent
 import com.robotutor.nexora.context.premises.domain.exceptions.PremisesError
 import com.robotutor.nexora.context.premises.domain.vo.Address
@@ -19,7 +19,7 @@ class PremisesAggregate private constructor(
     val address: Address,
     private var state: PremisesState,
     private var updatedAt: Instant,
-) : AggregateRoot<PremisesAggregate, PremisesId, PremisesDomainEvent>(premisesId) {
+) : AggregateRoot<PremisesAggregate, PremisesId, PremisesEvent>(premisesId) {
 
     fun getState(): PremisesState = state
     fun getUpdatedAt(): Instant = updatedAt

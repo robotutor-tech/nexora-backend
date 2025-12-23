@@ -1,27 +1,20 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.GetActorQuery
-import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.command.GetActorsQuery
-import com.robotutor.nexora.context.iam.application.usecase.AuthenticateActorUseCase
 import com.robotutor.nexora.context.iam.application.usecase.ActorUseCase
+import com.robotutor.nexora.context.iam.application.usecase.AuthenticateActorUseCase
 import com.robotutor.nexora.context.iam.application.usecase.RegisterMachineActorUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
-import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
+import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
-import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -33,8 +26,8 @@ class ActorController(
     private val registerMachineActorUseCase: RegisterMachineActorUseCase
 ) {
     @GetMapping
-    fun getActors(@RequestParam accountId: String): Flux<ActorResponse> {
-        val query = GetActorsQuery(AccountId(accountId))
+    fun getActors(accountData: AccountData): Flux<ActorResponse> {
+        val query = GetActorsQuery(accountData.accountId)
         return actorUseCase.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }

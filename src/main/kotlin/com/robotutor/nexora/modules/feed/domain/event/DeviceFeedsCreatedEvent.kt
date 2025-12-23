@@ -1,7 +1,7 @@
 package com.robotutor.nexora.modules.feed.domain.event
 
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
-import com.robotutor.nexora.shared.domain.model.FeedId
+import com.robotutor.nexora.shared.domain.vo.FeedId
 
 data class DeviceFeedsCreatedEvent(
     val deviceId: DeviceId, val feedIds: List<FeedId>

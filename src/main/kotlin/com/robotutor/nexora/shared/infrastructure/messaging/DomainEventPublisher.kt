@@ -1,7 +1,5 @@
 package com.robotutor.nexora.shared.infrastructure.messaging
 
-import com.robotutor.nexora.shared.domain.BusinessEvent
-import com.robotutor.nexora.shared.domain.DomainEvent
 import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.event.EventMapper
 import com.robotutor.nexora.shared.domain.event.EventPublisher
@@ -17,11 +15,3 @@ open class EventPublisherImpl<T : Event>(
             .map { transformer() }
     }
 }
-
-open class DomainEventPublisher<T : DomainEvent>(
-    eventPublisher: KafkaEventPublisher, mapper: EventMapper<T>
-) : EventPublisherImpl<T>(eventPublisher, mapper)
-
-open class BusinessEventPublisher<T : BusinessEvent>(
-    eventPublisher: KafkaEventPublisher, mapper: EventMapper<T>
-) : EventPublisherImpl<T>(eventPublisher, mapper)

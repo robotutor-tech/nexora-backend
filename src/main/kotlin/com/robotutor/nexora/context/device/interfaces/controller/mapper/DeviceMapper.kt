@@ -9,12 +9,7 @@ import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetadata
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
-import com.robotutor.nexora.context.device.interfaces.controller.view.ActivateDeviceRequest
-import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
-import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataResponse
-import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
-import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.context.device.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.Name
@@ -81,9 +76,9 @@ object DeviceMapper {
         return GetDevicesQuery(actorData.actorId, resources.toResources(DeviceId::class.java))
     }
 
-    fun toUpdateMetaDataCommand(metadata: DeviceMetaDataRequest, accountData: AccountData): UpdateMetaDataCommand {
+    fun toUpdateMetaDataCommand(metadata: DeviceMetaDataRequest, actorData: ActorData): UpdateMetaDataCommand {
         return UpdateMetaDataCommand(
-            accountId = accountData.accountId,
+            actorData = actorData,
             metadata = DeviceMetadata(
                 modelNo = ModelNo(metadata.modelNo),
                 serialNo = SerialNo(metadata.serialNo),

@@ -24,6 +24,8 @@ class ActorAuthenticatedEventMessage(
     IAMEventMessage("actor.authenticated")
 
 
-data class InvitationAcceptedEventMessage(val invitationId: String) : IAMEventMessage("invitation.accepted")
-data class PremisesResourceCreatedEventMessage(val premisesId: String, val ownerId: String) :
-    IAMEventMessage("premises.resource.created")
+data class PremisesOwnerRegistrationFailedEventMessage(val premisesId: String) :
+    IAMEventMessage("premises.owner.registration.failed")
+
+data class PremisesOwnerRegisteredEventMessage(val premisesId: String) :
+    IAMEventMessage("premises.owner.registered")

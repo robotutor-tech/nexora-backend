@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.device.domain.aggregate
 
 import com.robotutor.nexora.context.device.domain.event.DeviceCommissionedEvent
-import com.robotutor.nexora.context.device.domain.event.DeviceDomainEvent
+import com.robotutor.nexora.context.device.domain.event.DeviceEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceMetadataUpdatedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceRegisteredEvent
 import com.robotutor.nexora.context.device.domain.exception.DeviceError
@@ -10,12 +10,8 @@ import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.InvalidStateException
-import com.robotutor.nexora.shared.domain.model.FeedId
-import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.ActorId
-import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.ZoneId
+import com.robotutor.nexora.shared.domain.vo.FeedId
+import com.robotutor.nexora.shared.domain.vo.*
 import java.time.Instant
 
 class DeviceAggregate private constructor(
@@ -31,7 +27,7 @@ class DeviceAggregate private constructor(
     private var feedIds: Set<FeedId>,
     private var health: DeviceHealth,
     private var updatedAt: Instant,
-) : AggregateRoot<DeviceAggregate, DeviceId, DeviceDomainEvent>(deviceId) {
+) : AggregateRoot<DeviceAggregate, DeviceId, DeviceEvent>(deviceId) {
 
     fun getHealth(): DeviceHealth = health
     fun getState(): DeviceState = state
@@ -120,16 +116,6 @@ class DeviceAggregate private constructor(
             )
         }
     }
-
-//    fun updateFeedIds(feedIds: FeedIds): Device {
-//        this.feedIds = feedIds
-//        return this
-//    }
-//
-//    fun updateHealth(health: DeviceHealth): Device {
-//        this.health = health
-//        return this
-//    }
 }
 
 enum class DeviceState {

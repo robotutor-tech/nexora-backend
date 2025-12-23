@@ -13,5 +13,8 @@ data class DeviceCommissionedEventMessage(val deviceId: String, val premisesId: 
 data class DeviceRegisteredEventMessage(val deviceId: String, val premisesId: String, val name: String) :
     DeviceEventMessage("registered")
 
+data class DeviceRegistrationFailedEventMessage(val accountId: String) :
+    DeviceEventMessage("registration.failed")
+
 data class DeviceMetadataUpdatedEventMessage(val deviceId: String, val modelNo: String, val serialNo: String) :
     DeviceEventMessage("metadata.updated")

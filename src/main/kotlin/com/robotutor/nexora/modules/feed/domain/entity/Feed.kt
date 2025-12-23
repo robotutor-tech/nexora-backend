@@ -5,12 +5,7 @@ import com.robotutor.nexora.modules.feed.domain.event.FeedCreatedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedEvent
 import com.robotutor.nexora.modules.feed.domain.event.FeedValueUpdatedEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.model.*
-import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.ActorData
-
-import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.ZoneId
+import com.robotutor.nexora.shared.domain.vo.*
 import java.time.Instant
 
 data class Feed(

@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.iam.application.usecase.RegisterOwnerUseCase
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.interfaces.messaging.mapper.IAMMapper
 import com.robotutor.nexora.context.iam.interfaces.messaging.message.AccountActivatedMessage
-import com.robotutor.nexora.context.iam.interfaces.messaging.message.AccountCompensateMessage
+import com.robotutor.nexora.context.iam.interfaces.messaging.message.AccountRegistrationFailedEventMessage
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaController
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEvent
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEventListener
@@ -19,8 +19,8 @@ class IAMEventController(
     private val activateAccountUseCase: ActivateAccountUseCase,
     private val compensateAccountUseCase: CompensateAccountUseCase
 ) {
-    @KafkaEventListener(["orchestration.compensate.account-registration"])
-    fun compensateAccount(@KafkaEvent eventMessage: AccountCompensateMessage): Mono<AccountAggregate> {
+    @KafkaEventListener(["user.registration.failed", "device.registration.failed"])
+    fun compensateAccount(@KafkaEvent eventMessage: AccountRegistrationFailedEventMessage): Mono<AccountAggregate> {
         val command = IAMMapper.toCompensateAccountCommand(eventMessage)
         return compensateAccountUseCase.execute(command)
     }

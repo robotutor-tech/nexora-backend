@@ -2,10 +2,9 @@ package com.robotutor.nexora.context.device.application.usecase
 
 import com.robotutor.nexora.context.device.application.command.CompensateDeviceRegistrationCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.context.device.domain.event.DeviceBusinessEvent
+import com.robotutor.nexora.context.device.domain.event.DeviceEventPublisher
 import com.robotutor.nexora.context.device.domain.event.DeviceRegistrationCompensatedEvent
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
-import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
@@ -16,7 +15,7 @@ import reactor.core.publisher.Mono
 @Service
 class CompensateDeviceRegistrationUseCase(
     private val deviceRepository: DeviceRepository,
-    private val eventPublisher: EventPublisher<DeviceBusinessEvent>
+    private val eventPublisher: DeviceEventPublisher
 ) {
 
     private val logger = Logger(this::class.java)

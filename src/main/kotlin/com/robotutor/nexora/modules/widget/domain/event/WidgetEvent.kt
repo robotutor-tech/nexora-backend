@@ -1,5 +1,5 @@
 package com.robotutor.nexora.modules.widget.domain.event
 
-import com.robotutor.nexora.shared.domain.DomainEvent
+import com.robotutor.nexora.shared.domain.Event
 
-sealed interface WidgetEvent : DomainEvent
+sealed interface WidgetEvent : Event

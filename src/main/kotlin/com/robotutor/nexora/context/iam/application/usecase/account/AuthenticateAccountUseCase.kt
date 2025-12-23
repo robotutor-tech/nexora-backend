@@ -5,7 +5,7 @@ import com.robotutor.nexora.context.iam.application.command.CreateSessionCommand
 import com.robotutor.nexora.context.iam.application.usecase.CreateSessionUseCase
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.event.AccountAuthenticatedEvent
-import com.robotutor.nexora.context.iam.domain.event.IAMBusinessEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
@@ -26,7 +26,7 @@ class AuthenticateAccountUseCase(
     private val accountRepository: AccountRepository,
     private val secretService: SecretEncoder,
     private val createSessionUseCase: CreateSessionUseCase,
-    private val eventPublisher: EventPublisher<IAMBusinessEvent>
+    private val eventPublisher: EventPublisher<IAMEvent>
 ) {
     private val logger = Logger(this::class.java)
 

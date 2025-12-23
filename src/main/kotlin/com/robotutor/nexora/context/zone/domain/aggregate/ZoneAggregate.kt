@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.zone.domain.aggregate
 
 import com.robotutor.nexora.context.zone.domain.event.ZoneCreatedEvent
-import com.robotutor.nexora.context.zone.domain.event.ZoneDomainEvent
+import com.robotutor.nexora.context.zone.domain.event.ZoneEvent
 import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.vo.ActorId
@@ -16,7 +16,7 @@ class ZoneAggregate private constructor(
     val createdBy: ActorId,
     val createdAt: Instant,
     val updatedAt: Instant,
-) : AggregateRoot<ZoneAggregate, ZoneId, ZoneDomainEvent>(zoneId) {
+) : AggregateRoot<ZoneAggregate, ZoneId, ZoneEvent>(zoneId) {
     companion object {
         fun create(
             zoneId: ZoneId,

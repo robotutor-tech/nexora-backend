@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.zone.infrastructure.persistence
 
 import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
-import com.robotutor.nexora.context.zone.domain.event.ZoneDomainEvent
+import com.robotutor.nexora.context.zone.domain.event.ZoneEventPublisher
 import com.robotutor.nexora.context.zone.domain.repository.ZoneRepository
 import com.robotutor.nexora.context.zone.infrastructure.persistence.document.ZoneDocument
 import com.robotutor.nexora.context.zone.infrastructure.persistence.mapper.ZoneDocumentMapper
@@ -12,7 +12,6 @@ import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ZoneId
-import com.robotutor.nexora.shared.infrastructure.messaging.DomainEventPublisher
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.find
@@ -24,7 +23,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoZoneRepository(
     private val zoneDocumentRepository: ZoneDocumentRepository,
-    private val eventPublisher: DomainEventPublisher<ZoneDomainEvent>,
+    private val eventPublisher: ZoneEventPublisher,
     private val reactiveMongoTemplate: ReactiveMongoTemplate
 ) : ZoneRepository {
 
