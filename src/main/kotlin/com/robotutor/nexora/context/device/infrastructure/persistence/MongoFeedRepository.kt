@@ -11,7 +11,6 @@ import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.specification.Specification
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.find
-import org.springframework.data.mongodb.core.findAll
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
