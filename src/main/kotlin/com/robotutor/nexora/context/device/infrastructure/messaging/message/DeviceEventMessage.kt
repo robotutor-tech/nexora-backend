@@ -18,6 +18,3 @@ data class DeviceRegistrationFailedEventMessage(val accountId: String) :
 
 data class DeviceMetadataUpdatedEventMessage(val deviceId: String, val modelNo: String, val serialNo: String) :
     DeviceEventMessage("metadata.updated")
-
-
-data class FeedRegisteredEventMessage(val feedId: String, val deviceId: String) : DeviceEventMessage("metadata.updated")

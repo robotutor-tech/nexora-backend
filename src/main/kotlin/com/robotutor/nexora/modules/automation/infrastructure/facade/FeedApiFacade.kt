@@ -5,7 +5,7 @@ import com.robotutor.nexora.shared.domain.vo.FeedId
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
-@Service
+@Service("AutomationFeedFacade")
 class FeedApiFacade() : FeedFacade {
     override fun getFeedById(feedId: FeedId): Mono<Any> {
         return Mono.empty()

@@ -39,3 +39,5 @@ app:
       secret: ${JWT_SECRET:secret}
   zone:
     base-url: ${ZONE_BASE_URL:http://localhost:${server.port}}
+  feed:
+    base-url: ${FEED_BASE_URL:http://localhost:${server.port}}
