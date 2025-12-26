@@ -8,7 +8,7 @@ import com.robotutor.nexora.context.iam.domain.repository.AccountIdGenerator
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
 import com.robotutor.nexora.context.iam.domain.vo.Credential
-import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess

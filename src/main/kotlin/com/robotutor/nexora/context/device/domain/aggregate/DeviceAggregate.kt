@@ -41,13 +41,13 @@ class DeviceAggregate private constructor(
         return this
     }
 
-    fun commission(accountId: AccountId): DeviceAggregate {
+    fun commission(actorId: ActorId): DeviceAggregate {
         if (state != DeviceState.REGISTERED) {
             throw InvalidStateException(DeviceError.NEXORA0401)
         }
-        this.state = DeviceState.COMMISSIONED
+        this.state = DeviceState.ACTIVE
         this.updatedAt = Instant.now()
-        addEvent(DeviceCommissionedEvent(deviceId, accountId, premisesId))
+        addEvent(DeviceCommissionedEvent(deviceId, actorId, premisesId))
         return this
     }
 
@@ -58,16 +58,6 @@ class DeviceAggregate private constructor(
         this.metadata = metadata
         this.updatedAt = Instant.now()
         addEvent(DeviceMetadataUpdatedEvent(deviceId, metadata))
-        return this
-    }
-
-    fun activate(metaData: DeviceMetadata): DeviceAggregate {
-        if (state != DeviceState.COMMISSIONED) {
-            throw InvalidStateException(DeviceError.NEXORA0403)
-        }
-        this.state = DeviceState.ACTIVE
-        this.metadata = metaData
-        this.updatedAt = Instant.now()
         return this
     }
 

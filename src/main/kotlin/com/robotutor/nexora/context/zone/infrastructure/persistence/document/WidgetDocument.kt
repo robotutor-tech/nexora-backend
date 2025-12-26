@@ -1,6 +1,7 @@
 package com.robotutor.nexora.context.zone.infrastructure.persistence.document
 
 import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
+import com.robotutor.nexora.context.zone.domain.vo.WidgetMetadata
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -9,23 +10,13 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
-const val ZONE_COLLECTION = "zones"
-
-@TypeAlias("Zone")
-@Document(ZONE_COLLECTION)
-data class ZoneDocument(
-    @Id
-    val id: String? = null,
+data class WidgetDocument(
     @Indexed(unique = true)
-    val zoneId: String,
-    @Indexed
-    val premisesId: String,
+    val widgetId: String,
     val name: String,
-    val widgets: List<WidgetDocument>,
-    val createdBy: String,
+    val feedId: String,
+    val metadata: Map<Any, Any>,
     val createdAt: Instant,
     val updatedAt: Instant,
-    @Version
-    val version: Long? = null
 ) : MongoDocument<ZoneAggregate>
 

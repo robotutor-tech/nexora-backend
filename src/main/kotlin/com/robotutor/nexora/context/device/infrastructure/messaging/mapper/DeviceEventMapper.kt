@@ -42,7 +42,7 @@ object DeviceEventMapper : EventMapper<DeviceEvent> {
         return DeviceCommissionedEventMessage(
             deviceId = event.deviceId.value,
             premisesId = event.premisesId.value,
-            accountId = event.accountId.value
+            accountId = event.actorId.value
         )
     }
 

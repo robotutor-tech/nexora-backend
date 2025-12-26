@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.context.premises.domain.exceptions.PremisesError
 import com.robotutor.nexora.context.premises.domain.repository.PremisesIdGenerator
 import com.robotutor.nexora.context.premises.domain.repository.PremisesRepository
-import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess

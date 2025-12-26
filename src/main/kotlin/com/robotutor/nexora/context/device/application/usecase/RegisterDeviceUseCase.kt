@@ -8,7 +8,7 @@ import com.robotutor.nexora.context.device.domain.event.DeviceRegistrationFailed
 import com.robotutor.nexora.context.device.domain.exception.DeviceError
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.shared.domain.event.publishEventOnError
-import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess

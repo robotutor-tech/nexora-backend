@@ -12,7 +12,7 @@ import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

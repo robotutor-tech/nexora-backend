@@ -8,7 +8,7 @@ import com.robotutor.nexora.context.user.domain.event.UserRegistrationFailedEven
 import com.robotutor.nexora.context.user.domain.exception.UserError
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.domain.event.publishEventOnError
-import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess

@@ -17,7 +17,7 @@ import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEventOnError
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.infrastructure.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

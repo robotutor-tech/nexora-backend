@@ -1,5 +1,6 @@
 package com.robotutor.nexora.context.zone.domain.aggregate
 
+import com.robotutor.nexora.context.zone.domain.entity.Widget
 import com.robotutor.nexora.context.zone.domain.event.ZoneCreatedEvent
 import com.robotutor.nexora.context.zone.domain.event.ZoneEvent
 import com.robotutor.nexora.shared.domain.vo.ZoneId
@@ -15,18 +16,32 @@ class ZoneAggregate private constructor(
     val name: Name,
     val createdBy: ActorId,
     val createdAt: Instant,
-    val updatedAt: Instant,
+    private var widgets: MutableList<Widget>,
+    private var updatedAt: Instant,
 ) : AggregateRoot<ZoneAggregate, ZoneId, ZoneEvent>(zoneId) {
+
+    fun getWidgets(): List<Widget> = widgets.toList()
+    fun getUpdatedAt(): Instant = updatedAt
+
     companion object {
         fun create(
             zoneId: ZoneId,
             premisesId: PremisesId,
             name: Name,
             createdBy: ActorId,
+            widgets: List<Widget> = emptyList(),
             createdAt: Instant = Instant.now(),
             updatedAt: Instant = Instant.now(),
         ): ZoneAggregate {
-            return ZoneAggregate(zoneId, premisesId, name, createdBy, createdAt, updatedAt)
+            return ZoneAggregate(
+                zoneId = zoneId,
+                premisesId = premisesId,
+                name = name,
+                createdBy = createdBy,
+                widgets = widgets.toMutableList(),
+                createdAt = createdAt,
+                updatedAt = updatedAt,
+            )
         }
 
         fun createZone(premisesId: PremisesId, name: Name, createdBy: ActorId): ZoneAggregate {
@@ -34,5 +49,11 @@ class ZoneAggregate private constructor(
             zone.addEvent(ZoneCreatedEvent(zone.zoneId, zone.name, zone.premisesId, zone.createdBy))
             return zone
         }
+    }
+
+    fun updateWidgets(widgets: List<Widget>): ZoneAggregate {
+        this.widgets.addAll(widgets)
+        this.updatedAt = Instant.now()
+        return this
     }
 }
