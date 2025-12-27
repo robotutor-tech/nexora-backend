@@ -37,10 +37,7 @@ class ApiExceptionHandler {
     @ExceptionHandler(ResponseStatusException::class)
     fun handleNoHandlerFoundException(ex: ResponseStatusException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(ex.statusCode).body(
-            ErrorResponse(
-                errorCode = "NEXORA-0003",
-                message = ex.message
-            )
+            ErrorResponse(errorCode = "NEXORA-0003", message = ex.message ?: "Handler not found for request")
         )
     }
 

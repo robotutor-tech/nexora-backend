@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class RouteValidator(private val appConfig: AppConfig) {
-
     fun isUnsecured(request: ServerHttpRequest): Boolean {
         return appConfig.unSecuredPath.any { request.uri.path == it }
     }

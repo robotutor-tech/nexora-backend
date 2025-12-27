@@ -3,7 +3,7 @@ package com.robotutor.nexora.context.iam.interfaces.controller.mapper
 import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.context.iam.application.command.AuthenticateActorCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterMachineActorCommand
-import com.robotutor.nexora.context.iam.application.command.RegisterOwnerCommand
+import com.robotutor.nexora.context.iam.application.command.RegisterPremisesOwnerCommand
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
@@ -40,8 +40,8 @@ object ActorMapper {
     fun toRegisterOwnerCommand(
         eventMessage: OwnerCreationRequest,
         accountData: AccountData
-    ): RegisterOwnerCommand {
-        return RegisterOwnerCommand(
+    ): RegisterPremisesOwnerCommand {
+        return RegisterPremisesOwnerCommand(
             premisesId = PremisesId(eventMessage.premisesId),
             owner = accountData
         )

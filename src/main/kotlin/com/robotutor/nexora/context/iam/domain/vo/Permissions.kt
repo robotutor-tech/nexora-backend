@@ -1,9 +1,9 @@
 package com.robotutor.nexora.context.iam.domain.vo
 
-import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ResourceId
+import com.robotutor.nexora.shared.domain.vo.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.Resources
 

@@ -3,17 +3,17 @@ package com.robotutor.nexora.context.iam.infrastructure.messaging.mapper
 import com.robotutor.nexora.context.iam.domain.event.*
 import com.robotutor.nexora.context.iam.infrastructure.messaging.message.*
 import com.robotutor.nexora.shared.domain.event.EventMapper
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
 
 object IAMEventMapper : EventMapper<IAMEvent> {
     override fun toEventMessage(event: IAMEvent): EventMessage {
         return when (event) {
+            is AccountCreatedEvent -> toAccountCreatedEventMessage(event)
+            is AccountRegistrationFailedEvent -> toAccountRegistrationFailedEventMessage(event)
             is AccountAuthenticatedEvent -> toAccountAuthenticatedEventMessage(event)
             is ActorAuthenticatedEvent -> toActorAuthenticatedEventMessage(event)
-            is AccountCompensatedEvent -> toAccountCompensatedEventMessage(event)
             is PremisesOwnerRegistrationFailedEvent -> toPremisesOwnerRegistrationFailedEventMessage(event)
-            is AccountCreatedEvent -> toAccountCreatedEventMessage(event)
-            is AccountActivatedEvent -> toAccountActivatedEventMessage(event)
             is CredentialUpdatedEvent -> toCredentialUpdatedEventMessage(event)
             is PremisesOwnerRegisteredEvent -> toPremisesOwnerRegisteredEventMessage(event)
         }
@@ -24,11 +24,17 @@ object IAMEventMapper : EventMapper<IAMEvent> {
     }
 
     private fun toAccountCreatedEventMessage(event: AccountCreatedEvent): AccountCreatedEventMessage {
-        return AccountCreatedEventMessage(event.accountId.value)
+        return when (event.type) {
+            AccountType.HUMAN -> UserAccountCreatedEventMessage(event.ownerId.value, event.accountId)
+            AccountType.MACHINE -> DeviceAccountCreatedEventMessage(event.ownerId.value, event.accountId)
+        }
     }
 
-    private fun toAccountActivatedEventMessage(event: AccountActivatedEvent): AccountActivatedEventMessage {
-        return AccountActivatedEventMessage(event.accountId.value)
+    private fun toAccountRegistrationFailedEventMessage(event: AccountRegistrationFailedEvent): AccountRegistrationFailedEventMessage {
+        return when (event.type) {
+            AccountType.HUMAN -> UserAccountRegistrationFailedEventMessage(event.ownerId.value)
+            AccountType.MACHINE -> DeviceAccountRegistrationFailedEventMessage(event.ownerId.value)
+        }
     }
 
     private fun toPremisesOwnerRegisteredEventMessage(event: PremisesOwnerRegisteredEvent): PremisesOwnerRegisteredEventMessage {
@@ -50,9 +56,5 @@ object IAMEventMapper : EventMapper<IAMEvent> {
 
     private fun toAccountAuthenticatedEventMessage(event: AccountAuthenticatedEvent): AccountAuthenticatedEventMessage {
         return AccountAuthenticatedEventMessage(event.accountId.value, event.type.name)
-    }
-
-    private fun toAccountCompensatedEventMessage(event: AccountCompensatedEvent): AccountCompensatedEventMessage {
-        return AccountCompensatedEventMessage(event.accountId.value)
     }
 }

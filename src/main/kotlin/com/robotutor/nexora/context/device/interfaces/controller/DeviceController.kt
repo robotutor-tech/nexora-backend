@@ -44,6 +44,7 @@ class DeviceController(
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
+    @Authorize(ActionType.READ, ResourceType.DEVICE, "#actorData.accountId.value")
     @PostMapping("/commission")
     fun commissionDevice(
         @RequestBody @Validated metadata: DeviceMetaDataRequest,

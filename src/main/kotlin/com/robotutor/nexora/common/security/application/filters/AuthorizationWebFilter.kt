@@ -1,16 +1,17 @@
 package com.robotutor.nexora.common.security.application.filters
 
 import com.robotutor.nexora.common.security.application.ports.AccessAuthorizer
+import com.robotutor.nexora.common.security.application.resolvers.SpringExpressionResourceIdResolver
+import com.robotutor.nexora.common.security.application.writeContextOnChain
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
 import com.robotutor.nexora.shared.application.annotation.Authorize
-import com.robotutor.nexora.shared.application.annotation.ResourceId
-import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
-import org.springframework.web.reactive.HandlerMapping
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
@@ -22,48 +23,37 @@ import reactor.core.publisher.Mono
 class AuthorizationWebFilter(
     private val handlerMapping: RequestMappingHandlerMapping,
     private val accessAuthorizer: AccessAuthorizer,
+    private val resourceIdResolver: SpringExpressionResourceIdResolver,
 ) : WebFilter {
+
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         return handlerMapping.getHandler(exchange)
-            .switchIfEmpty(chain.filter(exchange))
             .flatMap { handler ->
-                if (handler is HandlerMethod) {
-                    val authorize = handler.getMethodAnnotation(Authorize::class.java)
-                    if (authorize == null) {
-                        chain.filter(exchange)
-                    } else {
-                        val resourceId =
-                            if (authorize.resourceSelector == ResourceSelector.ALL)
-                                com.robotutor.nexora.shared.domain.vo.ResourceId.ALL
-                            else resolveResourceId(exchange, handler)
-                        accessAuthorizer.authorize(authorize, resourceId)
-                            .contextWrite { context -> writeContextOnChain(context, exchange) }
-                            .flatMap { allowed ->
-                                if (allowed) chain.filter(exchange)
-                                else
-                                    createMonoError(UnAuthorizedException(NexoraError.NEXORA0105))
-                            }
-                    }
-                } else {
-                    chain.filter(exchange)
-                }
+                (handler as? HandlerMethod)
+                    ?.let { authorizeIfRequired(exchange, chain, it) }
+                    ?: chain.filter(exchange)
             }
     }
 
-    private fun resolveResourceId(
+    private fun authorizeIfRequired(
         exchange: ServerWebExchange,
-        handler: HandlerMethod
-    ): com.robotutor.nexora.shared.domain.vo.ResourceId {
-        val resourceParamName = handler.methodParameters
-            .firstOrNull { it.hasParameterAnnotation(ResourceId::class.java) }
-            ?.parameter?.name
+        chain: WebFilterChain,
+        handler: HandlerMethod,
+    ): Mono<Void> {
+        val authorize = handler.getMethodAnnotation(Authorize::class.java)
+            ?: return chain.filter(exchange)
 
-        val uriVariables = exchange.getAttribute<Map<String, String>>(
-            HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE
-        ) ?: emptyMap()
+        return Mono.deferContextual { ctx ->
+            val actorData = ctx.getOrEmpty<ActorData>(ActorData::class.java).orElse(null)
+            val accountData = ctx.getOrEmpty<AccountData>(AccountData::class.java).orElse(null)
 
-        val resourceId = (uriVariables[resourceParamName])
-            ?: throw IllegalStateException("Path variable '$resourceParamName' not found in request")
-        return com.robotutor.nexora.shared.domain.vo.ResourceId(resourceId)
+            val resourceId = resourceIdResolver.resolve(authorize, exchange, handler, actorData, accountData)
+            accessAuthorizer.authorize(authorize, resourceId)
+        }
+            .contextWrite { context -> writeContextOnChain(context, exchange) }
+            .flatMap { allowed ->
+                if (allowed) chain.filter(exchange)
+                else createMonoError(UnAuthorizedException(NexoraError.NEXORA0105))
+            }
     }
 }

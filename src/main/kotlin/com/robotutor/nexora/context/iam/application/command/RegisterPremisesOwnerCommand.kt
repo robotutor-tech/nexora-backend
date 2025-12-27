@@ -4,4 +4,4 @@ import com.robotutor.nexora.shared.application.command.Command
 import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 
-data class RegisterOwnerCommand(val premisesId: PremisesId, val owner: AccountData) : Command
+data class RegisterPremisesOwnerCommand(val premisesId: PremisesId, val owner: AccountData) : Command

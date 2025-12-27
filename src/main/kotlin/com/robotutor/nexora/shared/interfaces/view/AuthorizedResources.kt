@@ -1,6 +1,5 @@
 package com.robotutor.nexora.shared.interfaces.view
 
-import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.*
 
 data class AuthorizedResources(

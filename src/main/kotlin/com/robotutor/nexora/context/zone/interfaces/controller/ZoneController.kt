@@ -8,8 +8,6 @@ import com.robotutor.nexora.context.zone.interfaces.controller.view.ZoneResponse
 import com.robotutor.nexora.context.zone.interfaces.controller.mapper.ZoneMapper
 import com.robotutor.nexora.context.zone.interfaces.controller.view.WidgetsRequest
 import com.robotutor.nexora.shared.application.annotation.Authorize
-import com.robotutor.nexora.shared.application.annotation.ResourceId
-import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.ActorData
@@ -43,9 +41,9 @@ class ZoneController(
             .map { ZoneMapper.toZoneResponse(it) }
     }
 
-    @Authorize(ActionType.READ, ResourceType.ZONE, ResourceSelector.SPECIFIC)
+    @Authorize(ActionType.READ, ResourceType.ZONE, "#zoneId")
     @GetMapping("/{zoneId}")
-    fun getZone(@PathVariable @ResourceId zoneId: String, actorData: ActorData): Mono<ZoneResponse> {
+    fun getZone(@PathVariable zoneId: String, actorData: ActorData): Mono<ZoneResponse> {
         val query = ZoneMapper.getZoneQuery(zoneId, actorData)
         return zoneUseCase.execute(query)
             .map { ZoneMapper.toZoneResponse(it) }

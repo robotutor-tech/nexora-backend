@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.domain.service
 
-import com.robotutor.nexora.shared.domain.model.IdSequenceType
+import com.robotutor.nexora.shared.infrastructure.persistence.document.IdSequenceType
 import reactor.core.publisher.Mono
 
 interface IdGeneratorService {

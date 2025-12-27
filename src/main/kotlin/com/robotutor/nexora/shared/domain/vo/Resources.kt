@@ -1,6 +1,5 @@
 package com.robotutor.nexora.shared.domain.vo
 
-import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.utility.validation
 
 data class Resources<T : Identifier>(
@@ -21,4 +20,8 @@ data class Resources<T : Identifier>(
                     || (resourceSelector == ResourceSelector.SPECIFIC && (allowedIds.isNotEmpty() || deniedIds.isNotEmpty()))
         ) { "At least one resource must be allowed or denied" }
     }
+}
+
+enum class ResourceSelector {
+    ALL, SPECIFIC
 }

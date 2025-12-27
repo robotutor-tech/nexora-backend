@@ -1,21 +1,17 @@
 package com.robotutor.nexora.modules.automation.interfaces.controller
 
 import com.robotutor.nexora.modules.automation.application.AutomationUseCase
+import com.robotutor.nexora.modules.automation.domain.entity.AutomationId
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationResponse
-import com.robotutor.nexora.modules.automation.domain.entity.AutomationId
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.AutomationMapper
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.domain.model.ResourcesData
+import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -36,9 +32,8 @@ class AutomationController(private val automationUseCase: AutomationUseCase) {
 
     @Authorize(ActionType.READ, ResourceType.AUTOMATION)
     @GetMapping
-    fun getAutomationRules(actorData: ActorData, data: ResourcesData): Flux<AutomationResponse> {
-        val automationIds = data.getResourceIds(ActionType.READ, ResourceType.AUTOMATION)
-            .map { AutomationId(it) }
+    fun getAutomationRules(actorData: ActorData, authorizedResources: AuthorizedResources): Flux<AutomationResponse> {
+        val automationIds = emptyList<AutomationId>()
         return automationUseCase.getAutomationRules(automationIds, actorData)
             .map { AutomationMapper.toAutomationResponse(it) }
     }

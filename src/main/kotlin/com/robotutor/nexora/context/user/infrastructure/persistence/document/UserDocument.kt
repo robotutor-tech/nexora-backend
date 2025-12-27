@@ -3,7 +3,6 @@ package com.robotutor.nexora.context.user.infrastructure.persistence.document
 import com.robotutor.nexora.context.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.context.user.domain.aggregate.UserState
 import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -20,7 +19,6 @@ data class UserDocument(
     val id: String? = null,
     @Indexed(unique = true)
     val userId: String,
-    val accountId: String,
     val name: String,
     val email: String,
     val mobile: String,

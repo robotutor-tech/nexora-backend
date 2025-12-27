@@ -10,5 +10,4 @@ interface UserDocumentRepository : ReactiveCrudRepository<UserDocument, String> 
     fun deleteByUserId(userId: String): Mono<UserDocument>
     fun findByUserId(userId: String): Mono<UserDocument>
     fun findByEmail(email: String): Mono<UserDocument>
-    fun findByAccountId(accountId: String): Mono<UserDocument>
 }

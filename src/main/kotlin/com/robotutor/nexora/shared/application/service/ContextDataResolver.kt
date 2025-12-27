@@ -30,26 +30,4 @@ object ContextDataResolver {
             }
         }
     }
-
-//    fun getDeviceData(): Mono<DeviceData> {
-//        return Mono.deferContextual { context ->
-//            val deviceData = context.getOrEmpty<DeviceData>(DeviceData::class.java)
-//            if (deviceData.isPresent) {
-//                createMono(deviceData.get())
-//            } else {
-//                createMonoError(DataNotFoundException(SharedNexoraError.NEXORA0104))
-//            }
-//        }
-//    }
-//
-//    fun getInvitationData(): Mono<InvitationData> {
-//        return Mono.deferContextual { context ->
-//            val invitationData = context.getOrEmpty<InvitationData>(InvitationData::class.java)
-//            if (invitationData.isPresent) {
-//                createMono(invitationData.get())
-//            } else {
-//                createMonoError(DataNotFoundException(SharedNexoraError.NEXORA0103))
-//            }
-//        }
-//    }
 }

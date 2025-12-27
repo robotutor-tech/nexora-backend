@@ -1,10 +1,9 @@
 package com.robotutor.nexora.shared.domain.event
 
-import com.robotutor.nexora.shared.utility.createFlux
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.vo.Identifier
-import com.robotutor.nexora.shared.utility.createMonoError
+import com.robotutor.nexora.shared.utility.createFlux
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -77,6 +76,6 @@ fun <T : Event, R : Any> Mono<R>.publishEvent(eventPublisher: EventPublisher<T>,
 
 fun <T : Event, R : Any> Mono<R>.publishEventOnError(eventPublisher: EventPublisher<T>, event: T): Mono<R> {
     return onErrorResume { throwable ->
-        eventPublisher.publish(event).flatMap { createMonoError(throwable) }
+        eventPublisher.publish(event, throwable)
     }
 }

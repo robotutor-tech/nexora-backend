@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
 data class UserRequest(
-    @field:NotBlank(message = "AccountId is required")
-    val accountId: String,
     @field:NotBlank(message = "Name is required")
     @field:Size(
         min = 2,

@@ -10,5 +10,6 @@ data class RegisterAccountRequest(
     @field:NotBlank(message = "Secret is required")
     val secret: String,
     val kind: CredentialKind,
-    val type: AccountType
+    val type: AccountType,
+    val ownerId: String
 )

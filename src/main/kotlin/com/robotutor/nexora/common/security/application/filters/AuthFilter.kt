@@ -1,23 +1,22 @@
 package com.robotutor.nexora.common.security.application.filters
 
 import com.robotutor.nexora.common.security.application.ports.SessionValidator
-import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
 import com.robotutor.nexora.common.security.config.AppConfig
-import com.robotutor.nexora.shared.utility.createMono
-import com.robotutor.nexora.shared.utility.createMonoError
+import com.robotutor.nexora.common.security.application.writeContextOnChain
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
+import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
+import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
+import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.InternalData
-import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
 import com.robotutor.nexora.shared.domain.vo.PrincipalData
-import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.ReactiveContext.putPremisesId
-import com.robotutor.nexora.shared.logger.ReactiveContext.putTraceId
 import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
+import com.robotutor.nexora.shared.utility.createMono
+import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -29,8 +28,6 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import reactor.util.context.Context
-import java.time.Instant
-import java.util.UUID.randomUUID
 
 
 @Component
@@ -101,25 +98,3 @@ class AuthFilter(
     }
 }
 
-fun getTraceIdFromExchange(exchange: ServerWebExchange): String {
-    return exchange.attributes[TRACE_ID] as? String
-        ?: exchange.request.headers.getFirst(TRACE_ID)
-        ?: randomUUID().toString()
-}
-
-fun getPremisesIdFromExchange(exchange: ServerWebExchange): String {
-    return exchange.attributes[PREMISES_ID] as? String
-        ?: exchange.request.headers.getFirst(PREMISES_ID)
-        ?: "missing-premises-id"
-}
-
-
-fun writeContextOnChain(context: Context, exchange: ServerWebExchange): Context {
-    val traceId = getTraceIdFromExchange(exchange)
-    val premisesId = getPremisesIdFromExchange(exchange)
-    val startTime = exchange.getAttribute(START_TIME) ?: Instant.now()
-    val newContext = putTraceId(context, traceId)
-    return putPremisesId(newContext, premisesId)
-        .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
-        .put(START_TIME, startTime)
-}

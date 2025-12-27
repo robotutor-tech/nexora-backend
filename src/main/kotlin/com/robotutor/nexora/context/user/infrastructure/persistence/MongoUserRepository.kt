@@ -8,7 +8,6 @@ import com.robotutor.nexora.context.user.domain.vo.UserId
 import com.robotutor.nexora.context.user.infrastructure.persistence.mapper.UserDocumentMapper
 import com.robotutor.nexora.context.user.infrastructure.persistence.repository.UserDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
@@ -38,11 +37,6 @@ class MongoUserRepository(
 
     override fun findByEmail(email: Email): Mono<UserAggregate> {
         return userDocumentRepository.findByEmail(email.value)
-            .map { UserDocumentMapper.toDomainModel(it) }
-    }
-
-    override fun findByAccountId(accountId: AccountId): Mono<UserAggregate> {
-        return userDocumentRepository.findByAccountId(accountId.value)
             .map { UserDocumentMapper.toDomainModel(it) }
     }
 }

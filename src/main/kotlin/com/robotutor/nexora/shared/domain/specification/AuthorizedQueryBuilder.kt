@@ -1,8 +1,8 @@
 package com.robotutor.nexora.shared.domain.specification
 
-import com.robotutor.nexora.shared.application.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.AggregateId
 import com.robotutor.nexora.shared.domain.vo.Identifier
+import com.robotutor.nexora.shared.domain.vo.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.Resources
 import org.springframework.stereotype.Component
 

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.iam.application.usecase
 
 import com.robotutor.nexora.context.iam.application.command.RegisterGroupCommand
-import com.robotutor.nexora.context.iam.application.command.RegisterOwnerCommand
+import com.robotutor.nexora.context.iam.application.command.RegisterPremisesOwnerCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterRoleCommand
 import com.robotutor.nexora.context.iam.application.policy.RegisterPremisesOwnerPolicy
 import com.robotutor.nexora.context.iam.application.seed.PermissionSeedProvider
@@ -30,7 +30,7 @@ class RegisterOwnerUseCase(
     private val eventPublisher: IAMEventPublisher,
     private val registerPremisesOwnerPolicy: RegisterPremisesOwnerPolicy
 ) {
-    fun execute(command: RegisterOwnerCommand): Mono<ActorAggregate> {
+    fun execute(command: RegisterPremisesOwnerCommand): Mono<ActorAggregate> {
         return registerPremisesOwnerPolicy.evaluate(command)
             .errorOnDenied(IAMError.NEXORA0201)
             .flatMap {
@@ -54,7 +54,7 @@ class RegisterOwnerUseCase(
     }
 
     private fun createDefaultGroups(
-        command: RegisterOwnerCommand,
+        command: RegisterPremisesOwnerCommand,
         roles: List<RoleAggregate>
     ): List<RegisterGroupCommand> {
         return listOf(
@@ -98,7 +98,7 @@ class RegisterOwnerUseCase(
         )
     }
 
-    private fun createDefaultRoles(command: RegisterOwnerCommand): List<RegisterRoleCommand> {
+    private fun createDefaultRoles(command: RegisterPremisesOwnerCommand): List<RegisterRoleCommand> {
         return listOf(
             RegisterRoleCommand(
                 command.premisesId,

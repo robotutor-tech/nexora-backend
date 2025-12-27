@@ -1,17 +1,12 @@
 package com.robotutor.nexora.context.iam.domain.aggregate
 
-import com.robotutor.nexora.context.iam.domain.event.AccountActivatedEvent
 import com.robotutor.nexora.context.iam.domain.event.AccountCreatedEvent
 import com.robotutor.nexora.context.iam.domain.event.CredentialUpdatedEvent
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
-import com.robotutor.nexora.context.iam.domain.vo.Credential
-import com.robotutor.nexora.context.iam.domain.vo.CredentialId
-import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
-import com.robotutor.nexora.context.iam.domain.vo.HashedCredentialSecret
+import com.robotutor.nexora.context.iam.domain.vo.*
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.BadDataException
-import com.robotutor.nexora.shared.domain.exception.InvalidStateException
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.domain.vo.ActorId
@@ -20,6 +15,7 @@ import java.time.Instant
 class AccountAggregate private constructor(
     val accountId: AccountId,
     val type: AccountType,
+    val ownerId: OwnerId,
     private val credentials: MutableList<Credential>,
     val createdBy: ActorId?,
     val createdAt: Instant,
@@ -35,26 +31,29 @@ class AccountAggregate private constructor(
         fun register(
             accountId: AccountId,
             type: AccountType,
+            ownerId: OwnerId,
             credentials: List<Credential>,
             createdBy: ActorId? = null,
         ): AccountAggregate {
-            val accountAggregate = create(accountId, type, createdBy, credentials)
-            accountAggregate.addEvent(AccountCreatedEvent(accountAggregate.accountId))
-            return accountAggregate
+            val account = create(accountId, type, ownerId, createdBy, credentials)
+            account.addEvent(AccountCreatedEvent(account.accountId, account.type, account.ownerId))
+            return account
         }
 
         fun create(
             accountId: AccountId,
             type: AccountType,
+            ownerId: OwnerId,
             createdBy: ActorId? = null,
             credentials: List<Credential> = emptyList(),
-            status: AccountStatus = AccountStatus.REGISTERED,
+            status: AccountStatus = AccountStatus.ACTIVE,
             createdAt: Instant = Instant.now(),
             updatedAt: Instant = Instant.now(),
         ): AccountAggregate {
             return AccountAggregate(
                 accountId = accountId,
                 type = type,
+                ownerId = ownerId,
                 createdBy = createdBy,
                 credentials = credentials.toMutableList(),
                 status = status,
@@ -62,16 +61,6 @@ class AccountAggregate private constructor(
                 updatedAt = updatedAt
             )
         }
-    }
-
-    fun activate(): AccountAggregate {
-        if (status != AccountStatus.REGISTERED) {
-            throw InvalidStateException(IAMError.NEXORA0207)
-        }
-        this.status = AccountStatus.ACTIVE
-        this.updatedAt = Instant.now()
-        addEvent(AccountActivatedEvent(accountId))
-        return this
     }
 
     fun rotateCredential(hashedCredentialSecret: HashedCredentialSecret, kind: CredentialKind): AccountAggregate {
@@ -94,7 +83,6 @@ class AccountAggregate private constructor(
 }
 
 enum class AccountStatus {
-    REGISTERED,
     ACTIVE,
     DISABLED
 }

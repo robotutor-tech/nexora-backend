@@ -19,6 +19,7 @@ import org.springframework.util.MultiValueMap
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
+import org.springframework.web.reactive.function.client.bodyToMono
 import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -49,7 +50,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .headers { updateHeaders(it, headers, metaDataHeaders) }
                     .retrieve()
                     .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                        it.bodyToMono<BaseException>()
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToMono(returnType)
@@ -105,7 +106,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .headers { updateHeaders(it, headers, metaDataHeaders) }
                     .retrieve()
                     .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                        it.bodyToMono<BaseException>()
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToMono(returnType)
@@ -164,7 +165,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .bodyValue(body)
                     .retrieve()
                     .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                        it.bodyToMono<BaseException>()
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToMono(returnType)
@@ -224,7 +225,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .bodyValue(body)
                     .retrieve()
                     .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                        it.bodyToMono<BaseException>()
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToMono(returnType)
@@ -261,7 +262,6 @@ class WebClientWrapper(private val webClient: WebClient) {
     }
 
 
-
     fun <T> getFlux(
         baseUrl: String,
         path: String,
@@ -281,7 +281,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .headers { updateHeaders(it, headers, metaDataHeaders) }
                     .retrieve()
                     .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                        it.bodyToMono<BaseException>()
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToFlux(returnType)
@@ -339,7 +339,7 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .bodyValue(body)
                     .retrieve()
                     .onStatus({ it.is4xxClientError }) {
-                        it.bodyToMono(BaseException::class.java)
+                        it.bodyToMono<BaseException>()
                             .flatMap { exception -> createMonoError(exception) }
                     }
                     .bodyToFlux(returnType)

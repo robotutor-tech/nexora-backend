@@ -6,7 +6,6 @@ import com.robotutor.nexora.context.user.domain.vo.Mobile
 import com.robotutor.nexora.context.user.domain.vo.UserId
 import com.robotutor.nexora.context.user.infrastructure.persistence.document.UserDocument
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object UserDocumentMapper : DocumentMapper<UserAggregate, UserDocument> {
@@ -14,7 +13,6 @@ object UserDocumentMapper : DocumentMapper<UserAggregate, UserDocument> {
         return UserDocument(
             id = domain.getObjectId(),
             userId = domain.userId.value,
-            accountId = domain.accountId.value,
             name = domain.name.value,
             email = domain.email.value,
             mobile = domain.mobile.value,
@@ -31,7 +29,6 @@ object UserDocumentMapper : DocumentMapper<UserAggregate, UserDocument> {
         return UserAggregate
             .create(
                 userId = UserId(document.userId),
-                accountId = AccountId(document.accountId),
                 name = Name(document.name),
                 email = Email(document.email, document.isEmailVerified),
                 mobile = Mobile(document.mobile, document.isMobileVerified),

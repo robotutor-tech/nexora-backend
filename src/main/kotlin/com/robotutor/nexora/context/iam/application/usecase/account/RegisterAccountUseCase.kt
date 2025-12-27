@@ -3,11 +3,14 @@ package com.robotutor.nexora.context.iam.application.usecase.account
 import com.robotutor.nexora.context.iam.application.command.RegisterAccountCommand
 import com.robotutor.nexora.context.iam.application.policy.RegisterAccountPolicy
 import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
+import com.robotutor.nexora.context.iam.domain.event.AccountRegistrationFailedEvent
+import com.robotutor.nexora.context.iam.domain.event.IAMEventPublisher
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.AccountIdGenerator
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
 import com.robotutor.nexora.context.iam.domain.vo.Credential
+import com.robotutor.nexora.shared.domain.event.publishEventOnError
 import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
@@ -21,6 +24,7 @@ class RegisterAccountUseCase(
     private val accountIdGenerator: AccountIdGenerator,
     private val accountRepository: AccountRepository,
     private val secretService: SecretEncoder,
+    private val eventPublisher: IAMEventPublisher,
 ) {
     private val logger = Logger(this::class.java)
 
@@ -31,6 +35,7 @@ class RegisterAccountUseCase(
             .map { accountId ->
                 AccountAggregate.register(
                     accountId = accountId,
+                    ownerId = command.ownerId,
                     type = command.type,
                     credentials = listOf(
                         Credential(
@@ -43,6 +48,7 @@ class RegisterAccountUseCase(
                 )
             }
             .flatMap { accountAggregate -> accountRepository.save(accountAggregate) }
+            .publishEventOnError(eventPublisher, AccountRegistrationFailedEvent(command.type, command.ownerId))
             .logOnSuccess(logger, "Successfully registered account")
             .logOnError(logger, "Failed to register account")
     }

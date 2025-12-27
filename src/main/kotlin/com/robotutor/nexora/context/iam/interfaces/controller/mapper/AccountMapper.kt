@@ -7,6 +7,7 @@ import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.vo.CredentialId
 import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
 import com.robotutor.nexora.context.iam.domain.vo.CredentialSecret
+import com.robotutor.nexora.context.iam.domain.vo.OwnerId
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
@@ -20,6 +21,7 @@ object AccountMapper {
             secret = CredentialSecret(request.secret),
             kind = request.kind,
             type = request.type,
+            ownerId = OwnerId(request.ownerId),
             createdBy = actorData?.actorId
         )
     }

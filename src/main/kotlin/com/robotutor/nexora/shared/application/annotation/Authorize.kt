@@ -9,8 +9,6 @@ import com.robotutor.nexora.shared.domain.vo.ResourceType
 annotation class Authorize(
     val action: ActionType,
     val resource: ResourceType,
-    val resourceSelector: ResourceSelector = ResourceSelector.ALL
+    val selector: String = "ALL"
 )
-
-enum class ResourceSelector { ALL, SPECIFIC }
 

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.infrastructure.persistence.document
 
-import com.robotutor.nexora.shared.domain.model.IdSequenceType
+import com.robotutor.nexora.shared.infrastructure.persistence.document.IdSequenceType
 
 enum class IdType(override val length: Int) : IdSequenceType {
     ACCOUNT_ID(10)

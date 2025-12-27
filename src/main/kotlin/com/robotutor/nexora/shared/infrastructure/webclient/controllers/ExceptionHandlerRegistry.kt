@@ -9,7 +9,6 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.functions
 
-
 @Component
 class ExceptionHandlerRegistry(private val apiExceptionHandler: ApiExceptionHandler) {
 
