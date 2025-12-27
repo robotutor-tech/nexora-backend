@@ -42,9 +42,11 @@ class AuthenticateAccountUseCase(
                 }
             }
             .flatMap { account ->
-                val createSessionCommand = CreateSessionCommand(AccountPrincipal(account.accountId, account.type))
+                val createSessionCommand =
+                    CreateSessionCommand(AccountPrincipal(account.accountId, account.type, account.principalId))
+                val event = AccountAuthenticatedEvent(account.accountId, account.type, account.principalId)
                 createSessionUseCase.execute(createSessionCommand)
-                    .publishEvent(eventPublisher, AccountAuthenticatedEvent(account.accountId, account.type))
+                    .publishEvent(eventPublisher, event)
             }
             .logOnSuccess(logger, "Successfully authenticated account")
             .logOnError(logger, "Failed to authenticate account")

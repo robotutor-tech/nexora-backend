@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.premises.interfaces.controller
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.context.premises.application.command.GetAllPremisesQuery
 import com.robotutor.nexora.context.premises.application.command.GetPremisesQuery
 import com.robotutor.nexora.context.premises.application.usecase.GetPremisesUseCase

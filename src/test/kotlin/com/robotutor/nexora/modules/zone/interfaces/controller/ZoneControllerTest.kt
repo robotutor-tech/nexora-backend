@@ -22,7 +22,7 @@
 //    private val mockZoneUseCase = mockk<ZoneUseCase>()
 //    private val zoneController = ZoneController(mockZoneUseCase)
 //
-//    private val actorData = ActorData(
+//    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
 //        role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
 //        premisesId = PremisesId("prem-1"),
@@ -54,7 +54,7 @@
 //
 //        every { mockZoneUseCase.createZone(any(), any()) } returns Mono.just(zone)
 //
-//        val result = zoneController.createZone(request, actorData)
+//        val result = zoneController.createZone(request, Actor)
 //
 //        assertNextWith(result) {
 //            it shouldBe ZoneResponse(
@@ -63,7 +63,7 @@
 //                name = "Living",
 //                createdAt = Instant.parse("2023-01-01T00:00:00Z")
 //            )
-//            verify(exactly = 1) { mockZoneUseCase.createZone(match { it.name == Name("Living") }, actorData) }
+//            verify(exactly = 1) { mockZoneUseCase.createZone(match { it.name == Name("Living") }, Actor) }
 //        }
 //    }
 //
@@ -80,7 +80,7 @@
 //            )
 //        )
 //
-//        val flux = zoneController.getAllZones(actorData, resourcesData)
+//        val flux = zoneController.getAllZones(Actor, resourcesData)
 //
 //        val responses = flux.collectList().block()!!
 //        responses.size shouldBe 2
@@ -88,7 +88,7 @@
 //        responses[1] shouldBe ZoneResponse("zone-0002", "prem-1", "Kitchen", Instant.parse("2023-01-02T00:00:00Z"))
 //
 //        verify(exactly = 1) {
-//            mockZoneUseCase.getAllZones(actorData, match { list -> list.map { it.value } == listOf("zone-0001", "zone-0002") })
+//            mockZoneUseCase.getAllZones(Actor, match { list -> list.map { it.value } == listOf("zone-0001", "zone-0002") })
 //        }
 //    }
 //}

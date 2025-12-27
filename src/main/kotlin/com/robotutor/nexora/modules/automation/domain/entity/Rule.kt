@@ -9,6 +9,7 @@ import com.robotutor.nexora.modules.automation.domain.event.AutomationEvent
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.utility.validation
 import com.robotutor.nexora.shared.domain.vo.*
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import java.time.Instant
 
 data class Rule(

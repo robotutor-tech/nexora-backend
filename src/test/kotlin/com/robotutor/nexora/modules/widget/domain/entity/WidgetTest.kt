@@ -10,7 +10,7 @@
 //class WidgetTest {
 //    @Test
 //    fun `create should initialize fields and emit WidgetCreatedEvent`() {
-//        val actor = ActorData(
+//        val actor = Actor(
 //            actorId = ActorId("actor-1"),
 //            role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
 //            premisesId = PremisesId("prem-1"),

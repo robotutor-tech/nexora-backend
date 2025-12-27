@@ -5,16 +5,13 @@ import com.robotutor.nexora.context.iam.application.command.CreateSessionCommand
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.event.ActorAuthenticatedEvent
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
-import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.context.iam.domain.vo.ActorPrincipal
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
-import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -28,10 +25,15 @@ class AuthenticateActorUseCase(
 
     fun execute(command: AuthenticateActorCommand): Mono<SessionTokens> {
         return actorRepository.findByAccountIdAndPremisesId(command.accountData.accountId, command.premisesId)
-            .switchIfEmpty(createMonoError(UnAuthorizedException(IAMError.NEXORA0202)))
             .flatMap { actor ->
                 val createSessionCommand = CreateSessionCommand(
-                    ActorPrincipal(command.accountData, actor.actorId, actor.premisesId)
+                    ActorPrincipal(
+                        actor.actorId,
+                        actor.premisesId,
+                        actor.accountId,
+                        command.accountData.type,
+                        command.accountData.principalId
+                    )
                 )
                 createSessionUseCase.execute(createSessionCommand)
                     .publishEvent(

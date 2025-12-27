@@ -12,14 +12,14 @@ import com.robotutor.nexora.context.zone.interfaces.controller.view.WidgetsReque
 import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.context.zone.interfaces.controller.view.ZoneRequest
 import com.robotutor.nexora.context.zone.interfaces.controller.view.ZoneResponse
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 
 object ZoneMapper {
-    fun toCreateZoneCommand(request: ZoneRequest, actorData: ActorData): CreateZoneCommand {
-        return CreateZoneCommand(name = Name(request.name), actorData.premisesId, actorData.actorId)
+    fun toCreateZoneCommand(request: ZoneRequest, ActorData: ActorData): CreateZoneCommand {
+        return CreateZoneCommand(name = Name(request.name), ActorData.premisesId, ActorData.actorId)
     }
 
     fun toZoneResponse(zone: ZoneAggregate): ZoneResponse {
@@ -37,16 +37,16 @@ object ZoneMapper {
         return GetZonesQuery(resources.toResources(ZoneId::class.java))
     }
 
-    fun getZoneQuery(zoneId: String, actorData: ActorData): GetZoneQuery {
-        return GetZoneQuery(premisesId = actorData.premisesId, zoneId = ZoneId(zoneId))
+    fun getZoneQuery(zoneId: String, ActorData: ActorData): GetZoneQuery {
+        return GetZoneQuery(premisesId = ActorData.premisesId, zoneId = ZoneId(zoneId))
     }
 
-    fun toCreateWidgetsCommand(request: WidgetsRequest, actorData: ActorData): CreateWidgetsCommand {
+    fun toCreateWidgetsCommand(request: WidgetsRequest, ActorData: ActorData): CreateWidgetsCommand {
         return CreateWidgetsCommand(
             zoneId = ZoneId(request.zoneId),
             modelNo = ModelNo(request.modelNo),
             feedIds = request.feedIds.map { FeedId(it) },
-            premisesId = actorData.premisesId,
+            premisesId = ActorData.premisesId,
         )
     }
 

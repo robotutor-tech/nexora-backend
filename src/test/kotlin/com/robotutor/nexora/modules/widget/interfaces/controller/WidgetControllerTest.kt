@@ -21,7 +21,7 @@
 //    private val mockWidgetUseCase = mockk<WidgetUseCase>()
 //    private val widgetController = WidgetController(mockWidgetUseCase)
 //
-//    private val actorData = ActorData(
+//    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
 //        role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
 //        premisesId = PremisesId("prem-1"),
@@ -70,7 +70,7 @@
 //            )
 //        )
 //
-//        val resultFlux = widgetController.getWidgets(actorData, resourcesData)
+//        val resultFlux = widgetController.getWidgets(Actor, resourcesData)
 //        val responses = resultFlux.collectList().block()!!
 //
 //        responses.size shouldBe 2
@@ -92,7 +92,7 @@
 //        )
 //
 //        verify(exactly = 1) {
-//            mockWidgetUseCase.getWidgets(actorData, match { ids -> ids.map { it.value } == listOf("widget-1", "widget-2") })
+//            mockWidgetUseCase.getWidgets(Actor, match { ids -> ids.map { it.value } == listOf("widget-1", "widget-2") })
 //        }
 //    }
 //}

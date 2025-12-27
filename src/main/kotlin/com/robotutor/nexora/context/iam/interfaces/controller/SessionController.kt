@@ -34,15 +34,4 @@ class SessionController(
         return refreshSessionUseCase.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
     }
-
-//    @PostMapping("/device")
-//    fun createDeviceActorToken(actorData: ActorData, invitationData: InvitationData): Mono<TokenResponses> {
-//        val actorContext = ActorContext(
-//            actorId = actorData.actorId,
-//            roleId = actorData.role.roleId,
-//            principalContext = PrincipalContextMapper.toActorPrincipalContext(actorData.principal)
-//        )
-//        return createDeviceTokenUseCase.createDeviceToken(actorContext, invitationData)
-//            .map { TokenMapper.toTokenResponsesDto(it) }
-//    }
 }

@@ -4,7 +4,7 @@ import com.robotutor.nexora.context.iam.application.command.RotateCredentialComm
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.shared.domain.policy.Policy
 import com.robotutor.nexora.shared.domain.policy.PolicyResult
-import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.principal.AccountType
 import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -15,10 +15,10 @@ class RotateCredentialPolicy(private val accountRepository: AccountRepository) :
         return accountRepository.findByAccountId(command.accountId)
             .map {
                 val reasons = mutableListOf<String>()
-                if (it.type != AccountType.MACHINE) {
+                if (it.type !== AccountType.MACHINE) {
                     reasons.add("Account is not MACHINE type")
                 }
-                if (it.createdBy != command.actorData.actorId) {
+                if (it.createdBy != command.ActorData.actorId) {
                     reasons.add("Account is not created by the actor")
                 }
                 if (reasons.isEmpty()) PolicyResult.allow() else PolicyResult.deny(reasons)

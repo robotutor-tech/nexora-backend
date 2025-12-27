@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.user.interfaces.controller
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.context.user.application.usecase.GetUserUseCase
 import com.robotutor.nexora.context.user.application.command.GetUserQuery
 import com.robotutor.nexora.context.user.application.usecase.RegisterUserUseCase
@@ -26,8 +26,8 @@ class UserController(val registerUserUseCase: RegisterUserUseCase, private val g
     }
 
     @GetMapping("/me")
-    fun me(accountData: AccountData): Mono<UserResponse> {
-        return getUserUseCase.execute(GetUserQuery(accountData.accountId))
+    fun me(AccountData: AccountData): Mono<UserResponse> {
+        return getUserUseCase.execute(GetUserQuery(AccountData.accountId))
             .map { UserMapper.toUserResponse(it) }
     }
 

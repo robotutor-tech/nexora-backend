@@ -4,21 +4,21 @@ import com.robotutor.nexora.context.premises.application.command.ActivatePremise
 import com.robotutor.nexora.context.premises.application.command.CompensatePremisesRegistrationCommand
 import com.robotutor.nexora.context.premises.interfaces.messaging.message.PremisesOwnerRegisteredMessage
 import com.robotutor.nexora.context.premises.interfaces.messaging.message.PremisesOwnerRegistrationFailedMessage
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 
 object PremisesEventMapper {
     fun toActivatePremisesCommand(
         eventMessage: PremisesOwnerRegisteredMessage,
-        accountData: AccountData
+        AccountData: AccountData
     ): ActivatePremisesCommand {
-        return ActivatePremisesCommand(PremisesId(eventMessage.premisesId), accountData.accountId)
+        return ActivatePremisesCommand(PremisesId(eventMessage.premisesId), AccountData.accountId)
     }
 
     fun toCompensatePremisesRegistrationCommand(
         eventMessage: PremisesOwnerRegistrationFailedMessage,
-        accountData: AccountData
+        AccountData: AccountData
     ): CompensatePremisesRegistrationCommand {
-        return CompensatePremisesRegistrationCommand(PremisesId(eventMessage.premisesId), accountData.accountId)
+        return CompensatePremisesRegistrationCommand(PremisesId(eventMessage.premisesId), AccountData.accountId)
     }
 }

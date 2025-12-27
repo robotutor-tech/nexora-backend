@@ -10,7 +10,7 @@ import com.robotutor.nexora.context.zone.interfaces.controller.view.WidgetsReque
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -27,8 +27,8 @@ class ZoneController(
 
     @Authorize(ActionType.CREATE, ResourceType.ZONE)
     @PostMapping
-    fun createZone(@RequestBody @Validated request: ZoneRequest, actorData: ActorData): Mono<ZoneResponse> {
-        val command = ZoneMapper.toCreateZoneCommand(request, actorData)
+    fun createZone(@RequestBody @Validated request: ZoneRequest, ActorData: ActorData): Mono<ZoneResponse> {
+        val command = ZoneMapper.toCreateZoneCommand(request, ActorData)
         return createZoneUseCase.execute(command)
             .map { ZoneMapper.toZoneResponse(it) }
     }
@@ -43,8 +43,8 @@ class ZoneController(
 
     @Authorize(ActionType.READ, ResourceType.ZONE, "#zoneId")
     @GetMapping("/{zoneId}")
-    fun getZone(@PathVariable zoneId: String, actorData: ActorData): Mono<ZoneResponse> {
-        val query = ZoneMapper.getZoneQuery(zoneId, actorData)
+    fun getZone(@PathVariable zoneId: String, ActorData: ActorData): Mono<ZoneResponse> {
+        val query = ZoneMapper.getZoneQuery(zoneId, ActorData)
         return zoneUseCase.execute(query)
             .map { ZoneMapper.toZoneResponse(it) }
     }
@@ -52,8 +52,8 @@ class ZoneController(
 
     @Authorize(ActionType.CREATE, ResourceType.WIDGET)
     @PostMapping("/widgets")
-    fun createWidgets(@RequestBody @Validated request: WidgetsRequest, actorData: ActorData): Mono<ZoneResponse> {
-        val command = ZoneMapper.toCreateWidgetsCommand(request, actorData)
+    fun createWidgets(@RequestBody @Validated request: WidgetsRequest, ActorData: ActorData): Mono<ZoneResponse> {
+        val command = ZoneMapper.toCreateWidgetsCommand(request, ActorData)
         return createWidgetsUseCase.execute(command)
             .map { ZoneMapper.toZoneResponse(it) }
     }

@@ -26,7 +26,7 @@
 //    private val mockUseCase = mockk<RuleUseCase>()
 //    private val controller = RuleController(mockUseCase)
 //
-//    private val actorData = ActorData(
+//    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
 //        role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
 //        premisesId = PremisesId("prem-1"),
@@ -67,11 +67,11 @@
 //                RuleType.TRIGGER,
 //                FeedControlConfig(FeedId("feed-1"), ComparisonOperator.GREATER_THAN, 10)
 //            ),
-//            actorData
+//            Actor
 //        )
 //        every { mockUseCase.createRule(any(), any()) } returns Mono.just(domain)
 //
-//        val mono = controller.createTrigger(request, actorData)
+//        val mono = controller.createTrigger(request, Actor)
 //
 //        assertNextWith(mono) {
 //            it.ruleId shouldBe "rule-1"
@@ -86,7 +86,7 @@
 //                value shouldBe 10
 //            }
 //        }
-//        verify(exactly = 1) { mockUseCase.createRule(any(), actorData) }
+//        verify(exactly = 1) { mockUseCase.createRule(any(), Actor) }
 //    }
 //
 //    @Test
@@ -99,7 +99,7 @@
 //                RuleType.TRIGGER,
 //                FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)
 //            ),
-//            actorData
+//            Actor
 //        )
 //        val r2 = Rule.create(
 //            RuleId("r2"),
@@ -109,7 +109,7 @@
 //                RuleType.CONDITION,
 //                FeedControlConfig(FeedId("f2"), ComparisonOperator.EQUAL, 2)
 //            ),
-//            actorData
+//            Actor
 //        )
 //        every { mockUseCase.getRules(any(), any()) } returns Flux.just(r1, r2)
 //
@@ -126,13 +126,13 @@
 //            )
 //        )
 //
-//        val list = controller.getRules(actorData, resources).collectList().block()!!
+//        val list = controller.getRules(Actor, resources).collectList().block()!!
 //        list.size shouldBe 2
 ////        list[0] is RuleResponse shouldBe true
 //        verify(exactly = 1) {
 //            mockUseCase.getRules(
 //                match { it.map { id -> id.value } == listOf("r1", "r2") },
-//                actorData
+//                Actor
 //            )
 //        }
 //    }
@@ -147,15 +147,15 @@
 //                RuleType.TRIGGER,
 //                FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)
 //            ),
-//            actorData
+//            Actor
 //        )
-//        every { mockUseCase.getRule(RuleId("r1"), actorData) } returns Mono.just(r1)
+//        every { mockUseCase.getRule(RuleId("r1"), Actor) } returns Mono.just(r1)
 //
-//        val mono = controller.getRule("r1", actorData)
+//        val mono = controller.getRule("r1", Actor)
 //        assertNextWith(mono) {
 //            it.ruleId shouldBe "r1"
 //        }
-//        verify(exactly = 1) { mockUseCase.getRule(RuleId("r1"), actorData) }
+//        verify(exactly = 1) { mockUseCase.getRule(RuleId("r1"), Actor) }
 //    }
 //}
 //

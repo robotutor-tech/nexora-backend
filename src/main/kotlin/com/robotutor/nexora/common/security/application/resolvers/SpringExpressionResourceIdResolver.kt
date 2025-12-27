@@ -2,8 +2,6 @@ package com.robotutor.nexora.common.security.application.resolvers
 
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.utility.validation
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import org.springframework.expression.ExpressionParser
 import org.springframework.expression.spel.standard.SpelExpressionParser
@@ -22,8 +20,6 @@ class SpringExpressionResourceIdResolver {
         authorize: Authorize,
         exchange: ServerWebExchange,
         handler: HandlerMethod,
-        actorData: ActorData?,
-        accountData: AccountData?,
     ): ResourceId {
         val selector = authorize.selector
         if (selector == "ALL") return ResourceId.ALL
@@ -51,8 +47,6 @@ class SpringExpressionResourceIdResolver {
             setVariable("query", query)
             setVariable("headers", headers)
             setVariable("handler", handler)
-            setVariable("actorData", actorData)
-            setVariable("accountData", accountData)
         }
 
         val raw = expression.getValue(context)

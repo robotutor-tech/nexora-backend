@@ -7,9 +7,9 @@ import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeReso
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.GetAuthorizedResourcesRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.GetAuthorizedResourcesResponse
-import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.domain.vo.Resources
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
 object AuthorizationMapper {
     fun toAuthorizeResourceCommand(
@@ -17,7 +17,7 @@ object AuthorizationMapper {
         actorData: ActorData
     ): AuthorizeResourceCommand {
         return AuthorizeResourceCommand(
-            actorData = actorData,
+            ActorData = actorData,
             resource = Resource(
                 resourceId = ResourceId(authorizeResourceRequest.resourceId),
                 premisesId = actorData.premisesId,

@@ -13,10 +13,10 @@ class InvitationController(
 //    @PostMapping
 //    fun createInvitation(
 //        @RequestBody @Validated invitationRequest: InvitationRequest,
-//        actorData: ActorData
+//        Actor: Actor
 //    ): Mono<InvitationWithTokenResponse> {
 //        val invitationCommand = InvitationMapper.toInvitationCommand(invitationRequest)
-//        return invitationUseCase.createInvitation(invitationCommand, actorData)
+//        return invitationUseCase.createInvitation(invitationCommand, Actor)
 //            .map { pair -> InvitationMapper.toInvitationWithTokenResponse(pair) }
 //    }
 //

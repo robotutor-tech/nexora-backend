@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.iam.interfaces.controller.view
 
 import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
-import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.principal.AccountType
 import jakarta.validation.constraints.NotBlank
 
 data class RegisterAccountRequest(
@@ -11,5 +11,5 @@ data class RegisterAccountRequest(
     val secret: String,
     val kind: CredentialKind,
     val type: AccountType,
-    val ownerId: String
+    val principalId: String
 )

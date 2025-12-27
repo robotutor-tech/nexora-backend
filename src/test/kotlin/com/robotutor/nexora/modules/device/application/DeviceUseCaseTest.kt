@@ -112,7 +112,7 @@
 //        every { deviceRepository.findByPremisesIdAndDeviceId(premisesId, updated) } returns Mono.just(device)
 //        every { deviceRepository.save(any()) } answers { Mono.just(firstArg()) }
 //
-//        val actor = ActorData(
+//        val actor = Actor(
 //            ActorId("a1"),
 //            Role(RoleId("r1"), premisesId, Name("Role"), RoleType.USER),
 //            premisesId,

@@ -9,8 +9,8 @@ import reactor.core.publisher.Mono
 class FeedApiFacade() : FeedFacade {
     override fun getFeedById(feedId: FeedId): Mono<Any> {
         return Mono.empty()
-//        return ContextDataResolver.getActorData().flatMap { actorData ->
-//            feedController.getFeed(feedId.value, actorData)
+//        return ContextDataResolver.getActorData().flatMap { Actor ->
+//            feedController.getFeed(feedId.value, Actor)
 //        }
     }
 }

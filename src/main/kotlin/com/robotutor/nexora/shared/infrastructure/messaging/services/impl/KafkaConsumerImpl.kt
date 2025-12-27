@@ -1,8 +1,6 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.services.impl
 
 import com.robotutor.nexora.shared.utility.createMono
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.infrastructure.messaging.services.KafkaEventPublisher
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import com.robotutor.nexora.shared.logger.Logger
@@ -43,22 +41,22 @@ class KafkaConsumerImpl(
     private fun writeContext(receiverHeaders: Headers, ctx: Context): Context {
         val headers = receiverHeaders.toArray()
             .map { KafkaHeader(it.key(), it.value().toString(StandardCharsets.UTF_8)) }
-        val actorData = headers.find { it.key == "actorData" }?.value
-        val accountData = headers.find { it.key == "accountData" }?.value
+        val Actor = headers.find { it.key == "Actor" }?.value
+        val Account = headers.find { it.key == "Account" }?.value
         val exchangeDTO = headers.find { it.key == "exchange" }?.value
         val traceId = headers.find { it.key == "x-trace-id" }!!.value
         var newCtx = ctx
         newCtx = newCtx.put("x-trace-id", traceId)
-        actorData?.let {
+        Actor?.let {
             newCtx = newCtx.put(
-                ActorData::class.java,
-                DefaultSerializer.deserialize(actorData, ActorData::class.java)
+                Actor::class.java,
+                DefaultSerializer.deserialize(Actor, Actor::class.java)
             )
         }
-        accountData?.let {
+        Account?.let {
             newCtx = newCtx.put(
-                AccountData::class.java,
-                DefaultSerializer.deserialize(accountData, AccountData::class.java)
+                Account::class.java,
+                DefaultSerializer.deserialize(Account, Account::class.java)
             )
         }
         exchangeDTO?.let {

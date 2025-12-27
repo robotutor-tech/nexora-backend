@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.premises.interfaces.controller.mapper
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.context.premises.application.command.RegisterPremisesCommand
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.context.premises.domain.vo.Address
@@ -10,12 +10,12 @@ import com.robotutor.nexora.shared.domain.vo.Name
 object PremisesMapper {
     fun toRegisterPremisesCommand(
         premisesRequest: PremisesCreateRequest,
-        accountData: AccountData
+        AccountData: AccountData
     ): RegisterPremisesCommand {
         return RegisterPremisesCommand(
             name = Name(premisesRequest.name),
             address = toAddress(premisesRequest.address),
-            owner = accountData
+            owner = AccountData
         )
     }
 

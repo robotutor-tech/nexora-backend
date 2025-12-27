@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
 @Service
 class AuthorizeResourceUseCase(private val actorService: ActorService) {
     fun execute(command: AuthorizeResourceCommand): Mono<Boolean> {
-        return actorService.getActorPermissions(command.actorData.actorId)
+        return actorService.getActorPermissions(command.ActorData.actorId)
             .map { permissions -> permissions.authorize(command.resource) }
     }
 

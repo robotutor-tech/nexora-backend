@@ -7,7 +7,7 @@ import com.robotutor.nexora.modules.automation.interfaces.controller.dto.Automat
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.AutomationMapper
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
@@ -23,18 +23,18 @@ class AutomationController(private val automationUseCase: AutomationUseCase) {
     @PostMapping
     fun createAutomationRule(
         @RequestBody @Validated request: AutomationRequest,
-        actorData: ActorData
+        ActorData: ActorData
     ): Mono<AutomationResponse> {
         val createAutomationCommand = AutomationMapper.toCreateAutomationCommand(request)
-        return automationUseCase.createAutomationRule(createAutomationCommand, actorData)
+        return automationUseCase.createAutomationRule(createAutomationCommand, ActorData)
             .map { AutomationMapper.toAutomationResponse(it) }
     }
 
     @Authorize(ActionType.READ, ResourceType.AUTOMATION)
     @GetMapping
-    fun getAutomationRules(actorData: ActorData, authorizedResources: AuthorizedResources): Flux<AutomationResponse> {
+    fun getAutomationRules(ActorData: ActorData, authorizedResources: AuthorizedResources): Flux<AutomationResponse> {
         val automationIds = emptyList<AutomationId>()
-        return automationUseCase.getAutomationRules(automationIds, actorData)
+        return automationUseCase.getAutomationRules(automationIds, ActorData)
             .map { AutomationMapper.toAutomationResponse(it) }
     }
 }

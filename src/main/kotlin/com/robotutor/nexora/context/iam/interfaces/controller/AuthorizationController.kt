@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeReso
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.GetAuthorizedResourcesRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.GetAuthorizedResourcesResponse
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,9 +22,9 @@ class AuthorizationController(
     @PostMapping
     fun getResources(
         @RequestBody @Validated getAuthorizedResourcesRequest: GetAuthorizedResourcesRequest,
-        actorData: ActorData
+        ActorData: ActorData
     ): Mono<GetAuthorizedResourcesResponse> {
-        val query = AuthorizationMapper.toGetAuthorizedResourceQuery(getAuthorizedResourcesRequest, actorData)
+        val query = AuthorizationMapper.toGetAuthorizedResourceQuery(getAuthorizedResourcesRequest, ActorData)
         return authorizeResourceUseCase.execute(query)
             .map { AuthorizationMapper.toAuthorizedResourcesResponse(it) }
     }
@@ -32,9 +32,9 @@ class AuthorizationController(
     @PostMapping("/authorize")
     fun authorize(
         @RequestBody @Validated authorizeResourceRequest: AuthorizeResourceRequest,
-        actorData: ActorData
+        ActorData: ActorData
     ): Mono<AuthorizeResourceResponse> {
-        val command = AuthorizationMapper.toAuthorizeResourceCommand(authorizeResourceRequest, actorData)
+        val command = AuthorizationMapper.toAuthorizeResourceCommand(authorizeResourceRequest, ActorData)
         return authorizeResourceUseCase.execute(command)
             .map { AuthorizationMapper.toResourceResponse(it) }
     }

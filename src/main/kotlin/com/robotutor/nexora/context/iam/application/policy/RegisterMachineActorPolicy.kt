@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.iam.domain.specification.ActorByAccountIdSpe
 import com.robotutor.nexora.context.iam.domain.specification.ActorByPremisesIdSpecification
 import com.robotutor.nexora.shared.domain.policy.Policy
 import com.robotutor.nexora.shared.domain.policy.PolicyResult
-import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.principal.AccountType
 import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

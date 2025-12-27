@@ -3,6 +3,8 @@ package com.robotutor.nexora.context.iam.domain.vo
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.robotutor.nexora.shared.domain.vo.*
+import com.robotutor.nexora.shared.domain.vo.principal.AccountType
+import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -13,25 +15,23 @@ import com.robotutor.nexora.shared.domain.vo.*
     JsonSubTypes.Type(value = AccountPrincipal::class, name = "ACCOUNT"),
     JsonSubTypes.Type(value = ActorPrincipal::class, name = "ACTOR")
 )
-sealed interface SessionPrincipal
-data class AccountPrincipal(val accountId: AccountId, val accountType: AccountType) : SessionPrincipal
-
-data class ActorPrincipal(
-    val accountPrincipal: AccountPrincipal,
-    val actorId: ActorId,
-    val premisesId: PremisesId
-) : SessionPrincipal {
-    constructor(
-        accountId: AccountId,
-        accountType: AccountType,
-        actorId: ActorId,
-        premisesId: PremisesId
-    ) : this(AccountPrincipal(accountId, accountType), actorId, premisesId)
-
-    constructor(
-        accountData: AccountData,
-        actorId: ActorId,
-        premisesId: PremisesId
-    ) : this(AccountPrincipal(accountData.accountId, accountData.type), actorId, premisesId)
+sealed interface SessionPrincipal {
+    val accountId: AccountId
+    val type: AccountType
+    val principalId: PrincipalId
 }
 
+data class AccountPrincipal(
+    override val accountId: AccountId,
+    override val type: AccountType,
+    override val principalId: PrincipalId
+) :
+    SessionPrincipal
+
+data class ActorPrincipal(
+    val actorId: ActorId,
+    val premisesId: PremisesId,
+    override val accountId: AccountId,
+    override val type: AccountType,
+    override val principalId: PrincipalId
+) : SessionPrincipal

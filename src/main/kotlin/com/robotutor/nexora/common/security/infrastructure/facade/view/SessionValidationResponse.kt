@@ -2,7 +2,7 @@ package com.robotutor.nexora.common.security.infrastructure.facade.view
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.principal.AccountType
 
 data class SessionValidationResponse(
     val isValid: Boolean,
@@ -21,14 +21,20 @@ data class SessionValidationResponse(
     JsonSubTypes.Type(value = InternalSessionPrincipalResponse::class, name = "INTERNAL")
 )
 sealed interface SessionPrincipalResponse
-data class AccountSessionPrincipalResponse(val accountId: String, val accountType: AccountType) :
+
+data class AccountSessionPrincipalResponse(
+    val accountId: String,
+    val type: AccountType,
+    val principalId: String
+) :
     SessionPrincipalResponse
 
 data class ActorSessionPrincipalResponse(
     val actorId: String,
     val premisesId: String,
     val accountId: String,
-    val accountType: AccountType
+    val type: AccountType,
+    val principalId: String
 ) : SessionPrincipalResponse
 
 data class InternalSessionPrincipalResponse(val id: String) : SessionPrincipalResponse

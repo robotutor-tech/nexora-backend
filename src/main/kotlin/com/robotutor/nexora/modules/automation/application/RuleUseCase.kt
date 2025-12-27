@@ -16,7 +16,7 @@ import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
@@ -37,12 +37,12 @@ class RuleUseCase(
 
     private val logger = Logger(this::class.java)
 
-    fun createRule(createRuleCommand: CreateRuleCommand, actorData: ActorData): Mono<Rule> {
-        return configValidation.validate(createRuleCommand.config, actorData)
+    fun createRule(createRuleCommand: CreateRuleCommand, ActorData: ActorData): Mono<Rule> {
+        return configValidation.validate(createRuleCommand.config, ActorData)
             .flatMap {
                 ruleRepository.findByTypeAndPremisesIdAndConfig(
                     createRuleCommand.type,
-                    actorData.premisesId,
+                    ActorData.premisesId,
                     createRuleCommand.config
                 )
                     .flatMap { rule ->
@@ -57,7 +57,7 @@ class RuleUseCase(
             }
             .flatMap {
                 idGeneratorService.generateId(IdType.RULE_ID)
-                    .map { ruleId -> Rule.create(RuleId(ruleId), createRuleCommand, actorData) }
+                    .map { ruleId -> Rule.create(RuleId(ruleId), createRuleCommand, ActorData) }
             }
             .flatMap { rule ->
                 val event = ResourceCreatedEvent(ResourceType.AUTOMATION_RULE, ResourceId(rule.ruleId.value))
@@ -68,12 +68,12 @@ class RuleUseCase(
             .logOnError(logger, "Failed to create new Rule")
     }
 
-    fun getRules(triggersIds: List<RuleId>, actorData: ActorData): Flux<Rule> {
-        return ruleRepository.findAllByPremisesIdAndRuleIdIn(actorData.premisesId, triggersIds)
+    fun getRules(triggersIds: List<RuleId>, ActorData: ActorData): Flux<Rule> {
+        return ruleRepository.findAllByPremisesIdAndRuleIdIn(ActorData.premisesId, triggersIds)
     }
 
-    fun getRule(ruleId: RuleId, actorData: ActorData): Mono<Rule> {
-        return ruleRepository.findByRuleIdAndPremisesId(ruleId, actorData.premisesId)
+    fun getRule(ruleId: RuleId, ActorData: ActorData): Mono<Rule> {
+        return ruleRepository.findByRuleIdAndPremisesId(ruleId, ActorData.premisesId)
             .switchIfEmpty(createMonoError(DataNotFoundException(NexoraError.NEXORA0316)))
     }
 }

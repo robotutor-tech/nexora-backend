@@ -7,7 +7,7 @@ import com.robotutor.nexora.context.feed.interfaces.controller.view.FeedResponse
 import com.robotutor.nexora.context.feed.interfaces.controller.view.RegisterFeedsRequest
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
@@ -23,16 +23,16 @@ import reactor.core.publisher.Flux
 class FeedController(private val feedUseCase: FeedUseCase, private val registerFeedUseCase: RegisterFeedUseCase) {
     @Authorize(ActionType.READ, ResourceType.FEED)
     @GetMapping
-    fun getFeeds(actorData: ActorData, resources: AuthorizedResources): Flux<FeedResponse> {
-        val query = FeedMapper.toGetFeedsQuery(resources, actorData)
+    fun getFeeds(ActorData: ActorData, resources: AuthorizedResources): Flux<FeedResponse> {
+        val query = FeedMapper.toGetFeedsQuery(resources, ActorData)
         return feedUseCase.execute(query)
             .map { FeedMapper.toFeedResponse(it) }
     }
 
     @Authorize(ActionType.CREATE, ResourceType.FEED)
     @PostMapping
-    fun registerFeeds(@RequestBody @Validated request: RegisterFeedsRequest, actorData: ActorData): Flux<FeedResponse> {
-        val query = FeedMapper.toRegisterFeedsCommand(request, actorData)
+    fun registerFeeds(@RequestBody @Validated request: RegisterFeedsRequest, ActorData: ActorData): Flux<FeedResponse> {
+        val query = FeedMapper.toRegisterFeedsCommand(request, ActorData)
         return registerFeedUseCase.execute(query)
             .map { FeedMapper.toFeedResponse(it) }
     }

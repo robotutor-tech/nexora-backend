@@ -10,7 +10,7 @@ import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
 import com.robotutor.nexora.context.device.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources

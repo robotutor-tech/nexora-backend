@@ -3,7 +3,7 @@ package com.robotutor.nexora.context.iam.infrastructure.messaging.mapper
 import com.robotutor.nexora.context.iam.domain.event.*
 import com.robotutor.nexora.context.iam.infrastructure.messaging.message.*
 import com.robotutor.nexora.shared.domain.event.EventMapper
-import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.principal.AccountType
 import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
 
 object IAMEventMapper : EventMapper<IAMEvent> {
@@ -25,15 +25,15 @@ object IAMEventMapper : EventMapper<IAMEvent> {
 
     private fun toAccountCreatedEventMessage(event: AccountCreatedEvent): AccountCreatedEventMessage {
         return when (event.type) {
-            AccountType.HUMAN -> UserAccountCreatedEventMessage(event.ownerId.value, event.accountId)
-            AccountType.MACHINE -> DeviceAccountCreatedEventMessage(event.ownerId.value, event.accountId)
+            AccountType.HUMAN -> UserAccountCreatedEventMessage(event.principalId.value, event.accountId)
+            AccountType.MACHINE -> DeviceAccountCreatedEventMessage(event.principalId.value, event.accountId)
         }
     }
 
     private fun toAccountRegistrationFailedEventMessage(event: AccountRegistrationFailedEvent): AccountRegistrationFailedEventMessage {
         return when (event.type) {
-            AccountType.HUMAN -> UserAccountRegistrationFailedEventMessage(event.ownerId.value)
-            AccountType.MACHINE -> DeviceAccountRegistrationFailedEventMessage(event.ownerId.value)
+            AccountType.HUMAN -> UserAccountRegistrationFailedEventMessage(event.principalId.value)
+            AccountType.MACHINE -> DeviceAccountRegistrationFailedEventMessage(event.principalId.value)
         }
     }
 

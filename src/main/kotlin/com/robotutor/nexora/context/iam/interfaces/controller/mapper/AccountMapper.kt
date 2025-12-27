@@ -7,12 +7,12 @@ import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.vo.CredentialId
 import com.robotutor.nexora.context.iam.domain.vo.CredentialKind
 import com.robotutor.nexora.context.iam.domain.vo.CredentialSecret
-import com.robotutor.nexora.context.iam.domain.vo.OwnerId
+import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
 object AccountMapper {
     fun toRegisterAccountCommand(request: RegisterAccountRequest, actorData: ActorData?): RegisterAccountCommand {
@@ -21,7 +21,7 @@ object AccountMapper {
             secret = CredentialSecret(request.secret),
             kind = request.kind,
             type = request.type,
-            ownerId = OwnerId(request.ownerId),
+            principalId = PrincipalId(request.principalId),
             createdBy = actorData?.actorId
         )
     }
@@ -30,6 +30,7 @@ object AccountMapper {
         return AccountResponse(
             accountId = account.accountId.value,
             type = account.type,
+            principalId = account.principalId.value,
             status = account.getStatus(),
             createdAt = account.createdAt,
             updatedAt = account.getUpdatedAt()
@@ -43,10 +44,10 @@ object AccountMapper {
         )
     }
 
-    fun toRotateCredentialsCommand(accountId: String, actorData: ActorData): RotateCredentialCommand {
+    fun toRotateCredentialsCommand(accountId: String, ActorData: ActorData): RotateCredentialCommand {
         return RotateCredentialCommand(
             accountId = AccountId(accountId),
-            actorData = actorData,
+            ActorData = ActorData,
             kind = CredentialKind.API_SECRET
         )
     }

@@ -49,7 +49,7 @@
 //
 //    @Test
 //    fun `should create widget successfully`() {
-//        val actorData = ActorData(
+//        val Actor = Actor(
 //            actorId = ActorId("actor-1"),
 //            role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
 //            premisesId = PremisesId("prem-1"),
@@ -69,11 +69,11 @@
 //        every { resourceEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //        every { widgetEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //
-//        val result = widgetUseCase.createWidget(command, actorData)
+//        val result = widgetUseCase.createWidget(command, Actor)
 //
 //        assertNextWith(result) {
 //            it.widgetId shouldBe generatedWidgetId
-//            it.premisesId shouldBe actorData.premisesId
+//            it.premisesId shouldBe Actor.premisesId
 //            it.name shouldBe command.name
 //            it.feedId shouldBe command.feedId
 //            it.zoneId shouldBe command.zoneId
@@ -92,7 +92,7 @@
 //
 //    @Test
 //    fun `should get widgets for given premises and ids`() {
-//        val actorData = ActorData(
+//        val Actor = Actor(
 //            actorId = ActorId("actor-1"),
 //            role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
 //            premisesId = PremisesId("prem-1"),
@@ -103,19 +103,19 @@
 //
 //        val cmd1 = CreateWidgetCommand(Name("Widget1"), FeedId("feed-1"), ZoneId("zone-1"), WidgetType.TOGGLE)
 //        val cmd2 = CreateWidgetCommand(Name("Widget2"), FeedId("feed-2"), ZoneId("zone-2"), WidgetType.SLIDER)
-//        val w1 = Widget.create(WidgetId("widget-1"), cmd1, actorData)
-//        val w2 = Widget.create(WidgetId("widget-2"), cmd2, actorData)
+//        val w1 = Widget.create(WidgetId("widget-1"), cmd1, Actor)
+//        val w2 = Widget.create(WidgetId("widget-2"), cmd2, Actor)
 //
-//        every { widgetRepository.findAllByPremisesIdAndWidgetIdIn(actorData.premisesId, widgetIds) } returns Flux.just(w1, w2)
+//        every { widgetRepository.findAllByPremisesIdAndWidgetIdIn(Actor.premisesId, widgetIds) } returns Flux.just(w1, w2)
 //
-//        val flux = widgetUseCase.getWidgets(actorData, widgetIds)
+//        val flux = widgetUseCase.getWidgets(Actor, widgetIds)
 //
 //        StepVerifier.create(flux)
 //            .expectNext(w1)
 //            .expectNext(w2)
 //            .verifyComplete()
 //
-//        verify(exactly = 1) { widgetRepository.findAllByPremisesIdAndWidgetIdIn(actorData.premisesId, widgetIds) }
+//        verify(exactly = 1) { widgetRepository.findAllByPremisesIdAndWidgetIdIn(Actor.premisesId, widgetIds) }
 //    }
 //}
 //

@@ -4,13 +4,12 @@ import com.robotutor.nexora.common.security.application.ports.SessionValidator
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.application.writeContextOnChain
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.common.security.domain.vo.InternalPrincipalContext
 import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.InternalData
-import com.robotutor.nexora.shared.domain.vo.PrincipalData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.InternalData
+import com.robotutor.nexora.shared.domain.vo.principal.PrincipalData
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.shared.logger.Logger
@@ -48,8 +47,7 @@ class AuthFilter(
                 val content = SecurityContextImpl(authenticationToken)
                 chain.filter(exchange)
                     .contextWrite {
-                        val principalData = tokenResult.principal.toPrincipalData()
-                        writeContextOnChain(setContextForResolvers(principalData, it, exchange), exchange)
+                        writeContextOnChain(setContextForResolvers(tokenResult.principalData, it, exchange), exchange)
                     }
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
             }
@@ -70,7 +68,7 @@ class AuthFilter(
             return createMono(
                 SessionValidationResult(
                     isValid = true,
-                    principal = InternalPrincipalContext(appConfig.internalAccessToken),
+                    principalData = InternalData(appConfig.internalAccessToken),
                     expiresIn = 300,
                 )
             )
@@ -92,7 +90,7 @@ class AuthFilter(
             is AccountData -> context.put(AccountData::class.java, principalData)
             is InternalData -> context.put(InternalData::class.java, principalData)
             is ActorData -> context.put(ActorData::class.java, principalData)
-                .put(AccountData::class.java, AccountData(principalData.accountId, principalData.type))
+                .put(AccountData::class.java, principalData)
         }
             .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
     }

@@ -8,17 +8,18 @@ import com.robotutor.nexora.context.iam.domain.vo.*
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.BadDataException
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.domain.vo.ActorId
+import com.robotutor.nexora.shared.domain.vo.principal.AccountType
+import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
 import java.time.Instant
 
 class AccountAggregate private constructor(
     val accountId: AccountId,
     val type: AccountType,
-    val ownerId: OwnerId,
-    private val credentials: MutableList<Credential>,
+    val principalId: PrincipalId,
     val createdBy: ActorId?,
     val createdAt: Instant,
+    private val credentials: MutableList<Credential>,
     private var status: AccountStatus,
     private var updatedAt: Instant,
 ) : AggregateRoot<AccountAggregate, AccountId, IAMEvent>(accountId) {
@@ -31,19 +32,19 @@ class AccountAggregate private constructor(
         fun register(
             accountId: AccountId,
             type: AccountType,
-            ownerId: OwnerId,
+            principalId: PrincipalId,
             credentials: List<Credential>,
             createdBy: ActorId? = null,
         ): AccountAggregate {
-            val account = create(accountId, type, ownerId, createdBy, credentials)
-            account.addEvent(AccountCreatedEvent(account.accountId, account.type, account.ownerId))
+            val account = create(accountId, type, principalId, createdBy, credentials)
+            account.addEvent(AccountCreatedEvent(account.accountId, account.type, account.principalId))
             return account
         }
 
         fun create(
             accountId: AccountId,
             type: AccountType,
-            ownerId: OwnerId,
+            principalId: PrincipalId,
             createdBy: ActorId? = null,
             credentials: List<Credential> = emptyList(),
             status: AccountStatus = AccountStatus.ACTIVE,
@@ -53,7 +54,7 @@ class AccountAggregate private constructor(
             return AccountAggregate(
                 accountId = accountId,
                 type = type,
-                ownerId = ownerId,
+                principalId = principalId,
                 createdBy = createdBy,
                 credentials = credentials.toMutableList(),
                 status = status,

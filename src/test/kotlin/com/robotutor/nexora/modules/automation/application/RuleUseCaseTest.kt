@@ -34,7 +34,7 @@
 //
 //    private val ruleUseCase = RuleUseCase(ruleRepository, idGeneratorService, resourceCreatedEventPublisherDeprecated, configValidation)
 //
-//    private val actorData = ActorData(
+//    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
 //        role = Role(RoleId("role-1"), PremisesId("prem-1"), Name("Role"), RoleType.USER),
 //        premisesId = PremisesId("prem-1"),
@@ -61,17 +61,17 @@
 //        val command = CreateRuleCommand(Name("Morning Rule"), "desc", RuleType.TRIGGER, config)
 //        val ruleId = RuleId("rule-000000000001")
 //
-//        every { configValidation.validate(config, actorData) } returns Mono.just(config)
-//        every { ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, actorData.premisesId, config) } returns Mono.empty()
+//        every { configValidation.validate(config, Actor) } returns Mono.just(config)
+//        every { ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config) } returns Mono.empty()
 //        every { idGeneratorService.generateId(any(), any<Class<RuleId>>()) } returns Mono.just(ruleId)
 //        every { ruleRepository.save(any()) } answers { Mono.just(firstArg()) }
 //        every { resourceCreatedEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //
-//        val mono = ruleUseCase.createRule(command, actorData)
+//        val mono = ruleUseCase.createRule(command, Actor)
 //
 //        assertNextWith(mono) {
 //            it.ruleId shouldBe ruleId
-//            it.premisesId shouldBe actorData.premisesId
+//            it.premisesId shouldBe Actor.premisesId
 //            it.name shouldBe command.name
 //            it.description shouldBe command.description
 //            it.type shouldBe command.type
@@ -81,8 +81,8 @@
 //        }
 //
 //        verify(exactly = 1) {
-//            configValidation.validate(config, actorData)
-//            ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, actorData.premisesId, config)
+//            configValidation.validate(config, Actor)
+//            ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config)
 //            idGeneratorService.generateId(com.robotutor.nexora.modules.automation.domain.entity.IdType.RULE_ID, RuleId::class.java)
 //            ruleRepository.save(any())
 //            resourceCreatedEventPublisherDeprecated.publish(any())
@@ -92,13 +92,13 @@
 //    @Test
 //    fun `should error when duplicate rule exists`() {
 //        val config = FeedControlConfig(FeedId("feed-1"), ComparisonOperator.GREATER_THAN, 10)
-//        val existing = Rule.create(RuleId("rule-1"), CreateRuleCommand(Name("dupl"), null, RuleType.TRIGGER, config), actorData)
+//        val existing = Rule.create(RuleId("rule-1"), CreateRuleCommand(Name("dupl"), null, RuleType.TRIGGER, config), Actor)
 //        val command = CreateRuleCommand(Name("Morning Rule"), "desc", RuleType.TRIGGER, config)
 //
-//        every { configValidation.validate(config, actorData) } returns Mono.just(config)
-//        every { ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, actorData.premisesId, config) } returns Mono.just(existing)
+//        every { configValidation.validate(config, Actor) } returns Mono.just(config)
+//        every { ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config) } returns Mono.just(existing)
 //
-//        val mono = ruleUseCase.createRule(command, actorData)
+//        val mono = ruleUseCase.createRule(command, Actor)
 //
 //        assertErrorWith(mono) {
 //            // DuplicateDataException wraps ErrorResponse with NEXORA0302 and message extended
@@ -109,8 +109,8 @@
 //        }
 //
 //        verify(exactly = 1) {
-//            configValidation.validate(config, actorData)
-//            ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, actorData.premisesId, config)
+//            configValidation.validate(config, Actor)
+//            ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config)
 //        }
 //        verify(exactly = 0) {
 //            idGeneratorService.generateId(any(), any<Class<RuleId>>())
@@ -122,22 +122,22 @@
 //    @Test
 //    fun `should get rules by ids`() {
 //        val ids = listOf(RuleId("r1"), RuleId("r2"))
-//        val r1 = Rule.create(RuleId("r1"), CreateRuleCommand(Name("ruleA"), null, RuleType.TRIGGER, FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)), actorData)
-//        val r2 = Rule.create(RuleId("r2"), CreateRuleCommand(Name("ruleB"), null, RuleType.CONDITION, FeedControlConfig(FeedId("f2"), ComparisonOperator.EQUAL, 2)), actorData)
-//        every { ruleRepository.findAllByPremisesIdAndRuleIdIn(actorData.premisesId, ids) } returns Flux.just(r1, r2)
+//        val r1 = Rule.create(RuleId("r1"), CreateRuleCommand(Name("ruleA"), null, RuleType.TRIGGER, FeedControlConfig(FeedId("f1"), ComparisonOperator.EQUAL, 1)), Actor)
+//        val r2 = Rule.create(RuleId("r2"), CreateRuleCommand(Name("ruleB"), null, RuleType.CONDITION, FeedControlConfig(FeedId("f2"), ComparisonOperator.EQUAL, 2)), Actor)
+//        every { ruleRepository.findAllByPremisesIdAndRuleIdIn(Actor.premisesId, ids) } returns Flux.just(r1, r2)
 //
-//        val flux = ruleUseCase.getRules(ids, actorData)
+//        val flux = ruleUseCase.getRules(ids, Actor)
 //        StepVerifier.create(flux).expectNext(r1).expectNext(r2).verifyComplete()
 //
-//        verify(exactly = 1) { ruleRepository.findAllByPremisesIdAndRuleIdIn(actorData.premisesId, ids) }
+//        verify(exactly = 1) { ruleRepository.findAllByPremisesIdAndRuleIdIn(Actor.premisesId, ids) }
 //    }
 //
 //    @Test
 //    fun `should get rule by id and error if not found`() {
 //        val id = RuleId("r1")
-//        every { ruleRepository.findByRuleIdAndPremisesId(id, actorData.premisesId) } returns Mono.empty()
+//        every { ruleRepository.findByRuleIdAndPremisesId(id, Actor.premisesId) } returns Mono.empty()
 //
-//        val mono = ruleUseCase.getRule(id, actorData)
+//        val mono = ruleUseCase.getRule(id, Actor)
 //
 //        assertErrorWith(mono) {
 //            (it as DataNotFoundException).errorResponse() shouldBe ErrorResponse(

@@ -6,8 +6,6 @@ import com.robotutor.nexora.common.security.application.writeContextOnChain
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
@@ -43,13 +41,8 @@ class AuthorizationWebFilter(
         val authorize = handler.getMethodAnnotation(Authorize::class.java)
             ?: return chain.filter(exchange)
 
-        return Mono.deferContextual { ctx ->
-            val actorData = ctx.getOrEmpty<ActorData>(ActorData::class.java).orElse(null)
-            val accountData = ctx.getOrEmpty<AccountData>(AccountData::class.java).orElse(null)
-
-            val resourceId = resourceIdResolver.resolve(authorize, exchange, handler, actorData, accountData)
-            accessAuthorizer.authorize(authorize, resourceId)
-        }
+        val resourceId = resourceIdResolver.resolve(authorize, exchange, handler)
+        return accessAuthorizer.authorize(authorize, resourceId)
             .contextWrite { context -> writeContextOnChain(context, exchange) }
             .flatMap { allowed ->
                 if (allowed) chain.filter(exchange)

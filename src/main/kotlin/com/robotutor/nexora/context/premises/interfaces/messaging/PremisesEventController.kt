@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.context.premises.interfaces.messaging.mapper.PremisesEventMapper
 import com.robotutor.nexora.context.premises.interfaces.messaging.message.PremisesOwnerRegisteredMessage
 import com.robotutor.nexora.context.premises.interfaces.messaging.message.PremisesOwnerRegistrationFailedMessage
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaController
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEvent
 import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEventListener
@@ -21,18 +21,18 @@ class PremisesEventController(
     @KafkaEventListener(["iam.premises.owner.registered"])
     fun activatePremises(
         @KafkaEvent eventMessage: PremisesOwnerRegisteredMessage,
-        accountData: AccountData
+        AccountData: AccountData
     ): Mono<PremisesAggregate> {
-        val command = PremisesEventMapper.toActivatePremisesCommand(eventMessage, accountData)
+        val command = PremisesEventMapper.toActivatePremisesCommand(eventMessage, AccountData)
         return activatePremisesUseCase.execute(command)
     }
 
     @KafkaEventListener(["iam.premises.owner.registration.failed"])
     fun compensatePremisesRegistration(
         @KafkaEvent eventMessage: PremisesOwnerRegistrationFailedMessage,
-        accountData: AccountData
+        AccountData: AccountData
     ): Mono<PremisesAggregate> {
-        val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(eventMessage, accountData)
+        val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(eventMessage, AccountData)
         return compensatePremisesRegistrationUseCase.execute(command)
     }
 }

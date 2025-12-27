@@ -35,8 +35,8 @@ class RegisterAccountUseCase(
             .map { accountId ->
                 AccountAggregate.register(
                     accountId = accountId,
-                    ownerId = command.ownerId,
                     type = command.type,
+                    principalId = command.principalId,
                     credentials = listOf(
                         Credential(
                             kind = command.kind,
@@ -48,7 +48,7 @@ class RegisterAccountUseCase(
                 )
             }
             .flatMap { accountAggregate -> accountRepository.save(accountAggregate) }
-            .publishEventOnError(eventPublisher, AccountRegistrationFailedEvent(command.type, command.ownerId))
+            .publishEventOnError(eventPublisher, AccountRegistrationFailedEvent(command.type, command.principalId))
             .logOnSuccess(logger, "Successfully registered account")
             .logOnError(logger, "Failed to register account")
     }

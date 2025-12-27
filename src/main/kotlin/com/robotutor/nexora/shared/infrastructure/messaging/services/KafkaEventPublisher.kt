@@ -1,7 +1,7 @@
 package com.robotutor.nexora.shared.infrastructure.messaging.services
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
 import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer
 import com.robotutor.nexora.shared.logger.Logger
@@ -38,20 +38,20 @@ class KafkaEventPublisher(
     private fun createHeadersRecord(ctx: ContextView): MutableList<RecordHeader> {
         val traceId = getTraceId(ctx)
         val exchangeDTO = ctx.get(ServerWebExchangeDTO::class.java)
-        val actorData = ctx.getOrEmpty<ActorData>(ActorData::class.java)
-        val accountData = ctx.getOrEmpty<AccountData>(AccountData::class.java)
+        val ActorData = ctx.getOrEmpty<ActorData>(ActorData::class.java)
+        val AccountData = ctx.getOrEmpty<AccountData>(AccountData::class.java)
 
         val headers = mutableListOf<RecordHeader>()
         headers.add(RecordHeader("exchange", DefaultSerializer.serialize(exchangeDTO).toByteArray()))
         headers.add(RecordHeader("x-trace-id", traceId.toByteArray()))
-        if (actorData.isPresent) {
+        if (ActorData.isPresent) {
             headers.add(
-                RecordHeader("actorData", DefaultSerializer.serialize(actorData.get()).toByteArray())
+                RecordHeader("Actor", DefaultSerializer.serialize(ActorData.get()).toByteArray())
             )
         }
-        if (accountData.isPresent) {
+        if (AccountData.isPresent) {
             headers.add(
-                RecordHeader("accountData", DefaultSerializer.serialize(accountData.get()).toByteArray())
+                RecordHeader("Account", DefaultSerializer.serialize(AccountData.get()).toByteArray())
             )
         }
         return headers

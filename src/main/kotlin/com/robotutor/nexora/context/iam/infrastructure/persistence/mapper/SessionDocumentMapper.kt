@@ -9,6 +9,7 @@ import com.robotutor.nexora.context.iam.infrastructure.persistence.document.Sess
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
 import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
 
 object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument> {
@@ -16,7 +17,7 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
         return SessionDocument(
             id = domain.getObjectId(),
             sessionId = domain.sessionId.value,
-            sessionPrincipal = toSessionPrincipalDocument(domain.sessionPrincipal),
+            principal = toSessionPrincipalDocument(domain.sessionPrincipal),
             refreshTokenHash = domain.refreshTokenHash.hashedValue,
             refreshCount = domain.refreshCount,
             status = domain.status,
@@ -30,7 +31,7 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
     override fun toDomainModel(document: SessionDocument): SessionAggregate {
         return SessionAggregate(
             sessionId = SessionId(document.sessionId),
-            sessionPrincipal = toPrincipalContext(document.sessionPrincipal),
+            sessionPrincipal = toSessionPrincipal(document.principal),
             refreshTokenHashValue = HashedTokenValue(document.refreshTokenHash),
             refreshCountValue = document.refreshCount,
             statusValue = document.status,
@@ -42,27 +43,37 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
 
     private fun toSessionPrincipalDocument(principal: SessionPrincipal): SessionPrincipalDocument {
         return when (principal) {
-            is AccountPrincipal -> AccountPrincipalDocument(principal.accountId.value, principal.accountType)
+            is AccountPrincipal -> AccountPrincipalDocument(
+                accountId = principal.accountId.value,
+                type = principal.type,
+                principalId = principal.principalId.value,
+            )
+
             is ActorPrincipal -> ActorPrincipalDocument(
                 actorId = principal.actorId.value,
                 premisesId = principal.premisesId.value,
-                accountId = principal.accountPrincipal.accountId.value,
-                type = principal.accountPrincipal.accountType
+                accountId = principal.accountId.value,
+                type = principal.type,
+                principalId = principal.principalId.value,
             )
         }
     }
 
-    private fun toPrincipalContext(principalDocument: SessionPrincipalDocument): SessionPrincipal {
+
+    private fun toSessionPrincipal(principalDocument: SessionPrincipalDocument): SessionPrincipal {
         return when (principalDocument) {
             is AccountPrincipalDocument -> AccountPrincipal(
                 AccountId(principalDocument.accountId),
-                principalDocument.type
+                principalDocument.type,
+                PrincipalId(principalDocument.principalId)
             )
 
             is ActorPrincipalDocument -> ActorPrincipal(
-                AccountPrincipal(AccountId(principalDocument.accountId), principalDocument.type),
                 ActorId(principalDocument.actorId),
-                PremisesId(principalDocument.premisesId)
+                PremisesId(principalDocument.premisesId),
+                AccountId(principalDocument.accountId),
+                principalDocument.type,
+                PrincipalId(principalDocument.principalId)
             )
         }
     }

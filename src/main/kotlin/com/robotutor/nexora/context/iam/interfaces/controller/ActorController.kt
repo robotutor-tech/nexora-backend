@@ -11,8 +11,8 @@ import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -26,15 +26,15 @@ class ActorController(
     private val registerMachineActorUseCase: RegisterMachineActorUseCase
 ) {
     @GetMapping
-    fun getActors(accountData: AccountData): Flux<ActorResponse> {
-        val query = GetActorsQuery(accountData.accountId)
+    fun getActors(AccountData: AccountData): Flux<ActorResponse> {
+        val query = GetActorsQuery(AccountData.accountId)
         return actorUseCase.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }
 
     @GetMapping("/me")
-    fun getActor(actorData: ActorData): Mono<ActorResponse> {
-        val query = GetActorQuery(actorData.actorId, actorData.premisesId)
+    fun getActor(ActorData: ActorData): Mono<ActorResponse> {
+        val query = GetActorQuery(ActorData.actorId, ActorData.premisesId)
         return actorUseCase.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }
@@ -43,9 +43,9 @@ class ActorController(
     fun authenticateActor(
         @RequestHeader("authorization") token: String,
         @RequestBody @Validated authenticateActorRequest: AuthenticateActorRequest,
-        accountData: AccountData
+        AccountData: AccountData
     ): Mono<TokenResponses> {
-        val command = ActorMapper.toAuthenticateActorCommand(authenticateActorRequest, accountData, token)
+        val command = ActorMapper.toAuthenticateActorCommand(authenticateActorRequest, AccountData, token)
         return authenticateActorUseCase.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
     }
@@ -53,9 +53,9 @@ class ActorController(
     @PostMapping("/machine")
     fun registerMachineActor(
         @RequestBody @Validated actorRequest: MachineActorRequest,
-        accountData: AccountData
+        AccountData: AccountData
     ): Mono<ActorResponse> {
-        val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, accountData)
+        val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, AccountData)
         return registerMachineActorUseCase.execute(command)
             .map { ActorMapper.toActorResponse(it) }
     }

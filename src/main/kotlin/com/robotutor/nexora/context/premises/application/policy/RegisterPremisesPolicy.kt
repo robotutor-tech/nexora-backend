@@ -4,7 +4,6 @@ import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.context.premises.application.command.RegisterPremisesCommand
 import com.robotutor.nexora.shared.domain.policy.Policy
 import com.robotutor.nexora.shared.domain.policy.PolicyResult
-import com.robotutor.nexora.shared.domain.vo.AccountType
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -12,7 +11,7 @@ import reactor.core.publisher.Mono
 class RegisterPremisesPolicy : Policy<RegisterPremisesCommand> {
     override fun evaluate(command: RegisterPremisesCommand): Mono<PolicyResult> {
         val reasons = mutableListOf<String>()
-        if (command.owner.type != AccountType.HUMAN) {
+        if (!command.owner.isHuman()) {
             reasons.add("Only humans can register premises")
         }
         val policyResult = if (reasons.isEmpty()) PolicyResult.allow() else PolicyResult.deny(reasons)
