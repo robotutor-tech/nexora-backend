@@ -7,6 +7,8 @@ sealed class DeviceEventMessage(name: String) : EventMessage("device.$name")
 data class DeviceRegistrationCompensatedEventMessage(val deviceId: String) :
     DeviceEventMessage("registration.compensated")
 
+data class DeviceActivatedEventMessage(val deviceId: String, val premisesId: String) : DeviceEventMessage("activated")
+
 data class DeviceCommissionedEventMessage(val deviceId: String, val premisesId: String, val accountId: String) :
     DeviceEventMessage("commissioned")
 

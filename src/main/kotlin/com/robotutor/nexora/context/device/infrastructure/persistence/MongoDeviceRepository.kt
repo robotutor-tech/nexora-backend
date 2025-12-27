@@ -54,12 +54,6 @@ class MongoDeviceRepository(
             .map { DeviceDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findByAccountId(accountId: AccountId): Mono<DeviceAggregate> {
-        return deviceDocumentRepository.findByAccountId(accountId.value)
-            .map { DeviceDocumentMapper.toDomainModel(it) }
-            .switchIfEmpty(createMonoError(DataNotFoundException(DeviceError.NEXORA0404)))
-    }
-
     override fun findBySpecification(specification: Specification<DeviceAggregate>): Mono<DeviceAggregate> {
         val query = Query(DeviceSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.findOne<DeviceDocument>(query)

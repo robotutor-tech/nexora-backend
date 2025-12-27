@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleResponse
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.RuleMapper
-import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/rules")
 class RuleController(private val ruleUseCase: RuleUseCase) {
 
-    @Authorize(ActionType.UPDATE, ResourceType.AUTOMATION_RULE)
+    @HttpAuthorize(ActionType.UPDATE, ResourceType.AUTOMATION_RULE)
     @PostMapping
     fun createTrigger(@RequestBody @Validated request: RuleRequest, ActorData: ActorData): Mono<RuleResponse> {
         val command = RuleMapper.toCreateRuleCommand(request)
@@ -27,7 +27,7 @@ class RuleController(private val ruleUseCase: RuleUseCase) {
             .map { RuleMapper.toRuleResponse(it) }
     }
 
-    @Authorize(ActionType.READ, ResourceType.AUTOMATION_RULE)
+    @HttpAuthorize(ActionType.READ, ResourceType.AUTOMATION_RULE)
     @GetMapping
     fun getRules(ActorData: ActorData, authorizedResources: AuthorizedResources): Flux<RuleResponse> {
         val ruleIds = emptyList<RuleId>()
@@ -35,7 +35,7 @@ class RuleController(private val ruleUseCase: RuleUseCase) {
             .map { RuleMapper.toRuleResponse(it) }
     }
 
-    @Authorize(ActionType.READ, ResourceType.AUTOMATION_RULE, "#ruleId")
+    @HttpAuthorize(ActionType.READ, ResourceType.AUTOMATION_RULE, "#ruleId")
     @GetMapping("/{ruleId}")
     fun getRule(@PathVariable ruleId: String, ActorData: ActorData): Mono<RuleResponse> {
         return ruleUseCase.getRule(RuleId(ruleId), ActorData)

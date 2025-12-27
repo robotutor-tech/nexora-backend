@@ -5,7 +5,7 @@ import com.robotutor.nexora.modules.automation.domain.entity.AutomationId
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationResponse
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.AutomationMapper
-import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/automations")
 class AutomationController(private val automationUseCase: AutomationUseCase) {
 
-    @Authorize(ActionType.UPDATE, ResourceType.AUTOMATION)
+    @HttpAuthorize(ActionType.UPDATE, ResourceType.AUTOMATION)
     @PostMapping
     fun createAutomationRule(
         @RequestBody @Validated request: AutomationRequest,
@@ -30,7 +30,7 @@ class AutomationController(private val automationUseCase: AutomationUseCase) {
             .map { AutomationMapper.toAutomationResponse(it) }
     }
 
-    @Authorize(ActionType.READ, ResourceType.AUTOMATION)
+    @HttpAuthorize(ActionType.READ, ResourceType.AUTOMATION)
     @GetMapping
     fun getAutomationRules(ActorData: ActorData, authorizedResources: AuthorizedResources): Flux<AutomationResponse> {
         val automationIds = emptyList<AutomationId>()

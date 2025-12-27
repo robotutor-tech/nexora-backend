@@ -11,6 +11,7 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 sealed interface DeviceEvent : Event
 
 data class DeviceRegisteredEvent(val deviceId: DeviceId, val name: Name, val premisesId: PremisesId) : DeviceEvent
+data class DeviceActivatedEvent(val deviceId: DeviceId, val premisesId: PremisesId) : DeviceEvent
 data class DeviceRegistrationFailedEvent(val accountId: AccountId) : DeviceEvent
 data class DeviceCommissionedEvent(val deviceId: DeviceId, val actorId: ActorId, val premisesId: PremisesId) :
     DeviceEvent

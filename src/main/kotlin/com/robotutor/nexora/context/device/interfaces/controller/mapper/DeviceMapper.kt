@@ -18,7 +18,6 @@ import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 object DeviceMapper {
     fun toRegisterDeviceCommand(request: RegisterDeviceRequest, actorData: ActorData): RegisterDeviceCommand {
         return RegisterDeviceCommand(
-            accountId = AccountId(request.accountId),
             name = Name(request.name),
             zoneId = ZoneId(request.zoneId),
             premisesId = actorData.premisesId,
@@ -29,7 +28,6 @@ object DeviceMapper {
     fun toDeviceResponse(device: DeviceAggregate): DeviceResponse {
         return DeviceResponse(
             deviceId = device.deviceId.value,
-            accountId = device.accountId.value,
             premisesId = device.premisesId.value,
             name = device.getName().value,
             state = device.getState(),

@@ -8,7 +8,7 @@ import com.robotutor.nexora.context.premises.application.usecase.RegisterPremise
 import com.robotutor.nexora.context.premises.interfaces.controller.view.PremisesCreateRequest
 import com.robotutor.nexora.context.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.context.premises.interfaces.controller.mapper.PremisesMapper
-import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.PremisesId
@@ -46,7 +46,7 @@ class PremisesController(
             .map { PremisesMapper.toPremisesResponse(it) }
     }
 
-    @Authorize(ActionType.READ, ResourceType.PREMISES, "#premisesId")
+    @HttpAuthorize(ActionType.READ, ResourceType.PREMISES, "#premisesId")
     @GetMapping("/{premisesId}")
     fun getPremisesDetails(@PathVariable premisesId: String): Mono<PremisesResponse> {
         val query = GetPremisesQuery(PremisesId(premisesId))

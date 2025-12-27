@@ -8,7 +8,6 @@ import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 
 data class RegisterDeviceCommand(
-    val accountId: AccountId,
     val name: Name,
     val zoneId: ZoneId,
     val premisesId: PremisesId,

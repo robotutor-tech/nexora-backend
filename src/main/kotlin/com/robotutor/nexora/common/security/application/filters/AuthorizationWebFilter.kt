@@ -4,7 +4,7 @@ import com.robotutor.nexora.common.security.application.ports.AccessAuthorizer
 import com.robotutor.nexora.common.security.application.resolvers.SpringExpressionResourceIdResolver
 import com.robotutor.nexora.common.security.application.writeContextOnChain
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.annotation.Order
@@ -38,11 +38,11 @@ class AuthorizationWebFilter(
         chain: WebFilterChain,
         handler: HandlerMethod,
     ): Mono<Void> {
-        val authorize = handler.getMethodAnnotation(Authorize::class.java)
+        val httpAuthorize = handler.getMethodAnnotation(HttpAuthorize::class.java)
             ?: return chain.filter(exchange)
 
-        val resourceId = resourceIdResolver.resolve(authorize, exchange, handler)
-        return accessAuthorizer.authorize(authorize, resourceId)
+        val resourceId = resourceIdResolver.resolve(httpAuthorize, exchange, handler)
+        return accessAuthorizer.authorize(httpAuthorize, resourceId)
             .contextWrite { context -> writeContextOnChain(context, exchange) }
             .flatMap { allowed ->
                 if (allowed) chain.filter(exchange)

@@ -8,8 +8,11 @@ import com.robotutor.nexora.context.device.domain.specification.DeviceByPremises
 import com.robotutor.nexora.context.device.domain.specification.DeviceByRegisteredBySpecification
 import com.robotutor.nexora.context.device.domain.specification.DeviceByStateSpecification
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.specification.AuthorizedQueryBuilder
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -24,6 +27,7 @@ class DeviceUseCase(
 ) {
     private val logger = Logger(this::class.java)
 
+    @Authorize(ActionType.READ, ResourceType.DEVICE)
     fun execute(query: GetDevicesQuery): Flux<DeviceAggregate> {
         val specification = authorizedQueryBuilder.build(query.resources)
             .and(DeviceByPremisesIdSpecification(query.resources.premisesId))
@@ -36,9 +40,5 @@ class DeviceUseCase(
         return deviceRepository.findAll(specification)
             .logOnSuccess(logger, "Successfully get devices")
             .logOnError(logger, "Failed to get devices")
-    }
-
-    fun execute(accountId: AccountId): Mono<DeviceAggregate> {
-        return deviceRepository.findByAccountId(accountId)
     }
 }

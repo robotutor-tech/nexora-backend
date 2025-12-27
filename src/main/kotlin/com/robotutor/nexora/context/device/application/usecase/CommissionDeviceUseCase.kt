@@ -5,8 +5,10 @@ import com.robotutor.nexora.context.device.application.facade.FeedFacade
 import com.robotutor.nexora.context.device.application.facade.ZoneFacade
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
-import com.robotutor.nexora.context.device.domain.specification.DeviceByAccountIdSpecification
 import com.robotutor.nexora.context.device.domain.specification.DeviceByPremisesIdSpecification
+import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.logger.Logger
 import com.robotutor.nexora.shared.logger.logOnError
 import com.robotutor.nexora.shared.logger.logOnSuccess
@@ -21,9 +23,9 @@ class CommissionDeviceUseCase(
 ) {
     val logger = Logger(this::class.java)
 
+    @Authorize(ActionType.UPDATE, ResourceType.DEVICE, "#command.deviceId")
     fun execute(command: CommissionDeviceCommand): Mono<DeviceAggregate> {
-        val specification =
-            DeviceByPremisesIdSpecification(command.actorData.premisesId).and(DeviceByAccountIdSpecification(command.actorData.accountId))
+        val specification = DeviceByPremisesIdSpecification(command.actorData.premisesId)
         return deviceRepository.findBySpecification(specification)
             .flatMap { device ->
                 feedFacade.registerFeeds(device.deviceId, command.metadata.modelNo)

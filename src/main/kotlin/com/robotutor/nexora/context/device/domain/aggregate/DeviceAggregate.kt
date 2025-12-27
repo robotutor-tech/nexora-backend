@@ -1,5 +1,6 @@
 package com.robotutor.nexora.context.device.domain.aggregate
 
+import com.robotutor.nexora.context.device.domain.event.DeviceActivatedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceCommissionedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceMetadataUpdatedEvent
@@ -16,7 +17,6 @@ import java.time.Instant
 
 class DeviceAggregate private constructor(
     val deviceId: DeviceId,
-    val accountId: AccountId,
     val premisesId: PremisesId,
     val zoneId: ZoneId,
     val registeredBy: ActorId,
@@ -63,14 +63,12 @@ class DeviceAggregate private constructor(
 
     companion object {
         fun register(
-            accountId: AccountId,
             premisesId: PremisesId,
             name: Name,
             registeredBy: ActorId,
             zoneId: ZoneId,
         ): DeviceAggregate {
             val device = create(
-                accountId = accountId,
                 deviceId = DeviceId.generate(),
                 premisesId = premisesId,
                 name = name,
@@ -87,7 +85,6 @@ class DeviceAggregate private constructor(
             name: Name,
             zoneId: ZoneId,
             registeredBy: ActorId,
-            accountId: AccountId,
             feedIds: Set<FeedId> = emptySet(),
             state: DeviceState = DeviceState.REGISTERED,
             health: DeviceHealth = DeviceHealth.OFFLINE,
@@ -104,18 +101,26 @@ class DeviceAggregate private constructor(
                 health = health,
                 metadata = metaData,
                 zoneId = zoneId,
-                accountId = accountId,
                 registeredBy = registeredBy,
                 createdAt = createdAt,
                 updatedAt = updatedAt,
             )
         }
     }
+
+    fun activate(): DeviceAggregate {
+        if (state != DeviceState.REGISTERED) {
+            throw InvalidStateException(DeviceError.NEXORA0403)
+        }
+        state = DeviceState.ACTIVE
+        updatedAt = Instant.now()
+        addEvent(DeviceActivatedEvent(deviceId, premisesId))
+        return this
+    }
 }
 
 enum class DeviceState {
     REGISTERED,
-    COMMISSIONED,
     ACTIVE,
     INACTIVE,
 }

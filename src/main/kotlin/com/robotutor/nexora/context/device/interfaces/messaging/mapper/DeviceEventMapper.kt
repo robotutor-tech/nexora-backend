@@ -1,21 +1,20 @@
 package com.robotutor.nexora.context.device.interfaces.messaging.mapper
 
-import com.robotutor.nexora.context.device.application.command.CompensateDeviceRegistrationCommand
+import com.robotutor.nexora.context.device.application.command.ActivateDeviceCommand
+import com.robotutor.nexora.context.device.application.command.CompensateDeviceCommand
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
-import com.robotutor.nexora.context.device.interfaces.messaging.message.CompensateDeviceRegistrationMessage
+import com.robotutor.nexora.context.device.interfaces.messaging.message.ActivateDeviceMessage
+import com.robotutor.nexora.context.device.interfaces.messaging.message.CompensateDeviceMessage
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
 object DeviceEventMapper {
-//    fun toDeviceId(message: DeviceFeedsCreatedMessage): DeviceId {
-//        return DeviceId(value = message.deviceId)
-//    }
-//
-//    fun toFeedIds(message: DeviceFeedsCreatedMessage): FeedIds {
-//        val feedIds = message.feedIds.map { feed -> FeedId(feed) }
-//        return FeedIds(feedIds)
-//    }
 
-    fun toCompensateDeviceRegistrationCommand(eventMessage: CompensateDeviceRegistrationMessage): CompensateDeviceRegistrationCommand {
-        return CompensateDeviceRegistrationCommand(DeviceId(eventMessage.deviceId))
+    fun toActivateDeviceCommand(eventMessage: ActivateDeviceMessage, actorData: ActorData): ActivateDeviceCommand {
+        return ActivateDeviceCommand(DeviceId(eventMessage.deviceId), actorData.premisesId)
+    }
+
+    fun toCompensateDeviceCommand(eventMessage: CompensateDeviceMessage): CompensateDeviceCommand {
+        return CompensateDeviceCommand(DeviceId(eventMessage.deviceId))
     }
 
 }

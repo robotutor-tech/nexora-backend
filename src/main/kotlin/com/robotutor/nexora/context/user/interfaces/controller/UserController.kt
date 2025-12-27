@@ -26,8 +26,8 @@ class UserController(val registerUserUseCase: RegisterUserUseCase, private val g
     }
 
     @GetMapping("/me")
-    fun me(AccountData: AccountData): Mono<UserResponse> {
-        return getUserUseCase.execute(GetUserQuery(AccountData.accountId))
+    fun me(accountData: AccountData): Mono<UserResponse> {
+        return getUserUseCase.execute(GetUserQuery(accountData.accountId))
             .map { UserMapper.toUserResponse(it) }
     }
 

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
-import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.utility.validation
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import org.springframework.expression.ExpressionParser
@@ -17,11 +17,11 @@ class SpringExpressionResourceIdResolver {
     private val parser: ExpressionParser = SpelExpressionParser()
 
     fun resolve(
-        authorize: Authorize,
+        httpAuthorize: HttpAuthorize,
         exchange: ServerWebExchange,
         handler: HandlerMethod,
     ): ResourceId {
-        val selector = authorize.selector
+        val selector = httpAuthorize.selector
         if (selector == "ALL") return ResourceId.ALL
 
         val pathVars: Map<String, String> = exchange.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE)

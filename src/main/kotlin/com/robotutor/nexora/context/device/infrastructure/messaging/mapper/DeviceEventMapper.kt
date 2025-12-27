@@ -13,6 +13,7 @@ object DeviceEventMapper : EventMapper<DeviceEvent> {
             is DeviceRegistrationFailedEvent -> toDeviceRegistrationFailedEventMessage(event)
             is DeviceCommissionedEvent -> toDeviceCommissionedEventMessage(event)
             is DeviceMetadataUpdatedEvent -> toDeviceMetadataUpdatedEventMessage(event)
+            is DeviceActivatedEvent -> DeviceActivatedEventMessage(event.deviceId.value, event.premisesId.value)
         }
     }
 

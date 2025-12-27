@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
 import com.robotutor.nexora.common.security.application.ports.AccessAuthorizer
-import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.MethodParameter
@@ -29,11 +29,11 @@ class AuthorizedResourcesResolver(
     ): Mono<Any> {
         return handlerMapping.getHandler(exchange).flatMap { handler ->
             if (handler is HandlerMethod) {
-                val authorize = handler.getMethodAnnotation(Authorize::class.java)
-                if (authorize == null) {
+                val httpAuthorize = handler.getMethodAnnotation(HttpAuthorize::class.java)
+                if (httpAuthorize == null) {
                     createMonoError(IllegalStateException("Authorize annotation is missing"))
                 } else {
-                    accessAuthorizer.getAuthorizedScope(exchange, authorize)
+                    accessAuthorizer.getAuthorizedScope(exchange, httpAuthorize)
                 }
             } else {
                 createMonoError(IllegalStateException("not an handler Authorize annotation is missing"))

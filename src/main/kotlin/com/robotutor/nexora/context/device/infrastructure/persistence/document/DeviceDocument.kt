@@ -20,7 +20,6 @@ data class DeviceDocument(
     val id: String? = null,
     @Indexed(unique = true)
     val deviceId: String,
-    val accountId: String,
     val premisesId: String,
     val name: String,
     val metaData: DeviceMetaDataDocument?,

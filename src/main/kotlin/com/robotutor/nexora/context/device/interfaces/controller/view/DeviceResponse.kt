@@ -6,7 +6,6 @@ import java.time.Instant
 
 data class DeviceResponse(
     val deviceId: String,
-    val accountId: String,
     val premisesId: String,
     val name: String,
     val state: DeviceState,

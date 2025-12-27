@@ -7,8 +7,7 @@ import com.robotutor.nexora.context.device.interfaces.controller.mapper.DeviceMa
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
-import com.robotutor.nexora.shared.application.annotation.Authorize
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
@@ -25,32 +24,31 @@ class DeviceController(
     private val commissionDeviceUseCase: CommissionDeviceUseCase,
     private val deviceUseCase: DeviceUseCase,
 ) {
-    @Authorize(ActionType.UPDATE, ResourceType.DEVICE)
+    @HttpAuthorize(ActionType.UPDATE, ResourceType.DEVICE)
     @PostMapping
     fun registerDevice(
         @RequestBody @Validated request: RegisterDeviceRequest,
-        ActorData: ActorData
+        actorData: ActorData
     ): Mono<DeviceResponse> {
-        val command = DeviceMapper.toRegisterDeviceCommand(request, ActorData)
+        val command = DeviceMapper.toRegisterDeviceCommand(request, actorData)
         return registerDeviceUseCase.execute(command)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
-    @Authorize(ActionType.READ, ResourceType.DEVICE)
+    @HttpAuthorize(ActionType.READ, ResourceType.DEVICE)
     @GetMapping
-    fun getDevices(ActorData: ActorData, resources: AuthorizedResources): Flux<DeviceResponse> {
-        val query = DeviceMapper.toGetDevicesQuery(resources, ActorData)
+    fun getDevices(actorData: ActorData, resources: AuthorizedResources): Flux<DeviceResponse> {
+        val query = DeviceMapper.toGetDevicesQuery(resources, actorData)
         return deviceUseCase.execute(query)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
-    @Authorize(ActionType.READ, ResourceType.DEVICE, "#Actor.accountId.value")
     @PostMapping("/commission")
     fun commissionDevice(
         @RequestBody @Validated metadata: DeviceMetaDataRequest,
-        ActorData: ActorData
+        actorData: ActorData
     ): Mono<DeviceResponse> {
-        val command = DeviceMapper.toCommissionDeviceCommand(metadata, ActorData)
+        val command = DeviceMapper.toCommissionDeviceCommand(metadata, actorData)
         return commissionDeviceUseCase.execute(command)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
@@ -62,11 +60,11 @@ class DeviceController(
 //            .map { DeviceMapper.toDeviceResponse(it) }
 //    }
 
-    @GetMapping("/me")
-    fun getDevice(AccountData: AccountData): Mono<DeviceResponse> {
-        return deviceUseCase.execute(AccountData.accountId)
-            .map { DeviceMapper.toDeviceResponse(it) }
-    }
+//    @GetMapping("/me")
+//    fun getDevice(accountData: AccountData): Mono<DeviceResponse> {
+//        return deviceUseCase.execute(accountData.accountId)
+//            .map { DeviceMapper.toDeviceResponse(it) }
+//    }
 
 //    @PatchMapping("/health")
 //    fun getDevice(@RequestBody @Validated healthRequest: HealthRequest, deviceData: DeviceData): Mono<DeviceResponse> {
