@@ -24,18 +24,21 @@ import reactor.core.publisher.Mono
 class DeviceUseCase(
     private val deviceRepository: DeviceRepository,
     private val authorizedQueryBuilder: AuthorizedQueryBuilder<DeviceId, DeviceAggregate>,
-    
-) {
+
+    ) {
     private val logger = Logger(this::class.java)
 
     @Authorize(ActionType.READ, ResourceType.DEVICE)
     fun execute(query: GetDevicesQuery): Flux<DeviceAggregate> {
         val specification = authorizedQueryBuilder.build(query.resources)
             .and(DeviceByPremisesIdSpecification(query.resources.premisesId))
-            .and(DeviceByStateSpecification(DeviceState.ACTIVE))
+            .and(
+                DeviceByStateSpecification(DeviceState.ACTIVE)
+                    .or(DeviceByStateSpecification(DeviceState.REGISTERED))
+            )
             .or(
                 DeviceByRegisteredBySpecification(query.actorId)
-                    .and(DeviceByStateSpecification(DeviceState.REGISTERED))
+                    .and(DeviceByStateSpecification(DeviceState.CREATED))
             )
 
         return deviceRepository.findAll(specification)

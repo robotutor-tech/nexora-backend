@@ -19,21 +19,21 @@ class RotateCredentialUseCase(
     private val rotateCredentialPolicy: RotateCredentialPolicy,
     private val accountRepository: AccountRepository,
     private val secretService: SecretEncoder,
-    
-) {
+
+    ) {
     private val logger = Logger(this::class.java)
 
     fun execute(command: RotateCredentialCommand): Mono<Pair<CredentialId, CredentialSecret>> {
         return rotateCredentialPolicy.evaluate(command)
             .errorOnDenied(IAMError.NEXORA0208)
-            .flatMap { accountRepository.findByAccountId(command.accountId) }
+            .flatMap { accountRepository.findByPrincipalId(command.principalId) }
             .flatMap { account ->
                 val secret = CredentialSecret.generate()
                 account.rotateCredential(secretService.encode(secret), command.kind)
                 accountRepository.save(account)
                     .map { Pair(account.getCredentials().first().credentialId, secret) }
             }
-            .logOnSuccess(logger, "Successfully rotated credential", mapOf("accountId" to command.accountId))
-            .logOnError(logger, "Failed to rotate credential", mapOf("accountId" to command.accountId))
+            .logOnSuccess(logger, "Successfully rotated credential", mapOf("accountId" to command.principalId))
+            .logOnError(logger, "Failed to rotate credential", mapOf("accountId" to command.principalId))
     }
 }

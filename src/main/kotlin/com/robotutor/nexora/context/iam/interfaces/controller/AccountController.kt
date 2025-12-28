@@ -1,31 +1,21 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
-import com.robotutor.nexora.context.iam.application.usecase.account.RotateCredentialUseCase
-import com.robotutor.nexora.context.iam.application.usecase.account.GetAccountUseCase
 import com.robotutor.nexora.context.iam.application.usecase.account.AuthenticateAccountUseCase
+import com.robotutor.nexora.context.iam.application.usecase.account.GetAccountUseCase
 import com.robotutor.nexora.context.iam.application.usecase.account.RegisterAccountUseCase
-import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
+import com.robotutor.nexora.context.iam.application.usecase.account.RotateCredentialUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AccountMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.CredentialMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
-import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
-import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
-import com.robotutor.nexora.context.iam.interfaces.controller.view.CredentialRotatedResponse
-import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
-import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.context.iam.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActionType
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
 @RestController
@@ -68,9 +58,9 @@ class AccountController(
         return getAccountUseCase.execute(query).map { AccountMapper.toAccountResponse(it) }
     }
 
-    @PatchMapping("/{accountId}/credentials/rotate")
-    fun rotateCredentials(@PathVariable accountId: String, actorData: ActorData): Mono<CredentialRotatedResponse> {
-        val command = AccountMapper.toRotateCredentialsCommand(accountId, actorData)
+    @PatchMapping("/principal/{principalId}/credentials/rotate")
+    fun rotateCredentials(@PathVariable principalId: String, actorData: ActorData): Mono<CredentialRotatedResponse> {
+        val command = AccountMapper.toRotateCredentialsCommand(principalId, actorData)
         return rotateCredentialUseCase.execute(command)
             .map { CredentialMapper.toCredentialRotatedResponse(it) }
     }

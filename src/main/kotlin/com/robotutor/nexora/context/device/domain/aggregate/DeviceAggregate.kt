@@ -35,7 +35,7 @@ class DeviceAggregate private constructor(
     fun getMetadata(): DeviceMetadata? = metadata
 
     fun commission(metadata: DeviceMetadata, feedIds: Set<FeedId>): DeviceAggregate {
-        if (state != DeviceState.ACTOR_REGISTERED) {
+        if (state != DeviceState.REGISTERED) {
             throw InvalidStateException(DeviceError.NEXORA0401)
         }
         this.metadata = metadata
@@ -72,7 +72,7 @@ class DeviceAggregate private constructor(
             zoneId: ZoneId,
             registeredBy: ActorId,
             feedIds: Set<FeedId> = emptySet(),
-            state: DeviceState = DeviceState.REGISTERED,
+            state: DeviceState = DeviceState.CREATED,
             health: DeviceHealth = DeviceHealth.OFFLINE,
             metaData: DeviceMetadata? = null,
             createdAt: Instant = Instant.now(),
@@ -95,10 +95,10 @@ class DeviceAggregate private constructor(
     }
 
     fun actorRegistered(): DeviceAggregate {
-        if (state != DeviceState.REGISTERED) {
+        if (state != DeviceState.CREATED) {
             throw InvalidStateException(DeviceError.NEXORA0403)
         }
-        state = DeviceState.ACTOR_REGISTERED
+        state = DeviceState.REGISTERED
         updatedAt = Instant.now()
         addEvent(DeviceActivatedEvent(deviceId, premisesId))
         return this
@@ -106,8 +106,8 @@ class DeviceAggregate private constructor(
 }
 
 enum class DeviceState {
+    CREATED,
     REGISTERED,
-    ACTOR_REGISTERED,
     ACTIVE,
     INACTIVE,
 }

@@ -9,6 +9,7 @@ import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.Ac
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
@@ -32,6 +33,11 @@ class MongoAccountRepository(
 
     override fun findByAccountId(accountId: AccountId): Mono<AccountAggregate> {
         return accountDocumentRepository.findByAccountId(accountId.value)
+            .map { AccountDocumentMapper.toDomainModel(it) }
+    }
+
+    override fun findByPrincipalId(principalId: PrincipalId): Mono<AccountAggregate> {
+        return accountDocumentRepository.findByPrincipalId(principalId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
 

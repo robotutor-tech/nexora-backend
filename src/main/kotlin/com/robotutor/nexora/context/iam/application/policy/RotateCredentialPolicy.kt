@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono
 @Service
 class RotateCredentialPolicy(private val accountRepository: AccountRepository) : Policy<RotateCredentialCommand> {
     override fun evaluate(command: RotateCredentialCommand): Mono<PolicyResult> {
-        return accountRepository.findByAccountId(command.accountId)
+        return accountRepository.findByPrincipalId(command.principalId)
             .map {
                 val reasons = mutableListOf<String>()
                 if (it.type !== AccountType.MACHINE) {

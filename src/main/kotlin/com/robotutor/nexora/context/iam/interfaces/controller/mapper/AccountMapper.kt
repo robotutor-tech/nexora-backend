@@ -11,7 +11,6 @@ import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.RegisterAccountRequest
-import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
 object AccountMapper {
@@ -44,9 +43,9 @@ object AccountMapper {
         )
     }
 
-    fun toRotateCredentialsCommand(accountId: String, actorData: ActorData): RotateCredentialCommand {
+    fun toRotateCredentialsCommand(principalIdValue: String, actorData: ActorData): RotateCredentialCommand {
         return RotateCredentialCommand(
-            accountId = AccountId(accountId),
+            principalId = PrincipalId(principalIdValue),
             kind = CredentialKind.API_SECRET,
             actorData = actorData
         )
