@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.automation.domain.entity
 
-import com.robotutor.nexora.common.persistence.mongo.document.IdSequenceType
+import com.robotutor.nexora.common.persistence.document.IdSequenceType
 
 enum class IdType(override val length: Int) : IdSequenceType {
     AUTOMATION_ID(10),

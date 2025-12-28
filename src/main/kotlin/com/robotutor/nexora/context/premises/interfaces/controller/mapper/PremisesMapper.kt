@@ -10,12 +10,12 @@ import com.robotutor.nexora.shared.domain.vo.Name
 object PremisesMapper {
     fun toRegisterPremisesCommand(
         premisesRequest: PremisesCreateRequest,
-        AccountData: AccountData
+        accountData: AccountData
     ): RegisterPremisesCommand {
         return RegisterPremisesCommand(
             name = Name(premisesRequest.name),
             address = toAddress(premisesRequest.address),
-            owner = AccountData
+            owner = accountData
         )
     }
 

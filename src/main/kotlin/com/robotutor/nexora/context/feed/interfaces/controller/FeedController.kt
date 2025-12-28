@@ -23,16 +23,16 @@ import reactor.core.publisher.Flux
 class FeedController(private val feedUseCase: FeedUseCase, private val registerFeedUseCase: RegisterFeedUseCase) {
     @HttpAuthorize(ActionType.READ, ResourceType.FEED)
     @GetMapping
-    fun getFeeds(ActorData: ActorData, resources: AuthorizedResources): Flux<FeedResponse> {
-        val query = FeedMapper.toGetFeedsQuery(resources, ActorData)
+    fun getFeeds(actorData: ActorData, resources: AuthorizedResources): Flux<FeedResponse> {
+        val query = FeedMapper.toGetFeedsQuery(resources, actorData)
         return feedUseCase.execute(query)
             .map { FeedMapper.toFeedResponse(it) }
     }
 
     @HttpAuthorize(ActionType.CREATE, ResourceType.FEED)
     @PostMapping
-    fun registerFeeds(@RequestBody @Validated request: RegisterFeedsRequest, ActorData: ActorData): Flux<FeedResponse> {
-        val query = FeedMapper.toRegisterFeedsCommand(request, ActorData)
+    fun registerFeeds(@RequestBody @Validated request: RegisterFeedsRequest, actorData: ActorData): Flux<FeedResponse> {
+        val query = FeedMapper.toRegisterFeedsCommand(request, actorData)
         return registerFeedUseCase.execute(query)
             .map { FeedMapper.toFeedResponse(it) }
     }

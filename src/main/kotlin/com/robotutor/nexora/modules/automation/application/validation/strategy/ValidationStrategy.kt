@@ -5,5 +5,5 @@ import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import reactor.core.publisher.Mono
 
 interface ValidationStrategy<T : Config> {
-    fun validate(config: T, ActorData: ActorData): Mono<T>
+    fun validate(config: T, actorData: ActorData): Mono<T>
 }

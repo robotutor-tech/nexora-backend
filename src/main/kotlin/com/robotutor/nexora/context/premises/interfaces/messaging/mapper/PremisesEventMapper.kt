@@ -10,15 +10,15 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 object PremisesEventMapper {
     fun toActivatePremisesCommand(
         eventMessage: PremisesOwnerRegisteredMessage,
-        AccountData: AccountData
+        accountData: AccountData
     ): ActivatePremisesCommand {
-        return ActivatePremisesCommand(PremisesId(eventMessage.premisesId), AccountData.accountId)
+        return ActivatePremisesCommand(PremisesId(eventMessage.premisesId), accountData.accountId)
     }
 
     fun toCompensatePremisesRegistrationCommand(
         eventMessage: PremisesOwnerRegistrationFailedMessage,
-        AccountData: AccountData
+        accountData: AccountData
     ): CompensatePremisesRegistrationCommand {
-        return CompensatePremisesRegistrationCommand(PremisesId(eventMessage.premisesId), AccountData.accountId)
+            return CompensatePremisesRegistrationCommand(PremisesId(eventMessage.premisesId), accountData.accountId)
     }
 }

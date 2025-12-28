@@ -23,18 +23,18 @@ class AutomationController(private val automationUseCase: AutomationUseCase) {
     @PostMapping
     fun createAutomationRule(
         @RequestBody @Validated request: AutomationRequest,
-        ActorData: ActorData
+        actorData: ActorData
     ): Mono<AutomationResponse> {
         val createAutomationCommand = AutomationMapper.toCreateAutomationCommand(request)
-        return automationUseCase.createAutomationRule(createAutomationCommand, ActorData)
+        return automationUseCase.createAutomationRule(createAutomationCommand, actorData)
             .map { AutomationMapper.toAutomationResponse(it) }
     }
 
     @HttpAuthorize(ActionType.READ, ResourceType.AUTOMATION)
     @GetMapping
-    fun getAutomationRules(ActorData: ActorData, authorizedResources: AuthorizedResources): Flux<AutomationResponse> {
+    fun getAutomationRules(actorData: ActorData, authorizedResources: AuthorizedResources): Flux<AutomationResponse> {
         val automationIds = emptyList<AutomationId>()
-        return automationUseCase.getAutomationRules(automationIds, ActorData)
+        return automationUseCase.getAutomationRules(automationIds, actorData)
             .map { AutomationMapper.toAutomationResponse(it) }
     }
 }

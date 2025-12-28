@@ -1,7 +1,7 @@
 package com.robotutor.nexora.common.security.application.filters
 
-import com.robotutor.nexora.common.observability.models.RequestDetails
-import com.robotutor.nexora.common.observability.models.ResponseDetails
+import com.robotutor.nexora.common.security.domain.vo.RequestDetails
+import com.robotutor.nexora.common.security.domain.vo.ResponseDetails
 import com.robotutor.nexora.common.security.application.getCorrelationIdFromExchange
 import com.robotutor.nexora.common.security.application.getPremisesIdFromExchange
 import com.robotutor.nexora.common.security.application.writeContextOnChain

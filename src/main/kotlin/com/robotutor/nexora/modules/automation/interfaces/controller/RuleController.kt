@@ -21,24 +21,24 @@ class RuleController(private val ruleUseCase: RuleUseCase) {
 
     @HttpAuthorize(ActionType.UPDATE, ResourceType.AUTOMATION_RULE)
     @PostMapping
-    fun createTrigger(@RequestBody @Validated request: RuleRequest, ActorData: ActorData): Mono<RuleResponse> {
+    fun createTrigger(@RequestBody @Validated request: RuleRequest, actorData: ActorData): Mono<RuleResponse> {
         val command = RuleMapper.toCreateRuleCommand(request)
-        return ruleUseCase.createRule(command, ActorData)
+        return ruleUseCase.createRule(command, actorData)
             .map { RuleMapper.toRuleResponse(it) }
     }
 
     @HttpAuthorize(ActionType.READ, ResourceType.AUTOMATION_RULE)
     @GetMapping
-    fun getRules(ActorData: ActorData, authorizedResources: AuthorizedResources): Flux<RuleResponse> {
+    fun getRules(actorData: ActorData, authorizedResources: AuthorizedResources): Flux<RuleResponse> {
         val ruleIds = emptyList<RuleId>()
-        return ruleUseCase.getRules(ruleIds, ActorData)
+        return ruleUseCase.getRules(ruleIds, actorData)
             .map { RuleMapper.toRuleResponse(it) }
     }
 
     @HttpAuthorize(ActionType.READ, ResourceType.AUTOMATION_RULE, "#ruleId")
     @GetMapping("/{ruleId}")
-    fun getRule(@PathVariable ruleId: String, ActorData: ActorData): Mono<RuleResponse> {
-        return ruleUseCase.getRule(RuleId(ruleId), ActorData)
+    fun getRule(@PathVariable ruleId: String, actorData: ActorData): Mono<RuleResponse> {
+        return ruleUseCase.getRule(RuleId(ruleId), actorData)
             .map { RuleMapper.toRuleResponse(it) }
     }
 }

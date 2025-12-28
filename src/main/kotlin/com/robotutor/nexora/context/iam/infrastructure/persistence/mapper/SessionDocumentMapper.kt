@@ -10,7 +10,7 @@ import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
-import com.robotutor.nexora.common.persistence.mongo.mapper.DocumentMapper
+import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
 
 object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument> {
     override fun toMongoDocument(domain: SessionAggregate): SessionDocument {

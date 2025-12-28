@@ -27,30 +27,30 @@ object ActorMapper {
 
     fun toAuthenticateActorCommand(
         authenticateActorRequest: AuthenticateActorRequest,
-        AccountData: AccountData,
+        accountData: AccountData,
         token: String
     ): AuthenticateActorCommand {
         return AuthenticateActorCommand(
             premisesId = PremisesId(authenticateActorRequest.premisesId),
             token = TokenValue(token.removePrefix("Bearer ")),
-            accountData = AccountData
+            accountData = accountData
         )
     }
 
     fun toRegisterOwnerCommand(
         eventMessage: OwnerCreationRequest,
-        AccountData: AccountData
+        accountData: AccountData
     ): RegisterPremisesOwnerCommand {
         return RegisterPremisesOwnerCommand(
             premisesId = PremisesId(eventMessage.premisesId),
-            owner = AccountData
+            owner = accountData
         )
     }
 
-    fun toRegisterMachineActorCommand(actorRequest: MachineActorRequest, AccountData: AccountData): RegisterMachineActorCommand {
+    fun toRegisterMachineActorCommand(actorRequest: MachineActorRequest, accountData: AccountData): RegisterMachineActorCommand {
         return RegisterMachineActorCommand(
             premisesId = PremisesId(actorRequest.premisesId),
-            owner = AccountData,
+            owner = accountData,
             deviceId = ResourceId(actorRequest.deviceId)
         )
     }

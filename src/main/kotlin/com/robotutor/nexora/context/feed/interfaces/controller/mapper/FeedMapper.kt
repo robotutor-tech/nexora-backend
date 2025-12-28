@@ -14,8 +14,8 @@ import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
 
 object FeedMapper {
-    fun toGetFeedsQuery(resources: AuthorizedResources, ActorData: ActorData): GetFeedsQuery {
-        return GetFeedsQuery(ActorData.actorId, resources.toResources(FeedId::class.java))
+    fun toGetFeedsQuery(resources: AuthorizedResources, actorData: ActorData): GetFeedsQuery {
+        return GetFeedsQuery(actorData.actorId, resources.toResources(FeedId::class.java))
     }
 
     fun toFeedResponse(feed: FeedAggregate): FeedResponse {
@@ -35,9 +35,9 @@ object FeedMapper {
         return FeedValueRangeResponse(mode = range.mode, min = range.min, max = range.max)
     }
 
-    fun toRegisterFeedsCommand(request: RegisterFeedsRequest, ActorData: ActorData): RegisterFeedsCommand {
+    fun toRegisterFeedsCommand(request: RegisterFeedsRequest, actorData: ActorData): RegisterFeedsCommand {
         return RegisterFeedsCommand(
-            premisesId = ActorData.premisesId,
+            premisesId = actorData.premisesId,
             deviceId = DeviceId(request.deviceId),
             modelNo = ModelNo(request.modelNo)
         )

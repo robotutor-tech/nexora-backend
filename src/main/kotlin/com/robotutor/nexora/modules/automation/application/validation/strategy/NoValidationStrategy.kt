@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class NoValidationStrategy : ValidationStrategy<Config> {
-    override fun validate(config: Config, ActorData: ActorData): Mono<Config> {
+    override fun validate(config: Config, actorData: ActorData): Mono<Config> {
         return createMono(config)
     }
 }

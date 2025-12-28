@@ -17,7 +17,7 @@ object AuthorizationMapper {
         actorData: ActorData
     ): AuthorizeResourceCommand {
         return AuthorizeResourceCommand(
-            ActorData = actorData,
+            actorData = actorData,
             resource = Resource(
                 resourceId = ResourceId(authorizeResourceRequest.resourceId),
                 premisesId = actorData.premisesId,

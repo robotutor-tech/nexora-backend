@@ -1,10 +1,8 @@
 package com.robotutor.nexora.context.zone.domain.vo
 
-interface WidgetMetadata
+sealed interface WidgetMetadata
 
-data class ToggleWidgetMetadata(
-    val icon: String,
-) : WidgetMetadata
+class ToggleWidgetMetadata : WidgetMetadata
 
 data class SliderWidgetMetadata(
     val min: Int,

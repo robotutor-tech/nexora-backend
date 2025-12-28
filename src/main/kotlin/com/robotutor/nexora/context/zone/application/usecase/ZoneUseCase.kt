@@ -5,9 +5,8 @@ import com.robotutor.nexora.context.zone.application.command.GetZonesQuery
 import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
 import com.robotutor.nexora.context.zone.domain.repository.ZoneRepository
 import com.robotutor.nexora.context.zone.domain.specification.ZoneByPremisesSpecification
-import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.domain.specification.AuthorizedQueryBuilder
-import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.domain.vo.ZoneId
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

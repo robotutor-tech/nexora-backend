@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.messaging.services
 
-import com.robotutor.nexora.common.serialization.infrastructure.DefaultSerializer
+import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.ReactiveContext.CORRELATION_ID
 import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID

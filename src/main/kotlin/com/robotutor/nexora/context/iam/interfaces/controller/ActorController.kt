@@ -26,15 +26,15 @@ class ActorController(
     private val registerMachineActorUseCase: RegisterMachineActorUseCase
 ) {
     @GetMapping
-    fun getActors(AccountData: AccountData): Flux<ActorResponse> {
-        val query = GetActorsQuery(AccountData.accountId)
+    fun getActors(accountData: AccountData): Flux<ActorResponse> {
+        val query = GetActorsQuery(accountData.accountId)
         return actorUseCase.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }
 
     @GetMapping("/me")
-    fun getActor(ActorData: ActorData): Mono<ActorResponse> {
-        val query = GetActorQuery(ActorData.actorId, ActorData.premisesId)
+    fun getActor(actorData: ActorData): Mono<ActorResponse> {
+        val query = GetActorQuery(actorData.actorId, actorData.premisesId)
         return actorUseCase.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }
@@ -43,9 +43,9 @@ class ActorController(
     fun authenticateActor(
         @RequestHeader("authorization") token: String,
         @RequestBody @Validated authenticateActorRequest: AuthenticateActorRequest,
-        AccountData: AccountData
+        accountData: AccountData
     ): Mono<TokenResponses> {
-        val command = ActorMapper.toAuthenticateActorCommand(authenticateActorRequest, AccountData, token)
+        val command = ActorMapper.toAuthenticateActorCommand(authenticateActorRequest, accountData, token)
         return authenticateActorUseCase.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
     }
@@ -53,9 +53,9 @@ class ActorController(
     @PostMapping("/machine")
     fun registerMachineActor(
         @RequestBody @Validated actorRequest: MachineActorRequest,
-        AccountData: AccountData
+        accountData: AccountData
     ): Mono<ActorResponse> {
-        val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, AccountData)
+        val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, accountData)
         return registerMachineActorUseCase.execute(command)
             .map { ActorMapper.toActorResponse(it) }
     }

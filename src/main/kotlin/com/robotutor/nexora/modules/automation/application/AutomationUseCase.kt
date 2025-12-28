@@ -10,11 +10,11 @@ import reactor.core.publisher.Mono
 
 @Service
 class AutomationUseCase {
-    fun createAutomationRule(createAutomationCommand: CreateAutomationCommand, ActorData: ActorData) : Mono<Automation> {
+    fun createAutomationRule(createAutomationCommand: CreateAutomationCommand, actorData: ActorData) : Mono<Automation> {
         TODO("Not yet implemented")
     }
 
-    fun getAutomationRules(automationIds: List<AutomationId>, ActorData: ActorData): Flux<Automation> {
+    fun getAutomationRules(automationIds: List<AutomationId>, actorData: ActorData): Flux<Automation> {
         TODO("Not yet implemented")
     }
 }

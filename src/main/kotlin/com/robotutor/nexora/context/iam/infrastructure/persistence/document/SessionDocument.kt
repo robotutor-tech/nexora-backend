@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.iam.infrastructure.persistence.document
 
 import com.robotutor.nexora.context.iam.domain.aggregate.SessionAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.SessionStatus
-import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
+import com.robotutor.nexora.common.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

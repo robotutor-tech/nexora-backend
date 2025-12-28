@@ -7,6 +7,6 @@ import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
 data class RotateCredentialCommand(
     val accountId: AccountId,
-    val ActorData: ActorData,
+    val actorData: ActorData,
     val kind: CredentialKind
 ) : Command

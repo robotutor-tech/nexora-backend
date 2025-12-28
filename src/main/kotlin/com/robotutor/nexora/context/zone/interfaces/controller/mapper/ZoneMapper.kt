@@ -16,10 +16,16 @@ import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.context.zone.domain.vo.SliderWidgetMetadata
+import com.robotutor.nexora.context.zone.domain.vo.ToggleWidgetMetadata
+import com.robotutor.nexora.context.zone.domain.vo.WidgetMetadata
+import com.robotutor.nexora.context.zone.interfaces.controller.view.SliderWidgetMetadataResponse
+import com.robotutor.nexora.context.zone.interfaces.controller.view.ToggleWidgetMetadataResponse
+import com.robotutor.nexora.context.zone.interfaces.controller.view.WidgetMetadataResponse
 
 object ZoneMapper {
-    fun toCreateZoneCommand(request: ZoneRequest, ActorData: ActorData): CreateZoneCommand {
-        return CreateZoneCommand(name = Name(request.name), ActorData.premisesId, ActorData.actorId)
+    fun toCreateZoneCommand(request: ZoneRequest, actorData: ActorData): CreateZoneCommand {
+        return CreateZoneCommand(name = Name(request.name), actorData.premisesId, actorData.actorId)
     }
 
     fun toZoneResponse(zone: ZoneAggregate): ZoneResponse {
@@ -37,23 +43,35 @@ object ZoneMapper {
         return GetZonesQuery(resources.toResources(ZoneId::class.java))
     }
 
-    fun getZoneQuery(zoneId: String, ActorData: ActorData): GetZoneQuery {
-        return GetZoneQuery(premisesId = ActorData.premisesId, zoneId = ZoneId(zoneId))
+    fun getZoneQuery(zoneId: String, actorData: ActorData): GetZoneQuery {
+        return GetZoneQuery(premisesId = actorData.premisesId, zoneId = ZoneId(zoneId))
     }
 
-    fun toCreateWidgetsCommand(request: WidgetsRequest, ActorData: ActorData): CreateWidgetsCommand {
+    fun toCreateWidgetsCommand(request: WidgetsRequest, actorData: ActorData): CreateWidgetsCommand {
         return CreateWidgetsCommand(
             zoneId = ZoneId(request.zoneId),
             modelNo = ModelNo(request.modelNo),
             feedIds = request.feedIds.map { FeedId(it) },
-            premisesId = ActorData.premisesId,
+            premisesId = actorData.premisesId,
         )
     }
 
     private fun toWidgetResponse(widget: Widget): WidgetResponse {
         return WidgetResponse(
+            widgetId = widget.widgetId.value,
             feedId = widget.feedId.value,
-            widgetId = widget.widgetId.value
+            name = widget.name.value,
+            metadata = toWidgetMetadataResponse(widget.metadata),
+            createdAt = widget.createdAt,
+            updatedAt = widget.updatedAt,
         )
+    }
+
+    private fun toWidgetMetadataResponse(metadata: WidgetMetadata): WidgetMetadataResponse {
+        return when (metadata) {
+            is SliderWidgetMetadata -> SliderWidgetMetadataResponse(metadata.min, metadata.max, metadata.step)
+            is ToggleWidgetMetadata -> ToggleWidgetMetadataResponse()
+        }
+
     }
 }

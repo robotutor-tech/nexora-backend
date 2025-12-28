@@ -18,7 +18,7 @@ class RotateCredentialPolicy(private val accountRepository: AccountRepository) :
                 if (it.type !== AccountType.MACHINE) {
                     reasons.add("Account is not MACHINE type")
                 }
-                if (it.createdBy != command.ActorData.actorId) {
+                if (it.createdBy != command.actorData.actorId) {
                     reasons.add("Account is not created by the actor")
                 }
                 if (reasons.isEmpty()) PolicyResult.allow() else PolicyResult.deny(reasons)

@@ -13,11 +13,11 @@ import reactor.core.publisher.Mono
 @Service
 class AutomationConfigValidationStrategy(private val automationRepository: AutomationRepository) :
     ValidationStrategy<AutomationConfig> {
-    override fun validate(config: AutomationConfig, ActorData: ActorData): Mono<AutomationConfig> {
+    override fun validate(config: AutomationConfig, actorData: ActorData): Mono<AutomationConfig> {
         val serviceError = ErrorResponse(
             NexoraError.NEXORA0301.errorCode, "Automation ID ${config.automationId} not found"
         )
-        return automationRepository.findByAutomationIdAndPremisesId(config.automationId, ActorData.premisesId)
+        return automationRepository.findByAutomationIdAndPremisesId(config.automationId, actorData.premisesId)
             .map { config }
             .switchIfEmpty(createMonoError(BadDataException(serviceError)))
     }

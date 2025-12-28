@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
 import com.robotutor.nexora.context.iam.domain.vo.TokenPayload
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.common.serialization.infrastructure.DefaultSerializer
+import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys

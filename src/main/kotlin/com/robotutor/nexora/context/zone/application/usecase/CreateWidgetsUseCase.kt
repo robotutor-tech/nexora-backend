@@ -42,14 +42,14 @@ class CreateWidgetsUseCase(
     private fun createWidgets(modelNo: ModelNo, feedId: List<FeedId>): Mono<List<Widget>> {
         return createMono(
             listOf(
-                Widget.register(Name("Light 1"), feedId[0], ToggleWidgetMetadata("ON")),
-                Widget.register(Name("Light 2"), feedId[1], ToggleWidgetMetadata("ON")),
-                Widget.register(Name("Light 3"), feedId[2], ToggleWidgetMetadata("ON")),
-                Widget.register(Name("Light 4"), feedId[3], ToggleWidgetMetadata("ON")),
-                Widget.register(Name("Light 5"), feedId[4], ToggleWidgetMetadata("ON")),
-                Widget.register(Name("Light 6"), feedId[5], ToggleWidgetMetadata("ON")),
-                Widget.register(Name("Light 7"), feedId[6], ToggleWidgetMetadata("ON")),
-                Widget.register(Name("Light 8"), feedId[7], ToggleWidgetMetadata("ON")),
+                Widget.register(Name("Light 1"), feedId[0], ToggleWidgetMetadata()),
+                Widget.register(Name("Light 2"), feedId[1], ToggleWidgetMetadata()),
+                Widget.register(Name("Light 3"), feedId[2], ToggleWidgetMetadata()),
+                Widget.register(Name("Light 4"), feedId[3], ToggleWidgetMetadata()),
+                Widget.register(Name("Light 5"), feedId[4], ToggleWidgetMetadata()),
+                Widget.register(Name("Light 6"), feedId[5], ToggleWidgetMetadata()),
+                Widget.register(Name("Light 7"), feedId[6], ToggleWidgetMetadata()),
+                Widget.register(Name("Light 8"), feedId[7], ToggleWidgetMetadata()),
             )
         )
     }

@@ -21,18 +21,18 @@ class PremisesEventController(
     @KafkaEventListener(["iam.premises.owner.registered"])
     fun activatePremises(
         @KafkaEvent eventMessage: PremisesOwnerRegisteredMessage,
-        AccountData: AccountData
+        accountData: AccountData
     ): Mono<PremisesAggregate> {
-        val command = PremisesEventMapper.toActivatePremisesCommand(eventMessage, AccountData)
+        val command = PremisesEventMapper.toActivatePremisesCommand(eventMessage, accountData)
         return activatePremisesUseCase.execute(command)
     }
 
     @KafkaEventListener(["iam.premises.owner.registration.failed"])
     fun compensatePremisesRegistration(
         @KafkaEvent eventMessage: PremisesOwnerRegistrationFailedMessage,
-        AccountData: AccountData
+        accountData: AccountData
     ): Mono<PremisesAggregate> {
-        val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(eventMessage, AccountData)
+        val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(eventMessage, accountData)
         return compensatePremisesRegistrationUseCase.execute(command)
     }
 }

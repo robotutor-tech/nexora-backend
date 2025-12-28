@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.infrastructure.persistence.document
 
-import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
+import com.robotutor.nexora.common.persistence.document.MongoDocument
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupType
 import org.springframework.data.annotation.Id

@@ -1,12 +1,12 @@
 package com.robotutor.nexora.common.security.application.filters
 
-import com.robotutor.nexora.common.http.infrastructure.controllers.ExceptionHandlerRegistry
+import com.robotutor.nexora.common.http.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.common.security.application.ports.SessionValidator
 import com.robotutor.nexora.common.security.application.writeContextOnChain
 import com.robotutor.nexora.common.security.config.AppConfig
-import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
+import com.robotutor.nexora.common.security.domain.exception.SecurityError
 import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
-import com.robotutor.nexora.common.serialization.infrastructure.DefaultSerializer.serialize
+import com.robotutor.nexora.shared.application.serialization.DefaultSerializer.serialize
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
@@ -73,7 +73,7 @@ class AuthFilter(
         }
 
         if (authHeader.isNullOrBlank() || !authHeader.startsWith("Bearer ")) {
-            return createMonoError(UnAuthorizedException(NexoraError.NEXORA0101))
+            return createMonoError(UnAuthorizedException(SecurityError.NEXORA0101))
         }
 
         return sessionValidator.validate(authHeader)

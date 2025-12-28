@@ -1,7 +1,7 @@
 package com.robotutor.nexora.shared.application.logger
 
-import com.robotutor.nexora.shared.application.reactive.ContextDataResolver
-import com.robotutor.nexora.shared.application.reactive.TraceData
+import com.robotutor.nexora.shared.application.resolver.ContextDataResolver
+import com.robotutor.nexora.shared.application.resolver.TraceData
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError

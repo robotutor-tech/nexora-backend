@@ -43,8 +43,8 @@ class ZoneController(
 
     @HttpAuthorize(ActionType.READ, ResourceType.ZONE, "#zoneId")
     @GetMapping("/{zoneId}")
-    fun getZone(@PathVariable zoneId: String, ActorData: ActorData): Mono<ZoneResponse> {
-        val query = ZoneMapper.getZoneQuery(zoneId, ActorData)
+    fun getZone(@PathVariable zoneId: String, actorData: ActorData): Mono<ZoneResponse> {
+        val query = ZoneMapper.getZoneQuery(zoneId, actorData)
         return zoneUseCase.execute(query)
             .map { ZoneMapper.toZoneResponse(it) }
     }
@@ -52,8 +52,8 @@ class ZoneController(
 
     @HttpAuthorize(ActionType.CREATE, ResourceType.WIDGET)
     @PostMapping("/widgets")
-    fun createWidgets(@RequestBody @Validated request: WidgetsRequest, ActorData: ActorData): Mono<ZoneResponse> {
-        val command = ZoneMapper.toCreateWidgetsCommand(request, ActorData)
+    fun createWidgets(@RequestBody @Validated request: WidgetsRequest, actorData: ActorData): Mono<ZoneResponse> {
+        val command = ZoneMapper.toCreateWidgetsCommand(request, actorData)
         return createWidgetsUseCase.execute(command)
             .map { ZoneMapper.toZoneResponse(it) }
     }

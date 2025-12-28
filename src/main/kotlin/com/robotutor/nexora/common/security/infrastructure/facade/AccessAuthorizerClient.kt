@@ -5,7 +5,7 @@ import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.infrastructure.facade.view.AuthorizeResponse
 import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ResourceId
-import com.robotutor.nexora.common.http.infrastructure.client.WebClientWrapper
+import com.robotutor.nexora.common.http.client.WebClientWrapper
 import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ServerWebExchange

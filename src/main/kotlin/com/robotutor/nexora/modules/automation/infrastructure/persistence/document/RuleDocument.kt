@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.automation.infrastructure.persistence.document
 
-import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
+import com.robotutor.nexora.common.persistence.document.MongoDocument
 import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.domain.entity.RuleType
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.ConfigDocument

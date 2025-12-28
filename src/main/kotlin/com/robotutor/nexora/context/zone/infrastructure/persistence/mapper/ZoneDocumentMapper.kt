@@ -11,7 +11,7 @@ import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.common.persistence.mongo.mapper.DocumentMapper
+import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
 
 object ZoneDocumentMapper : DocumentMapper<ZoneAggregate, ZoneDocument> {
 
@@ -47,7 +47,7 @@ object ZoneDocumentMapper : DocumentMapper<ZoneAggregate, ZoneDocument> {
             widgetId = WidgetId(document.widgetId),
             name = Name(document.name),
             feedId = FeedId(document.feedId),
-            metadata = ToggleWidgetMetadata("ON/OFF"),
+            metadata = ToggleWidgetMetadata(),
             createdAt = document.createdAt,
             updatedAt = document.updatedAt
         )

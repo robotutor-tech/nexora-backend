@@ -44,11 +44,11 @@ object AccountMapper {
         )
     }
 
-    fun toRotateCredentialsCommand(accountId: String, ActorData: ActorData): RotateCredentialCommand {
+    fun toRotateCredentialsCommand(accountId: String, actorData: ActorData): RotateCredentialCommand {
         return RotateCredentialCommand(
             accountId = AccountId(accountId),
-            ActorData = ActorData,
-            kind = CredentialKind.API_SECRET
+            kind = CredentialKind.API_SECRET,
+            actorData = actorData
         )
     }
 }

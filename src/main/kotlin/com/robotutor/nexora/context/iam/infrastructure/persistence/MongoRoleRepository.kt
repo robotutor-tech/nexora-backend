@@ -7,7 +7,7 @@ import com.robotutor.nexora.context.iam.domain.vo.RoleId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.RoleDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.RoleDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.common.persistence.mongo.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

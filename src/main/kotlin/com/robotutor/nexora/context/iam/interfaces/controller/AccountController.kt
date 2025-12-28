@@ -48,9 +48,9 @@ class AccountController(
     @PostMapping("/register/machine")
     fun registerMachine(
         @RequestBody @Validated registerAccountRequest: RegisterAccountRequest,
-        ActorData: ActorData
+        actorData: ActorData
     ): Mono<AccountResponse> {
-        val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, ActorData)
+        val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, actorData)
         return registerAccountUseCase.execute(command)
             .map { AccountMapper.toAccountResponse(it) }
     }
@@ -69,8 +69,8 @@ class AccountController(
     }
 
     @PatchMapping("/{accountId}/credentials/rotate")
-    fun rotateCredentials(@PathVariable accountId: String, ActorData: ActorData): Mono<CredentialRotatedResponse> {
-        val command = AccountMapper.toRotateCredentialsCommand(accountId, ActorData)
+    fun rotateCredentials(@PathVariable accountId: String, actorData: ActorData): Mono<CredentialRotatedResponse> {
+        val command = AccountMapper.toRotateCredentialsCommand(accountId, actorData)
         return rotateCredentialUseCase.execute(command)
             .map { CredentialMapper.toCredentialRotatedResponse(it) }
     }

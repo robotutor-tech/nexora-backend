@@ -4,7 +4,7 @@ import com.robotutor.nexora.context.iam.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.RoleType
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
+import com.robotutor.nexora.common.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

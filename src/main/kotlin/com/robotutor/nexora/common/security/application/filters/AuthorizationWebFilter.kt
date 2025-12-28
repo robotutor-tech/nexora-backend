@@ -3,7 +3,7 @@ package com.robotutor.nexora.common.security.application.filters
 import com.robotutor.nexora.common.security.application.ports.AccessAuthorizer
 import com.robotutor.nexora.common.security.application.resolvers.SpringExpressionResourceIdResolver
 import com.robotutor.nexora.common.security.application.writeContextOnChain
-import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
+import com.robotutor.nexora.common.security.domain.exception.SecurityError
 import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.utility.createMonoError
@@ -47,7 +47,7 @@ class AuthorizationWebFilter(
             .contextWrite { context -> writeContextOnChain(context, exchange) }
             .flatMap { allowed ->
                 if (allowed) chain.filter(exchange)
-                else createMonoError(UnAuthorizedException(NexoraError.NEXORA0105))
+                else createMonoError(UnAuthorizedException(SecurityError.NEXORA0105))
             }
     }
 }

@@ -8,7 +8,7 @@ import com.robotutor.nexora.common.messaging.annotation.KafkaEventListener
 import com.robotutor.nexora.common.messaging.services.impl.KafkaArgumentResolverConfigurer
 import com.robotutor.nexora.common.messaging.services.impl.KafkaConfigurer
 import com.robotutor.nexora.common.messaging.services.impl.KafkaConsumerImpl
-import com.robotutor.nexora.common.serialization.infrastructure.DefaultSerializer
+import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.getBeansWithAnnotation
 import org.springframework.context.ApplicationContext

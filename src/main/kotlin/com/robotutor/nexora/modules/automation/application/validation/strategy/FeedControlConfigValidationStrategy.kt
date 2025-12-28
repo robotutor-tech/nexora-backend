@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class FeedControlConfigValidationStrategy(private val feedFacade: FeedFacade) : ValidationStrategy<FeedControlConfig> {
-    override fun validate(config: FeedControlConfig, ActorData: ActorData): Mono<FeedControlConfig> {
+    override fun validate(config: FeedControlConfig, actorData: ActorData): Mono<FeedControlConfig> {
         return feedFacade.getFeedById(config.feedId).map { config }
     }
 }

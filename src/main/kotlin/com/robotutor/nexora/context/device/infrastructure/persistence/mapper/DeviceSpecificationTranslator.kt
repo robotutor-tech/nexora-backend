@@ -5,7 +5,7 @@ import com.robotutor.nexora.context.device.domain.specification.DeviceByPremises
 import com.robotutor.nexora.context.device.domain.specification.DeviceByRegisteredBySpecification
 import com.robotutor.nexora.context.device.domain.specification.DeviceByStateSpecification
 import com.robotutor.nexora.context.device.domain.specification.DeviceSpecification
-import com.robotutor.nexora.common.persistence.mongo.mapper.BaseSpecificationTranslator
+import com.robotutor.nexora.common.persistence.mapper.BaseSpecificationTranslator
 import com.robotutor.nexora.context.device.domain.specification.DeviceByDeviceIdSpecification
 import org.springframework.data.mongodb.core.query.Criteria
 

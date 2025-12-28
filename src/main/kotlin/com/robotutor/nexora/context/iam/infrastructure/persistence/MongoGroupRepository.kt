@@ -7,7 +7,7 @@ import com.robotutor.nexora.context.iam.domain.vo.GroupId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.GroupDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.GroupDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.common.persistence.mongo.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

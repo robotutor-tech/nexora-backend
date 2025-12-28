@@ -18,9 +18,9 @@ class PremisesOwnerController(private val registerOwnerUseCase: RegisterOwnerUse
     @PostMapping("/register")
     fun registerPremisesResource(
         @RequestBody eventMessage: OwnerCreationRequest,
-        AccountData: AccountData
+        accountData: AccountData
     ): Mono<ActorResponse> {
-        val command = ActorMapper.toRegisterOwnerCommand(eventMessage, AccountData)
+        val command = ActorMapper.toRegisterOwnerCommand(eventMessage, accountData)
         return registerOwnerUseCase.execute(command)
             .map { ActorMapper.toActorResponse(it) }
     }

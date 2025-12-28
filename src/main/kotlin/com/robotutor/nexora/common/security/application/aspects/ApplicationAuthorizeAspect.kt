@@ -2,7 +2,7 @@ package com.robotutor.nexora.common.security.application.aspects
 
 import com.robotutor.nexora.common.security.application.ports.AccessAuthorizer
 import com.robotutor.nexora.common.security.application.resolvers.MethodArgumentSpringExpressionResourceIdResolver
-import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
+import com.robotutor.nexora.common.security.domain.exception.SecurityError
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
@@ -45,7 +45,7 @@ class ApplicationAuthorizeAspect(
             Mono::class.java.isAssignableFrom(returnType) -> {
                 accessAuthorizer.authorize(httpAuthorize, resourceId)
                     .flatMap { allowed ->
-                        if (!allowed) createMonoError(UnAuthorizedException(NexoraError.NEXORA0105))
+                        if (!allowed) createMonoError(UnAuthorizedException(SecurityError.NEXORA0105))
                         else (pjp.proceed() as Mono<*>)
                     }
             }
@@ -53,7 +53,7 @@ class ApplicationAuthorizeAspect(
             Flux::class.java.isAssignableFrom(returnType) -> {
                 accessAuthorizer.authorize(httpAuthorize, resourceId)
                     .flatMapMany { allowed ->
-                        if (!allowed) createMonoError<Any>(UnAuthorizedException(NexoraError.NEXORA0105)).flux()
+                        if (!allowed) createMonoError<Any>(UnAuthorizedException(SecurityError.NEXORA0105)).flux()
                         else (pjp.proceed() as Flux<*>)
                     }
             }
