@@ -7,11 +7,11 @@ import com.robotutor.nexora.context.zone.interfaces.controller.view.ZoneRequest
 import com.robotutor.nexora.context.zone.interfaces.controller.view.ZoneResponse
 import com.robotutor.nexora.context.zone.interfaces.controller.mapper.ZoneMapper
 import com.robotutor.nexora.context.zone.interfaces.controller.view.WidgetsRequest
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -27,8 +27,8 @@ class ZoneController(
 
     @HttpAuthorize(ActionType.CREATE, ResourceType.ZONE)
     @PostMapping
-    fun createZone(@RequestBody @Validated request: ZoneRequest, ActorData: ActorData): Mono<ZoneResponse> {
-        val command = ZoneMapper.toCreateZoneCommand(request, ActorData)
+    fun createZone(@RequestBody @Validated request: ZoneRequest, actorData: ActorData): Mono<ZoneResponse> {
+        val command = ZoneMapper.toCreateZoneCommand(request, actorData)
         return createZoneUseCase.execute(command)
             .map { ZoneMapper.toZoneResponse(it) }
     }

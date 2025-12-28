@@ -10,10 +10,10 @@ import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.principal.InternalData
 import com.robotutor.nexora.shared.domain.vo.principal.PrincipalData
-import com.robotutor.nexora.shared.infrastructure.serializer.DefaultSerializer.serialize
-import com.robotutor.nexora.shared.infrastructure.webclient.controllers.ExceptionHandlerRegistry
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
+import com.robotutor.nexora.common.serialization.infrastructure.DefaultSerializer.serialize
+import com.robotutor.nexora.common.http.infrastructure.controllers.ExceptionHandlerRegistry
+import com.robotutor.nexora.common.observability.infrastructure.logger.Logger
+import com.robotutor.nexora.common.observability.infrastructure.models.ServerWebExchangeDTO
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.annotation.Order
@@ -95,4 +95,3 @@ class AuthFilter(
             .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
     }
 }
-

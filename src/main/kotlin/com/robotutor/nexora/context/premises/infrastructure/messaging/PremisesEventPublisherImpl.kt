@@ -3,8 +3,8 @@ package com.robotutor.nexora.context.premises.infrastructure.messaging
 import com.robotutor.nexora.context.premises.domain.event.PremisesEvent
 import com.robotutor.nexora.context.premises.domain.event.PremisesEventPublisher
 import com.robotutor.nexora.context.premises.infrastructure.messaging.mapper.PremisesEventMapper
-import com.robotutor.nexora.shared.infrastructure.messaging.EventPublisherImpl
-import com.robotutor.nexora.shared.infrastructure.messaging.services.KafkaEventPublisher
+import com.robotutor.nexora.common.messaging.infrastructure.EventPublisherImpl
+import com.robotutor.nexora.common.messaging.infrastructure.services.KafkaEventPublisher
 import org.springframework.stereotype.Service
 
 @Service

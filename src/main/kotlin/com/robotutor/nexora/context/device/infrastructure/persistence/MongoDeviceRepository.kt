@@ -13,7 +13,7 @@ import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.common.persistence.mongo.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.find

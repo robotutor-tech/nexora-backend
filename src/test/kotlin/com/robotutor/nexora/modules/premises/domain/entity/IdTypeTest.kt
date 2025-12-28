@@ -1,5 +1,6 @@
 package com.robotutor.nexora.modules.premises.domain.entity
 
+import com.robotutor.nexora.context.premises.infrastructure.persistence.document.IdType
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -14,4 +15,3 @@ class IdTypeTest {
         IdType.PREMISE_ID.name shouldBe "PREMISE_ID"
     }
 }
-

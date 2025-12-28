@@ -5,9 +5,9 @@ import com.robotutor.nexora.shared.domain.vo.Identifier
 import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.util.UUID
 
-data class SessionId(override val value: String) : Identifier, ValueObject() {
+data class SessionId(override val value: String) : Identifier, ValueObject {
     init {
-        validate()
+        validation(value.isBlank()) { "Token id must not be blank" }
     }
 
     companion object {
@@ -16,9 +16,4 @@ data class SessionId(override val value: String) : Identifier, ValueObject() {
         }
     }
 
-    override fun validate() {
-        validation(value.isNotBlank()) { "Token id must not be blank" }
-    }
 }
-
-

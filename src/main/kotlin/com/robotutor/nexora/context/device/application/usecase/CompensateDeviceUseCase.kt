@@ -9,19 +9,20 @@ import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
 class CompensateDeviceUseCase(
     private val deviceRepository: DeviceRepository,
-    private val eventPublisher: DeviceEventPublisher
+    private val eventPublisher: DeviceEventPublisher,
+    loggerFactory: AppLoggerFactory,
 ) {
 
-    private val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     @Authorize(ActionType.DELETE, ResourceType.DEVICE, "#command.deviceId")
     fun execute(command: CompensateDeviceCommand): Mono<DeviceAggregate> {

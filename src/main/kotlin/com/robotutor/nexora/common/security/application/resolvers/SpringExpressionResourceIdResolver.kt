@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.utility.validation
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import org.springframework.expression.ExpressionParser
@@ -56,7 +56,7 @@ class SpringExpressionResourceIdResolver {
             else -> raw.toString()
         }?.trim()
 
-        validation(!resolved.isNullOrBlank()) {
+        validation(resolved.isNullOrBlank()) {
             "Unable to resolve resourceId from selector '$selector' for handler ${handler.beanType.simpleName}.${handler.method.name}. " +
                 "Available now: pathVars=${pathVars.keys}, query=${query.keys}, headers=${headers.keys}"
         }

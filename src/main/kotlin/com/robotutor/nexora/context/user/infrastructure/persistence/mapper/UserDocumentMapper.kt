@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.user.domain.vo.Mobile
 import com.robotutor.nexora.context.user.domain.vo.UserId
 import com.robotutor.nexora.context.user.infrastructure.persistence.document.UserDocument
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.common.persistence.mongo.mapper.DocumentMapper
 
 object UserDocumentMapper : DocumentMapper<UserAggregate, UserDocument> {
     override fun toMongoDocument(domain: UserAggregate): UserDocument {

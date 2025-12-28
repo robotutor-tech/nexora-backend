@@ -9,9 +9,9 @@ import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.context.iam.domain.vo.ActorPrincipal
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -20,8 +20,9 @@ class AuthenticateActorUseCase(
     private val createSessionUseCase: CreateSessionUseCase,
     private val actorRepository: ActorRepository,
     private val eventPublisher: EventPublisher<IAMEvent>,
+    loggerFactory: AppLoggerFactory,
 ) {
-    private val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     fun execute(command: AuthenticateActorCommand): Mono<SessionTokens> {
         return actorRepository.findByAccountIdAndPremisesId(command.accountData.accountId, command.premisesId)

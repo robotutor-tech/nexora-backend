@@ -7,9 +7,9 @@ import com.robotutor.nexora.context.device.interfaces.messaging.mapper.DeviceEve
 import com.robotutor.nexora.context.device.interfaces.messaging.message.ActivateDeviceMessage
 import com.robotutor.nexora.context.device.interfaces.messaging.message.CompensateDeviceMessage
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaController
-import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEvent
-import com.robotutor.nexora.shared.infrastructure.messaging.annotation.KafkaEventListener
+import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaController
+import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaEvent
+import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaEventListener
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")

@@ -1,6 +1,7 @@
 package com.robotutor.nexora.shared.domain.model
 
 import com.robotutor.nexora.shared.domain.exception.BadDataException
+import com.robotutor.nexora.shared.domain.vo.Name
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -68,4 +69,3 @@ class NameTest {
         exception.message shouldBe "Name must be between 4 and 30 characters long"
     }
 }
-

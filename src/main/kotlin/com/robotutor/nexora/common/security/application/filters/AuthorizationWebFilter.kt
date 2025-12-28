@@ -4,7 +4,7 @@ import com.robotutor.nexora.common.security.application.ports.AccessAuthorizer
 import com.robotutor.nexora.common.security.application.resolvers.SpringExpressionResourceIdResolver
 import com.robotutor.nexora.common.security.application.writeContextOnChain
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.annotation.Order

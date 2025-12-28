@@ -6,7 +6,7 @@ import com.robotutor.nexora.context.iam.domain.vo.RoleId
 import com.robotutor.nexora.context.iam.infrastructure.persistence.document.GroupDocument
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.common.persistence.mongo.mapper.DocumentMapper
 
 object GroupDocumentMapper : DocumentMapper<GroupAggregate, GroupDocument> {
     override fun toMongoDocument(domain: GroupAggregate): GroupDocument {

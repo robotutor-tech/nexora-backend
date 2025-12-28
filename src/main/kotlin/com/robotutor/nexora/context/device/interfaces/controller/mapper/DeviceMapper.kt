@@ -13,7 +13,7 @@ import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ZoneId
-import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
 
 object DeviceMapper {
     fun toRegisterDeviceCommand(request: RegisterDeviceRequest, actorData: ActorData): RegisterDeviceCommand {

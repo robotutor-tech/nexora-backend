@@ -4,7 +4,7 @@ import com.robotutor.nexora.context.premises.domain.event.PremisesEvent
 import com.robotutor.nexora.context.premises.domain.event.PremisesRegisteredEvent
 import com.robotutor.nexora.context.premises.infrastructure.messaging.message.PremisesRegisteredEventMessage
 import com.robotutor.nexora.shared.domain.event.EventMapper
-import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
+import com.robotutor.nexora.common.messaging.infrastructure.message.EventMessage
 
 object PremisesEventMapper : EventMapper<PremisesEvent> {
     override fun toEventMessage(event: PremisesEvent): EventMessage {

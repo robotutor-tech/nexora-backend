@@ -6,7 +6,7 @@ import com.robotutor.nexora.modules.automation.infrastructure.persistence.docume
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.mapper.config.ConfigDocumentMapper
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.common.persistence.mongo.mapper.DocumentMapper
 
 object RuleDocumentMapper : DocumentMapper<Rule, RuleDocument> {
     override fun toMongoDocument(domain: Rule): RuleDocument {

@@ -5,11 +5,11 @@ import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleResponse
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.RuleMapper
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux

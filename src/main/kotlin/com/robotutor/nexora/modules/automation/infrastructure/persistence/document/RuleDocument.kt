@@ -1,10 +1,9 @@
 package com.robotutor.nexora.modules.automation.infrastructure.persistence.document
 
+import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
 import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.domain.entity.RuleType
 import com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config.ConfigDocument
-import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.CompoundIndex

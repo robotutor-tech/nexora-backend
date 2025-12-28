@@ -4,7 +4,7 @@ import com.robotutor.nexora.context.iam.domain.event.*
 import com.robotutor.nexora.context.iam.infrastructure.messaging.message.*
 import com.robotutor.nexora.shared.domain.event.EventMapper
 import com.robotutor.nexora.shared.domain.vo.principal.AccountType
-import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
+import com.robotutor.nexora.common.messaging.infrastructure.message.EventMessage
 
 object IAMEventMapper : EventMapper<IAMEvent> {
     override fun toEventMessage(event: IAMEvent): EventMessage {

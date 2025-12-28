@@ -3,27 +3,24 @@ package com.robotutor.nexora.context.iam.application.usecase
 import com.robotutor.nexora.context.iam.application.command.CreateSessionCommand
 import com.robotutor.nexora.context.iam.application.view.SessionTokens
 import com.robotutor.nexora.context.iam.domain.aggregate.SessionAggregate
-import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.repository.SessionRepository
 import com.robotutor.nexora.context.iam.domain.service.TokenGenerator
 import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
 import com.robotutor.nexora.context.iam.domain.vo.TokenPayload
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
-import com.robotutor.nexora.shared.domain.event.EventPublisher
-import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
-import java.time.Instant
 
 @Service
 class CreateSessionUseCase(
     private val sessionRepository: SessionRepository,
-    private val tokenGenerator: TokenGenerator
+    private val tokenGenerator: TokenGenerator,
+    loggerFactory: AppLoggerFactory,
 ) {
-    private val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     fun execute(command: CreateSessionCommand): Mono<SessionTokens> {
         val tokenPayload = TokenPayload(

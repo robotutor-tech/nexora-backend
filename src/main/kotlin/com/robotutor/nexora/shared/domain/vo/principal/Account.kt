@@ -7,4 +7,12 @@ sealed class Account(
     open val accountId: AccountId,
     open val type: AccountType,
     open val principalId: PrincipalId
-) : PrincipalData, ValueObject()
+) : PrincipalData, ValueObject {
+    fun isHuman(): Boolean {
+        return type == AccountType.HUMAN
+    }
+
+    fun isMachine(): Boolean {
+        return type == AccountType.MACHINE
+    }
+}

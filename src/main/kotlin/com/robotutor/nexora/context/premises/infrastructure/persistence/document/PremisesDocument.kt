@@ -2,7 +2,7 @@ package com.robotutor.nexora.context.premises.infrastructure.persistence.documen
 
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesState
-import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
+import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

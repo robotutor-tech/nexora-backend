@@ -6,7 +6,7 @@ import com.robotutor.nexora.common.security.infrastructure.facade.view.AccountRe
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.domain.vo.principal.PrincipalId
-import com.robotutor.nexora.shared.infrastructure.webclient.WebClientWrapper
+import com.robotutor.nexora.common.http.infrastructure.client.WebClientWrapper
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

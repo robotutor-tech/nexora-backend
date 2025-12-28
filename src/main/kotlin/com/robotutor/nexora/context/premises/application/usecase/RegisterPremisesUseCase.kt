@@ -7,9 +7,9 @@ import com.robotutor.nexora.context.premises.domain.exceptions.PremisesError
 import com.robotutor.nexora.context.premises.domain.repository.PremisesIdGenerator
 import com.robotutor.nexora.context.premises.domain.repository.PremisesRepository
 import com.robotutor.nexora.shared.domain.utility.errorOnDenied
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -18,8 +18,9 @@ class RegisterPremisesUseCase(
     private val registerPremisesPolicy: RegisterPremisesPolicy,
     private val premisesIdGenerator: PremisesIdGenerator,
     private val premisesRepository: PremisesRepository,
+    loggerFactory: AppLoggerFactory,
 ) {
-    private val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     fun execute(command: RegisterPremisesCommand): Mono<PremisesAggregate> {
         return registerPremisesPolicy.evaluate(command)

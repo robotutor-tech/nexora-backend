@@ -15,7 +15,7 @@ import com.robotutor.nexora.context.zone.interfaces.controller.view.ZoneResponse
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
 
 object ZoneMapper {
     fun toCreateZoneCommand(request: ZoneRequest, ActorData: ActorData): CreateZoneCommand {

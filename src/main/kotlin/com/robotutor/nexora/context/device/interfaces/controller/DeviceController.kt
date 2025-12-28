@@ -7,11 +7,15 @@ import com.robotutor.nexora.context.device.interfaces.controller.mapper.DeviceMa
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.context.device.application.command.GetDeviceQuery
+import com.robotutor.nexora.context.device.application.command.GetDevicesQuery
+import com.robotutor.nexora.context.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -60,11 +64,11 @@ class DeviceController(
 //            .map { DeviceMapper.toDeviceResponse(it) }
 //    }
 
-//    @GetMapping("/me")
-//    fun getDevice(accountData: AccountData): Mono<DeviceResponse> {
-//        return deviceUseCase.execute(accountData.accountId)
-//            .map { DeviceMapper.toDeviceResponse(it) }
-//    }
+    @GetMapping("/me")
+    fun getDevice(accountData: AccountData): Mono<DeviceResponse> {
+        return deviceUseCase.execute(GetDeviceQuery(DeviceId(accountData.principalId.value)))
+            .map { DeviceMapper.toDeviceResponse(it) }
+    }
 
 //    @PatchMapping("/health")
 //    fun getDevice(@RequestBody @Validated healthRequest: HealthRequest, deviceData: DeviceData): Mono<DeviceResponse> {

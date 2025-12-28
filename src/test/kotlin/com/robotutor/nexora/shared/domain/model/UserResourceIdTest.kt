@@ -1,8 +1,10 @@
 package com.robotutor.nexora.shared.domain.model
 
 import com.robotutor.nexora.context.user.domain.vo.UserId
+import com.robotutor.nexora.shared.domain.exception.BadDataException
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class UserResourceIdTest {
     @Test
@@ -12,9 +14,9 @@ class UserResourceIdTest {
     }
 
     @Test
-    fun `should allow empty string`() {
-        val userId = UserId("")
-        userId.value shouldBe ""
+    fun `should throw exception for empty string`() {
+        val exception = assertThrows<BadDataException> { UserId("") }
+        exception.message shouldBe "User id must not be blank"
     }
 
     @Test

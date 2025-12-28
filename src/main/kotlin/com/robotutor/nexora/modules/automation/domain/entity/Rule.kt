@@ -45,11 +45,10 @@ data class Rule(
     }
 }
 
-data class RuleId(override val value: String) : Identifier, ValueObject()
+data class RuleId(override val value: String) : Identifier, ValueObject
 
 enum class RuleType {
     ACTION,
     CONDITION,
     TRIGGER
 }
-

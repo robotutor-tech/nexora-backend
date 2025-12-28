@@ -5,10 +5,10 @@ import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.time.Instant
 import kotlin.math.max
 
-data class TokenValue(val value: String) : ValueObject() {
+data class TokenValue(val value: String) : ValueObject {
 
     init {
-        validate()
+        validation(value.isBlank()) { "Token value must not be blank" }
     }
 
     companion object {
@@ -20,7 +20,4 @@ data class TokenValue(val value: String) : ValueObject() {
         }
     }
 
-    override fun validate() {
-        validation(value.isNotBlank()) { "Token value must not be blank" }
-    }
 }

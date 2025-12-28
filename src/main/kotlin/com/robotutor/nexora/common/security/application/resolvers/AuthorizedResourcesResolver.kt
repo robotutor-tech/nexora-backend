@@ -1,8 +1,8 @@
 package com.robotutor.nexora.common.security.application.resolvers
 
 import com.robotutor.nexora.common.security.application.ports.AccessAuthorizer
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
-import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component

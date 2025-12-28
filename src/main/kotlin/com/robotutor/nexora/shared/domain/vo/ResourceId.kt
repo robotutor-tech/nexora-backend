@@ -6,15 +6,11 @@ interface Identifier {
     val value: String
 }
 
-open class ResourceId(override val value: String) : Identifier, ValueObject() {
+open class ResourceId(override val value: String) : Identifier, ValueObject {
     object ALL : ResourceId("*")
 
     init {
-        validate()
-    }
-
-    override fun validate() {
-        validation(value.isNotBlank()) { "Resource id must not be blank" }
+        validation(value.isBlank()) { "Resource id must not be blank" }
     }
 
 

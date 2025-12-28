@@ -6,5 +6,5 @@ import java.time.Instant
 data class TokenPayload(
     val sessionPrincipal: SessionPrincipal,
     val expiresAt: Instant = Instant.now().plusSeconds(3600)
-) : ValueObject()
+) : ValueObject
 

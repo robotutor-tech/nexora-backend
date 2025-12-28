@@ -7,11 +7,11 @@ import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.context.device.domain.specification.DeviceByPremisesIdSpecification
 import com.robotutor.nexora.shared.application.annotation.Authorize
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -20,8 +20,9 @@ class CommissionDeviceUseCase(
     private val deviceRepository: DeviceRepository,
     private val zoneFacade: ZoneFacade,
     private val feedFacade: FeedFacade,
+    loggerFactory: AppLoggerFactory,
 ) {
-    val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     @Authorize(ActionType.UPDATE, ResourceType.DEVICE, "#command.deviceId")
     fun execute(command: CommissionDeviceCommand): Mono<DeviceAggregate> {

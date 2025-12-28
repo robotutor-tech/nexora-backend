@@ -3,9 +3,9 @@ package com.robotutor.nexora.common.security.application
 import com.robotutor.nexora.common.security.application.filters.PREMISES_ID
 import com.robotutor.nexora.common.security.application.filters.START_TIME
 import com.robotutor.nexora.common.security.application.filters.TRACE_ID
-import com.robotutor.nexora.shared.logger.ReactiveContext.putPremisesId
-import com.robotutor.nexora.shared.logger.ReactiveContext.putTraceId
-import com.robotutor.nexora.shared.logger.models.ServerWebExchangeDTO
+import com.robotutor.nexora.common.observability.infrastructure.logger.ReactiveContext.putPremisesId
+import com.robotutor.nexora.common.observability.infrastructure.logger.ReactiveContext.putTraceId
+import com.robotutor.nexora.common.observability.infrastructure.models.ServerWebExchangeDTO
 import org.springframework.web.server.ServerWebExchange
 import reactor.util.context.Context
 import java.time.Instant

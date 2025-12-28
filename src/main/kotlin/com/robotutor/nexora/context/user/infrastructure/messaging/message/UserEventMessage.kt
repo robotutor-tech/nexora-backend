@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.user.infrastructure.messaging.message
 
-import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
+import com.robotutor.nexora.common.messaging.infrastructure.message.EventMessage
 
 sealed class UserEventMessage(eventName: String) : EventMessage("user.$eventName")
 
