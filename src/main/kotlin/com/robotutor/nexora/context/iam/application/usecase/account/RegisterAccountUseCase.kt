@@ -12,9 +12,9 @@ import com.robotutor.nexora.context.iam.domain.service.SecretEncoder
 import com.robotutor.nexora.context.iam.domain.vo.Credential
 import com.robotutor.nexora.shared.domain.event.publishEventOnError
 import com.robotutor.nexora.shared.domain.utility.errorOnDenied
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
-import com.robotutor.nexora.shared.application.observability.logOnError
-import com.robotutor.nexora.shared.application.observability.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -25,9 +25,9 @@ class RegisterAccountUseCase(
     private val accountRepository: AccountRepository,
     private val secretService: SecretEncoder,
     private val eventPublisher: IAMEventPublisher,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    private val logger = loggerFactory.forClass(this::class.java)
+    private val logger = Logger(this::class.java)
 
     fun execute(command: RegisterAccountCommand): Mono<AccountAggregate> {
         return registerAccountPolicy.evaluate(command)

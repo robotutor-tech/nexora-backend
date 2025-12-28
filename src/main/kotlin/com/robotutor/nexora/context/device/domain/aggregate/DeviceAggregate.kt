@@ -1,7 +1,6 @@
 package com.robotutor.nexora.context.device.domain.aggregate
 
 import com.robotutor.nexora.context.device.domain.event.DeviceActivatedEvent
-import com.robotutor.nexora.context.device.domain.event.DeviceCommissionedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceMetadataUpdatedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceRegisteredEvent
@@ -11,7 +10,6 @@ import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.InvalidStateException
-import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.*
 import java.time.Instant
 
@@ -36,30 +34,18 @@ class DeviceAggregate private constructor(
     fun getName(): Name = name
     fun getMetadata(): DeviceMetadata? = metadata
 
-    fun updateFeeds(feedIds: Set<FeedId>): DeviceAggregate {
-        this.feedIds = feedIds
-        return this
-    }
-
-    fun commission(actorId: ActorId): DeviceAggregate {
-        if (state != DeviceState.REGISTERED) {
+    fun commission(metadata: DeviceMetadata, feedIds: Set<FeedId>): DeviceAggregate {
+        if (state != DeviceState.ACTOR_REGISTERED) {
             throw InvalidStateException(DeviceError.NEXORA0401)
         }
-        this.state = DeviceState.ACTIVE
-        this.updatedAt = Instant.now()
-        addEvent(DeviceCommissionedEvent(deviceId, actorId, premisesId))
-        return this
-    }
-
-    fun updateMetadata(metadata: DeviceMetadata): DeviceAggregate {
-        if (state != DeviceState.REGISTERED) {
-            throw InvalidStateException(DeviceError.NEXORA0402)
-        }
         this.metadata = metadata
+        this.feedIds = feedIds
+        this.state = DeviceState.ACTIVE
         this.updatedAt = Instant.now()
         addEvent(DeviceMetadataUpdatedEvent(deviceId, metadata))
         return this
     }
+
 
     companion object {
         fun register(
@@ -108,11 +94,11 @@ class DeviceAggregate private constructor(
         }
     }
 
-    fun activate(): DeviceAggregate {
+    fun actorRegistered(): DeviceAggregate {
         if (state != DeviceState.REGISTERED) {
             throw InvalidStateException(DeviceError.NEXORA0403)
         }
-        state = DeviceState.ACTIVE
+        state = DeviceState.ACTOR_REGISTERED
         updatedAt = Instant.now()
         addEvent(DeviceActivatedEvent(deviceId, premisesId))
         return this
@@ -121,6 +107,7 @@ class DeviceAggregate private constructor(
 
 enum class DeviceState {
     REGISTERED,
+    ACTOR_REGISTERED,
     ACTIVE,
     INACTIVE,
 }

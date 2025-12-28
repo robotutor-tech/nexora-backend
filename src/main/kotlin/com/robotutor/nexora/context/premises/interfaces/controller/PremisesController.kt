@@ -49,6 +49,7 @@ class PremisesController(
     @HttpAuthorize(ActionType.READ, ResourceType.PREMISES, "#premisesId")
     @GetMapping("/{premisesId}")
     fun getPremisesDetails(@PathVariable premisesId: String): Mono<PremisesResponse> {
+        println("<<<<<<<<<<<<<-----------------$premisesId------------->>>>>>>>>>>>>>>>>")
         val query = GetPremisesQuery(PremisesId(premisesId))
         return getPremisesUseCase.execute(query)
             .map { premises -> PremisesMapper.toPremisesResponse(premises) }

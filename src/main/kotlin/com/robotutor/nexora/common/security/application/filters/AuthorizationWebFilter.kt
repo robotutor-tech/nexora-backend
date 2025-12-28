@@ -31,6 +31,7 @@ class AuthorizationWebFilter(
                     ?.let { authorizeIfRequired(exchange, chain, it) }
                     ?: chain.filter(exchange)
             }
+            .contextWrite { context -> writeContextOnChain(context, exchange) }
     }
 
     private fun authorizeIfRequired(

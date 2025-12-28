@@ -1,12 +1,15 @@
 package com.robotutor.nexora.common.security.application.filters
 
+import com.robotutor.nexora.common.observability.models.RequestDetails
+import com.robotutor.nexora.common.observability.models.ResponseDetails
+import com.robotutor.nexora.common.security.application.getCorrelationIdFromExchange
 import com.robotutor.nexora.common.security.application.getPremisesIdFromExchange
-import com.robotutor.nexora.common.security.application.getTraceIdFromExchange
 import com.robotutor.nexora.common.security.application.writeContextOnChain
-import com.robotutor.nexora.common.observability.infrastructure.logger.LogDetails
-import com.robotutor.nexora.common.observability.infrastructure.logger.Logger
-import com.robotutor.nexora.common.observability.infrastructure.models.RequestDetails
-import com.robotutor.nexora.common.observability.infrastructure.models.ResponseDetails
+import com.robotutor.nexora.shared.application.logger.LogDetails
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.CORRELATION_ID
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.START_TIME
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
@@ -22,32 +25,31 @@ class LoggingFilter : WebFilter {
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val startTime = Instant.now()
-        val additionalDetails = mapOf("method" to exchange.request.method, "path" to exchange.request.uri.path)
 
-        val traceId = getTraceIdFromExchange(exchange)
-        exchange.attributes[TRACE_ID] = traceId
+        val premisesId = getPremisesIdFromExchange(exchange)
+        val correlationId = getCorrelationIdFromExchange(exchange)
+
         exchange.attributes[START_TIME] = startTime
+        exchange.attributes[X_PREMISES_ID] = premisesId
+        exchange.attributes[CORRELATION_ID] = correlationId
 
-        exchange.response.headers.add(TRACE_ID, traceId)
+        exchange.response.headers.add(CORRELATION_ID, correlationId)
         return chain.filter(exchange)
             .contextWrite { writeContextOnChain(it, exchange) }
             .doFinally {
-                val logDetails = LogDetails.create(
-                    message = "Successfully send api response",
-                    traceId = traceId,
-                    premisesId = getPremisesIdFromExchange(exchange),
-                    requestDetails = RequestDetails(
-                        method = exchange.request.method,
-                        headers = exchange.request.headers,
-                        uriWithParams = exchange.request.uri.toString(),
-                        body = exchange.request.body.toString()
-                    ),
-                    responseDetails = ResponseDetails(
-                        headers = exchange.response.headers,
-                        statusCode = exchange.response.statusCode.toString(),
-                        time = (Instant.now().epochSecond - startTime.epochSecond) * 1000,
-                        body = exchange.response.bufferFactory().toString()
-                    ),
+                val requestDetails = RequestDetails(
+                    method = exchange.request.method,
+                    uri = exchange.request.uri.toString()
+                )
+                val responseDetails = ResponseDetails(
+                    statusCode = exchange.response.statusCode.toString(),
+                    time = (Instant.now().epochSecond - startTime.epochSecond) * 1000,
+                )
+                val additionalDetails = mapOf("request" to requestDetails, "response" to responseDetails)
+                val logDetails = LogDetails(
+                    message = "Successfully responded to http request",
+                    premisesId = premisesId,
+                    correlationId = correlationId,
                     additionalDetails = additionalDetails
                 )
                 logger.info(logDetails)

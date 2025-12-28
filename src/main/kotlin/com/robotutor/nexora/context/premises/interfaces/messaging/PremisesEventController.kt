@@ -7,9 +7,9 @@ import com.robotutor.nexora.context.premises.interfaces.messaging.mapper.Premise
 import com.robotutor.nexora.context.premises.interfaces.messaging.message.PremisesOwnerRegisteredMessage
 import com.robotutor.nexora.context.premises.interfaces.messaging.message.PremisesOwnerRegistrationFailedMessage
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaController
-import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaEvent
-import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaEventListener
+import com.robotutor.nexora.common.messaging.annotation.KafkaController
+import com.robotutor.nexora.common.messaging.annotation.KafkaEvent
+import com.robotutor.nexora.common.messaging.annotation.KafkaEventListener
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")

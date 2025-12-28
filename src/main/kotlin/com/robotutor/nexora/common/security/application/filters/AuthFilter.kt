@@ -1,19 +1,19 @@
 package com.robotutor.nexora.common.security.application.filters
 
+import com.robotutor.nexora.common.http.infrastructure.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.common.security.application.ports.SessionValidator
-import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.application.writeContextOnChain
+import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.domain.exceptions.NexoraError
 import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
+import com.robotutor.nexora.common.serialization.infrastructure.DefaultSerializer.serialize
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.principal.InternalData
 import com.robotutor.nexora.shared.domain.vo.principal.PrincipalData
-import com.robotutor.nexora.common.serialization.infrastructure.DefaultSerializer.serialize
-import com.robotutor.nexora.common.http.infrastructure.controllers.ExceptionHandlerRegistry
-import com.robotutor.nexora.common.observability.infrastructure.logger.Logger
-import com.robotutor.nexora.common.observability.infrastructure.models.ServerWebExchangeDTO
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.core.annotation.Order
@@ -46,9 +46,7 @@ class AuthFilter(
                 val authenticationToken = UsernamePasswordAuthenticationToken("auth", null, listOf())
                 val content = SecurityContextImpl(authenticationToken)
                 chain.filter(exchange)
-                    .contextWrite {
-                        writeContextOnChain(setContextForResolvers(tokenResult.principalData, it, exchange), exchange)
-                    }
+                    .contextWrite { setContextForResolvers(tokenResult.principalData, it, exchange) }
                     .contextWrite { ReactiveSecurityContextHolder.withSecurityContext(createMono(content)) }
             }
             .onErrorResume {
@@ -86,12 +84,16 @@ class AuthFilter(
         context: Context,
         exchange: ServerWebExchange
     ): Context {
-        return when (principalData) {
+        val newContext = when (principalData) {
             is AccountData -> context.put(AccountData::class.java, principalData)
             is InternalData -> context.put(InternalData::class.java, principalData)
-            is ActorData -> context.put(ActorData::class.java, principalData)
-                .put(AccountData::class.java, principalData)
+            is ActorData -> {
+                exchange.attributes[X_PREMISES_ID] = principalData.premisesId.value
+                var newContext = context.put(ActorData::class.java, principalData)
+                newContext = newContext.put(AccountData::class.java, principalData)
+                newContext
+            }
         }
-            .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
+        return writeContextOnChain(newContext, exchange)
     }
 }

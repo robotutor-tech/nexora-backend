@@ -1,6 +1,6 @@
 //package com.robotutor.nexora.common.security.application.resolvers
 //
-//import com.robotutor.nexora.common.context.application.ContextDataResolver
+//import com.robotutor.nexora.shared.application.reactive.ContextDataResolver
 //import com.robotutor.nexora.shared.domain.model.InvitationData
 //import org.springframework.core.MethodParameter
 //import org.springframework.stereotype.Component

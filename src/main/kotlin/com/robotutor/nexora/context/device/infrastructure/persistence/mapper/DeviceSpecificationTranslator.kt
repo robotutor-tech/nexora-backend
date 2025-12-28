@@ -6,6 +6,7 @@ import com.robotutor.nexora.context.device.domain.specification.DeviceByRegister
 import com.robotutor.nexora.context.device.domain.specification.DeviceByStateSpecification
 import com.robotutor.nexora.context.device.domain.specification.DeviceSpecification
 import com.robotutor.nexora.common.persistence.mongo.mapper.BaseSpecificationTranslator
+import com.robotutor.nexora.context.device.domain.specification.DeviceByDeviceIdSpecification
 import org.springframework.data.mongodb.core.query.Criteria
 
 object DeviceSpecificationTranslator : BaseSpecificationTranslator<DeviceAggregate, DeviceSpecification>("deviceId") {
@@ -14,6 +15,7 @@ object DeviceSpecificationTranslator : BaseSpecificationTranslator<DeviceAggrega
             is DeviceByPremisesIdSpecification -> Criteria.where("premisesId").`is`(specification.premisesId.value)
             is DeviceByRegisteredBySpecification -> Criteria.where("registeredBy").`is`(specification.actorId.value)
             is DeviceByStateSpecification -> Criteria.where("state").`is`(specification.state)
+            is DeviceByDeviceIdSpecification -> Criteria.where("deviceId").`is`(specification.deviceId.value)
         }
     }
 }

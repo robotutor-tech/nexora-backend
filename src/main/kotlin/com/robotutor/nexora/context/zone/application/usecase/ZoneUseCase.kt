@@ -7,7 +7,7 @@ import com.robotutor.nexora.context.zone.domain.repository.ZoneRepository
 import com.robotutor.nexora.context.zone.domain.specification.ZoneByPremisesSpecification
 import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.domain.specification.AuthorizedQueryBuilder
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.logger.Logger
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -16,10 +16,8 @@ import reactor.core.publisher.Mono
 class ZoneUseCase(
     private val zoneRepository: ZoneRepository,
     private val authorizedQueryBuilder: AuthorizedQueryBuilder<ZoneId, ZoneAggregate>,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    @Suppress("UNUSED_PARAMETER")
-    private val logger = loggerFactory.forClass(this::class.java)
 
     fun execute(query: GetZonesQuery): Flux<ZoneAggregate> {
         val specification = authorizedQueryBuilder.build(query.resources)

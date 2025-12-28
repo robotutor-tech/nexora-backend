@@ -5,9 +5,9 @@ import com.robotutor.nexora.context.iam.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.AccountRepository
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
-import com.robotutor.nexora.shared.application.observability.logOnError
-import com.robotutor.nexora.shared.application.observability.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -15,9 +15,9 @@ import reactor.core.publisher.Mono
 @Service
 class GetAccountUseCase(
     private val accountRepository: AccountRepository,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    private val logger = loggerFactory.forClass(this::class.java)
+    private val logger = Logger(this::class.java)
 
     fun execute(query: GetAccountQuery): Mono<AccountAggregate> {
         return accountRepository.findByAccountId(query.accountId)

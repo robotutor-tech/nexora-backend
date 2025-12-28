@@ -22,9 +22,9 @@ class AuthorizationController(
     @PostMapping
     fun getResources(
         @RequestBody @Validated getAuthorizedResourcesRequest: GetAuthorizedResourcesRequest,
-        ActorData: ActorData
+        actorData: ActorData
     ): Mono<GetAuthorizedResourcesResponse> {
-        val query = AuthorizationMapper.toGetAuthorizedResourceQuery(getAuthorizedResourcesRequest, ActorData)
+        val query = AuthorizationMapper.toGetAuthorizedResourceQuery(getAuthorizedResourcesRequest, actorData)
         return authorizeResourceUseCase.execute(query)
             .map { AuthorizationMapper.toAuthorizedResourcesResponse(it) }
     }
@@ -32,13 +32,11 @@ class AuthorizationController(
     @PostMapping("/authorize")
     fun authorize(
         @RequestBody @Validated authorizeResourceRequest: AuthorizeResourceRequest,
-        ActorData: ActorData
+        actorData: ActorData
     ): Mono<AuthorizeResourceResponse> {
-        val command = AuthorizationMapper.toAuthorizeResourceCommand(authorizeResourceRequest, ActorData)
+        val command = AuthorizationMapper.toAuthorizeResourceCommand(authorizeResourceRequest, actorData)
         return authorizeResourceUseCase.execute(command)
             .map { AuthorizationMapper.toResourceResponse(it) }
     }
-
-
 }
 

@@ -1,17 +1,16 @@
 package com.robotutor.nexora.common.http.infrastructure.client
 
-import com.robotutor.nexora.common.observability.infrastructure.logger.LogDetails
-import com.robotutor.nexora.common.observability.infrastructure.logger.Logger
-import com.robotutor.nexora.common.observability.infrastructure.logger.ReactiveContext.getPremisesId
-import com.robotutor.nexora.common.observability.infrastructure.logger.ReactiveContext.getTraceId
-import com.robotutor.nexora.common.observability.infrastructure.logger.logOnError
-import com.robotutor.nexora.common.observability.infrastructure.logger.logOnSuccess
-import com.robotutor.nexora.common.observability.infrastructure.models.ServerWebExchangeDTO
+import com.robotutor.nexora.shared.application.logger.LogDetails
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.CORRELATION_ID
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.getCorrelationId
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.getPremisesId
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.exception.BaseException
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
-import com.robotutor.nexora.common.security.application.filters.PREMISES_ID
-import com.robotutor.nexora.common.security.application.filters.TRACE_ID
-import com.robotutor.nexora.shared.domain.exception.BaseException
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
@@ -38,8 +37,6 @@ class WebClientWrapper(private val webClient: WebClient) {
         queryParams: MultiValueMap<String, String> = LinkedMultiValueMap(),
         uriVariables: Map<String, Any> = emptyMap(),
         headers: Map<String, String> = emptyMap(),
-        skipLoggingAdditionalDetails: Boolean = false,
-        skipLoggingResponseBody: Boolean = true
     ): Mono<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
 
@@ -62,15 +59,12 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .logOnSuccess(
                         logger = logger,
                         message = "GET request to Service successful",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
-                        skipResponseBody = skipLoggingResponseBody,
-                        additionalDetails = mapOf("method" to "GET", "path" to url)
+                        additionalDetails = mapOf("method" to "GET", "path" to url),
                     )
                     .logOnError(
                         logger = logger,
                         errorCode = "API_FAILURE",
-                        errorMessage = "GET request to Service failed",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        message = "GET request to Service failed",
                         additionalDetails = mapOf("method" to "GET", "path" to url)
                     )
                     .doOnSubscribe {
@@ -78,8 +72,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "GET", "url" to url),
-                                traceId = metaDataHeaders.traceId,
                                 premisesId = metaDataHeaders.premisesId,
+                                correlationId = metaDataHeaders.correlationId,
                             )
                         )
                     }
@@ -94,8 +88,6 @@ class WebClientWrapper(private val webClient: WebClient) {
         queryParams: MultiValueMap<String, String> = LinkedMultiValueMap(),
         uriVariables: Map<String, Any> = emptyMap(),
         headers: Map<String, String> = emptyMap(),
-        skipLoggingAdditionalDetails: Boolean = false,
-        skipLoggingResponseBody: Boolean = true
     ): Mono<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
 
@@ -118,15 +110,12 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .logOnSuccess(
                         logger = logger,
                         message = "GET request to Service successful",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
-                        skipResponseBody = skipLoggingResponseBody,
                         additionalDetails = mapOf("method" to "GET", "path" to url)
                     )
                     .logOnError(
                         logger = logger,
                         errorCode = "API_FAILURE",
-                        errorMessage = "GET request to Service failed",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        message = "GET request to Service failed",
                         additionalDetails = mapOf("method" to "GET", "path" to url)
                     )
                     .doOnSubscribe {
@@ -134,8 +123,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "GET", "url" to url),
-                                traceId = metaDataHeaders.traceId,
                                 premisesId = metaDataHeaders.premisesId,
+                                correlationId = metaDataHeaders.correlationId,
                             )
                         )
                     }
@@ -150,8 +139,6 @@ class WebClientWrapper(private val webClient: WebClient) {
         queryParams: MultiValueMap<String, String> = LinkedMultiValueMap(),
         uriVariables: Map<String, Any> = emptyMap(),
         headers: Map<String, String> = emptyMap(),
-        skipLoggingAdditionalDetails: Boolean = false,
-        skipLoggingResponseBody: Boolean = true
     ): Mono<T> {
 
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
@@ -177,15 +164,12 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .logOnSuccess(
                         logger = logger,
                         message = "POST request to Service successful",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
-                        skipResponseBody = skipLoggingResponseBody,
                         additionalDetails = mapOf("method" to "POST", "path" to url)
                     )
                     .logOnError(
                         logger = logger,
                         errorCode = "API_FAILURE",
-                        errorMessage = "POST request to Service failed",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        message = "POST request to Service failed",
                         additionalDetails = mapOf("method" to "POST", "path" to url)
                     )
                     .doOnSubscribe {
@@ -193,8 +177,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "POST", "url" to url),
-                                traceId = metaDataHeaders.traceId,
                                 premisesId = metaDataHeaders.premisesId,
+                                correlationId = metaDataHeaders.correlationId,
                             )
                         )
                     }
@@ -210,8 +194,6 @@ class WebClientWrapper(private val webClient: WebClient) {
         queryParams: MultiValueMap<String, String> = LinkedMultiValueMap(),
         uriVariables: Map<String, Any> = emptyMap(),
         headers: Map<String, String> = emptyMap(),
-        skipLoggingAdditionalDetails: Boolean = false,
-        skipLoggingResponseBody: Boolean = true
     ): Mono<T> {
 
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
@@ -237,15 +219,12 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .logOnSuccess(
                         logger = logger,
                         message = "POST request to Service successful",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
-                        skipResponseBody = skipLoggingResponseBody,
                         additionalDetails = mapOf("method" to "POST", "path" to url)
                     )
                     .logOnError(
                         logger = logger,
                         errorCode = "API_FAILURE",
-                        errorMessage = "POST request to Service failed",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        message = "POST request to Service failed",
                         additionalDetails = mapOf("method" to "POST", "path" to url)
                     )
                     .doOnSubscribe {
@@ -253,8 +232,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "POST", "url" to url),
-                                traceId = metaDataHeaders.traceId,
                                 premisesId = metaDataHeaders.premisesId,
+                                correlationId = metaDataHeaders.correlationId,
                             )
                         )
                     }
@@ -269,8 +248,6 @@ class WebClientWrapper(private val webClient: WebClient) {
         queryParams: MultiValueMap<String, String> = LinkedMultiValueMap(),
         uriVariables: Map<String, Any> = emptyMap(),
         headers: Map<String, String> = emptyMap(),
-        skipLoggingAdditionalDetails: Boolean = false,
-        skipLoggingResponseBody: Boolean = true
     ): Flux<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
 
@@ -293,15 +270,12 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .logOnSuccess(
                         logger = logger,
                         message = "GET request to Service successful",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
-                        skipResponseBody = skipLoggingResponseBody,
                         additionalDetails = mapOf("method" to "GET", "path" to url)
                     )
                     .logOnError(
                         logger = logger,
                         errorCode = "API_FAILURE",
-                        errorMessage = "GET request to Service failed",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        message = "GET request to Service failed",
                         additionalDetails = mapOf("method" to "GET", "path" to url)
                     )
                     .doOnSubscribe {
@@ -309,8 +283,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "GET", "url" to url),
-                                traceId = metaDataHeaders.traceId,
                                 premisesId = metaDataHeaders.premisesId,
+                                correlationId = metaDataHeaders.correlationId,
                             )
                         )
                     }
@@ -326,8 +300,6 @@ class WebClientWrapper(private val webClient: WebClient) {
         queryParams: MultiValueMap<String, String> = LinkedMultiValueMap(),
         uriVariables: Map<String, Any> = emptyMap(),
         headers: Map<String, String> = emptyMap(),
-        skipLoggingAdditionalDetails: Boolean = false,
-        skipLoggingResponseBody: Boolean = true
     ): Flux<T> {
         val url = createUrlForRequest(baseUrl, path, uriVariables, queryParams)
         return getMetaDataHeaders()
@@ -351,15 +323,12 @@ class WebClientWrapper(private val webClient: WebClient) {
                     .logOnSuccess(
                         logger = logger,
                         message = "POST request to Service successful",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
-                        skipResponseBody = skipLoggingResponseBody,
                         additionalDetails = mapOf("method" to "POST", "path" to url)
                     )
                     .logOnError(
                         logger = logger,
                         errorCode = "API_FAILURE",
-                        errorMessage = "POST request to Service failed",
-                        skipAdditionalDetails = skipLoggingAdditionalDetails,
+                        message = "POST request to Service failed",
                         additionalDetails = mapOf("method" to "POST", "path" to url)
                     )
                     .doOnSubscribe {
@@ -367,8 +336,8 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "POST", "url" to url),
-                                traceId = metaDataHeaders.traceId,
                                 premisesId = metaDataHeaders.premisesId,
+                                correlationId = metaDataHeaders.correlationId,
                             )
                         )
                     }
@@ -380,12 +349,13 @@ class WebClientWrapper(private val webClient: WebClient) {
         headers: Map<String, String>,
         metaDataHeaders: MetaDataHeaders
     ) {
-        httpHeaders.putAll(metaDataHeaders.exchange.requestDetails.headers)
+        metaDataHeaders.headers.remove(HttpHeaders.CONTENT_LENGTH)
+        httpHeaders.putAll(metaDataHeaders.headers)
         headers.map {
             httpHeaders.set(it.key, it.value)
         }
-        httpHeaders.set(TRACE_ID, metaDataHeaders.traceId)
-        httpHeaders.set(PREMISES_ID, metaDataHeaders.premisesId)
+        httpHeaders.set(X_PREMISES_ID, metaDataHeaders.premisesId)
+        httpHeaders.set(CORRELATION_ID, metaDataHeaders.premisesId)
     }
 
 
@@ -405,12 +375,16 @@ class WebClientWrapper(private val webClient: WebClient) {
 
     private fun getMetaDataHeaders(): Mono<MetaDataHeaders> {
         return Mono.deferContextual { ctx ->
-            val exchange = ctx.get(ServerWebExchangeDTO::class.java)
-            val traceId = exchange.requestDetails.headers.getFirst("x-trace-id") ?: getTraceId(ctx)
-            val premisesId = exchange.requestDetails.headers.getFirst("x-premises-id") ?: getPremisesId(ctx)
-            createMono(MetaDataHeaders(exchange, traceId, premisesId))
+            val headers = ctx.get(HttpHeaders::class.java)
+            val premisesId = getPremisesId(ctx).value
+            val correlationId = getCorrelationId(ctx)
+            createMono(MetaDataHeaders(headers, premisesId, correlationId))
         }
     }
 }
 
-data class MetaDataHeaders(val exchange: ServerWebExchangeDTO, val traceId: String, val premisesId: String)
+data class MetaDataHeaders(
+    val headers: HttpHeaders,
+    val premisesId: String,
+    val correlationId: String
+)

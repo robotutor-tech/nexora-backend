@@ -1,35 +1,43 @@
 package com.robotutor.nexora.common.security.application
 
-import com.robotutor.nexora.common.security.application.filters.PREMISES_ID
-import com.robotutor.nexora.common.security.application.filters.START_TIME
-import com.robotutor.nexora.common.security.application.filters.TRACE_ID
-import com.robotutor.nexora.common.observability.infrastructure.logger.ReactiveContext.putPremisesId
-import com.robotutor.nexora.common.observability.infrastructure.logger.ReactiveContext.putTraceId
-import com.robotutor.nexora.common.observability.infrastructure.models.ServerWebExchangeDTO
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.CORRELATION_ID
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.START_TIME
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.putCorrelationId
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.putPremisesId
+import com.robotutor.nexora.shared.application.logger.ReactiveContext.putStartTime
+import com.robotutor.nexora.shared.domain.vo.PremisesId
+import org.springframework.http.HttpHeaders
 import org.springframework.web.server.ServerWebExchange
 import reactor.util.context.Context
 import java.time.Instant
 import java.util.UUID.randomUUID
 
-fun getTraceIdFromExchange(exchange: ServerWebExchange): String {
-    return exchange.attributes[TRACE_ID] as? String
-        ?: exchange.request.headers.getFirst(TRACE_ID)
+
+fun getCorrelationIdFromExchange(exchange: ServerWebExchange): String {
+    return exchange.attributes[CORRELATION_ID] as? String
+        ?: exchange.request.headers.getFirst(CORRELATION_ID)
         ?: randomUUID().toString()
 }
 
 fun getPremisesIdFromExchange(exchange: ServerWebExchange): String {
-    return exchange.attributes[PREMISES_ID] as? String
-        ?: exchange.request.headers.getFirst(PREMISES_ID)
+    return exchange.attributes[X_PREMISES_ID] as? String
+        ?: exchange.request.headers.getFirst(X_PREMISES_ID)
         ?: "missing-premises-id"
+}
+
+fun getStartTimeFromExchange(exchange: ServerWebExchange): Instant {
+    return exchange.attributes[START_TIME] as? Instant
+        ?: Instant.now()
 }
 
 
 fun writeContextOnChain(context: Context, exchange: ServerWebExchange): Context {
-    val traceId = getTraceIdFromExchange(exchange)
     val premisesId = getPremisesIdFromExchange(exchange)
-    val startTime = exchange.getAttribute(START_TIME) ?: Instant.now()
-    val newContext = putTraceId(context, traceId)
-    return putPremisesId(newContext, premisesId)
-        .put(ServerWebExchangeDTO::class.java, ServerWebExchangeDTO.from(exchange))
-        .put(START_TIME, startTime)
+    val correlationId = getCorrelationIdFromExchange(exchange)
+    val startTime = getStartTimeFromExchange(exchange)
+    var newContext = putPremisesId(context, PremisesId(premisesId))
+    newContext = putCorrelationId(newContext, correlationId)
+    newContext = putStartTime(newContext, startTime)
+    return newContext.put(HttpHeaders::class.java, exchange.request.headers)
 }

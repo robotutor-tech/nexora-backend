@@ -16,11 +16,7 @@ class SpringExpressionResourceIdResolver {
 
     private val parser: ExpressionParser = SpelExpressionParser()
 
-    fun resolve(
-        httpAuthorize: HttpAuthorize,
-        exchange: ServerWebExchange,
-        handler: HandlerMethod,
-    ): ResourceId {
+    fun resolve(httpAuthorize: HttpAuthorize, exchange: ServerWebExchange, handler: HandlerMethod): ResourceId {
         val selector = httpAuthorize.selector
         if (selector == "ALL") return ResourceId.ALL
 
@@ -33,7 +29,6 @@ class SpringExpressionResourceIdResolver {
         val headers: Map<String, String> = exchange.request.headers
             .toSingleValueMap()
 
-        // Convenience: selector like "#premisesId" resolves ONLY if it's a path variable.
         if (selector.startsWith("#") && selector.matches(Regex("#[a-zA-Z_][a-zA-Z0-9_]*"))) {
             val key = selector.removePrefix("#")
             val value = pathVars[key]

@@ -1,10 +1,10 @@
 package com.robotutor.nexora.context.zone.infrastructure.messaging.mapper
 
+import com.robotutor.nexora.common.messaging.mapper.EventMapper
+import com.robotutor.nexora.common.messaging.message.EventMessage
 import com.robotutor.nexora.context.zone.domain.event.ZoneCreatedEvent
 import com.robotutor.nexora.context.zone.domain.event.ZoneEvent
 import com.robotutor.nexora.context.zone.infrastructure.messaging.message.ZoneCreatedEventMessage
-import com.robotutor.nexora.shared.domain.event.EventMapper
-import com.robotutor.nexora.common.messaging.infrastructure.message.EventMessage
 
 object ZoneEventMapper : EventMapper<ZoneEvent> {
     override fun toEventMessage(event: ZoneEvent): EventMessage {

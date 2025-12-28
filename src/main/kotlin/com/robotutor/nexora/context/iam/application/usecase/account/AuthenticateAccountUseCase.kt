@@ -13,9 +13,9 @@ import com.robotutor.nexora.context.iam.domain.vo.AccountPrincipal
 import com.robotutor.nexora.shared.domain.event.EventPublisher
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
-import com.robotutor.nexora.shared.application.observability.logOnError
-import com.robotutor.nexora.shared.application.observability.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
@@ -27,9 +27,9 @@ class AuthenticateAccountUseCase(
     private val secretService: SecretEncoder,
     private val createSessionUseCase: CreateSessionUseCase,
     private val eventPublisher: EventPublisher<IAMEvent>,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    private val logger = loggerFactory.forClass(this::class.java)
+    private val logger = Logger(this::class.java)
 
     fun execute(command: AuthenticateAccountCommand): Mono<SessionTokens> {
         return accountRepository.findByCredentialId(command.credentialId)

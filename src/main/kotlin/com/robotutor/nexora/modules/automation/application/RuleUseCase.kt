@@ -20,9 +20,9 @@ import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.service.IdGeneratorService
-import com.robotutor.nexora.common.observability.infrastructure.logger.Logger
-import com.robotutor.nexora.common.observability.infrastructure.logger.logOnError
-import com.robotutor.nexora.common.observability.infrastructure.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

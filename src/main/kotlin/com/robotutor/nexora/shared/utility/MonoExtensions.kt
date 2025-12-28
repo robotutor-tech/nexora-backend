@@ -46,9 +46,15 @@ fun <T : Any> createFluxError(exception: BaseException): Flux<T> {
     return Flux.deferContextual { contextView ->
         Flux.error<T>(exception)
             .contextWrite { context -> context.putAll(contextView) }
-            .onErrorResume {
-                createMonoError(it)
-            }
+            .onErrorResume { createMonoError(it) }
+    }
+}
+
+fun <T : Any> createFluxError(throwable: Throwable): Flux<T> {
+    return Flux.deferContextual { contextView ->
+        Flux.error<T>(throwable)
+            .contextWrite { context -> context.putAll(contextView) }
+            .onErrorResume { createMonoError(it) }
     }
 }
 

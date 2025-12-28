@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.device.infrastructure.messaging.message
 
-import com.robotutor.nexora.common.messaging.infrastructure.message.EventMessage
+import com.robotutor.nexora.common.messaging.message.EventMessage
 
 sealed class DeviceEventMessage(name: String) : EventMessage("device.$name")
 

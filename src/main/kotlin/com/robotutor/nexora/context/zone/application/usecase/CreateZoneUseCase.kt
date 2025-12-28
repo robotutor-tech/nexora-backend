@@ -6,9 +6,9 @@ import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
 import com.robotutor.nexora.context.zone.domain.exception.ZoneError
 import com.robotutor.nexora.context.zone.domain.repository.ZoneRepository
 import com.robotutor.nexora.shared.domain.utility.errorOnDenied
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
-import com.robotutor.nexora.shared.application.observability.logOnError
-import com.robotutor.nexora.shared.application.observability.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -16,9 +16,9 @@ import reactor.core.publisher.Mono
 class CreateZoneUseCase(
     private val createZonePolicy: CreateZonePolicy,
     private val zoneRepository: ZoneRepository,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    private val logger = loggerFactory.forClass(this::class.java)
+    private val logger = Logger(this::class.java)
 
     fun execute(command: CreateZoneCommand): Mono<ZoneAggregate> {
         return createZonePolicy.evaluate(command)

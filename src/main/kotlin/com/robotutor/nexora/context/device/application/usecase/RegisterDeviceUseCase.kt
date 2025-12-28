@@ -6,9 +6,9 @@ import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.exception.DeviceError
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.shared.application.annotation.Authorize
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
-import com.robotutor.nexora.shared.application.observability.logOnError
-import com.robotutor.nexora.shared.application.observability.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
@@ -19,9 +19,9 @@ import reactor.core.publisher.Mono
 class RegisterDeviceUseCase(
     private val registerDevicePolicy: RegisterDevicePolicy,
     private val deviceRepository: DeviceRepository,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    private val logger = loggerFactory.forClass(this::class.java)
+    private val logger = Logger(this::class.java)
 
     @Authorize(ActionType.CREATE, ResourceType.DEVICE)
     fun execute(command: RegisterDeviceCommand): Mono<DeviceAggregate> {

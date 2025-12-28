@@ -2,8 +2,8 @@ package com.robotutor.nexora.common.http.infrastructure.controllers
 
 import com.robotutor.nexora.shared.domain.exception.BaseException
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
-import com.robotutor.nexora.common.observability.infrastructure.logger.LogDetails
-import com.robotutor.nexora.common.observability.infrastructure.logger.Logger
+import com.robotutor.nexora.shared.application.logger.LogDetails
+import com.robotutor.nexora.shared.application.logger.Logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice

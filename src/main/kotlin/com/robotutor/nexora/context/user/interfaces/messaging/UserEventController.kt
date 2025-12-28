@@ -1,14 +1,14 @@
 package com.robotutor.nexora.context.user.interfaces.messaging
 
+import com.robotutor.nexora.common.messaging.annotation.KafkaController
+import com.robotutor.nexora.common.messaging.annotation.KafkaEvent
+import com.robotutor.nexora.common.messaging.annotation.KafkaEventListener
 import com.robotutor.nexora.context.user.application.usecase.ActivateUserUseCase
 import com.robotutor.nexora.context.user.application.usecase.CompensateUserUseCase
 import com.robotutor.nexora.context.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.context.user.interfaces.messaging.mapper.UserEventMapper
 import com.robotutor.nexora.context.user.interfaces.messaging.message.ActivateUserMessage
 import com.robotutor.nexora.context.user.interfaces.messaging.message.CompensateUserMessage
-import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaController
-import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaEvent
-import com.robotutor.nexora.common.messaging.infrastructure.annotation.KafkaEventListener
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")

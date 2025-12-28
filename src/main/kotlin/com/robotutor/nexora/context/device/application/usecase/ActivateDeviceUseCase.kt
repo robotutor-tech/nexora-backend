@@ -1,12 +1,12 @@
 package com.robotutor.nexora.context.device.application.usecase
 
-import com.robotutor.nexora.context.device.application.command.ActivateDeviceCommand
+import com.robotutor.nexora.context.device.application.command.ActorRegisteredDeviceCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.shared.application.annotation.Authorize
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
-import com.robotutor.nexora.shared.application.observability.logOnError
-import com.robotutor.nexora.shared.application.observability.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import org.springframework.stereotype.Service
@@ -15,14 +15,14 @@ import reactor.core.publisher.Mono
 @Service
 class ActivateDeviceUseCase(
     private val deviceRepository: DeviceRepository,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    private val logger = loggerFactory.forClass(this::class.java)
+    private val logger = Logger(this::class.java)
 
     @Authorize(ActionType.UPDATE, ResourceType.DEVICE, "#command.deviceId")
-    fun execute(command: ActivateDeviceCommand): Mono<DeviceAggregate> {
+    fun execute(command: ActorRegisteredDeviceCommand): Mono<DeviceAggregate> {
         return deviceRepository.findByDeviceId(command.deviceId)
-            .map { device -> device.activate() }
+            .map { device -> device.actorRegistered() }
             .flatMap { device -> deviceRepository.save(device) }
             .logOnSuccess(logger, "Successfully activated device", mapOf("deviceId" to command.deviceId))
             .logOnError(logger, "Failed to activate device", mapOf("deviceId" to command.deviceId))

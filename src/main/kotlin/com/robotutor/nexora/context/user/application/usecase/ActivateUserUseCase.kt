@@ -3,18 +3,18 @@ package com.robotutor.nexora.context.user.application.usecase
 import com.robotutor.nexora.context.user.application.command.ActivateUserCommand
 import com.robotutor.nexora.context.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
-import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
-import com.robotutor.nexora.shared.application.observability.logOnError
-import com.robotutor.nexora.shared.application.observability.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
 class ActivateUserUseCase(
     private val userRepository: UserRepository,
-    loggerFactory: AppLoggerFactory,
+    
 ) {
-    private val logger = loggerFactory.forClass(this::class.java)
+    private val logger = Logger(this::class.java)
 
     fun execute(command: ActivateUserCommand): Mono<UserAggregate> {
         return userRepository.findByUserId(command.userId)
