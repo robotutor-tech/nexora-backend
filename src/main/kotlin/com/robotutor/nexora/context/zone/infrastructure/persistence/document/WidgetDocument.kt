@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.zone.infrastructure.persistence.document
 
 import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
-import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
+import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
 import java.time.Instant
 
 data class WidgetDocument(

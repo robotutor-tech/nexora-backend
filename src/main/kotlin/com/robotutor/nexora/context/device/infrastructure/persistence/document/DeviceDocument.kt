@@ -3,7 +3,7 @@ package com.robotutor.nexora.context.device.infrastructure.persistence.document
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceHealth
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceState
-import com.robotutor.nexora.shared.infrastructure.persistence.document.MongoDocument
+import com.robotutor.nexora.common.persistence.mongo.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

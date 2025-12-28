@@ -8,7 +8,7 @@ import com.robotutor.nexora.context.premises.application.usecase.RegisterPremise
 import com.robotutor.nexora.context.premises.interfaces.controller.view.PremisesCreateRequest
 import com.robotutor.nexora.context.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.context.premises.interfaces.controller.mapper.PremisesMapper
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.PremisesId

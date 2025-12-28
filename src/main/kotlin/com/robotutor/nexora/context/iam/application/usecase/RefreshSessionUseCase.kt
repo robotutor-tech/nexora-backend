@@ -9,9 +9,9 @@ import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
 import com.robotutor.nexora.context.iam.domain.vo.TokenPayload
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -19,9 +19,10 @@ import reactor.core.publisher.Mono
 @Service
 class RefreshSessionUseCase(
     private val sessionRepository: SessionRepository,
-    private val tokenGenerator: TokenGenerator
+    private val tokenGenerator: TokenGenerator,
+    loggerFactory: AppLoggerFactory,
 ) {
-    private val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     fun execute(command: RefreshSessionCommand): Mono<SessionTokens> {
         val hashedTokenValue = HashedTokenValue.create(command.token)

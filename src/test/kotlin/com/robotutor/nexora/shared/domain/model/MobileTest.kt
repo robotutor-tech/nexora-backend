@@ -1,5 +1,7 @@
 package com.robotutor.nexora.shared.domain.model
 
+import com.robotutor.nexora.context.user.domain.vo.Mobile
+import com.robotutor.nexora.shared.domain.exception.BadDataException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -13,30 +15,30 @@ class MobileTest {
 
     @Test
     fun `should throw exception for less than 10 digits`() {
-        shouldThrow<IllegalArgumentException> {
+        shouldThrow<BadDataException> {
             Mobile("123456789")
-        }.message shouldBe "Invalid mobile number format: must be exactly 10 digits (Indian mobile)"
+        }.message shouldBe "Mobile must be valid"
     }
 
     @Test
     fun `should throw exception for more than 10 digits`() {
-        shouldThrow<IllegalArgumentException> {
+        shouldThrow<BadDataException> {
             Mobile("12345678901")
-        }.message shouldBe "Invalid mobile number format: must be exactly 10 digits (Indian mobile)"
+        }.message shouldBe "Mobile must be valid"
     }
 
     @Test
     fun `should throw exception for non-numeric input`() {
-        shouldThrow<IllegalArgumentException> {
+        shouldThrow<BadDataException> {
             Mobile("abcdefghij")
-        }.message shouldBe "Invalid mobile number format: must be exactly 10 digits (Indian mobile)"
+        }.message shouldBe "Mobile must be valid"
     }
 
     @Test
     fun `should throw exception for empty string`() {
-        shouldThrow<IllegalArgumentException> {
+        shouldThrow<BadDataException> {
             Mobile("")
-        }.message shouldBe "Invalid mobile number format: must be exactly 10 digits (Indian mobile)"
+        }.message shouldBe "Mobile must be valid"
     }
 
     @Test
@@ -45,4 +47,3 @@ class MobileTest {
         mobile.value shouldBe "0123456789"
     }
 }
-

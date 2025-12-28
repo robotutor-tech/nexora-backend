@@ -7,7 +7,7 @@ import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
 import com.robotutor.nexora.context.iam.infrastructure.persistence.mapper.SessionDocumentMapper
 import com.robotutor.nexora.context.iam.infrastructure.persistence.repository.SessionDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.common.persistence.mongo.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 import java.time.Instant

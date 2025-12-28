@@ -9,16 +9,13 @@ data class Address(
     val state: String,
     val country: String,
     val postalCode: String
-) : ValueObject() {
+) : ValueObject {
     init {
-        validate()
+        validation(street.isBlank()) { "Street must not be blank" }
+        validation(city.isBlank()) { "City must not be blank" }
+        validation(state.isBlank()) { "State must not be blank" }
+        validation(country.isBlank()) { "Country must not be blank" }
+        validation(postalCode.isBlank()) { "Postal code must not be blank" }
     }
 
-    override fun validate() {
-        validation(street.isNotBlank()) { "Street must not be blank" }
-        validation(city.isNotBlank()) { "City must not be blank" }
-        validation(state.isNotBlank()) { "State must not be blank" }
-        validation(country.isNotBlank()) { "Country must not be blank" }
-        validation(postalCode.isNotBlank()) { "Postal code must not be blank" }
-    }
 }

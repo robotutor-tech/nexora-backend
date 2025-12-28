@@ -1,5 +1,5 @@
 package com.robotutor.nexora.context.premises.interfaces.messaging.message
 
-import com.robotutor.nexora.shared.infrastructure.messaging.message.EventMessage
+import com.robotutor.nexora.common.messaging.infrastructure.message.EventMessage
 
 data class PremisesOwnerRegistrationFailedMessage(val premisesId: String) : EventMessage()

@@ -3,10 +3,10 @@ package com.robotutor.nexora.common.security.application.filters
 import com.robotutor.nexora.common.security.application.getPremisesIdFromExchange
 import com.robotutor.nexora.common.security.application.getTraceIdFromExchange
 import com.robotutor.nexora.common.security.application.writeContextOnChain
-import com.robotutor.nexora.shared.logger.LogDetails
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.models.RequestDetails
-import com.robotutor.nexora.shared.logger.models.ResponseDetails
+import com.robotutor.nexora.common.observability.infrastructure.logger.LogDetails
+import com.robotutor.nexora.common.observability.infrastructure.logger.Logger
+import com.robotutor.nexora.common.observability.infrastructure.models.RequestDetails
+import com.robotutor.nexora.common.observability.infrastructure.models.ResponseDetails
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange

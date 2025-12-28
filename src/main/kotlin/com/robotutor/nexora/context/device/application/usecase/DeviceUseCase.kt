@@ -1,5 +1,6 @@
 package com.robotutor.nexora.context.device.application.usecase
 
+import com.robotutor.nexora.context.device.application.command.GetDeviceQuery
 import com.robotutor.nexora.context.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceState
@@ -10,12 +11,11 @@ import com.robotutor.nexora.context.device.domain.specification.DeviceByStateSpe
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.specification.AuthorizedQueryBuilder
-import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -24,8 +24,9 @@ import reactor.core.publisher.Mono
 class DeviceUseCase(
     private val deviceRepository: DeviceRepository,
     private val authorizedQueryBuilder: AuthorizedQueryBuilder<DeviceId, DeviceAggregate>,
+    loggerFactory: AppLoggerFactory,
 ) {
-    private val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     @Authorize(ActionType.READ, ResourceType.DEVICE)
     fun execute(query: GetDevicesQuery): Flux<DeviceAggregate> {
@@ -40,5 +41,12 @@ class DeviceUseCase(
         return deviceRepository.findAll(specification)
             .logOnSuccess(logger, "Successfully get devices")
             .logOnError(logger, "Failed to get devices")
+    }
+
+    @Authorize(ActionType.READ, ResourceType.DEVICE, "#query.deviceId.value")
+    fun execute(query: GetDeviceQuery): Mono<DeviceAggregate> {
+        return deviceRepository.findByDeviceId(query.deviceId)
+            .logOnSuccess(logger, "Successfully get device")
+            .logOnError(logger, "Failed to get device")
     }
 }

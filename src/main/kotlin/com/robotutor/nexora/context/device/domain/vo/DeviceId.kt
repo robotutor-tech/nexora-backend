@@ -5,13 +5,9 @@ import com.robotutor.nexora.shared.domain.vo.Identifier
 import com.robotutor.nexora.shared.domain.vo.ValueObject
 import java.util.UUID
 
-data class DeviceId(override val value: String) : Identifier, ValueObject() {
+data class DeviceId(override val value: String) : Identifier, ValueObject {
     init {
-        validate()
-    }
-
-    override fun validate() {
-        validation(value.isNotBlank()) { "Device id must not be blank" }
+        validation(value.isBlank()) { "Device id must not be blank" }
     }
 
     companion object {

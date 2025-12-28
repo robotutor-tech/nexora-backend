@@ -6,9 +6,9 @@ import java.security.MessageDigest
 import java.util.Base64
 
 
-data class HashedTokenValue(val hashedValue: String) : ValueObject() {
+data class HashedTokenValue(val hashedValue: String) : ValueObject {
     init {
-        validate()
+        validation(hashedValue.isBlank()) { "Hashed token value must not be blank" }
     }
 
     companion object {
@@ -20,7 +20,4 @@ data class HashedTokenValue(val hashedValue: String) : ValueObject() {
         }
     }
 
-    override fun validate() {
-        validation(hashedValue.isNotBlank()) { "Hashed token value must not be blank" }
-    }
 }

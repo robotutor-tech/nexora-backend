@@ -6,18 +6,19 @@ import com.robotutor.nexora.context.user.domain.event.UserCompensatedEvent
 import com.robotutor.nexora.context.user.domain.event.UserEventPublisher
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.logger.Logger
-import com.robotutor.nexora.shared.logger.logOnError
-import com.robotutor.nexora.shared.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.observability.AppLoggerFactory
+import com.robotutor.nexora.shared.application.observability.logOnError
+import com.robotutor.nexora.shared.application.observability.logOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
 class CompensateUserUseCase(
     private val userRepository: UserRepository,
-    private val eventPublisher: UserEventPublisher
+    private val eventPublisher: UserEventPublisher,
+    loggerFactory: AppLoggerFactory,
 ) {
-    val logger = Logger(this::class.java)
+    private val logger = loggerFactory.forClass(this::class.java)
 
     fun execute(command: CompensateUserCommand): Mono<UserAggregate> {
         return userRepository.deleteByUserId(command.userId)

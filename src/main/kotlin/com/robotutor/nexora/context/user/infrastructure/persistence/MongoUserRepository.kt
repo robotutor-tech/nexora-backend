@@ -8,7 +8,7 @@ import com.robotutor.nexora.context.user.domain.vo.UserId
 import com.robotutor.nexora.context.user.infrastructure.persistence.mapper.UserDocumentMapper
 import com.robotutor.nexora.context.user.infrastructure.persistence.repository.UserDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.shared.infrastructure.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.common.persistence.mongo.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 

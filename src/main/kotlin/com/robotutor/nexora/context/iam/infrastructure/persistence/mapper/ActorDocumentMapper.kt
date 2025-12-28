@@ -12,7 +12,7 @@ import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ResourceId
-import com.robotutor.nexora.shared.infrastructure.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.common.persistence.mongo.mapper.DocumentMapper
 
 object ActorDocumentMapper : DocumentMapper<ActorAggregate, ActorDocument> {
     override fun toMongoDocument(domain: ActorAggregate): ActorDocument {

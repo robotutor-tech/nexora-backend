@@ -13,7 +13,7 @@ import com.robotutor.nexora.context.iam.interfaces.controller.view.AccountRespon
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthenticateAccountRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.CredentialRotatedResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.TokenResponses
-import com.robotutor.nexora.shared.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData

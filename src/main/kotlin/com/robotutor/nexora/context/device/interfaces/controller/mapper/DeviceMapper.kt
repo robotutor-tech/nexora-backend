@@ -1,19 +1,21 @@
 package com.robotutor.nexora.context.device.interfaces.controller.mapper
 
+import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.context.device.application.command.CommissionDeviceCommand
 import com.robotutor.nexora.context.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.context.device.application.command.RegisterDeviceCommand
-import com.robotutor.nexora.context.device.application.command.CommissionDeviceCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceMetadata
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.device.domain.vo.SerialNo
-import com.robotutor.nexora.context.device.interfaces.controller.view.*
-import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
+import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataResponse
+import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
+import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ZoneId
-import com.robotutor.nexora.shared.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
 object DeviceMapper {
     fun toRegisterDeviceCommand(request: RegisterDeviceRequest, actorData: ActorData): RegisterDeviceCommand {

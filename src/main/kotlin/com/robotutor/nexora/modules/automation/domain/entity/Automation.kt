@@ -42,4 +42,4 @@ data class Rules(val ruleIds: List<RuleId>) {
 
 data class Conditions(val conditionNode: ConditionNode?)
 
-data class AutomationId(override val value: String) : Identifier, ValueObject()
+data class AutomationId(override val value: String) : Identifier, ValueObject

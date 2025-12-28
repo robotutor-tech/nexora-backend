@@ -45,6 +45,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
     implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("io.projectreactor.kafka:reactor-kafka")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
