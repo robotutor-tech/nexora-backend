@@ -1,7 +1,6 @@
 package com.robotutor.nexora.shared.application.logger
 
-import com.robotutor.nexora.shared.application.resolver.ContextDataResolver
-import com.robotutor.nexora.shared.application.resolver.TraceData
+import com.robotutor.nexora.shared.application.ReactiveContext
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
@@ -15,7 +14,7 @@ fun <T> Mono<T>.logOnSuccess(
     additionalDetails: Map<String, Any?> = emptyMap()
 ): Mono<T> {
     return flatMap { value ->
-        ContextDataResolver.getTraceData()
+        ReactiveContext.getTraceData()
             .map { traceData ->
                 val logDetails = LogDetails(
                     message = message,
@@ -36,7 +35,7 @@ fun <T> Mono<T>.logOnError(
     errorCode: String? = null,
 ): Mono<T> {
     return onErrorResume { throwable ->
-        ContextDataResolver.getTraceData()
+        ReactiveContext.getTraceData()
             .flatMap { traceData ->
                 val logDetails = LogDetails(
                     message = message,
@@ -60,13 +59,16 @@ fun <T> Flux<T>.logOnSuccess(
     var traceData = TraceData("missing-correlation-id", PremisesId("missing-premises-id"))
     return flatMap { result ->
         if (!hasElements.get()) {
-            ContextDataResolver.getTraceData()
+            ReactiveContext.getTraceData()
                 .map {
                     hasElements.set(true)
                     traceData = it
                     result
                 }
-        } else createMono(result as Any) as Mono<T>
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            createMono(result as Any) as Mono<T>
+        }
     }
         .doOnComplete {
             if (hasElements.get()) {
@@ -89,7 +91,7 @@ fun <T> Flux<T>.logOnError(
     additionalDetails: Map<String, Any?> = emptyMap(),
 ): Flux<T> {
     return onErrorResume { throwable ->
-        ContextDataResolver.getTraceData()
+        ReactiveContext.getTraceData()
             .map { traceData ->
                 logger.error(
                     LogDetails(

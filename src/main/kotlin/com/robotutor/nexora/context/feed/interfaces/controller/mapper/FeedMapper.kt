@@ -11,7 +11,7 @@ import com.robotutor.nexora.context.feed.interfaces.controller.view.FeedValueRan
 import com.robotutor.nexora.context.feed.interfaces.controller.view.RegisterFeedsRequest
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.FeedId
-import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 
 object FeedMapper {
     fun toGetFeedsQuery(resources: AuthorizedResources, actorData: ActorData): GetFeedsQuery {

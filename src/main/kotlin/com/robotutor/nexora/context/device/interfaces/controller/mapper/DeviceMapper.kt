@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.device.interfaces.controller.mapper
 
-import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.context.device.application.command.CommissionDeviceCommand
 import com.robotutor.nexora.context.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.context.device.application.command.RegisterDeviceCommand

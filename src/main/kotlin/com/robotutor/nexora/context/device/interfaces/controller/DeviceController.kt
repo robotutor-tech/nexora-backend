@@ -1,7 +1,6 @@
 package com.robotutor.nexora.context.device.interfaces.controller
 
-import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
-import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.context.device.application.command.GetDeviceQuery
 import com.robotutor.nexora.context.device.application.usecase.CommissionDeviceUseCase
 import com.robotutor.nexora.context.device.application.usecase.DeviceUseCase
@@ -11,8 +10,6 @@ import com.robotutor.nexora.context.device.interfaces.controller.mapper.DeviceMa
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.context.device.interfaces.controller.view.RegisterDeviceRequest
-import com.robotutor.nexora.shared.domain.vo.ActionType
-import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import org.springframework.validation.annotation.Validated
@@ -27,7 +24,6 @@ class DeviceController(
     private val commissionDeviceUseCase: CommissionDeviceUseCase,
     private val deviceUseCase: DeviceUseCase,
 ) {
-    @HttpAuthorize(ActionType.UPDATE, ResourceType.DEVICE)
     @PostMapping
     fun registerDevice(
         @RequestBody @Validated request: RegisterDeviceRequest,
@@ -38,7 +34,6 @@ class DeviceController(
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
-    @HttpAuthorize(ActionType.READ, ResourceType.DEVICE)
     @GetMapping
     fun getDevices(actorData: ActorData, resources: AuthorizedResources): Flux<DeviceResponse> {
         val query = DeviceMapper.toGetDevicesQuery(resources, actorData)

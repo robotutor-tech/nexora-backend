@@ -1,28 +1,23 @@
 package com.robotutor.nexora.modules.automation.application
 
-import com.robotutor.nexora.shared.utility.createMono
-import com.robotutor.nexora.shared.utility.createMonoError
 import com.robotutor.nexora.modules.automation.application.command.CreateRuleCommand
 import com.robotutor.nexora.modules.automation.application.validation.ConfigValidation
+import com.robotutor.nexora.modules.automation.domain.entity.IdType
 import com.robotutor.nexora.modules.automation.domain.entity.Rule
 import com.robotutor.nexora.modules.automation.domain.entity.RuleId
-import com.robotutor.nexora.modules.automation.domain.entity.IdType
 import com.robotutor.nexora.modules.automation.domain.entity.config.Config
-import com.robotutor.nexora.modules.automation.domain.repository.RuleRepository
 import com.robotutor.nexora.modules.automation.domain.exception.NexoraError
-import com.robotutor.nexora.shared.domain.event.EventPublisher
-import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
-import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
-import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
-import com.robotutor.nexora.shared.domain.exception.ErrorResponse
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.shared.domain.vo.ResourceId
-import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.domain.service.IdGeneratorService
+import com.robotutor.nexora.modules.automation.domain.repository.RuleRepository
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
+import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
+import com.robotutor.nexora.shared.domain.exception.ErrorResponse
+import com.robotutor.nexora.shared.domain.service.IdGeneratorService
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.utility.createMono
+import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -31,7 +26,6 @@ import reactor.core.publisher.Mono
 class RuleUseCase(
     private val ruleRepository: RuleRepository,
     private val idGeneratorService: IdGeneratorService,
-    private val resourceCreatedEventPublisher: EventPublisher<ResourceCreatedEvent>,
     private val configValidation: ConfigValidation
 ) {
 
@@ -60,9 +54,7 @@ class RuleUseCase(
                     .map { ruleId -> Rule.create(RuleId(ruleId), createRuleCommand, actorData) }
             }
             .flatMap { rule ->
-                val event = ResourceCreatedEvent(ResourceType.AUTOMATION_RULE, ResourceId(rule.ruleId.value))
                 ruleRepository.save(rule).map { rule }
-                    .publishEvent(resourceCreatedEventPublisher, event)
             }
             .logOnSuccess(logger, "Successfully created new Rule")
             .logOnError(logger, "Failed to create new Rule")

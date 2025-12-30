@@ -5,9 +5,8 @@ import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.common.messaging.annotation.KafkaController
 import com.robotutor.nexora.common.messaging.annotation.KafkaEvent
 import com.robotutor.nexora.common.messaging.annotation.KafkaEventListener
-import com.robotutor.nexora.common.messaging.services.impl.KafkaArgumentResolverConfigurer
-import com.robotutor.nexora.common.messaging.services.impl.KafkaConfigurer
-import com.robotutor.nexora.common.messaging.services.impl.KafkaConsumerImpl
+import com.robotutor.nexora.common.messaging.resolver.EventArgumentResolver
+import com.robotutor.nexora.common.messaging.resolver.ArgumentResolverConfigurer
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.getBeansWithAnnotation
@@ -21,28 +20,20 @@ import java.lang.reflect.Method
 
 @Service
 class KafkaEventsSubscriber(
-    private val kafkaConsumerImpl: KafkaConsumerImpl,
+    private val kafkaConsumer: KafkaConsumer,
     private val applicationContext: ApplicationContext,
-    private val configurer: KafkaArgumentResolverConfigurer,
-    private val kafkaConfigurer: KafkaConfigurer
+    private val configurer: ArgumentResolverConfigurer,
+    private val argumentConfigurer: ArgumentConfigurer,
+    private val eventArgumentResolver: EventArgumentResolver
 ) {
-    private val handlerRegistry =
-        KafkaHandlerRegistry()
 
-    private fun resolveKafkaHandlerArguments(method: Method, event: Any): Mono<Array<Any>> {
-        val monos = method.parameters.map { param ->
-            configurer.resolvers
-                .firstOrNull { it.supportsParameter(param) }
-                ?.resolveArgument(param, event)
-                ?: IllegalArgumentException("No resolver found for parameter $param").toMono()
-        }
-        return Mono.zip(monos) { it as Array<Any> }
-    }
+    private val handlerRegistry = KafkaHandlerRegistry()
+
 
     @PostConstruct
     fun init(): Disposable {
         scanForKafkaEventHandlers()
-        return kafkaConsumerImpl.consume(handlerRegistry.handlers.keys.toList()) { kafkaMessage ->
+        return kafkaConsumer.consume(handlerRegistry.handlers.keys.toList()) { kafkaMessage ->
             val handlers = handlerRegistry.handlers[kafkaMessage.topic]
             createFlux(handlers.orEmpty())
                 .flatMap { handler ->
@@ -59,7 +50,7 @@ class KafkaEventsSubscriber(
     }
 
     private fun scanForKafkaEventHandlers() {
-        kafkaConfigurer.configureArgumentResolvers(configurer)
+        argumentConfigurer.configureArgumentResolvers(configurer)
         applicationContext.getBeansWithAnnotation<KafkaController>()
             .values.forEach { annotatedBean ->
                 annotatedBean.javaClass.declaredMethods.filter {
@@ -79,6 +70,20 @@ class KafkaEventsSubscriber(
             }
     }
 
+
+    private fun resolveKafkaHandlerArguments(method: Method, event: Any): Mono<Array<Any>> {
+        val monos = method.parameters.map { param ->
+            if (eventArgumentResolver.supportsParameter(param)) {
+                eventArgumentResolver.resolveArgument(event)
+            } else {
+                configurer.getResolvers()
+                    .firstOrNull { it.supportsParameter(param) }
+                    ?.resolveArgument()
+                    ?: IllegalArgumentException("No resolver found for parameter $param").toMono()
+            }
+        }
+        return Mono.zip(monos) { it as Array<Any> }
+    }
 }
 
 

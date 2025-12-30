@@ -15,7 +15,7 @@ import com.robotutor.nexora.context.zone.interfaces.controller.view.ZoneResponse
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.common.security.interfaces.view.AuthorizedResources
+import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.context.zone.domain.vo.SliderWidgetMetadata
 import com.robotutor.nexora.context.zone.domain.vo.ToggleWidgetMetadata
 import com.robotutor.nexora.context.zone.domain.vo.WidgetMetadata
