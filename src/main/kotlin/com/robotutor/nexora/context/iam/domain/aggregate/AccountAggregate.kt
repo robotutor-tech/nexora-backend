@@ -81,6 +81,12 @@ class AccountAggregate private constructor(
     fun getCredential(kind: CredentialKind): Credential {
         return credentials.find { it.kind == kind } ?: throw BadDataException(IAMError.NEXORA0202)
     }
+
+    fun ensureActive() {
+        if (status != AccountStatus.ACTIVE) {
+            throw BadDataException(IAMError.NEXORA0204)
+        }
+    }
 }
 
 enum class AccountStatus {

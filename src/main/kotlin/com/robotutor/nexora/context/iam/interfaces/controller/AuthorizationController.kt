@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
-import com.robotutor.nexora.context.iam.application.usecase.AuthorizeResourceUseCase
+import com.robotutor.nexora.context.iam.application.service.AuthorizeResourceUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AuthorizationMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceResponse

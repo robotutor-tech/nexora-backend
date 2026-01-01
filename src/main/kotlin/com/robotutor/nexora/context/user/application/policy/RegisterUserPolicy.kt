@@ -1,6 +1,5 @@
 package com.robotutor.nexora.context.user.application.policy
 
-import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.context.user.application.command.RegisterUserCommand
 import com.robotutor.nexora.context.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.domain.policy.Policy
@@ -10,12 +9,12 @@ import reactor.core.publisher.Mono
 
 @Component
 class RegisterUserPolicy(private val userRepository: UserRepository) : Policy<RegisterUserCommand> {
-    override fun evaluate(command: RegisterUserCommand): Mono<PolicyResult> {
-        return userRepository.findByEmail(command.email)
+    override fun evaluate(input: RegisterUserCommand): Mono<PolicyResult> {
+        return userRepository.findByEmail(input.email)
+            .hasElement()
             .map {
-                val reasons = listOf("User with email ${command.email.value} already exists")
-                PolicyResult.deny(reasons)
+                if (it) PolicyResult.deny(listOf("User with email ${input.email.value} already exists"))
+                else PolicyResult.allow()
             }
-            .switchIfEmpty(createMono(PolicyResult.allow()))
     }
 }

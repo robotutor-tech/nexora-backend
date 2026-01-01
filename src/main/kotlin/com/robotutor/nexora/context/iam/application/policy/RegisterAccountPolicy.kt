@@ -10,9 +10,9 @@ import reactor.core.publisher.Mono
 
 @Service
 class RegisterAccountPolicy(private val accountRepository: AccountRepository) : Policy<RegisterAccountCommand> {
-    override fun evaluate(command: RegisterAccountCommand): Mono<PolicyResult> {
-        return accountRepository.findByCredentialId(command.credentialId)
-            .map { PolicyResult.deny(listOf("Account with credentialId ${command.credentialId.value} already exists")) }
+    override fun evaluate(input: RegisterAccountCommand): Mono<PolicyResult> {
+        return accountRepository.findByCredentialId(input.credentialId)
+            .map { PolicyResult.deny(listOf("Account with credentialId ${input.credentialId.value} already exists")) }
             .switchIfEmpty(createMono(PolicyResult.allow()))
     }
 }

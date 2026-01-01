@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
-import com.robotutor.nexora.context.iam.application.usecase.RegisterOwnerUseCase
+import com.robotutor.nexora.context.iam.application.service.RegisterOwnerUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.OwnerCreationRequest

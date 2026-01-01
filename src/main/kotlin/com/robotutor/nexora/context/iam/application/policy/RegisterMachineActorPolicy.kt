@@ -13,12 +13,12 @@ import reactor.core.publisher.Mono
 
 @Service
 class RegisterMachineActorPolicy(private val actorRepository: ActorRepository) : Policy<RegisterMachineActorCommand> {
-    override fun evaluate(command: RegisterMachineActorCommand): Mono<PolicyResult> {
-        if (command.owner.type != AccountType.MACHINE)
+    override fun evaluate(input: RegisterMachineActorCommand): Mono<PolicyResult> {
+        if (input.owner.type != AccountType.MACHINE)
             return createMono(PolicyResult.deny(listOf("Account is not MACHINE type")))
 
-        val specification = ActorByAccountIdSpecification(command.owner.accountId)
-            .and(ActorByPremisesIdSpecification(command.premisesId))
+        val specification = ActorByAccountIdSpecification(input.owner.accountId)
+            .and(ActorByPremisesIdSpecification(input.premisesId))
         return actorRepository.findBySpecification(specification)
             .map { PolicyResult.deny(listOf("Actor already exists")) }
             .switchIfEmpty(createMono(PolicyResult.allow()))

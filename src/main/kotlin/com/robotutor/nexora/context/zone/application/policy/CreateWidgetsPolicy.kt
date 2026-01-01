@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class CreateWidgetsPolicy(private val zoneRepository: ZoneRepository) : Policy<CreateWidgetsCommand> {
-    override fun evaluate(command: CreateWidgetsCommand): Mono<PolicyResult> {
+    override fun evaluate(input: CreateWidgetsCommand): Mono<PolicyResult> {
         /**  Add validation logics:
          * Zone present and model no is valid
          * validate the number of feeds and no of widgets in model no is equal

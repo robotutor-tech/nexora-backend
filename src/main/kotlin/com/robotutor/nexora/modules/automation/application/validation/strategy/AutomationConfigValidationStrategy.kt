@@ -18,7 +18,7 @@ class AutomationConfigValidationStrategy(private val automationRepository: Autom
             NexoraError.NEXORA0301.errorCode, "Automation ID ${config.automationId} not found"
         )
         return automationRepository.findByAutomationIdAndPremisesId(config.automationId, actorData.premisesId)
-            .map { config }
             .switchIfEmpty(createMonoError(BadDataException(serviceError)))
+            .map { config }
     }
 }

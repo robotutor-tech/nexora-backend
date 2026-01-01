@@ -10,9 +10,9 @@ import reactor.core.publisher.Mono
 
 @Service
 class CreateZonePolicy(private val zoneRepository: ZoneRepository) : Policy<CreateZoneCommand> {
-    override fun evaluate(command: CreateZoneCommand): Mono<PolicyResult> {
-        return zoneRepository.findByPremisesIdAndName(command.premisesId, command.name)
-            .map { PolicyResult.deny(listOf("Zone with name ${command.name} already exists")) }
+    override fun evaluate(input: CreateZoneCommand): Mono<PolicyResult> {
+        return zoneRepository.findByPremisesIdAndName(input.premisesId, input.name)
+            .map { PolicyResult.deny(listOf("Zone with name ${input.name} already exists")) }
             .switchIfEmpty(createMono(PolicyResult.allow()))
     }
 }

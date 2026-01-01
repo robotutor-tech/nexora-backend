@@ -1,8 +1,8 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.RefreshSessionCommand
-import com.robotutor.nexora.context.iam.application.usecase.RefreshSessionUseCase
-import com.robotutor.nexora.context.iam.application.usecase.ValidateSessionUseCase
+import com.robotutor.nexora.context.iam.application.service.RefreshSessionUseCase
+import com.robotutor.nexora.context.iam.application.service.ValidateSessionUseCase
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.SessionValidateResponse

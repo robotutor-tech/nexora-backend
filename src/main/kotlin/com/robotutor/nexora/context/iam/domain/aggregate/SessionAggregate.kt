@@ -2,6 +2,7 @@ package com.robotutor.nexora.context.iam.domain.aggregate
 
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
+import com.robotutor.nexora.context.iam.domain.vo.AccessToken
 import com.robotutor.nexora.context.iam.domain.vo.HashedTokenValue
 import com.robotutor.nexora.context.iam.domain.vo.SessionId
 import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
@@ -16,12 +17,14 @@ data class SessionAggregate(
     val issuedAt: Instant = Instant.now(),
     val expiresAt: Instant = Instant.now().plus(7, ChronoUnit.DAYS),
     private var statusValue: SessionStatus = SessionStatus.ACTIVE,
+    private var accessToken: AccessToken,
     private var refreshTokenHashValue: HashedTokenValue,
     private var refreshCountValue: Int = 0,
     private var lastRefreshAtValue: Instant = Instant.now(),
 ) : AggregateRoot<SessionAggregate, SessionId, IAMEvent>(sessionId) {
 
     val refreshTokenHash: HashedTokenValue get() = refreshTokenHashValue
+    fun getAccessToken(): AccessToken = accessToken
     val refreshCount: Int get() = refreshCountValue
     val lastRefreshAt: Instant get() = lastRefreshAtValue
     val status: SessionStatus get() = statusValue
@@ -31,23 +34,26 @@ data class SessionAggregate(
         private const val MAX_REFRESH_COUNT = 50
         fun create(
             sessionPrincipal: SessionPrincipal,
+            accessToken: AccessToken,
             refreshTokenHash: HashedTokenValue,
         ): SessionAggregate {
             return SessionAggregate(
                 sessionId = SessionId.generate(),
                 sessionPrincipal = sessionPrincipal,
+                accessToken = accessToken,
                 refreshTokenHashValue = refreshTokenHash,
             )
         }
     }
 
-    fun refresh(refreshTokenHash: HashedTokenValue): SessionAggregate {
+    fun refresh(accessToken: AccessToken, refreshTokenHash: HashedTokenValue): SessionAggregate {
         if (!canRefresh()) {
             throw UnAuthorizedException(IAMError.NEXORA0206)
         } else {
             refreshCountValue += 1
             lastRefreshAtValue = Instant.now()
             refreshTokenHashValue = refreshTokenHash
+            this.accessToken = accessToken
             return this
         }
     }

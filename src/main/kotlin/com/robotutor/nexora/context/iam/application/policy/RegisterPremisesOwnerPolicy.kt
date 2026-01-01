@@ -11,8 +11,8 @@ import reactor.core.publisher.Mono
 
 @Service
 class RegisterPremisesOwnerPolicy(private val actorRepository: ActorRepository) : Policy<RegisterPremisesOwnerCommand> {
-    override fun evaluate(command: RegisterPremisesOwnerCommand): Mono<PolicyResult> {
-        return actorRepository.findBySpecification(ActorByPremisesIdSpecification(command.premisesId))
+    override fun evaluate(input: RegisterPremisesOwnerCommand): Mono<PolicyResult> {
+        return actorRepository.findBySpecification(ActorByPremisesIdSpecification(input.premisesId))
             .map { PolicyResult.deny(listOf("Premises resources already exists")) }
             .switchIfEmpty(createMono(PolicyResult.allow()))
     }

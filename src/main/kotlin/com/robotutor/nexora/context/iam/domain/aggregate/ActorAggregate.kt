@@ -1,10 +1,12 @@
 package com.robotutor.nexora.context.iam.domain.aggregate
 
 import com.robotutor.nexora.context.iam.domain.event.IAMEvent
+import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.vo.GroupId
 import com.robotutor.nexora.context.iam.domain.vo.PermissionOverride
 import com.robotutor.nexora.context.iam.domain.vo.RoleId
 import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.exception.InvalidStateException
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
@@ -21,6 +23,12 @@ data class ActorAggregate(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
 ) : AggregateRoot<ActorAggregate, ActorId, IAMEvent>(actorId) {
+    fun ensureActive() {
+        if (status != ActorStatus.ACTIVE) {
+            throw InvalidStateException(IAMError.NEXORA0206)
+        }
+    }
+
     companion object {
         fun register(
             accountId: AccountId,

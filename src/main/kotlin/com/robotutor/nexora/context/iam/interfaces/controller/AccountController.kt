@@ -1,10 +1,10 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
-import com.robotutor.nexora.context.iam.application.usecase.account.AuthenticateAccountUseCase
-import com.robotutor.nexora.context.iam.application.usecase.account.GetAccountUseCase
-import com.robotutor.nexora.context.iam.application.usecase.account.RegisterAccountUseCase
-import com.robotutor.nexora.context.iam.application.usecase.account.RotateCredentialUseCase
+import com.robotutor.nexora.context.iam.application.service.account.AuthenticateAccountService
+import com.robotutor.nexora.context.iam.application.service.account.GetAccountUseCase
+import com.robotutor.nexora.context.iam.application.service.account.RegisterAccountUseCase
+import com.robotutor.nexora.context.iam.application.service.account.RotateCredentialUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AccountMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.CredentialMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/iam/accounts")
 class AccountController(
     private val registerAccountUseCase: RegisterAccountUseCase,
-    private val authenticateAccountUseCase: AuthenticateAccountUseCase,
+    private val authenticateAccountService: AuthenticateAccountService,
     private val getAccountUseCase: GetAccountUseCase,
     private val rotateCredentialUseCase: RotateCredentialUseCase
 ) {
@@ -44,7 +44,7 @@ class AccountController(
     @PostMapping("/authenticate")
     fun authenticate(@RequestBody @Validated authenticateAccountRequest: AuthenticateAccountRequest): Mono<TokenResponses> {
         val command = AccountMapper.toAuthenticateAccountCommand(authenticateAccountRequest)
-        return authenticateAccountUseCase.execute(command)
+        return authenticateAccountService.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
     }
 

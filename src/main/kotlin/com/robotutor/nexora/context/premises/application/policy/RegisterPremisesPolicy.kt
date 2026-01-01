@@ -9,9 +9,9 @@ import reactor.core.publisher.Mono
 
 @Service
 class RegisterPremisesPolicy : Policy<RegisterPremisesCommand> {
-    override fun evaluate(command: RegisterPremisesCommand): Mono<PolicyResult> {
+    override fun evaluate(input: RegisterPremisesCommand): Mono<PolicyResult> {
         val reasons = mutableListOf<String>()
-        if (!command.owner.isHuman()) {
+        if (!input.owner.isHuman()) {
             reasons.add("Only humans can register premises")
         }
         val policyResult = if (reasons.isEmpty()) PolicyResult.allow() else PolicyResult.deny(reasons)

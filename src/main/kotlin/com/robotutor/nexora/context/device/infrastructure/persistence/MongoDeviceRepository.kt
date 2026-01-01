@@ -3,7 +3,6 @@ package com.robotutor.nexora.context.device.infrastructure.persistence
 import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.event.DeviceEventPublisher
-import com.robotutor.nexora.context.device.domain.exception.DeviceError
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.infrastructure.persistence.document.DeviceDocument
@@ -11,9 +10,7 @@ import com.robotutor.nexora.context.device.infrastructure.persistence.mapper.Dev
 import com.robotutor.nexora.context.device.infrastructure.persistence.mapper.DeviceSpecificationTranslator
 import com.robotutor.nexora.context.device.infrastructure.persistence.repository.DeviceDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
-import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.specification.Specification
-import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.find
 import org.springframework.data.mongodb.core.findOne
@@ -39,7 +36,6 @@ class MongoDeviceRepository(
     override fun findByDeviceId(deviceId: DeviceId): Mono<DeviceAggregate> {
         return deviceDocumentRepository.findByDeviceId(deviceId.value)
             .map { DeviceDocumentMapper.toDomainModel(it) }
-            .switchIfEmpty(createMonoError(DataNotFoundException(DeviceError.NEXORA0404)))
     }
 
     override fun deleteByDeviceId(deviceId: DeviceId): Mono<DeviceAggregate> {
@@ -57,6 +53,5 @@ class MongoDeviceRepository(
         val query = Query(DeviceSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.findOne<DeviceDocument>(query)
             .map { DeviceDocumentMapper.toDomainModel(it) }
-            .switchIfEmpty(createMonoError(DataNotFoundException(DeviceError.NEXORA0404)))
     }
 }

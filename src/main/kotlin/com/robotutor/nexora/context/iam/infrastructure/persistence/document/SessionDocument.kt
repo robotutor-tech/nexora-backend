@@ -20,6 +20,7 @@ data class SessionDocument(
     @Indexed(unique = true)
     val sessionId: String,
     val principal: SessionPrincipalDocument,
+    val accessToken: String,
     val refreshTokenHash: String,
     val refreshCount: Int = 0,
     val status: SessionStatus = SessionStatus.ACTIVE,

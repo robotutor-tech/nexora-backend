@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.iam.application.usecase
+package com.robotutor.nexora.context.iam.application.service
 
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.context.iam.application.command.ValidateTokenCommand

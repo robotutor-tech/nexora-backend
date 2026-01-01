@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class RegisterPremisesResourcePolicy : Policy<RegisterPremisesOwnerCommand> {
-    override fun evaluate(command: RegisterPremisesOwnerCommand): Mono<PolicyResult> {
+    override fun evaluate(input: RegisterPremisesOwnerCommand): Mono<PolicyResult> {
         return Mono.just(PolicyResult.allow())
     }
 }

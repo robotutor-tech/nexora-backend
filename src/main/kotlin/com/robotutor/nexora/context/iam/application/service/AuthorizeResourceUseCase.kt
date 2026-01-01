@@ -1,8 +1,7 @@
-package com.robotutor.nexora.context.iam.application.usecase
+package com.robotutor.nexora.context.iam.application.service
 
 import com.robotutor.nexora.context.iam.application.command.AuthorizeResourceCommand
 import com.robotutor.nexora.context.iam.application.command.GetAuthorizedResourcesQuery
-import com.robotutor.nexora.context.iam.application.service.ActorService
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.domain.vo.Resources
 import org.springframework.stereotype.Service

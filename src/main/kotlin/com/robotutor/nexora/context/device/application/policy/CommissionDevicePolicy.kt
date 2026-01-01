@@ -13,9 +13,9 @@ import reactor.core.publisher.Mono
 
 @Service
 class CommissionDevicePolicy(private val deviceRepository: DeviceRepository) : Policy<CommissionDeviceCommand> {
-    override fun evaluate(command: CommissionDeviceCommand): Mono<PolicyResult> {
-        val specification = DeviceByPremisesIdSpecification(command.actorData.premisesId)
-            .and(DeviceByDeviceIdSpecification(command.deviceId))
+    override fun evaluate(input: CommissionDeviceCommand): Mono<PolicyResult> {
+        val specification = DeviceByPremisesIdSpecification(input.actorData.premisesId)
+            .and(DeviceByDeviceIdSpecification(input.deviceId))
         return deviceRepository.findBySpecification(specification)
             .map { device ->
                 val reasons = mutableListOf<String>()

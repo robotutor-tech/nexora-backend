@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.iam.application.usecase.account
+package com.robotutor.nexora.context.iam.application.service.account
 
 import com.robotutor.nexora.context.iam.application.command.RotateCredentialCommand
 import com.robotutor.nexora.context.iam.application.policy.RotateCredentialPolicy

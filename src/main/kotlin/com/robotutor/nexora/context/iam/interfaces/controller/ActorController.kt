@@ -2,9 +2,9 @@ package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.GetActorQuery
 import com.robotutor.nexora.context.iam.application.command.GetActorsQuery
-import com.robotutor.nexora.context.iam.application.usecase.ActorUseCase
-import com.robotutor.nexora.context.iam.application.usecase.AuthenticateActorUseCase
-import com.robotutor.nexora.context.iam.application.usecase.RegisterMachineActorUseCase
+import com.robotutor.nexora.context.iam.application.service.ActorUseCase
+import com.robotutor.nexora.context.iam.application.service.AuthenticateActorService
+import com.robotutor.nexora.context.iam.application.service.RegisterMachineActorUseCase
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/iam/actors")
 class ActorController(
     private val actorUseCase: ActorUseCase,
-    private val authenticateActorUseCase: AuthenticateActorUseCase,
+    private val authenticateActorService: AuthenticateActorService,
     private val registerMachineActorUseCase: RegisterMachineActorUseCase
 ) {
     @GetMapping
@@ -46,7 +46,7 @@ class ActorController(
         accountData: AccountData
     ): Mono<TokenResponses> {
         val command = ActorMapper.toAuthenticateActorCommand(authenticateActorRequest, accountData, token)
-        return authenticateActorUseCase.execute(command)
+        return authenticateActorService.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
     }
 

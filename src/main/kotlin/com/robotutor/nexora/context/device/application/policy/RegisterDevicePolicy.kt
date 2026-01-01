@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class RegisterDevicePolicy : Policy<RegisterDeviceCommand> {
-    override fun evaluate(command: RegisterDeviceCommand): Mono<PolicyResult> {
+    override fun evaluate(input: RegisterDeviceCommand): Mono<PolicyResult> {
         return createMono(PolicyResult.allow())
     }
 }

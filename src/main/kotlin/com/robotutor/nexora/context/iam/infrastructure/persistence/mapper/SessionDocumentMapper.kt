@@ -24,6 +24,7 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
             issuedAt = domain.issuedAt,
             lastRefreshAt = domain.lastRefreshAt,
             expiresAt = domain.expiresAt,
+            accessToken = domain.getAccessToken().value,
             version = domain.getVersion()
         )
     }
@@ -37,6 +38,7 @@ object SessionDocumentMapper : DocumentMapper<SessionAggregate, SessionDocument>
             statusValue = document.status,
             issuedAt = document.issuedAt,
             lastRefreshAtValue = document.lastRefreshAt,
+            accessToken = AccessToken(document.accessToken),
             expiresAt = document.expiresAt,
         ).setObjectIdAndVersion(document.id, document.version)
     }

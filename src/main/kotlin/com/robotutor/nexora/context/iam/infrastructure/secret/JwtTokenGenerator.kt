@@ -2,6 +2,7 @@ package com.robotutor.nexora.context.iam.infrastructure.secret
 
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.service.TokenGenerator
+import com.robotutor.nexora.context.iam.domain.vo.AccessToken
 import com.robotutor.nexora.context.iam.domain.vo.SessionPrincipal
 import com.robotutor.nexora.context.iam.domain.vo.TokenPayload
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
@@ -12,6 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.time.Instant
 import java.util.*
 
 @Service
@@ -19,16 +21,16 @@ class JwtTokenGenerator : TokenGenerator {
     @Value("\${app.security.jwt.secret}")
     private lateinit var secret: String
 
-    override fun generateAccessToken(payload: TokenPayload): TokenValue {
-        val principal = DefaultSerializer.serialize(payload.sessionPrincipal)
+    override fun generateAccessToken(sessionPrincipal: SessionPrincipal, expiresAt: Instant): AccessToken {
+        val principal = DefaultSerializer.serialize(sessionPrincipal)
         val token = Jwts.builder()
             .setSubject(UUID.randomUUID().toString())
             .claim("principal", principal)
             .setIssuedAt(Date())
-            .setExpiration(Date.from(payload.expiresAt))
+            .setExpiration(Date.from(expiresAt))
             .signWith(getKey(), SignatureAlgorithm.HS256)
             .compact()
-        return TokenValue(token)
+        return AccessToken(token)
     }
 
     override fun validateAccessToken(tokenValue: TokenValue): TokenPayload {

@@ -11,14 +11,14 @@ import reactor.core.publisher.Mono
 
 @Service
 class RotateCredentialPolicy(private val accountRepository: AccountRepository) : Policy<RotateCredentialCommand> {
-    override fun evaluate(command: RotateCredentialCommand): Mono<PolicyResult> {
-        return accountRepository.findByPrincipalId(command.principalId)
+    override fun evaluate(input: RotateCredentialCommand): Mono<PolicyResult> {
+        return accountRepository.findByPrincipalId(input.principalId)
             .map {
                 val reasons = mutableListOf<String>()
                 if (it.type !== AccountType.MACHINE) {
                     reasons.add("Account is not MACHINE type")
                 }
-                if (it.createdBy != command.actorData.actorId) {
+                if (it.createdBy != input.actorData.actorId) {
                     reasons.add("Account is not created by the actor")
                 }
                 if (reasons.isEmpty()) PolicyResult.allow() else PolicyResult.deny(reasons)
