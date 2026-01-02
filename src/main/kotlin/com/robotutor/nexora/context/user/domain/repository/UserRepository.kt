@@ -10,4 +10,5 @@ interface UserRepository {
     fun deleteByUserId(userId: UserId): Mono<UserAggregate>
     fun findByUserId(userId: UserId): Mono<UserAggregate>
     fun findByEmail(email: Email): Mono<UserAggregate>
+    fun existsByEmail(email: Email): Mono<Boolean>
 }

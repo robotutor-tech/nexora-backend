@@ -1,4 +1,4 @@
-package com.robotutor.nexora.context.device.application.usecase
+package com.robotutor.nexora.context.device.application.service
 
 import com.robotutor.nexora.context.device.application.command.ActorRegisteredDeviceCommand
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate

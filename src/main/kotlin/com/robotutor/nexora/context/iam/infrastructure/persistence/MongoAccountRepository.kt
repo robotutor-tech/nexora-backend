@@ -45,4 +45,8 @@ class MongoAccountRepository(
         return accountDocumentRepository.deleteByAccountId(accountId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
+
+    override fun existsByCredentialId(credentialId: CredentialId): Mono<Boolean> {
+        return accountDocumentRepository.existsByCredentials_CredentialId(credentialId.value)
+    }
 }

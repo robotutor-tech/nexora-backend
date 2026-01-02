@@ -2,18 +2,18 @@ package com.robotutor.nexora.context.zone.application.usecase
 
 import com.robotutor.nexora.context.device.domain.vo.ModelNo
 import com.robotutor.nexora.context.zone.application.command.CreateWidgetsCommand
-import com.robotutor.nexora.context.zone.application.policy.CreateWidgetsPolicy
+import com.robotutor.nexora.context.zone.domain.policy.CreateWidgetsPolicy
 import com.robotutor.nexora.context.zone.domain.aggregate.ZoneAggregate
 import com.robotutor.nexora.context.zone.domain.entity.Widget
 import com.robotutor.nexora.context.zone.domain.exception.ZoneError
 import com.robotutor.nexora.context.zone.domain.repository.ZoneRepository
 import com.robotutor.nexora.context.zone.domain.vo.ToggleWidgetMetadata
-import com.robotutor.nexora.shared.domain.utility.errorOnDenied
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.utility.evaluatePolicy
 import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -22,13 +22,11 @@ import reactor.core.publisher.Mono
 class CreateWidgetsUseCase(
     private val zoneRepository: ZoneRepository,
     private val createWidgetsPolicy: CreateWidgetsPolicy,
-    
 ) {
     private val logger = Logger(this::class.java)
 
     fun execute(command: CreateWidgetsCommand): Mono<ZoneAggregate> {
-        return createWidgetsPolicy.evaluate(command)
-            .errorOnDenied(ZoneError.NEXORA0202)
+        return evaluatePolicy(createWidgetsPolicy, command, ZoneError.NEXORA0202)
             .flatMap { createWidgets(command.modelNo, command.feedIds) }
             .flatMap { widgets ->
                 zoneRepository.findByZoneIdAndPremisesId(command.zoneId, command.premisesId)

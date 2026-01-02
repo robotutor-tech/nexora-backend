@@ -14,6 +14,7 @@ import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.exists
 import org.springframework.data.mongodb.core.findOne
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
@@ -58,5 +59,10 @@ class MongoActorRepository(
         val query = Query(ActorSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.findOne<ActorDocument>(query)
             .map { ActorDocumentMapper.toDomainModel(it) }
+    }
+
+    override fun exitsBySpecification(specification: Specification<ActorAggregate>): Mono<Boolean> {
+        val query = Query(ActorSpecificationTranslator.translate(specification))
+        return reactiveMongoTemplate.exists<ActorDocument>(query)
     }
 }

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.device.interfaces.messaging
 
-import com.robotutor.nexora.context.device.application.usecase.ActivateDeviceUseCase
-import com.robotutor.nexora.context.device.application.usecase.CompensateDeviceUseCase
+import com.robotutor.nexora.context.device.application.service.ActivateDeviceUseCase
+import com.robotutor.nexora.context.device.application.service.CompensateDeviceUseCase
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.interfaces.messaging.mapper.DeviceEventMapper
 import com.robotutor.nexora.context.device.interfaces.messaging.message.ActorRegisteredDeviceMessage

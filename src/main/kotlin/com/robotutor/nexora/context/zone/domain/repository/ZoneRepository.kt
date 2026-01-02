@@ -14,4 +14,5 @@ interface ZoneRepository {
     fun findByPremisesIdAndName(premisesId: PremisesId, name: Name): Mono<ZoneAggregate>
     fun findByZoneIdAndPremisesId(zoneId: ZoneId, premisesId: PremisesId): Mono<ZoneAggregate>
     fun findAll(specification: Specification<ZoneAggregate>): Flux<ZoneAggregate>
+    fun existsByPremisesIdAndName(premisesId: PremisesId, name: Name): Mono<Boolean>
 }

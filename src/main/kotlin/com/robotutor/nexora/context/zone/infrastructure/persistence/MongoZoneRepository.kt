@@ -52,6 +52,10 @@ class MongoZoneRepository(
             .map { ZoneDocumentMapper.toDomainModel(it) }
     }
 
+    override fun existsByPremisesIdAndName(premisesId: PremisesId, name: Name): Mono<Boolean> {
+        return zoneDocumentRepository.existsByPremisesIdAndName(premisesId.value, name.value)
+    }
+
 
     override fun findAllByPremisesIdAndZoneIdIn(premisesId: PremisesId, zoneIds: List<ZoneId>): Flux<ZoneAggregate> {
         return Flux.empty()

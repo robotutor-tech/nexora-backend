@@ -39,4 +39,8 @@ class MongoUserRepository(
         return userDocumentRepository.findByEmail(email.value)
             .map { UserDocumentMapper.toDomainModel(it) }
     }
+
+    override fun existsByEmail(email: Email): Mono<Boolean> {
+        return userDocumentRepository.existsByEmail(email.value)
+    }
 }

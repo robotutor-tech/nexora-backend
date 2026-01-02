@@ -2,9 +2,9 @@ package com.robotutor.nexora.context.device.interfaces.controller
 
 import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.context.device.application.command.GetDeviceQuery
-import com.robotutor.nexora.context.device.application.usecase.CommissionDeviceUseCase
-import com.robotutor.nexora.context.device.application.usecase.DeviceUseCase
-import com.robotutor.nexora.context.device.application.usecase.RegisterDeviceUseCase
+import com.robotutor.nexora.context.device.application.service.CommissionDeviceService
+import com.robotutor.nexora.context.device.application.service.DeviceUseCase
+import com.robotutor.nexora.context.device.application.service.RegisterDeviceUseCase
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.interfaces.controller.mapper.DeviceMapper
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/devices")
 class DeviceController(
     private val registerDeviceUseCase: RegisterDeviceUseCase,
-    private val commissionDeviceUseCase: CommissionDeviceUseCase,
+    private val commissionDeviceService: CommissionDeviceService,
     private val deviceUseCase: DeviceUseCase,
 ) {
     @PostMapping
@@ -47,7 +47,7 @@ class DeviceController(
         actorData: ActorData
     ): Mono<DeviceResponse> {
         val command = DeviceMapper.toCommissionDeviceCommand(metadata, actorData)
-        return commissionDeviceUseCase.execute(command)
+        return commissionDeviceService.execute(command)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 

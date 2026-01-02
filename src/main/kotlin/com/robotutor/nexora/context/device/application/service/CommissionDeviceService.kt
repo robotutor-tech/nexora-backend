@@ -1,13 +1,13 @@
-package com.robotutor.nexora.context.device.application.usecase
+package com.robotutor.nexora.context.device.application.service
 
 import com.robotutor.nexora.context.device.application.command.CommissionDeviceCommand
 import com.robotutor.nexora.context.device.application.facade.FeedFacade
 import com.robotutor.nexora.context.device.application.facade.ZoneFacade
-import com.robotutor.nexora.context.device.application.policy.CommissionDevicePolicy
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.domain.event.DeviceCommissionedEvent
 import com.robotutor.nexora.context.device.domain.event.DeviceEventPublisher
 import com.robotutor.nexora.context.device.domain.exception.DeviceError
+import com.robotutor.nexora.context.device.domain.policy.CommissionDevicePolicy
 import com.robotutor.nexora.context.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.context.device.domain.specification.DeviceByDeviceIdSpecification
 import com.robotutor.nexora.context.device.domain.specification.DeviceByPremisesIdSpecification
@@ -16,14 +16,14 @@ import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.domain.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.enforcePolicy
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class CommissionDeviceUseCase(
+class CommissionDeviceService(
     private val deviceRepository: DeviceRepository,
     private val zoneFacade: ZoneFacade,
     private val feedFacade: FeedFacade,
@@ -37,8 +37,8 @@ class CommissionDeviceUseCase(
     fun execute(command: CommissionDeviceCommand): Mono<DeviceAggregate> {
         val specification = DeviceByPremisesIdSpecification(command.actorData.premisesId)
             .and(DeviceByDeviceIdSpecification(command.deviceId))
-        return commissionDevicePolicy.evaluate(command)
-            .errorOnDenied(DeviceError.NEXORA0402)
+        return deviceRepository.findBySpecification(specification)
+            .enforcePolicy(commissionDevicePolicy, { it } , DeviceError.NEXORA0402)
             .flatMap { deviceRepository.findBySpecification(specification) }
             .flatMap { device ->
                 feedFacade.registerFeeds(device.deviceId, command.metadata.modelNo)

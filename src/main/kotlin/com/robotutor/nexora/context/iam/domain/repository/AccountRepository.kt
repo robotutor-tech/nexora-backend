@@ -12,4 +12,5 @@ interface AccountRepository {
     fun findByAccountId(accountId: AccountId): Mono<AccountAggregate>
     fun findByPrincipalId(principalId: PrincipalId): Mono<AccountAggregate>
     fun deleteByAccountId(accountId: AccountId): Mono<AccountAggregate>
+    fun existsByCredentialId(credentialId: CredentialId): Mono<Boolean>
 }

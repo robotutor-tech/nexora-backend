@@ -3,7 +3,7 @@ package com.robotutor.nexora.context.iam.application.service
 import com.robotutor.nexora.context.iam.application.command.RegisterGroupCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterPremisesOwnerCommand
 import com.robotutor.nexora.context.iam.application.command.RegisterRoleCommand
-import com.robotutor.nexora.context.iam.application.policy.RegisterPremisesOwnerPolicy
+import com.robotutor.nexora.context.iam.domain.policy.RegisterPremisesOwnerPolicy
 import com.robotutor.nexora.context.iam.application.seed.PermissionSeedProvider
 import com.robotutor.nexora.context.iam.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.context.iam.domain.aggregate.GroupType
@@ -14,10 +14,11 @@ import com.robotutor.nexora.context.iam.domain.event.PremisesOwnerRegisteredEven
 import com.robotutor.nexora.context.iam.domain.event.PremisesOwnerRegistrationFailedEvent
 import com.robotutor.nexora.context.iam.domain.exception.IAMError
 import com.robotutor.nexora.context.iam.domain.repository.ActorRepository
+import com.robotutor.nexora.context.iam.domain.specification.ActorByPremisesIdSpecification
 import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.event.publishEventOnError
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.utility.errorOnDenied
+import com.robotutor.nexora.shared.domain.utility.enforcePolicy
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -31,8 +32,8 @@ class RegisterOwnerUseCase(
     private val registerPremisesOwnerPolicy: RegisterPremisesOwnerPolicy
 ) {
     fun execute(command: RegisterPremisesOwnerCommand): Mono<ActorAggregate> {
-        return registerPremisesOwnerPolicy.evaluate(command)
-            .errorOnDenied(IAMError.NEXORA0201)
+        return actorRepository.exitsBySpecification(ActorByPremisesIdSpecification(command.premisesId))
+            .enforcePolicy(registerPremisesOwnerPolicy, { it }, IAMError.NEXORA0201)
             .flatMap {
                 registerRoleUseCase.execute(createDefaultRoles(command)).collectList()
             }

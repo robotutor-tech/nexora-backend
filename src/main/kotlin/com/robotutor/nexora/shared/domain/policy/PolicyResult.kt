@@ -14,6 +14,10 @@ class PolicyResult(
         fun deny(reasons: List<String>, metadata: Map<String, Any>? = null): PolicyResult {
             return PolicyResult(false, reasons, metadata ?: emptyMap())
         }
+
+        fun create(reasons: List<String>): PolicyResult {
+            return if (reasons.isEmpty()) allow() else deny(reasons)
+        }
     }
 
     fun isAllowed(): Boolean {

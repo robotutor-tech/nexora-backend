@@ -15,4 +15,5 @@ interface ActorRepository {
     fun findByActorIdAndPremisesId(actorId: ActorId, premisesId: PremisesId): Mono<ActorAggregate>
     fun findByActorId(actorId: ActorId): Mono<ActorAggregate>
     fun findBySpecification(specification: Specification<ActorAggregate>): Mono<ActorAggregate>
+    fun exitsBySpecification(specification: Specification<ActorAggregate>): Mono<Boolean>
 }

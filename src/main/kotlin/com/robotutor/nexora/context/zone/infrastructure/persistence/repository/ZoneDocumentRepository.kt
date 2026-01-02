@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono
 interface ZoneDocumentRepository : ReactiveCrudRepository<ZoneDocument, String> {
     fun findByPremisesIdAndName(premisesId: String, name: String): Mono<ZoneDocument>
     fun findByPremisesIdAndZoneId(premisesId: String, zoneId: String): Mono<ZoneDocument>
+    fun existsByPremisesIdAndName(premisesId: String, name: String): Mono<Boolean>
 }
