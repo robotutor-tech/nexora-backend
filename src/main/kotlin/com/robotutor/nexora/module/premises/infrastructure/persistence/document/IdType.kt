@@ -1,0 +1,7 @@
+package com.robotutor.nexora.module.premises.infrastructure.persistence.document
+
+import com.robotutor.nexora.common.persistence.document.IdSequenceType
+
+enum class IdType(override val length: Int) : IdSequenceType {
+    PREMISE_ID(8)
+}

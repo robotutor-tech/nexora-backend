@@ -1,0 +1,43 @@
+package com.robotutor.nexora.module.iam.application.service.account
+
+import com.robotutor.nexora.module.iam.application.command.RotateCredentialCommand
+import com.robotutor.nexora.module.iam.domain.policy.RotateCredentialPolicy
+import com.robotutor.nexora.module.iam.domain.exception.IAMError
+import com.robotutor.nexora.module.iam.domain.policy.context.RotateCredentialPolicyContext
+import com.robotutor.nexora.module.iam.domain.repository.AccountRepository
+import com.robotutor.nexora.module.iam.domain.service.SecretEncoder
+import com.robotutor.nexora.module.iam.domain.vo.CredentialId
+import com.robotutor.nexora.module.iam.domain.vo.CredentialSecret
+import com.robotutor.nexora.shared.domain.utility.enforcePolicy
+import com.robotutor.nexora.shared.application.logger.Logger
+import com.robotutor.nexora.shared.application.logger.logOnError
+import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
+
+@Service
+class RotateCredentialService(
+    private val rotateCredentialPolicy: RotateCredentialPolicy,
+    private val accountRepository: AccountRepository,
+    private val secretService: SecretEncoder,
+
+    ) {
+    private val logger = Logger(this::class.java)
+
+    fun execute(command: RotateCredentialCommand): Mono<Pair<CredentialId, CredentialSecret>> {
+        return accountRepository.findByPrincipalId(command.principalId)
+            .enforcePolicy(
+                rotateCredentialPolicy,
+                { account -> RotateCredentialPolicyContext(account, command.actorData) },
+                IAMError.NEXORA0208
+            )
+            .flatMap { account ->
+                val secret = CredentialSecret.generate()
+                account.rotateCredential(secretService.encode(secret), command.kind)
+                accountRepository.save(account)
+                    .map { Pair(account.getCredentials().first().credentialId, secret) }
+            }
+            .logOnSuccess(logger, "Successfully rotated credential", mapOf("accountId" to command.principalId))
+            .logOnError(logger, "Failed to rotate credential", mapOf("accountId" to command.principalId))
+    }
+}

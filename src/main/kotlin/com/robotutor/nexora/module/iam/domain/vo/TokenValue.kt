@@ -1,0 +1,23 @@
+package com.robotutor.nexora.module.iam.domain.vo
+
+import com.robotutor.nexora.shared.domain.utility.validation
+import com.robotutor.nexora.shared.domain.vo.ValueObject
+import java.time.Instant
+import kotlin.math.max
+
+data class TokenValue(val value: String) : ValueObject {
+
+    init {
+        validation(value.isBlank()) { "Token value must not be blank" }
+    }
+
+    companion object {
+        fun generate(length: Int = 240): TokenValue {
+            val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9') + "_-".split("")
+            val token = List(length) { chars.random() }.joinToString("")
+            val fullToken = token + Instant.now().epochSecond.toString()
+            return TokenValue(fullToken.padEnd(length + 10, '0').substring(max(0, fullToken.length - length)))
+        }
+    }
+
+}

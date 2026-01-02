@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.domain.model
 
-import com.robotutor.nexora.context.user.domain.vo.Email
+import com.robotutor.nexora.module.user.domain.vo.Email
 import com.robotutor.nexora.shared.domain.exception.BadDataException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe

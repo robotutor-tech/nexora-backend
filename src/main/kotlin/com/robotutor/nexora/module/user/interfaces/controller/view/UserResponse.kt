@@ -1,0 +1,15 @@
+package com.robotutor.nexora.module.user.interfaces.controller.view
+
+import java.time.Instant
+
+data class UserResponse(
+    val userId: String,
+    val state: String,
+    val name: String,
+    val email: String,
+    val mobile: String,
+    val isEmailVerified: Boolean,
+    val isMobileVerified: Boolean,
+    val registeredAt: Instant,
+    val updatedAt: Instant
+)

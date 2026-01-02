@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.client.view
 
-import com.robotutor.nexora.context.iam.domain.aggregate.AccountStatus
+import com.robotutor.nexora.module.iam.domain.aggregate.AccountStatus
 import com.robotutor.nexora.shared.domain.vo.principal.AccountType
 import java.time.Instant
 
