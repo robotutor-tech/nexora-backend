@@ -22,12 +22,12 @@
 //import reactor.core.publisher.Mono
 //import java.time.Instant
 //
-//class RegisterUserUseCaseTest {
+//class RegisterUserServiceTest {
 //    private val userRepository = mockk<UserRepository>()
 //    private val idGeneratorService = mockk<IdGeneratorService>()
 //    private val registerAuthUser = mockk<RegisterAuthUser>()
 //    private val eventPublisherDeprecated = mockk<EventPublisherDeprecated<UserEvent>>()
-//    private val registerUserUseCase = RegisterUserUseCase(
+//    private val registerUserService = RegisterUserService(
 //        userRepository,
 //        idGeneratorService,
 //        registerAuthUser,
@@ -64,7 +64,7 @@
 //        every { registerAuthUser.register(any()) } returns Mono.just(registerAuthUserCommand)
 //        every { eventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //
-//        val result = registerUserUseCase.register(command)
+//        val result = registerUserService.register(command)
 //
 //        assertNextWith(result) {
 //            it shouldBe user
@@ -91,7 +91,7 @@
 //        every { userRepository.findByEmail(email) } returns Mono.just(user)
 //        every { idGeneratorService.generateId(any(), any<Class<SequenceId>>()) } returns Mono.just(userId)
 //
-//        val result = registerUserUseCase.register(command)
+//        val result = registerUserService.register(command)
 //
 //        assertErrorWith(result) {
 //            it shouldBe DuplicateDataException(NexoraError.NEXORA0201)
@@ -124,7 +124,7 @@
 //        every { registerAuthUser.register(any()) } returns Mono.error(authError)
 //        every { userRepository.deleteByUserId(any()) } returns Mono.just(user)
 //
-//        val result = registerUserUseCase.register(command)
+//        val result = registerUserService.register(command)
 //        assertErrorWith(result) {
 //            it shouldBe authError
 //        }

@@ -21,13 +21,13 @@
 //import reactor.test.StepVerifier
 //import java.time.Instant
 //
-//class WidgetUseCaseTest {
+//class WidgetServiceTest {
 //    private val widgetRepository = mockk<WidgetRepository>()
 //    private val idGeneratorService = mockk<IdGeneratorService>()
 //    private val widgetEventPublisherDeprecated = mockk<EventPublisherDeprecated<WidgetEvent>>()
 //    private val resourceEventPublisherDeprecated = mockk<EventPublisherDeprecated<ResourceCreatedEvent>>()
 //
-//    private val widgetUseCase = WidgetUseCase(
+//    private val widgetService = WidgetService(
 //        widgetRepository = widgetRepository,
 //        idGeneratorService = idGeneratorService,
 //        widgetEventPublisherDeprecated = widgetEventPublisherDeprecated,
@@ -69,7 +69,7 @@
 //        every { resourceEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //        every { widgetEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //
-//        val result = widgetUseCase.createWidget(command, Actor)
+//        val result = widgetService.createWidget(command, Actor)
 //
 //        assertNextWith(result) {
 //            it.widgetId shouldBe generatedWidgetId
@@ -108,7 +108,7 @@
 //
 //        every { widgetRepository.findAllByPremisesIdAndWidgetIdIn(Actor.premisesId, widgetIds) } returns Flux.just(w1, w2)
 //
-//        val flux = widgetUseCase.getWidgets(Actor, widgetIds)
+//        val flux = widgetService.getWidgets(Actor, widgetIds)
 //
 //        StepVerifier.create(flux)
 //            .expectNext(w1)

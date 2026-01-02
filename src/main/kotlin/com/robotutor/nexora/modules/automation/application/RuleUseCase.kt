@@ -23,7 +23,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
-class RuleUseCase(
+class RuleService(
     private val ruleRepository: RuleRepository,
     private val idGeneratorService: IdGeneratorService,
     private val configValidation: ConfigValidation

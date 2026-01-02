@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
-import com.robotutor.nexora.context.iam.application.service.AuthorizeResourceUseCase
+import com.robotutor.nexora.context.iam.application.service.AuthorizeResourceService
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AuthorizationMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceRequest
 import com.robotutor.nexora.context.iam.interfaces.controller.view.AuthorizeResourceResponse
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/iam/resources")
 class AuthorizationController(
-    private val authorizeResourceUseCase: AuthorizeResourceUseCase,
+    private val authorizeResourceService: AuthorizeResourceService,
 ) {
     @PostMapping
     fun getResources(
@@ -25,7 +25,7 @@ class AuthorizationController(
         actorData: ActorData
     ): Mono<GetAuthorizedResourcesResponse> {
         val query = AuthorizationMapper.toGetAuthorizedResourceQuery(getAuthorizedResourcesRequest, actorData)
-        return authorizeResourceUseCase.execute(query)
+        return authorizeResourceService.execute(query)
             .map { AuthorizationMapper.toAuthorizedResourcesResponse(it) }
     }
 
@@ -35,7 +35,7 @@ class AuthorizationController(
         actorData: ActorData
     ): Mono<AuthorizeResourceResponse> {
         val command = AuthorizationMapper.toAuthorizeResourceCommand(authorizeResourceRequest, actorData)
-        return authorizeResourceUseCase.execute(command)
+        return authorizeResourceService.execute(command)
             .map { AuthorizationMapper.toResourceResponse(it) }
     }
 }

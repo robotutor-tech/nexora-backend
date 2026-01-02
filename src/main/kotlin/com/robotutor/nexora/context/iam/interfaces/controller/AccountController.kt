@@ -2,9 +2,9 @@ package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.GetAccountQuery
 import com.robotutor.nexora.context.iam.application.service.account.AuthenticateAccountService
-import com.robotutor.nexora.context.iam.application.service.account.GetAccountUseCase
-import com.robotutor.nexora.context.iam.application.service.account.RegisterAccountUseCase
-import com.robotutor.nexora.context.iam.application.service.account.RotateCredentialUseCase
+import com.robotutor.nexora.context.iam.application.service.account.GetAccountService
+import com.robotutor.nexora.context.iam.application.service.account.RegisterAccountService
+import com.robotutor.nexora.context.iam.application.service.account.RotateCredentialService
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.AccountMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.CredentialMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
@@ -18,16 +18,16 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/iam/accounts")
 class AccountController(
-    private val registerAccountUseCase: RegisterAccountUseCase,
+    private val registerAccountService: RegisterAccountService,
     private val authenticateAccountService: AuthenticateAccountService,
-    private val getAccountUseCase: GetAccountUseCase,
-    private val rotateCredentialUseCase: RotateCredentialUseCase
+    private val getAccountService: GetAccountService,
+    private val rotateCredentialService: RotateCredentialService
 ) {
 
     @PostMapping("/register")
     fun registerMachine(@RequestBody @Validated registerAccountRequest: RegisterAccountRequest): Mono<AccountResponse> {
         val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, null)
-        return registerAccountUseCase.execute(command)
+        return registerAccountService.execute(command)
             .map { AccountMapper.toAccountResponse(it) }
     }
 
@@ -37,7 +37,7 @@ class AccountController(
         actorData: ActorData
     ): Mono<AccountResponse> {
         val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, actorData)
-        return registerAccountUseCase.execute(command)
+        return registerAccountService.execute(command)
             .map { AccountMapper.toAccountResponse(it) }
     }
 
@@ -51,13 +51,13 @@ class AccountController(
     @GetMapping("/{accountId}")
     fun getAccount(@PathVariable accountId: String): Mono<AccountResponse> {
         val query = GetAccountQuery(AccountId(accountId))
-        return getAccountUseCase.execute(query).map { AccountMapper.toAccountResponse(it) }
+        return getAccountService.execute(query).map { AccountMapper.toAccountResponse(it) }
     }
 
     @PatchMapping("/principal/{principalId}/credentials/rotate")
     fun rotateCredentials(@PathVariable principalId: String, actorData: ActorData): Mono<CredentialRotatedResponse> {
         val command = AccountMapper.toRotateCredentialsCommand(principalId, actorData)
-        return rotateCredentialUseCase.execute(command)
+        return rotateCredentialService.execute(command)
             .map { CredentialMapper.toCredentialRotatedResponse(it) }
     }
 
@@ -70,7 +70,7 @@ class AccountController(
 //        userData: UserData
 //    ): Mono<TokenResponsesDto> {
 //        val actorLoginCommand = AccountMapper.toActorLoginCommand(actorLoginRequest, userData, token)
-//        return actorLoginUseCase.actorLogin(actorLoginCommand)
+//        return actorLoginService.actorLogin(actorLoginCommand)
 //            .map { TokenMapper.toTokenResponsesDto(it) }
 //    }
 //
@@ -79,7 +79,7 @@ class AccountController(
 //        @RequestBody @Validated deviceLoginRequest: DeviceLoginRequest,
 //    ): Mono<TokenResponsesDto> {
 //        val deviceLoginCommand = AuthDeviceMapper.toDeviceLoginCommand(deviceLoginRequest)
-//        return authDeviceUseCase.deviceLogin(deviceLoginCommand)
+//        return authDeviceService.deviceLogin(deviceLoginCommand)
 //            .map { TokenMapper.toTokenResponsesDto(it) }
 //    }
 //
@@ -91,13 +91,13 @@ class AccountController(
 //            return createMonoError(UnAuthorizedException(NexoraError.NEXORA0206))
 //        }
 //        val refreshTokenCommand = TokenMapper.toRefreshTokenCommand(token)
-//        return refreshTokenUseCase.refresh(refreshTokenCommand)
+//        return refreshTokenService.refresh(refreshTokenCommand)
 //            .map { TokenMapper.toTokenResponsesDto(it) }
 //    }
 //
 //    fun registerDevice(@RequestBody @Validated request: AuthDeviceRegisterRequest, invitationData: InvitationData): Mono<AuthDeviceResponse> {
 //        val command = AuthDeviceMapper.toAuthDeviceRegisterCommand(request)
-//        return authDeviceUseCase.register(command, invitationData)
+//        return authDeviceService.register(command, invitationData)
 //            .map { AuthDeviceMapper.toAuthDeviceResponse(it) }
 //    }
 }

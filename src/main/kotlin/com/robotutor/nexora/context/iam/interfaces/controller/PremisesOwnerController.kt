@@ -1,6 +1,6 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
-import com.robotutor.nexora.context.iam.application.service.RegisterOwnerUseCase
+import com.robotutor.nexora.context.iam.application.service.RegisterOwnerService
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.context.iam.interfaces.controller.view.OwnerCreationRequest
@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/iam/premises-owners")
-class PremisesOwnerController(private val registerOwnerUseCase: RegisterOwnerUseCase) {
+class PremisesOwnerController(private val registerOwnerService: RegisterOwnerService) {
 
     @PostMapping("/register")
     fun registerPremisesResource(
@@ -21,7 +21,7 @@ class PremisesOwnerController(private val registerOwnerUseCase: RegisterOwnerUse
         accountData: AccountData
     ): Mono<ActorResponse> {
         val command = ActorMapper.toRegisterOwnerCommand(eventMessage, accountData)
-        return registerOwnerUseCase.execute(command)
+        return registerOwnerService.execute(command)
             .map { ActorMapper.toActorResponse(it) }
     }
 }

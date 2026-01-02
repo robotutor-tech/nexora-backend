@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.device.interfaces.messaging
 
-import com.robotutor.nexora.context.device.application.service.ActivateDeviceUseCase
-import com.robotutor.nexora.context.device.application.service.CompensateDeviceUseCase
+import com.robotutor.nexora.context.device.application.service.ActivateDeviceService
+import com.robotutor.nexora.context.device.application.service.CompensateDeviceService
 import com.robotutor.nexora.context.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.context.device.interfaces.messaging.mapper.DeviceEventMapper
 import com.robotutor.nexora.context.device.interfaces.messaging.message.ActorRegisteredDeviceMessage
@@ -15,19 +15,19 @@ import reactor.core.publisher.Mono
 @Suppress("UNUSED")
 @KafkaController
 class DeviceEventController(
-    private val compensateDeviceUseCase: CompensateDeviceUseCase,
-    private val actorRegisteredDeviceUseCase: ActivateDeviceUseCase
+    private val compensateDeviceService: CompensateDeviceService,
+    private val actorRegisteredDeviceService: ActivateDeviceService
 ) {
 
     @KafkaEventListener(["iam.account.registered.device"])
     fun activateDevice(@KafkaEvent eventMessage: ActorRegisteredDeviceMessage, actorData: ActorData): Mono<DeviceAggregate> {
         val command = DeviceEventMapper.toActorRegisteredDeviceCommand(eventMessage, actorData)
-        return actorRegisteredDeviceUseCase.execute(command)
+        return actorRegisteredDeviceService.execute(command)
     }
 
     @KafkaEventListener(["iam.account.registration.failed.device"])
     fun compensateDevice(@KafkaEvent eventMessage: CompensateDeviceMessage): Mono<DeviceAggregate> {
         val command = DeviceEventMapper.toCompensateDeviceCommand(eventMessage)
-        return compensateDeviceUseCase.execute(command)
+        return compensateDeviceService.execute(command)
     }
 }

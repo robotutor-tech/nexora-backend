@@ -1,6 +1,6 @@
 //package com.robotutor.nexora.modules.automation.interfaces.controller
 //
-//import com.robotutor.nexora.modules.automation.application.RuleUseCase
+//import com.robotutor.nexora.modules.automation.application.RuleService
 //import com.robotutor.nexora.modules.automation.application.command.CreateRuleCommand
 //import com.robotutor.nexora.modules.automation.domain.entity.Rule
 //import com.robotutor.nexora.modules.automation.domain.entity.RuleId
@@ -23,8 +23,8 @@
 //import java.time.Instant
 //
 //class RuleControllerTest {
-//    private val mockUseCase = mockk<RuleUseCase>()
-//    private val controller = RuleController(mockUseCase)
+//    private val mockService = mockk<RuleService>()
+//    private val controller = RuleController(mockService)
 //
 //    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
@@ -69,7 +69,7 @@
 //            ),
 //            Actor
 //        )
-//        every { mockUseCase.createRule(any(), any()) } returns Mono.just(domain)
+//        every { mockService.createRule(any(), any()) } returns Mono.just(domain)
 //
 //        val mono = controller.createTrigger(request, Actor)
 //
@@ -86,7 +86,7 @@
 //                value shouldBe 10
 //            }
 //        }
-//        verify(exactly = 1) { mockUseCase.createRule(any(), Actor) }
+//        verify(exactly = 1) { mockService.createRule(any(), Actor) }
 //    }
 //
 //    @Test
@@ -111,7 +111,7 @@
 //            ),
 //            Actor
 //        )
-//        every { mockUseCase.getRules(any(), any()) } returns Flux.just(r1, r2)
+//        every { mockService.getRules(any(), any()) } returns Flux.just(r1, r2)
 //
 //        val resources = ResourcesData(
 //            listOf(
@@ -130,7 +130,7 @@
 //        list.size shouldBe 2
 ////        list[0] is RuleResponse shouldBe true
 //        verify(exactly = 1) {
-//            mockUseCase.getRules(
+//            mockService.getRules(
 //                match { it.map { id -> id.value } == listOf("r1", "r2") },
 //                Actor
 //            )
@@ -149,13 +149,13 @@
 //            ),
 //            Actor
 //        )
-//        every { mockUseCase.getRule(RuleId("r1"), Actor) } returns Mono.just(r1)
+//        every { mockService.getRule(RuleId("r1"), Actor) } returns Mono.just(r1)
 //
 //        val mono = controller.getRule("r1", Actor)
 //        assertNextWith(mono) {
 //            it.ruleId shouldBe "r1"
 //        }
-//        verify(exactly = 1) { mockUseCase.getRule(RuleId("r1"), Actor) }
+//        verify(exactly = 1) { mockService.getRule(RuleId("r1"), Actor) }
 //    }
 //}
 //

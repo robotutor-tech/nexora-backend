@@ -1,7 +1,7 @@
 package com.robotutor.nexora.context.premises.interfaces.messaging
 
-import com.robotutor.nexora.context.premises.application.usecase.ActivatePremisesUseCase
-import com.robotutor.nexora.context.premises.application.usecase.CompensatePremisesRegistrationUseCase
+import com.robotutor.nexora.context.premises.application.service.ActivatePremisesService
+import com.robotutor.nexora.context.premises.application.service.CompensatePremisesRegistrationService
 import com.robotutor.nexora.context.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.context.premises.interfaces.messaging.mapper.PremisesEventMapper
 import com.robotutor.nexora.context.premises.interfaces.messaging.message.PremisesOwnerRegisteredMessage
@@ -15,8 +15,8 @@ import reactor.core.publisher.Mono
 @Suppress("UNUSED")
 @KafkaController
 class PremisesEventController(
-    private val activatePremisesUseCase: ActivatePremisesUseCase,
-    private val compensatePremisesRegistrationUseCase: CompensatePremisesRegistrationUseCase
+    private val activatePremisesService: ActivatePremisesService,
+    private val compensatePremisesRegistrationService: CompensatePremisesRegistrationService
 ) {
     @KafkaEventListener(["iam.premises.owner.registered"])
     fun activatePremises(
@@ -24,7 +24,7 @@ class PremisesEventController(
         accountData: AccountData
     ): Mono<PremisesAggregate> {
         val command = PremisesEventMapper.toActivatePremisesCommand(eventMessage, accountData)
-        return activatePremisesUseCase.execute(command)
+        return activatePremisesService.execute(command)
     }
 
     @KafkaEventListener(["iam.premises.owner.registration.failed"])
@@ -33,6 +33,6 @@ class PremisesEventController(
         accountData: AccountData
     ): Mono<PremisesAggregate> {
         val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(eventMessage, accountData)
-        return compensatePremisesRegistrationUseCase.execute(command)
+        return compensatePremisesRegistrationService.execute(command)
     }
 }

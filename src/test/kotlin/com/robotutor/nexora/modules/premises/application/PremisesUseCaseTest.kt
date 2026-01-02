@@ -26,14 +26,14 @@
 //import reactor.test.StepVerifier
 //import java.time.Instant
 //
-//class PremisesUseCaseTest {
+//class PremisesServiceTest {
 //    private val idGeneratorService = mockk<IdGeneratorService>()
 //    private val premisesRepository = mockk<PremisesRepository>()
 //    private val premisesResourceFacade = mockk<PremisesResourceFacade>()
 //    private val actorResourceFacade = mockk<ActorResourceFacade>()
 //    private val eventPublisherDeprecated = mockk<EventPublisherDeprecated<PremisesEvent>>()
 //
-//    private val premisesUseCase = PremisesUseCase(
+//    private val premisesService = PremisesService(
 //        idGeneratorService,
 //        premisesRepository,
 //        premisesResourceFacade,
@@ -76,7 +76,7 @@
 //        every { eventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //        every { premisesResourceFacade.register(RegisterPremisesResourceCommand(generatedPremisesId, owner)) } returns Mono.just(actorWithRoles)
 //
-//        val mono = premisesUseCase.createPremises(cmd)
+//        val mono = premisesService.createPremises(cmd)
 //
 //        assertNextWith(mono) {
 //            it shouldBe ActorWithRolesPremises(actorWithRoles, savedPremises)
@@ -104,7 +104,7 @@
 //        every { actorResourceFacade.getActors(user) } returns Flux.just(actorWithRoles1, actorWithRoles2)
 //        every { premisesRepository.findAllByPremisesIdIn(match { it.toSet() == setOf(p1Id, p2Id) }) } returns Flux.just(premises1, premises2)
 //
-//        val flux = premisesUseCase.getAllPremises(user)
+//        val flux = premisesService.getAllPremises(user)
 //
 //        StepVerifier.create(flux)
 //            .recordWith { mutableListOf() }

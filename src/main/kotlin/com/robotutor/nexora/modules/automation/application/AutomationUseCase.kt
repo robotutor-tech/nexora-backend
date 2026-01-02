@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
-class AutomationUseCase {
+class AutomationService {
     fun createAutomationRule(createAutomationCommand: CreateAutomationCommand, actorData: ActorData) : Mono<Automation> {
         TODO("Not yet implemented")
     }

@@ -1,6 +1,6 @@
 //package com.robotutor.nexora.modules.widget.interfaces.controller
 //
-//import com.robotutor.nexora.modules.widget.application.WidgetUseCase
+//import com.robotutor.nexora.modules.widget.application.WidgetService
 //import com.robotutor.nexora.modules.widget.domain.entity.Widget
 //import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
 //import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
@@ -18,8 +18,8 @@
 //import java.time.Instant
 //
 //class WidgetControllerTest {
-//    private val mockWidgetUseCase = mockk<WidgetUseCase>()
-//    private val widgetController = WidgetController(mockWidgetUseCase)
+//    private val mockWidgetService = mockk<WidgetService>()
+//    private val widgetController = WidgetController(mockWidgetService)
 //
 //    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
@@ -61,7 +61,7 @@
 //            createdAt = Instant.parse("2023-01-02T00:00:00Z"),
 //            updatedAt = Instant.parse("2023-01-02T00:00:00Z"),
 //        )
-//        every { mockWidgetUseCase.getWidgets(any(), any()) } returns Flux.just(w1, w2)
+//        every { mockWidgetService.getWidgets(any(), any()) } returns Flux.just(w1, w2)
 //
 //        val resourcesData = ResourcesData(
 //            listOf(
@@ -92,7 +92,7 @@
 //        )
 //
 //        verify(exactly = 1) {
-//            mockWidgetUseCase.getWidgets(Actor, match { ids -> ids.map { it.value } == listOf("widget-1", "widget-2") })
+//            mockWidgetService.getWidgets(Actor, match { ids -> ids.map { it.value } == listOf("widget-1", "widget-2") })
 //        }
 //    }
 //}

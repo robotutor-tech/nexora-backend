@@ -1,6 +1,6 @@
 //package com.robotutor.nexora.modules.premises.interfaces.controller
 //
-//import com.robotutor.nexora.modules.premises.application.PremisesUseCase
+//import com.robotutor.nexora.modules.premises.application.PremisesService
 //import com.robotutor.nexora.modules.premises.application.command.CreatePremisesCommand
 //import com.robotutor.nexora.modules.premises.application.dto.ActorWithRolesPremises
 //import com.robotutor.nexora.modules.premises.application.facade.dto.ActorWithRoles
@@ -23,8 +23,8 @@
 //import java.time.Instant
 //
 //class PremisesControllerTest {
-//    private val mockPremisesUseCase = mockk<PremisesUseCase>()
-//    private val controller = PremisesController(mockPremisesUseCase)
+//    private val mockPremisesService = mockk<PremisesService>()
+//    private val controller = PremisesController(mockPremisesService)
 //
 //    private val user = UserData(UserId("user-1"), Name("John"), Email("john@example.com"), Instant.parse("2020-01-01T00:00:00Z"))
 //
@@ -61,7 +61,7 @@
 //        )
 //        val returned = ActorWithRolesPremises(actor, premises)
 //
-//        every { mockPremisesUseCase.createPremises(any()) } returns Mono.just(returned)
+//        every { mockPremisesService.createPremises(any()) } returns Mono.just(returned)
 //
 //        val result = controller.createPremises(req, user)
 //
@@ -78,7 +78,7 @@
 //                )
 //            )
 //            verify(exactly = 1) {
-//                mockPremisesUseCase.createPremises(
+//                mockPremisesService.createPremises(
 //                    CreatePremisesCommand(
 //                        name = Name("Home"),
 //                        address = Address("street", "city", "state", "country", "12345"),
@@ -96,7 +96,7 @@
 //        val a1 = ActorWithRoles(ActorId("actor-1"), p1.premisesId, listOf(Role(RoleId("r1"), p1.premisesId, Name("Owner"), RoleType.OWNER)), ActorPrincipalType.USER, UserContext(user.userId))
 //        val a2 = ActorWithRoles(ActorId("actor-2"), p2.premisesId, listOf(Role(RoleId("r2"), p2.premisesId, Name("Guest"), RoleType.GUEST)), ActorPrincipalType.USER, UserContext(user.userId))
 //
-//        every { mockPremisesUseCase.getAllPremises(user) } returns Flux.just(
+//        every { mockPremisesService.getAllPremises(user) } returns Flux.just(
 //            ActorWithRolesPremises(a1, p1), ActorWithRolesPremises(a2, p2)
 //        )
 //
@@ -126,7 +126,7 @@
 //            )
 //        )
 //
-//        verify(exactly = 1) { mockPremisesUseCase.getAllPremises(user) }
+//        verify(exactly = 1) { mockPremisesService.getAllPremises(user) }
 //    }
 //
 //    @Test
@@ -139,7 +139,7 @@
 //            createdAt = Instant.parse("2023-01-01T00:00:00Z"),
 //            version = null
 //        )
-//        every { mockPremisesUseCase.getPremisesDetails(PremisesId("prem-1")) } returns Mono.just(premises)
+//        every { mockPremisesService.getPremisesDetails(PremisesId("prem-1")) } returns Mono.just(premises)
 //
 //        val mono = controller.getPremisesDetails("prem-1")
 //
@@ -150,7 +150,7 @@
 //                address = AddressResponse("s1", "c1", "st1", "ct1", "pc1"),
 //                createdAt = Instant.parse("2023-01-01T00:00:00Z")
 //            )
-//            verify(exactly = 1) { mockPremisesUseCase.getPremisesDetails(PremisesId("prem-1")) }
+//            verify(exactly = 1) { mockPremisesService.getPremisesDetails(PremisesId("prem-1")) }
 //        }
 //    }
 //}

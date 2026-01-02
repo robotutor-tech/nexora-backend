@@ -2,9 +2,9 @@ package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.GetActorQuery
 import com.robotutor.nexora.context.iam.application.command.GetActorsQuery
-import com.robotutor.nexora.context.iam.application.service.ActorUseCase
 import com.robotutor.nexora.context.iam.application.service.AuthenticateActorService
-import com.robotutor.nexora.context.iam.application.service.RegisterMachineActorUseCase
+import com.robotutor.nexora.context.iam.application.service.GetActorService
+import com.robotutor.nexora.context.iam.application.service.RegisterMachineActorService
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.ActorResponse
@@ -21,21 +21,21 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/iam/actors")
 class ActorController(
-    private val actorUseCase: ActorUseCase,
+    private val getActorService: GetActorService,
     private val authenticateActorService: AuthenticateActorService,
-    private val registerMachineActorUseCase: RegisterMachineActorUseCase
+    private val registerMachineActorService: RegisterMachineActorService
 ) {
     @GetMapping
     fun getActors(accountData: AccountData): Flux<ActorResponse> {
         val query = GetActorsQuery(accountData.accountId)
-        return actorUseCase.execute(query)
+        return getActorService.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }
 
     @GetMapping("/me")
     fun getActor(actorData: ActorData): Mono<ActorResponse> {
         val query = GetActorQuery(actorData.actorId, actorData.premisesId)
-        return actorUseCase.execute(query)
+        return getActorService.execute(query)
             .map { ActorMapper.toActorResponse(it) }
     }
 
@@ -56,7 +56,7 @@ class ActorController(
         accountData: AccountData
     ): Mono<ActorResponse> {
         val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, accountData)
-        return registerMachineActorUseCase.execute(command)
+        return registerMachineActorService.execute(command)
             .map { ActorMapper.toActorResponse(it) }
     }
 
@@ -65,7 +65,7 @@ class ActorController(
 //        @RequestBody @Validated deviceLoginRequest: DeviceLoginRequest,
 //    ): Mono<TokenResponsesDto> {
 //        val deviceLoginCommand = AuthDeviceMapper.toDeviceLoginCommand(deviceLoginRequest)
-//        return authDeviceUseCase.deviceLogin(deviceLoginCommand)
+//        return authDeviceService.deviceLogin(deviceLoginCommand)
 //            .map { TokenMapper.toTokenResponsesDto(it) }
 //    }
 //
@@ -77,13 +77,13 @@ class ActorController(
 //            return createMonoError(UnAuthorizedException(NexoraError.NEXORA0206))
 //        }
 //        val refreshTokenCommand = TokenMapper.toRefreshTokenCommand(token)
-//        return refreshTokenUseCase.refresh(refreshTokenCommand)
+//        return refreshTokenService.refresh(refreshTokenCommand)
 //            .map { TokenMapper.toTokenResponsesDto(it) }
 //    }
 //
 //    fun registerDevice(@RequestBody @Validated request: AuthDeviceRegisterRequest, invitationData: InvitationData): Mono<AuthDeviceResponse> {
 //        val command = AuthDeviceMapper.toAuthDeviceRegisterCommand(request)
-//        return authDeviceUseCase.register(command, invitationData)
+//        return authDeviceService.register(command, invitationData)
 //            .map { AuthDeviceMapper.toAuthDeviceResponse(it) }
 //    }
 }

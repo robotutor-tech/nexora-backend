@@ -17,9 +17,9 @@
 //import reactor.test.StepVerifier
 //import java.time.Instant
 //
-//class DeviceUseCaseTest {
+//class DeviceServiceTest {
 //    private val deviceRepository = mockk<DeviceRepository>()
-//    private val deviceUseCase = DeviceUseCase(deviceRepository)
+//    private val deviceService = DeviceService(deviceRepository)
 //
 //    @BeforeEach
 //    fun setup() {
@@ -61,7 +61,7 @@
 //            )
 //        } returns Flux.just(d1, d2)
 //
-//        val flux = deviceUseCase.getDevices(premisesId, listOf(DeviceId("d1"), DeviceId("d2")))
+//        val flux = deviceService.getDevices(premisesId, listOf(DeviceId("d1"), DeviceId("d2")))
 //        StepVerifier.create(flux).expectNext(d1).expectNext(d2).verifyComplete()
 //
 //        verify(exactly = 1) {
@@ -87,7 +87,7 @@
 //        )
 //        every { deviceRepository.findByDeviceId(DeviceId("d1")) } returns Mono.just(device)
 //
-//        val mono = deviceUseCase.getDevice(DeviceId("d1"))
+//        val mono = deviceService.getDevice(DeviceId("d1"))
 //        StepVerifier.create(mono).expectNext(device).verifyComplete()
 //
 //        verify(exactly = 1) { deviceRepository.findByDeviceId(DeviceId("d1")) }
@@ -119,7 +119,7 @@
 //            ActorPrincipalType.USER,
 //            UserData(UserId("u1"), Name("John"), Email("john@example.com"), Instant.parse("2020-01-01T00:00:00Z"))
 //        )
-//        val mono = deviceUseCase.updateDeviceFeeds(updated, feeds, actor)
+//        val mono = deviceService.updateDeviceFeeds(updated, feeds, actor)
 //
 //        StepVerifier.create(mono)
 //            .assertNext {

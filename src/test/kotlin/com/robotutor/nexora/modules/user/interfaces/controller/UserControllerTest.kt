@@ -1,8 +1,8 @@
 //package com.robotutor.nexora.modules.user.interfaces.controller
 //
 //import com.robotutor.nexora.modules.auth.domain.entity.Password
-//import com.robotutor.nexora.modules.user.application.RegisterUserUseCase
-//import com.robotutor.nexora.modules.user.application.UserUseCase
+//import com.robotutor.nexora.modules.user.application.RegisterUserService
+//import com.robotutor.nexora.modules.user.application.UserService
 //import com.robotutor.nexora.modules.user.application.command.GetUserCommand
 //import com.robotutor.nexora.modules.user.application.command.RegisterUserCommand
 //import com.robotutor.nexora.modules.user.builder.UserBuilder
@@ -22,9 +22,9 @@
 //import java.time.Instant
 //
 //class UserControllerTest {
-//    val mockUserUseCase = mockk<UserUseCase>()
-//    val mockRegisterUserUseCase = mockk<RegisterUserUseCase>()
-//    val userController = UserController(registerUserUseCase = mockRegisterUserUseCase, userUseCase = mockUserUseCase)
+//    val mockUserService = mockk<UserService>()
+//    val mockRegisterUserService = mockk<RegisterUserService>()
+//    val userController = UserController(registerUserService = mockRegisterUserService, userService = mockUserService)
 //
 //    @BeforeEach
 //    fun setup() {
@@ -39,7 +39,7 @@
 //    @Test
 //    fun `should register a user`() {
 //        val user = UserBuilder().build()
-//        every { mockRegisterUserUseCase.register(any()) } returns Mono.just(user)
+//        every { mockRegisterUserService.register(any()) } returns Mono.just(user)
 //
 //        val userRequest = UserRequest("John", "example@email.com", "9012345678", "12345678")
 //        val userResult = userController.register(userRequest)
@@ -55,7 +55,7 @@
 //                registeredAt = Instant.parse("2023-01-01T00:00:00Z"),
 //            )
 //            verify(exactly = 1) {
-//                mockRegisterUserUseCase.register(
+//                mockRegisterUserService.register(
 //                    RegisterUserCommand(
 //                        email = Email("example@email.com"),
 //                        password = Password("12345678"),
@@ -70,7 +70,7 @@
 //    @Test
 //    fun `should return current user via me`() {
 //        val user = UserBuilder().build()
-//        every { mockUserUseCase.getUser(any()) } returns Mono.just(user)
+//        every { mockUserService.getUser(any()) } returns Mono.just(user)
 //
 //        val userData = UserData(
 //            userId = UserId("userId"),
@@ -92,7 +92,7 @@
 //                registeredAt = Instant.parse("2023-01-01T00:00:00Z"),
 //            )
 //            verify(exactly = 1) {
-//                mockUserUseCase.getUser(GetUserCommand(UserId("userId")))
+//                mockUserService.getUser(GetUserCommand(UserId("userId")))
 //            }
 //        }
 //    }
@@ -100,7 +100,7 @@
 //    @Test
 //    fun `should return user by id via getUser`() {
 //        val user = UserBuilder().build()
-//        every { mockUserUseCase.getUser(any()) } returns Mono.just(user)
+//        every { mockUserService.getUser(any()) } returns Mono.just(user)
 //
 //        val result = userController.getUser("userId")
 //
@@ -115,7 +115,7 @@
 //                registeredAt = Instant.parse("2023-01-01T00:00:00Z"),
 //            )
 //            verify(exactly = 1) {
-//                mockUserUseCase.getUser(GetUserCommand(UserId("userId")))
+//                mockUserService.getUser(GetUserCommand(UserId("userId")))
 //            }
 //        }
 //    }

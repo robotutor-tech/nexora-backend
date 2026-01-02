@@ -26,13 +26,13 @@
 //import reactor.test.StepVerifier
 //import java.time.Instant
 //
-//class RuleUseCaseTest {
+//class RuleServiceTest {
 //    private val ruleRepository = mockk<RuleRepository>()
 //    private val idGeneratorService = mockk<IdGeneratorService>()
 //    private val resourceCreatedEventPublisherDeprecated = mockk<EventPublisher<ResourceCreatedEvent>>()
 //    private val configValidation = mockk<ConfigValidation>()
 //
-//    private val ruleUseCase = RuleUseCase(ruleRepository, idGeneratorService, resourceCreatedEventPublisherDeprecated, configValidation)
+//    private val ruleService = RuleService(ruleRepository, idGeneratorService, resourceCreatedEventPublisherDeprecated, configValidation)
 //
 //    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
@@ -67,7 +67,7 @@
 //        every { ruleRepository.save(any()) } answers { Mono.just(firstArg()) }
 //        every { resourceCreatedEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //
-//        val mono = ruleUseCase.createRule(command, Actor)
+//        val mono = ruleService.createRule(command, Actor)
 //
 //        assertNextWith(mono) {
 //            it.ruleId shouldBe ruleId
@@ -98,7 +98,7 @@
 //        every { configValidation.validate(config, Actor) } returns Mono.just(config)
 //        every { ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config) } returns Mono.just(existing)
 //
-//        val mono = ruleUseCase.createRule(command, Actor)
+//        val mono = ruleService.createRule(command, Actor)
 //
 //        assertErrorWith(mono) {
 //            // DuplicateDataException wraps ErrorResponse with NEXORA0302 and message extended
@@ -126,7 +126,7 @@
 //        val r2 = Rule.create(RuleId("r2"), CreateRuleCommand(Name("ruleB"), null, RuleType.CONDITION, FeedControlConfig(FeedId("f2"), ComparisonOperator.EQUAL, 2)), Actor)
 //        every { ruleRepository.findAllByPremisesIdAndRuleIdIn(Actor.premisesId, ids) } returns Flux.just(r1, r2)
 //
-//        val flux = ruleUseCase.getRules(ids, Actor)
+//        val flux = ruleService.getRules(ids, Actor)
 //        StepVerifier.create(flux).expectNext(r1).expectNext(r2).verifyComplete()
 //
 //        verify(exactly = 1) { ruleRepository.findAllByPremisesIdAndRuleIdIn(Actor.premisesId, ids) }
@@ -137,7 +137,7 @@
 //        val id = RuleId("r1")
 //        every { ruleRepository.findByRuleIdAndPremisesId(id, Actor.premisesId) } returns Mono.empty()
 //
-//        val mono = ruleUseCase.getRule(id, Actor)
+//        val mono = ruleService.getRule(id, Actor)
 //
 //        assertErrorWith(mono) {
 //            (it as DataNotFoundException).errorResponse() shouldBe ErrorResponse(

@@ -1,6 +1,6 @@
 //package com.robotutor.nexora.context.zone.interfaces.controller
 //
-//import com.robotutor.nexora.context.zone.application.ZoneUseCase
+//import com.robotutor.nexora.context.zone.application.ZoneService
 //import com.robotutor.nexora.context.zone.interfaces.controller.dto.ZoneRequest
 //import com.robotutor.nexora.context.zone.interfaces.controller.dto.ZoneResponse
 //import com.robotutor.nexora.shared.domain.model.*
@@ -19,8 +19,8 @@
 //import java.time.Instant
 //
 //class ZoneControllerTest {
-//    private val mockZoneUseCase = mockk<ZoneUseCase>()
-//    private val zoneController = ZoneController(mockZoneUseCase)
+//    private val mockZoneService = mockk<ZoneService>()
+//    private val zoneController = ZoneController(mockZoneService)
 //
 //    private val Actor = Actor(
 //        actorId = ActorId("actor-1"),
@@ -52,7 +52,7 @@
 //            version = null
 //        )
 //
-//        every { mockZoneUseCase.createZone(any(), any()) } returns Mono.just(zone)
+//        every { mockZoneService.createZone(any(), any()) } returns Mono.just(zone)
 //
 //        val result = zoneController.createZone(request, Actor)
 //
@@ -63,7 +63,7 @@
 //                name = "Living",
 //                createdAt = Instant.parse("2023-01-01T00:00:00Z")
 //            )
-//            verify(exactly = 1) { mockZoneUseCase.createZone(match { it.name == Name("Living") }, Actor) }
+//            verify(exactly = 1) { mockZoneService.createZone(match { it.name == Name("Living") }, Actor) }
 //        }
 //    }
 //
@@ -71,7 +71,7 @@
 //    fun `should get all zones`() {
 //        val zone1 = Zone(ZoneId("zone-0001"), PremisesId("prem-1"), Name("Living"), ActorId("actor-1"), Instant.parse("2023-01-01T00:00:00Z"))
 //        val zone2 = Zone(ZoneId("zone-0002"), PremisesId("prem-1"), Name("Kitchen"), ActorId("actor-1"), Instant.parse("2023-01-02T00:00:00Z"))
-//        every { mockZoneUseCase.getAllZones(any(), any()) } returns Flux.just(zone1, zone2)
+//        every { mockZoneService.getAllZones(any(), any()) } returns Flux.just(zone1, zone2)
 //
 //        val resourcesData = ResourcesData(
 //            listOf(
@@ -88,7 +88,7 @@
 //        responses[1] shouldBe ZoneResponse("zone-0002", "prem-1", "Kitchen", Instant.parse("2023-01-02T00:00:00Z"))
 //
 //        verify(exactly = 1) {
-//            mockZoneUseCase.getAllZones(Actor, match { list -> list.map { it.value } == listOf("zone-0001", "zone-0002") })
+//            mockZoneService.getAllZones(Actor, match { list -> list.map { it.value } == listOf("zone-0001", "zone-0002") })
 //        }
 //    }
 //}

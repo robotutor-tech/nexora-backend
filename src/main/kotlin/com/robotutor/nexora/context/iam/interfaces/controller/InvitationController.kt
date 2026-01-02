@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/auth/invitations")
 class InvitationController(
-//    private val invitationUseCase: InvitationUseCase,
+//    private val invitationService: InvitationService,
 ) {
 
 //    @RequireAccess(ActionType.CREATE, ResourceType.INVITATION)
@@ -16,7 +16,7 @@ class InvitationController(
 //        Actor: Actor
 //    ): Mono<InvitationWithTokenResponse> {
 //        val invitationCommand = InvitationMapper.toInvitationCommand(invitationRequest)
-//        return invitationUseCase.createInvitation(invitationCommand, Actor)
+//        return invitationService.createInvitation(invitationCommand, Actor)
 //            .map { pair -> InvitationMapper.toInvitationWithTokenResponse(pair) }
 //    }
 //
@@ -25,14 +25,14 @@ class InvitationController(
 //    fun getDeviceInvitations(resourcesData: ResourcesData): Flux<InvitationWithTokenResponse> {
 //        val invitationIds = resourcesData.getResourceIds(ActionType.LIST, ResourceType.INVITATION)
 //            .map { InvitationId(it) }
-//        return invitationUseCase.getInvitations(invitationIds)
+//        return invitationService.getInvitations(invitationIds)
 //            .map { pair -> InvitationMapper.toInvitationWithTokenResponse(pair) }
 //    }
 //
 //    @RequireAccess(ActionType.READ, ResourceType.INVITATION, "invitationId")
 //    @GetMapping("/{invitationId}")
 //    fun getInvitation(@PathVariable invitationId: String): Mono<InvitationResponse> {
-//        return invitationUseCase.getInvitation(InvitationId(invitationId))
+//        return invitationService.getInvitation(InvitationId(invitationId))
 //            .map { InvitationMapper.toInvitationResponse(it) }
 //    }
 

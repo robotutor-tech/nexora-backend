@@ -1,8 +1,8 @@
 package com.robotutor.nexora.context.user.interfaces.controller
 
 import com.robotutor.nexora.context.user.application.command.GetUserQuery
-import com.robotutor.nexora.context.user.application.usecase.GetUserUseCase
-import com.robotutor.nexora.context.user.application.usecase.RegisterUserUseCase
+import com.robotutor.nexora.context.user.application.service.GetUserService
+import com.robotutor.nexora.context.user.application.service.RegisterUserService
 import com.robotutor.nexora.context.user.interfaces.controller.mapper.UserMapper
 import com.robotutor.nexora.context.user.interfaces.controller.view.UserRequest
 import com.robotutor.nexora.context.user.interfaces.controller.view.UserResponse
@@ -16,27 +16,27 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/users")
 class UserController(
-    val registerUserUseCase: RegisterUserUseCase,
-    private val getUserUseCase: GetUserUseCase
+    val registerUserService: RegisterUserService,
+    private val getUserService: GetUserService
 ) {
 
     @PostMapping("/register")
     @ResponseStatus(code = HttpStatus.CREATED)
     fun register(@RequestBody @Validated userRequest: UserRequest): Mono<UserResponse> {
         val command = UserMapper.toRegisterUserCommand(userRequest)
-        return registerUserUseCase.execute(command)
+        return registerUserService.execute(command)
             .map { UserMapper.toUserResponse(it) }
     }
 
     @GetMapping("/me")
     fun me(accountData: AccountData): Mono<UserResponse> {
-        return getUserUseCase.execute(GetUserQuery(accountData.principalId))
+        return getUserService.execute(GetUserQuery(accountData.principalId))
             .map { UserMapper.toUserResponse(it) }
     }
 
     @GetMapping("/{accountId}")
     fun getUser(@PathVariable accountId: String): Mono<UserResponse> {
-        return getUserUseCase.execute(GetUserQuery(PrincipalId(accountId)))
+        return getUserService.execute(GetUserQuery(PrincipalId(accountId)))
             .map { UserMapper.toUserResponse(it) }
     }
 }

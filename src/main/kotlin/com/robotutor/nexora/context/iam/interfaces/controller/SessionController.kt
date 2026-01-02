@@ -1,8 +1,8 @@
 package com.robotutor.nexora.context.iam.interfaces.controller
 
 import com.robotutor.nexora.context.iam.application.command.RefreshSessionCommand
-import com.robotutor.nexora.context.iam.application.service.RefreshSessionUseCase
-import com.robotutor.nexora.context.iam.application.service.ValidateSessionUseCase
+import com.robotutor.nexora.context.iam.application.service.RefreshSessionService
+import com.robotutor.nexora.context.iam.application.service.ValidateSessionService
 import com.robotutor.nexora.context.iam.domain.vo.TokenValue
 import com.robotutor.nexora.context.iam.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.context.iam.interfaces.controller.view.SessionValidateResponse
@@ -16,14 +16,14 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/iam/sessions")
 class SessionController(
-    private val validateSessionUseCase: ValidateSessionUseCase,
-    private val refreshSessionUseCase: RefreshSessionUseCase,
+    private val validateSessionService: ValidateSessionService,
+    private val refreshSessionService: RefreshSessionService,
 ) {
 
     @GetMapping("/validate")
     fun validate(@RequestHeader("authorization") token: String = ""): Mono<SessionValidateResponse> {
         val command = SessionMapper.toValidateSessionCommand(token)
-        return validateSessionUseCase.execute(command)
+        return validateSessionService.execute(command)
             .map { SessionMapper.toValidateSessionResponse(it) }
 
     }
@@ -31,7 +31,7 @@ class SessionController(
     @GetMapping("/refresh")
     fun refresh(@RequestHeader("authorization") token: String = ""): Mono<TokenResponses> {
         val command = RefreshSessionCommand(TokenValue(token.removePrefix("Bearer ")))
-        return refreshSessionUseCase.execute(command)
+        return refreshSessionService.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
     }
 }

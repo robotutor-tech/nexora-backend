@@ -3,8 +3,8 @@ package com.robotutor.nexora.context.device.interfaces.controller
 import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.context.device.application.command.GetDeviceQuery
 import com.robotutor.nexora.context.device.application.service.CommissionDeviceService
-import com.robotutor.nexora.context.device.application.service.DeviceUseCase
-import com.robotutor.nexora.context.device.application.service.RegisterDeviceUseCase
+import com.robotutor.nexora.context.device.application.service.GetDeviceService
+import com.robotutor.nexora.context.device.application.service.RegisterDeviceService
 import com.robotutor.nexora.context.device.domain.vo.DeviceId
 import com.robotutor.nexora.context.device.interfaces.controller.mapper.DeviceMapper
 import com.robotutor.nexora.context.device.interfaces.controller.view.DeviceMetaDataRequest
@@ -20,9 +20,9 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/devices")
 class DeviceController(
-    private val registerDeviceUseCase: RegisterDeviceUseCase,
+    private val registerDeviceService: RegisterDeviceService,
     private val commissionDeviceService: CommissionDeviceService,
-    private val deviceUseCase: DeviceUseCase,
+    private val getDeviceService: GetDeviceService,
 ) {
     @PostMapping
     fun registerDevice(
@@ -30,14 +30,14 @@ class DeviceController(
         actorData: ActorData
     ): Mono<DeviceResponse> {
         val command = DeviceMapper.toRegisterDeviceCommand(request, actorData)
-        return registerDeviceUseCase.execute(command)
+        return registerDeviceService.execute(command)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
     @GetMapping
     fun getDevices(actorData: ActorData, resources: AuthorizedResources): Flux<DeviceResponse> {
         val query = DeviceMapper.toGetDevicesQuery(resources, actorData)
-        return deviceUseCase.execute(query)
+        return getDeviceService.execute(query)
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
@@ -54,20 +54,20 @@ class DeviceController(
 
 //    @GetMapping("/{deviceId}")
 //    fun getDevice(@PathVariable deviceId: String): Mono<DeviceResponse> {
-//        return deviceUseCase.getDevice(DeviceId(deviceId))
+//        return deviceService.getDevice(DeviceId(deviceId))
 //            .map { DeviceMapper.toDeviceResponse(it) }
 //    }
 
     @GetMapping("/me")
     fun getDevice(accountData: AccountData): Mono<DeviceResponse> {
-        return deviceUseCase.execute(GetDeviceQuery(DeviceId(accountData.principalId.value)))
+        return getDeviceService.execute(GetDeviceQuery(DeviceId(accountData.principalId.value)))
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 
 //    @PatchMapping("/health")
 //    fun getDevice(@RequestBody @Validated healthRequest: HealthRequest, deviceData: DeviceData): Mono<DeviceResponse> {
 //        val health = DeviceMapper.toDeviceHealth(healthRequest)
-//        return deviceUseCase.updateDeviceHealth(health, deviceData)
+//        return deviceService.updateDeviceHealth(health, deviceData)
 //            .map { DeviceMapper.toDeviceResponse(it) }
 //    }
 }

@@ -18,9 +18,9 @@
 //import org.junit.jupiter.api.Test
 //import reactor.core.publisher.Mono
 //
-//class UserUseCaseTest {
+//class UserServiceTest {
 //    private val userRepository = mockk<UserRepository>()
-//    private val userUseCase = UserUseCase(userRepository)
+//    private val userService = UserService(userRepository)
 //
 //    @BeforeEach
 //    fun setup() {
@@ -39,7 +39,7 @@
 //        val command = GetUserCommand(userId)
 //        every { userRepository.findByUserId(any()) } returns Mono.just(user)
 //
-//        val result = userUseCase.getUser(command)
+//        val result = userService.getUser(command)
 //        assertNextWith(result) {
 //            it shouldBe user
 //        }
@@ -55,7 +55,7 @@
 //        val error = RuntimeException("User not found")
 //        every { userRepository.findByUserId(userId) } returns Mono.error(error)
 //
-//        val result = userUseCase.getUser(command)
+//        val result = userService.getUser(command)
 //        assertErrorWith(result) {
 //            it shouldBe error
 //        }
@@ -68,7 +68,7 @@
 //        val command = GetUserCommand(userId)
 //        every { userRepository.findByUserId(userId) } returns Mono.empty()
 //
-//        val result = userUseCase.getUser(command)
+//        val result = userService.getUser(command)
 //        assertErrorWith(result) {
 //            it shouldBe DataNotFoundException(NexoraError.NEXORA0202)
 //        }
