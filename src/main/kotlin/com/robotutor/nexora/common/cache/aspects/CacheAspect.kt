@@ -24,19 +24,26 @@ class CacheAspect(
         val signature = pjp.signature as MethodSignature
         val method = signature.method
         val returnType = (method.genericReturnType as ParameterizedType).actualTypeArguments.first()
-        val cacheName = spELEvaluator.evaluate(method, pjp.args, cache.name) as String
+        val keyName = if (cache.name.isNotBlank()) {
+            spELEvaluator.evaluate(method, pjp.args, cache.name) as String
+        } else {
+            cache.keyGenerator.java
+                .getDeclaredConstructor()
+                .newInstance()
+                .generate(method, *pjp.args)
+        }
 
         return when (signature.returnType) {
             Mono::class.java -> {
                 @Suppress("UNCHECKED_CAST")
-                cacheService.retrieve(cacheName, returnType as Class<Any>, cache.ttlInSeconds) {
+                cacheService.retrieve(keyName, returnType as Class<Any>, cache.ttlInSeconds) {
                     (pjp.proceed() as Mono<Any>)
                 }
             }
 
             Flux::class.java -> {
                 @Suppress("UNCHECKED_CAST")
-                cacheService.retrieves(cacheName, returnType as Class<Any>, cache.ttlInSeconds) {
+                cacheService.retrieves(keyName, returnType as Class<Any>, cache.ttlInSeconds) {
                     pjp.proceed() as Flux<Any>
                 }
             }
@@ -47,7 +54,29 @@ class CacheAspect(
 
     @Around("@annotation(cacheEvicts)")
     fun evict(pjp: ProceedingJoinPoint, cacheEvicts: CacheEvicts): Any {
-        // TODO: implement eviction using cacheService
-        return pjp.proceed()
+        val signature = pjp.signature as MethodSignature
+        val method = signature.method
+        val returnType = (method.genericReturnType as ParameterizedType).actualTypeArguments.first()
+        val keyNames = cacheEvicts.evicts.map { spELEvaluator.evaluate(method, pjp.args, it) as String }
+
+        return when (signature.returnType) {
+            Mono::class.java -> {
+                @Suppress("UNCHECKED_CAST")
+                cacheService.evict(keyNames)
+                    .flatMap {
+                        (pjp.proceed() as Mono<Any>)
+                    }
+            }
+
+            Flux::class.java -> {
+                @Suppress("UNCHECKED_CAST")
+                cacheService.evict(keyNames)
+                    .flatMapMany {
+                        pjp.proceed() as Flux<Any>
+                    }
+            }
+
+            else -> throw IllegalStateException("Unsupported return type for caching: $returnType")
+        }
     }
 }

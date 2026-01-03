@@ -15,11 +15,10 @@ import reactor.core.publisher.Mono
 @Service
 class ActivateDeviceService(
     private val deviceRepository: DeviceRepository,
-    
 ) {
     private val logger = Logger(this::class.java)
 
-    @Authorize(ActionType.UPDATE, ResourceType.DEVICE, "#command.deviceId")
+    @Authorize(ActionType.UPDATE, ResourceType.DEVICE, expression = "#{command.deviceId}")
     fun execute(command: ActorRegisteredDeviceCommand): Mono<DeviceAggregate> {
         return deviceRepository.findByDeviceId(command.deviceId)
             .map { device -> device.actorRegistered() }

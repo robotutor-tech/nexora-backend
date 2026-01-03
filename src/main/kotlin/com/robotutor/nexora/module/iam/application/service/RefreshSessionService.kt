@@ -5,7 +5,6 @@ import com.robotutor.nexora.module.iam.application.view.SessionTokens
 import com.robotutor.nexora.module.iam.domain.exception.IAMError
 import com.robotutor.nexora.module.iam.domain.repository.SessionRepository
 import com.robotutor.nexora.module.iam.domain.service.SessionService
-import com.robotutor.nexora.module.iam.domain.vo.HashedTokenValue
 import com.robotutor.nexora.module.iam.domain.vo.TokenValue
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
@@ -23,8 +22,7 @@ class RefreshSessionService(
     private val logger = Logger(this::class.java)
 
     fun execute(command: RefreshSessionCommand): Mono<SessionTokens> {
-        val hashedTokenValue = HashedTokenValue.create(command.token)
-        return sessionRepository.findByTokenValueAndExpiredAtAfter(hashedTokenValue)
+        return sessionRepository.findByTokenValueAndExpiredAtAfter(command.token)
             .flatMap { session ->
                 val refreshToken = TokenValue.generate()
                 val refreshedSession = sessionService.refresh(session, refreshToken)

@@ -1,6 +1,7 @@
 package com.robotutor.nexora.shared.application.annotation
 
 import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 
 @Target(AnnotationTarget.FUNCTION)
@@ -8,5 +9,6 @@ import com.robotutor.nexora.shared.domain.vo.ResourceType
 annotation class Authorize(
     val action: ActionType,
     val resource: ResourceType,
-    val selector: String = "ALL"
+    val selector: ResourceSelector = ResourceSelector.ALL,
+    val expression: String = ""
 )

@@ -33,12 +33,12 @@ class CommissionDeviceService(
     ) {
     private val logger = Logger(this::class.java)
 
-    @Authorize(ActionType.UPDATE, ResourceType.DEVICE, "#command.deviceId")
+    @Authorize(ActionType.UPDATE, ResourceType.DEVICE, expression = "#{command.deviceId}")
     fun execute(command: CommissionDeviceCommand): Mono<DeviceAggregate> {
         val specification = DeviceByPremisesIdSpecification(command.actorData.premisesId)
             .and(DeviceByDeviceIdSpecification(command.deviceId))
         return deviceRepository.findBySpecification(specification)
-            .enforcePolicy(commissionDevicePolicy, { it } , DeviceError.NEXORA0402)
+            .enforcePolicy(commissionDevicePolicy, { it }, DeviceError.NEXORA0402)
             .flatMap { deviceRepository.findBySpecification(specification) }
             .flatMap { device ->
                 feedFacade.registerFeeds(device.deviceId, command.metadata.modelNo)

@@ -56,23 +56,20 @@ class CacheService(private val reactiveRedisTemplate: ReactiveRedisTemplate<Stri
     }
 
     fun <T : Any> updates(key: String, ttlInSeconds: Long = 60, getValuesToUpdate: () -> Mono<List<T>>): Flux<T> {
-        return evictList(key)
+        return evict(listOf(key))
             .flatMap { getValuesToUpdate() }
             .flatMapMany { setValueInList(key, it, ttlInSeconds) }
             .logOnSuccess(logger, "Successfully set values in list for $key")
             .logOnError(logger, "Failed to set values in list for $key")
     }
 
-    fun evict(key: String): Mono<Boolean> {
-        return reactiveRedisTemplate.opsForValue().delete(key)
-            .logOnSuccess(logger, "Successfully clear value for $key")
-            .logOnError(logger, "Failed to clear value for $key")
-    }
-
-    fun evictList(key: String): Mono<Boolean> {
-        return reactiveRedisTemplate.opsForList().delete(key)
-            .logOnSuccess(logger, "Successfully clear values from list for $key")
-            .logOnError(logger, "Failed to clear values from list for $key")
+    fun evict(keys: List<String>): Mono<Boolean> {
+        return createFlux(keys)
+            .flatMap { reactiveRedisTemplate.expire(it, Duration.ZERO) }
+            .collectList()
+            .map { true }
+            .logOnSuccess(logger, "Successfully clear value for $keys")
+            .logOnError(logger, "Failed to clear value for $keys")
     }
 
     private fun <T : Any> setValue(key: String, value: T, ttlInSeconds: Long = 60): Mono<T> {

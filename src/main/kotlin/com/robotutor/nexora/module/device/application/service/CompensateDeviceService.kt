@@ -19,12 +19,11 @@ import reactor.core.publisher.Mono
 class CompensateDeviceService(
     private val deviceRepository: DeviceRepository,
     private val eventPublisher: DeviceEventPublisher,
-    
 ) {
 
     private val logger = Logger(this::class.java)
 
-    @Authorize(ActionType.DELETE, ResourceType.DEVICE, "#command.deviceId")
+    @Authorize(ActionType.DELETE, ResourceType.DEVICE, expression = "#{command.deviceId}")
     fun execute(command: CompensateDeviceCommand): Mono<DeviceAggregate> {
         return deviceRepository.deleteByDeviceId(command.deviceId)
             .publishEvent(eventPublisher, DeviceRegistrationCompensatedEvent(command.deviceId))

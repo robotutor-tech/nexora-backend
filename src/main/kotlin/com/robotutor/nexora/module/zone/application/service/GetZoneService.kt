@@ -19,7 +19,6 @@ class GetZoneService(
     fun execute(query: GetZonesQuery): Flux<ZoneAggregate> {
         val specification = resourceSpecificationBuilder.build(query.resources)
             .and(ZoneByPremisesSpecification(query.resources.premisesId))
-
         return zoneRepository.findAll(specification)
     }
 

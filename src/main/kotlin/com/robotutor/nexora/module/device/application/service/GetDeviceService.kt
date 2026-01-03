@@ -15,6 +15,7 @@ import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.vo.ResourceSelector
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -26,7 +27,7 @@ class GetDeviceService(
 ) {
     private val logger = Logger(this::class.java)
 
-    @Authorize(ActionType.READ, ResourceType.DEVICE)
+    @Authorize(ActionType.READ, ResourceType.DEVICE, selector = ResourceSelector.ALL)
     fun execute(query: GetDevicesQuery): Flux<DeviceAggregate> {
         val specification = resourceSpecificationBuilder.build(query.resources)
             .and(DeviceByPremisesIdSpecification(query.resources.premisesId))
@@ -44,7 +45,7 @@ class GetDeviceService(
             .logOnError(logger, "Failed to get devices")
     }
 
-    @Authorize(ActionType.READ, ResourceType.DEVICE, "#query.deviceId.value")
+    @Authorize(ActionType.READ, ResourceType.DEVICE, expression = "#{query.deviceId.value}")
     fun execute(query: GetDeviceQuery): Mono<DeviceAggregate> {
         return deviceRepository.findByDeviceId(query.deviceId)
             .logOnSuccess(logger, "Successfully get device")

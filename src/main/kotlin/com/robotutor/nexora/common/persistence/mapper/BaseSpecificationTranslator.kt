@@ -13,8 +13,8 @@ abstract class BaseSpecificationTranslator<A : Aggregate, S : Specification<A>>(
     SpecificationTranslator<A, Criteria> {
 
     @Suppress("UNCHECKED_CAST")
-    final override fun translate(specification: Specification<A>): Criteria =
-        when (specification) {
+    final override fun translate(specification: Specification<A>): Criteria {
+        return when (specification) {
             is AndSpecification ->
                 Criteria().andOperator(translate(specification.left), translate(specification.right))
 
@@ -32,6 +32,7 @@ abstract class BaseSpecificationTranslator<A : Aggregate, S : Specification<A>>(
 
             else -> translateLeaf(specification as S)
         }
+    }
 
     protected abstract fun translateLeaf(specification: S): Criteria
 }
