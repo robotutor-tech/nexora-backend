@@ -7,27 +7,27 @@ import com.robotutor.nexora.module.device.interfaces.messaging.mapper.DeviceEven
 import com.robotutor.nexora.module.device.interfaces.messaging.message.ActorRegisteredDeviceMessage
 import com.robotutor.nexora.module.device.interfaces.messaging.message.CompensateDeviceMessage
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.common.messaging.annotation.KafkaController
-import com.robotutor.nexora.common.messaging.annotation.KafkaEvent
-import com.robotutor.nexora.common.messaging.annotation.KafkaEventListener
+import com.robotutor.nexora.common.message.annotation.EventController
+import com.robotutor.nexora.common.message.annotation.EventListener
+import com.robotutor.nexora.common.message.annotation.Message
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")
-@KafkaController
+@EventController
 class DeviceEventController(
     private val compensateDeviceService: CompensateDeviceService,
     private val actorRegisteredDeviceService: ActivateDeviceService
 ) {
 
-    @KafkaEventListener(["iam.account.registered.device"])
-    fun activateDevice(@KafkaEvent eventMessage: ActorRegisteredDeviceMessage, actorData: ActorData): Mono<DeviceAggregate> {
-        val command = DeviceEventMapper.toActorRegisteredDeviceCommand(eventMessage, actorData)
+    @EventListener(["iam.account.registered.device"])
+    fun activateDevice(@Message message: ActorRegisteredDeviceMessage, actorData: ActorData): Mono<DeviceAggregate> {
+        val command = DeviceEventMapper.toActorRegisteredDeviceCommand(message, actorData)
         return actorRegisteredDeviceService.execute(command)
     }
 
-    @KafkaEventListener(["iam.account.registration.failed.device"])
-    fun compensateDevice(@KafkaEvent eventMessage: CompensateDeviceMessage): Mono<DeviceAggregate> {
-        val command = DeviceEventMapper.toCompensateDeviceCommand(eventMessage)
+    @EventListener(["iam.account.registration.failed.device"])
+    fun compensateDevice(@Message message: CompensateDeviceMessage): Mono<DeviceAggregate> {
+        val command = DeviceEventMapper.toCompensateDeviceCommand(message)
         return compensateDeviceService.execute(command)
     }
 }

@@ -2,8 +2,8 @@ package com.robotutor.nexora.module.device.infrastructure.messaging.mapper
 
 import com.robotutor.nexora.module.device.domain.event.*
 import com.robotutor.nexora.module.device.infrastructure.messaging.message.*
-import com.robotutor.nexora.common.messaging.mapper.EventMapper
-import com.robotutor.nexora.common.messaging.message.EventMessage
+import com.robotutor.nexora.common.message.mapper.EventMapper
+import com.robotutor.nexora.common.message.message.EventMessage
 
 object DeviceEventMapper : EventMapper<DeviceEvent> {
     override fun toEventMessage(event: DeviceEvent): EventMessage {

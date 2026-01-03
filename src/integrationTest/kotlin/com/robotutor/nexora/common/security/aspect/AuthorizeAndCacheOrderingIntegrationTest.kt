@@ -1,7 +1,6 @@
 package com.robotutor.nexora.common.security.aspect
 
 import com.robotutor.nexora.common.cache.application.CacheNames
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.common.security.ports.AccessAuthorizer
 import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.application.annotation.Authorize
@@ -58,7 +57,7 @@ class AuthorizeAndCacheOrderingIntegrationTest {
             override fun getAuthorizedScope(
                 exchange: org.springframework.web.server.ServerWebExchange,
                 httpAuthorize: HttpAuthorize
-            ): Mono<AuthorizedResources> {
+            ): Mono<Resources> {
                 return Mono.error(UnsupportedOperationException("not needed"))
             }
         }

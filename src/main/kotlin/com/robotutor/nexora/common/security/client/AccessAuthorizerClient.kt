@@ -1,9 +1,9 @@
 package com.robotutor.nexora.common.security.client
 
-import com.robotutor.nexora.common.httpclient.WebClientWrapper
+import com.robotutor.nexora.common.webclient.WebClientWrapper
 import com.robotutor.nexora.common.security.client.view.AuthorizeResponse
+import com.robotutor.nexora.common.security.client.view.ResourceResponse
 import com.robotutor.nexora.common.security.config.AppConfig
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import org.springframework.stereotype.Service
@@ -27,17 +27,5 @@ class AccessAuthorizerClient(
             returnType = AuthorizeResponse::class.java
         )
             .map { it.isAuthorized }
-    }
-
-    fun getAuthorizedScope(exchange: ServerWebExchange, httpAuthorize: Authorize): Mono<AuthorizedResources> {
-        return webClient.post(
-            baseUrl = appConfig.iamBaseUrl,
-            path = appConfig.resourcePath,
-            body = mapOf(
-                "actionType" to httpAuthorize.action,
-                "resourceType" to httpAuthorize.resource
-            ),
-            returnType = AuthorizedResources::class.java
-        )
     }
 }

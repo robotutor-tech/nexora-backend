@@ -7,8 +7,8 @@ import com.robotutor.nexora.module.user.domain.event.UserRegisteredEvent
 import com.robotutor.nexora.module.user.infrastructure.messaging.message.UserActivatedEventMessage
 import com.robotutor.nexora.module.user.infrastructure.messaging.message.UserCompensatedEventMessage
 import com.robotutor.nexora.module.user.infrastructure.messaging.message.UserRegisteredEventMessage
-import com.robotutor.nexora.common.messaging.mapper.EventMapper
-import com.robotutor.nexora.common.messaging.message.EventMessage
+import com.robotutor.nexora.common.message.mapper.EventMapper
+import com.robotutor.nexora.common.message.message.EventMessage
 
 object UserEventMapper : EventMapper<UserEvent> {
     override fun toEventMessage(event: UserEvent): EventMessage {

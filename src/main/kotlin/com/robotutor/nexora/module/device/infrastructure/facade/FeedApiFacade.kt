@@ -6,7 +6,7 @@ import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.device.infrastructure.config.FeedConfig
 import com.robotutor.nexora.module.device.infrastructure.facade.view.FeedResponse
 import com.robotutor.nexora.shared.domain.vo.FeedId
-import com.robotutor.nexora.common.httpclient.WebClientWrapper
+import com.robotutor.nexora.common.webclient.WebClientWrapper
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 

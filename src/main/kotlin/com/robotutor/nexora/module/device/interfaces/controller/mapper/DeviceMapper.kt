@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.device.interfaces.controller.mapper
 
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.module.device.application.command.CommissionDeviceCommand
 import com.robotutor.nexora.module.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.module.device.application.command.RegisterDeviceCommand
@@ -14,6 +13,7 @@ import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceMetaD
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.module.device.interfaces.controller.view.RegisterDeviceRequest
 import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.Resources
 import com.robotutor.nexora.shared.domain.vo.ZoneId
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
@@ -52,8 +52,8 @@ object DeviceMapper {
         )
     }
 
-    fun toGetDevicesQuery(resources: AuthorizedResources, actorData: ActorData): GetDevicesQuery {
-        return GetDevicesQuery(actorData.actorId, resources.toResources(DeviceId::class.java))
+    fun toGetDevicesQuery(resources: Resources, actorData: ActorData): GetDevicesQuery {
+        return GetDevicesQuery(actorData.actorId, resources)
     }
 
     fun toCommissionDeviceCommand(metadata: DeviceMetaDataRequest, actorData: ActorData): CommissionDeviceCommand {

@@ -1,13 +1,17 @@
 package com.robotutor.nexora.module.zone.interfaces.controller
 
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
+import com.robotutor.nexora.common.resource.annotation.ResourceSelector
+import com.robotutor.nexora.module.zone.application.command.GetZonesQuery
 import com.robotutor.nexora.module.zone.application.service.CreateWidgetsService
 import com.robotutor.nexora.module.zone.application.service.CreateZoneService
-import com.robotutor.nexora.module.zone.application.service.ZoneService
+import com.robotutor.nexora.module.zone.application.service.GetZoneService
 import com.robotutor.nexora.module.zone.interfaces.controller.mapper.ZoneMapper
 import com.robotutor.nexora.module.zone.interfaces.controller.view.WidgetsRequest
 import com.robotutor.nexora.module.zone.interfaces.controller.view.ZoneRequest
 import com.robotutor.nexora.module.zone.interfaces.controller.view.ZoneResponse
+import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.domain.vo.Resources
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -18,7 +22,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/zones")
 class ZoneController(
     private val createZoneService: CreateZoneService,
-    private val zoneService: ZoneService,
+    private val getZoneService: GetZoneService,
     private val createWidgetsService: CreateWidgetsService
 ) {
 
@@ -30,16 +34,15 @@ class ZoneController(
     }
 
     @GetMapping
-    fun getAllZones(resources: AuthorizedResources): Flux<ZoneResponse> {
-        val query = ZoneMapper.getZonesQuery(resources)
-        return zoneService.execute(query)
+    fun getAllZones(@ResourceSelector(ActionType.READ, ResourceType.ZONE) resources: Resources): Flux<ZoneResponse> {
+        return getZoneService.execute(GetZonesQuery(resources))
             .map { ZoneMapper.toZoneResponse(it) }
     }
 
     @GetMapping("/{zoneId}")
     fun getZone(@PathVariable zoneId: String, actorData: ActorData): Mono<ZoneResponse> {
         val query = ZoneMapper.getZoneQuery(zoneId, actorData)
-        return zoneService.execute(query)
+        return getZoneService.execute(query)
             .map { ZoneMapper.toZoneResponse(it) }
     }
 

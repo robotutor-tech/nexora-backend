@@ -1,10 +1,11 @@
 package com.robotutor.nexora.shared.domain.specification
 
-import com.robotutor.nexora.shared.domain.AggregateId
+import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.vo.Identifier
 
-class IdNotInSpecification<T : Identifier, A : AggregateId<A, T>>(
-     val denied: Set<T>
+class IdNotInSpecification<A : AggregateRoot<A, out Identifier, out Event>>(
+    val denied: Set<Identifier>
 ) : Specification<A> {
 
     override fun isSatisfiedBy(candidate: A): Boolean {

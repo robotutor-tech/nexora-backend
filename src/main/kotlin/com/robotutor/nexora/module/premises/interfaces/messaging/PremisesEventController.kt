@@ -7,32 +7,32 @@ import com.robotutor.nexora.module.premises.interfaces.messaging.mapper.Premises
 import com.robotutor.nexora.module.premises.interfaces.messaging.message.PremisesOwnerRegisteredMessage
 import com.robotutor.nexora.module.premises.interfaces.messaging.message.PremisesOwnerRegistrationFailedMessage
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.common.messaging.annotation.KafkaController
-import com.robotutor.nexora.common.messaging.annotation.KafkaEvent
-import com.robotutor.nexora.common.messaging.annotation.KafkaEventListener
+import com.robotutor.nexora.common.message.annotation.EventController
+import com.robotutor.nexora.common.message.annotation.EventListener
+import com.robotutor.nexora.common.message.annotation.Message
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")
-@KafkaController
+@EventController
 class PremisesEventController(
     private val activatePremisesService: ActivatePremisesService,
     private val compensatePremisesRegistrationService: CompensatePremisesRegistrationService
 ) {
-    @KafkaEventListener(["iam.premises.owner.registered"])
+    @EventListener(["iam.premises.owner.registered"])
     fun activatePremises(
-        @KafkaEvent eventMessage: PremisesOwnerRegisteredMessage,
+        @Message message: PremisesOwnerRegisteredMessage,
         accountData: AccountData
     ): Mono<PremisesAggregate> {
-        val command = PremisesEventMapper.toActivatePremisesCommand(eventMessage, accountData)
+        val command = PremisesEventMapper.toActivatePremisesCommand(message, accountData)
         return activatePremisesService.execute(command)
     }
 
-    @KafkaEventListener(["iam.premises.owner.registration.failed"])
+    @EventListener(["iam.premises.owner.registration.failed"])
     fun compensatePremisesRegistration(
-        @KafkaEvent eventMessage: PremisesOwnerRegistrationFailedMessage,
+        @Message message: PremisesOwnerRegistrationFailedMessage,
         accountData: AccountData
     ): Mono<PremisesAggregate> {
-        val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(eventMessage, accountData)
+        val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(message, accountData)
         return compensatePremisesRegistrationService.execute(command)
     }
 }

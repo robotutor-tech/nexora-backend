@@ -5,7 +5,7 @@ import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.device.infrastructure.config.ZoneConfig
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.ZoneId
-import com.robotutor.nexora.common.httpclient.WebClientWrapper
+import com.robotutor.nexora.common.webclient.WebClientWrapper
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 

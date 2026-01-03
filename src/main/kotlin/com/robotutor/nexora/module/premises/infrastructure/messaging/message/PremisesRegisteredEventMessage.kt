@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.premises.infrastructure.messaging.message
 
-import com.robotutor.nexora.common.messaging.message.EventMessage
+import com.robotutor.nexora.common.message.message.EventMessage
 
 sealed class PremisesEventMessage(eventName: String) : EventMessage("premises.$eventName")
 

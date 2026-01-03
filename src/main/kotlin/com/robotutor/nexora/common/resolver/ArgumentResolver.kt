@@ -5,5 +5,5 @@ import java.lang.reflect.Parameter
 
 interface ArgumentResolver {
     fun supportsParameter(parameter: Parameter): Boolean
-    fun resolveArgument(): Mono<Any>
+    fun resolveArgument(parameter: Parameter): Mono<Any>
 }

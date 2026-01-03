@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.filter
 
-import com.robotutor.nexora.common.httpclient.controllers.ExceptionHandlerRegistry
+import com.robotutor.nexora.common.security.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.common.security.client.SessionValidatorClient
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.domain.exception.SecurityError

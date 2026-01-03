@@ -38,7 +38,7 @@ object AuthorizationMapper {
         return GetAuthorizedResourcesQuery(actorData.actorId, request.resourceType, request.actionType)
     }
 
-    fun toAuthorizedResourcesResponse(resources: Resources<ResourceId>): GetAuthorizedResourcesResponse {
+    fun toAuthorizedResourcesResponse(resources: Resources): GetAuthorizedResourcesResponse {
         return GetAuthorizedResourcesResponse(
             premisesId = resources.premisesId.value,
             resourceType = resources.resourceType,

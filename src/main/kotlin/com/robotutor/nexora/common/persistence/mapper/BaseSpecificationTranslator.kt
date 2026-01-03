@@ -24,10 +24,10 @@ abstract class BaseSpecificationTranslator<A : Aggregate, S : Specification<A>>(
             is NotSpecification ->
                 Criteria().norOperator(translate(specification.spec))
 
-            is IdInSpecification<*, *> -> if (specification.allowed.isEmpty()) Criteria()
+            is IdInSpecification -> if (specification.allowed.isEmpty()) Criteria()
             else Criteria.where(identifierKey).`in`(specification.allowed.map { it.value })
 
-            is IdNotInSpecification<*, *> -> if (specification.denied.isEmpty()) Criteria()
+            is IdNotInSpecification -> if (specification.denied.isEmpty()) Criteria()
             else Criteria.where(identifierKey).nin(specification.denied.map { it.value })
 
             else -> translateLeaf(specification as S)

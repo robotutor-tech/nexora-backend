@@ -15,7 +15,7 @@ class AuthorizeResourceService(private val actorService: ActorService) {
             .map { permissions -> permissions.authorize(command.resource) }
     }
 
-    fun execute(command: GetAuthorizedResourcesQuery): Mono<Resources<ResourceId>> {
+    fun execute(command: GetAuthorizedResourcesQuery): Mono<Resources> {
         return actorService.getActorPermissions(command.actorId)
             .map { permissions -> permissions.getResources(command.action, command.type) }
     }

@@ -4,5 +4,5 @@ import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.Resources
 
-data class GetDevicesQuery(val actorId: ActorId, val resources: Resources<DeviceId>)
+data class GetDevicesQuery(val actorId: ActorId, val resources: Resources)
 data class GetDeviceQuery(val deviceId: DeviceId)

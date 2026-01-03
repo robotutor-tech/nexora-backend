@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.iam.infrastructure.messaging.message
 
 import com.robotutor.nexora.module.iam.domain.vo.CredentialKind
-import com.robotutor.nexora.common.messaging.message.EventMessage
+import com.robotutor.nexora.common.message.message.EventMessage
 
 sealed class IAMEventMessage(name: String) : EventMessage("iam.$name")
 

@@ -7,20 +7,19 @@ import com.robotutor.nexora.module.feed.domain.specification.FeedByPremisesIdSpe
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
-import com.robotutor.nexora.shared.domain.specification.AuthorizedQueryBuilder
-import com.robotutor.nexora.shared.domain.vo.FeedId
+import com.robotutor.nexora.shared.domain.specification.ResourceSpecificationBuilder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 
 @Service
 class FeedService(
     private val feedRepository: FeedRepository,
-    private val authorizedQueryBuilder: AuthorizedQueryBuilder<FeedId, FeedAggregate>,
-    ) {
+    private val resourceSpecificationBuilder: ResourceSpecificationBuilder<FeedAggregate>,
+) {
     private val logger = Logger(this::class.java)
 
     fun execute(query: GetFeedsQuery): Flux<FeedAggregate> {
-        val specification = authorizedQueryBuilder.build(query.resources)
+        val specification = resourceSpecificationBuilder.build(query.resources)
             .and(FeedByPremisesIdSpecification(query.resources.premisesId))
         return feedRepository.findAll(specification)
             .logOnSuccess(logger, "Successfully get feeds")

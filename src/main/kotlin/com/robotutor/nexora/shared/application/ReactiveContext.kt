@@ -12,29 +12,6 @@ import com.robotutor.nexora.shared.utility.createMonoError
 import reactor.core.publisher.Mono
 
 object ReactiveContext {
-
-    fun getActorData(): Mono<ActorData> {
-        return Mono.deferContextual { context ->
-            val optional = context.getOrEmpty<ActorData>(ActorData::class.java)
-            if (optional.isPresent) {
-                createMono(optional.get())
-            } else {
-                createMonoError(DataNotFoundException(SharedNexoraError.NEXORA0101))
-            }
-        }
-    }
-
-    fun getAccountData(): Mono<AccountData> {
-        return Mono.deferContextual { context ->
-            val accountDataDataOptional = context.getOrEmpty<AccountData>(AccountData::class.java)
-            if (accountDataDataOptional.isPresent) {
-                createMono(accountDataDataOptional.get())
-            } else {
-                createMonoError(DataNotFoundException(SharedNexoraError.NEXORA0102))
-            }
-        }
-    }
-
     fun getTraceData(): Mono<TraceData> {
         return Mono.deferContextual { context ->
             val premisesId = context.getOrDefault(ReactiveContext.X_PREMISES_ID, "missing-premisesId-id")!!

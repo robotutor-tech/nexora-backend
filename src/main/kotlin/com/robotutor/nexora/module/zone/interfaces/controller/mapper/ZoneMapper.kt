@@ -15,13 +15,13 @@ import com.robotutor.nexora.module.zone.interfaces.controller.view.ZoneResponse
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.module.zone.domain.vo.SliderWidgetMetadata
 import com.robotutor.nexora.module.zone.domain.vo.ToggleWidgetMetadata
 import com.robotutor.nexora.module.zone.domain.vo.WidgetMetadata
 import com.robotutor.nexora.module.zone.interfaces.controller.view.SliderWidgetMetadataResponse
 import com.robotutor.nexora.module.zone.interfaces.controller.view.ToggleWidgetMetadataResponse
 import com.robotutor.nexora.module.zone.interfaces.controller.view.WidgetMetadataResponse
+import com.robotutor.nexora.shared.domain.vo.Resources
 
 object ZoneMapper {
     fun toCreateZoneCommand(request: ZoneRequest, actorData: ActorData): CreateZoneCommand {
@@ -37,10 +37,6 @@ object ZoneMapper {
             createdAt = zone.createdAt,
             updatedAt = zone.getUpdatedAt()
         )
-    }
-
-    fun getZonesQuery(resources: AuthorizedResources): GetZonesQuery {
-        return GetZonesQuery(resources.toResources(ZoneId::class.java))
     }
 
     fun getZoneQuery(zoneId: String, actorData: ActorData): GetZoneQuery {

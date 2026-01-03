@@ -1,11 +1,11 @@
 package com.robotutor.nexora.modules.automation.interfaces.controller
 
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.modules.automation.application.RuleService
 import com.robotutor.nexora.modules.automation.domain.entity.RuleId
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.RuleResponse
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.RuleMapper
+import com.robotutor.nexora.shared.domain.vo.Resources
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -24,7 +24,7 @@ class RuleController(private val ruleService: RuleService) {
     }
 
     @GetMapping
-    fun getRules(actorData: ActorData, authorizedResources: AuthorizedResources): Flux<RuleResponse> {
+    fun getRules(actorData: ActorData, resources: Resources): Flux<RuleResponse> {
         val ruleIds = emptyList<RuleId>()
         return ruleService.getRules(ruleIds, actorData)
             .map { RuleMapper.toRuleResponse(it) }

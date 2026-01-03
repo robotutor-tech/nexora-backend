@@ -20,7 +20,7 @@ data class Permissions(
         return permissions.any { it.isEqual(resource) }
     }
 
-    fun getResources(action: ActionType, type: ResourceType): Resources<ResourceId> {
+    fun getResources(action: ActionType, type: ResourceType): Resources {
         val resourceSelector = getResourceSelector(action, type)
         val allowedIds = if (resourceSelector == ResourceSelector.ALL) emptySet() else getAllowedIds(action, type)
         val deniedIds = override

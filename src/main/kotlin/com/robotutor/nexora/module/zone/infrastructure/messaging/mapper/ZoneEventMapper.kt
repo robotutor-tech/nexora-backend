@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.zone.infrastructure.messaging.mapper
 
-import com.robotutor.nexora.common.messaging.mapper.EventMapper
-import com.robotutor.nexora.common.messaging.message.EventMessage
+import com.robotutor.nexora.common.message.mapper.EventMapper
+import com.robotutor.nexora.common.message.message.EventMessage
 import com.robotutor.nexora.module.zone.domain.event.ZoneCreatedEvent
 import com.robotutor.nexora.module.zone.domain.event.ZoneEvent
 import com.robotutor.nexora.module.zone.infrastructure.messaging.message.ZoneCreatedEventMessage

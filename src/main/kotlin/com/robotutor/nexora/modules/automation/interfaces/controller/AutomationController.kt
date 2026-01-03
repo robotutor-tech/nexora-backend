@@ -1,11 +1,11 @@
 package com.robotutor.nexora.modules.automation.interfaces.controller
 
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
 import com.robotutor.nexora.modules.automation.application.AutomationService
 import com.robotutor.nexora.modules.automation.domain.entity.AutomationId
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationRequest
 import com.robotutor.nexora.modules.automation.interfaces.controller.dto.AutomationResponse
 import com.robotutor.nexora.modules.automation.interfaces.controller.mapper.AutomationMapper
+import com.robotutor.nexora.shared.domain.vo.Resources
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -27,7 +27,7 @@ class AutomationController(private val automationService: AutomationService) {
     }
 
     @GetMapping
-    fun getAutomationRules(actorData: ActorData, authorizedResources: AuthorizedResources): Flux<AutomationResponse> {
+    fun getAutomationRules(actorData: ActorData, resources: Resources): Flux<AutomationResponse> {
         val automationIds = emptyList<AutomationId>()
         return automationService.getAutomationRules(automationIds, actorData)
             .map { AutomationMapper.toAutomationResponse(it) }

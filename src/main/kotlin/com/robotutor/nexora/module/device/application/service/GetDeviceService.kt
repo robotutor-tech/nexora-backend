@@ -8,9 +8,8 @@ import com.robotutor.nexora.module.device.domain.repository.DeviceRepository
 import com.robotutor.nexora.module.device.domain.specification.DeviceByPremisesIdSpecification
 import com.robotutor.nexora.module.device.domain.specification.DeviceByRegisteredBySpecification
 import com.robotutor.nexora.module.device.domain.specification.DeviceByStateSpecification
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.shared.application.annotation.Authorize
-import com.robotutor.nexora.shared.domain.specification.AuthorizedQueryBuilder
+import com.robotutor.nexora.shared.domain.specification.ResourceSpecificationBuilder
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.application.logger.Logger
@@ -23,14 +22,13 @@ import reactor.core.publisher.Mono
 @Service
 class GetDeviceService(
     private val deviceRepository: DeviceRepository,
-    private val authorizedQueryBuilder: AuthorizedQueryBuilder<DeviceId, DeviceAggregate>,
-
-    ) {
+    private val resourceSpecificationBuilder: ResourceSpecificationBuilder<DeviceAggregate>,
+) {
     private val logger = Logger(this::class.java)
 
     @Authorize(ActionType.READ, ResourceType.DEVICE)
     fun execute(query: GetDevicesQuery): Flux<DeviceAggregate> {
-        val specification = authorizedQueryBuilder.build(query.resources)
+        val specification = resourceSpecificationBuilder.build(query.resources)
             .and(DeviceByPremisesIdSpecification(query.resources.premisesId))
             .and(
                 DeviceByStateSpecification(DeviceState.ACTIVE)

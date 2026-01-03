@@ -1,6 +1,6 @@
 package com.robotutor.nexora.common.security.client
 
-import com.robotutor.nexora.common.httpclient.WebClientWrapper
+import com.robotutor.nexora.common.webclient.WebClientWrapper
 import com.robotutor.nexora.common.security.client.view.AccountSessionPrincipalResponse
 import com.robotutor.nexora.common.security.client.view.ActorSessionPrincipalResponse
 import com.robotutor.nexora.common.security.client.view.InternalSessionPrincipalResponse

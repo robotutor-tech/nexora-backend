@@ -11,11 +11,11 @@ import com.robotutor.nexora.module.feed.interfaces.controller.view.FeedValueRang
 import com.robotutor.nexora.module.feed.interfaces.controller.view.RegisterFeedsRequest
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.FeedId
-import com.robotutor.nexora.common.security.domain.vo.AuthorizedResources
+import com.robotutor.nexora.shared.domain.vo.Resources
 
 object FeedMapper {
-    fun toGetFeedsQuery(resources: AuthorizedResources, actorData: ActorData): GetFeedsQuery {
-        return GetFeedsQuery(actorData.actorId, resources.toResources(FeedId::class.java))
+    fun toGetFeedsQuery(resources: Resources, actorData: ActorData): GetFeedsQuery {
+        return GetFeedsQuery(actorData.actorId, resources)
     }
 
     fun toFeedResponse(feed: FeedAggregate): FeedResponse {

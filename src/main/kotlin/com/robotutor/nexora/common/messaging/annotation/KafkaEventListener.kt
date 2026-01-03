@@ -1,8 +1,0 @@
-package com.robotutor.nexora.common.messaging.annotation
-
-import kotlin.annotation.AnnotationRetention.RUNTIME
-import kotlin.annotation.AnnotationTarget.FUNCTION
-
-@Retention(RUNTIME)
-@Target(FUNCTION)
-annotation class KafkaEventListener(val topics: Array<String>)
