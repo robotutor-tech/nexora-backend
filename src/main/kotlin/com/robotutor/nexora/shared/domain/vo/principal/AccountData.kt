@@ -6,7 +6,6 @@ data class AccountData(
     override val accountId: AccountId,
     override val type: AccountType,
     override val principalId: PrincipalId
-) : Account(accountId, type, principalId) {
-}
+) : Account(accountId, type, principalId)
 
 enum class AccountType { HUMAN, MACHINE }

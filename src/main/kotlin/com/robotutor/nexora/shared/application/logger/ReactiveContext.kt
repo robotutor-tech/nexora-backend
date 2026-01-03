@@ -24,7 +24,7 @@ internal object ReactiveContext {
     }
 
     fun getCorrelationId(context: ContextView): String {
-        return context.getOrDefault<String>(CORRELATION_ID, null) ?: "missing-premises-id"
+        return context.getOrDefault<String>(CORRELATION_ID, null) ?: "missing-correlation-id"
     }
 
     fun putStartTime(context: Context, startTime: Instant): Context {

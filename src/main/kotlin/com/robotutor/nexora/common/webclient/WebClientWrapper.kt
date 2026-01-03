@@ -350,12 +350,12 @@ class WebClientWrapper(private val webClient: WebClient) {
         metaDataHeaders: MetadataHeaders
     ) {
         metaDataHeaders.headers.remove(HttpHeaders.CONTENT_LENGTH)
+        httpHeaders.set(X_PREMISES_ID, metaDataHeaders.premisesId)
+        httpHeaders.set(CORRELATION_ID, metaDataHeaders.premisesId)
         httpHeaders.putAll(metaDataHeaders.headers)
         headers.map {
             httpHeaders.set(it.key, it.value)
         }
-        httpHeaders.set(X_PREMISES_ID, metaDataHeaders.premisesId)
-        httpHeaders.set(CORRELATION_ID, metaDataHeaders.premisesId)
     }
 
     private fun createUrlForRequest(

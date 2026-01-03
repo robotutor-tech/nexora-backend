@@ -9,8 +9,6 @@ import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.module.user.interfaces.messaging.mapper.UserEventMapper
 import com.robotutor.nexora.module.user.interfaces.messaging.message.ActivateUserMessage
 import com.robotutor.nexora.module.user.interfaces.messaging.message.CompensateUserMessage
-import com.robotutor.nexora.module.zone.infrastructure.messaging.message.ZoneCreatedEventMessage
-import com.robotutor.nexora.shared.utility.createMono
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")
@@ -30,12 +28,5 @@ class UserEventController(
     fun compensateUser(@Message message: CompensateUserMessage): Mono<UserAggregate> {
         val command = UserEventMapper.toCompensateUserCommand(message)
         return compensateUserService.execute(command)
-    }
-
-
-    @EventListener(["zone.created"])
-    fun zoneCreatedEvent(@Message message: ZoneCreatedEventMessage): Mono<ZoneCreatedEventMessage> {
-        println("================================>>>>>>>>>>>>>message: $message")
-        return createMono(message)
     }
 }

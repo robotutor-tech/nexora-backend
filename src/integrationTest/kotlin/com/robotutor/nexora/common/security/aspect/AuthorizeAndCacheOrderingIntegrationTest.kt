@@ -1,6 +1,5 @@
 package com.robotutor.nexora.common.security.aspect
 
-import com.robotutor.nexora.common.cache.application.CacheNames
 import com.robotutor.nexora.common.security.ports.AccessAuthorizer
 import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.application.annotation.Authorize

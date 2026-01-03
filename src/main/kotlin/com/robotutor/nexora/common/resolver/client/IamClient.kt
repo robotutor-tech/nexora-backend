@@ -1,12 +1,11 @@
 package com.robotutor.nexora.common.resolver.client
 
 import com.robotutor.nexora.common.resource.annotation.ResourceSelector
-import com.robotutor.nexora.common.webclient.WebClientWrapper
 import com.robotutor.nexora.common.security.client.view.AuthorizeResponse
 import com.robotutor.nexora.common.security.client.view.ResourceResponse
 import com.robotutor.nexora.common.security.config.AppConfig
+import com.robotutor.nexora.common.webclient.WebClientWrapper
 import com.robotutor.nexora.shared.application.annotation.Authorize
-import com.robotutor.nexora.shared.domain.Entity
 import com.robotutor.nexora.shared.domain.vo.Identifier
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ResourceId

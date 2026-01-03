@@ -9,9 +9,8 @@ import com.robotutor.nexora.module.feed.domain.vo.FeedValueRange
 import com.robotutor.nexora.module.feed.interfaces.controller.view.FeedResponse
 import com.robotutor.nexora.module.feed.interfaces.controller.view.FeedValueRangeResponse
 import com.robotutor.nexora.module.feed.interfaces.controller.view.RegisterFeedsRequest
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Resources
+import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
 object FeedMapper {
     fun toGetFeedsQuery(resources: Resources, actorData: ActorData): GetFeedsQuery {

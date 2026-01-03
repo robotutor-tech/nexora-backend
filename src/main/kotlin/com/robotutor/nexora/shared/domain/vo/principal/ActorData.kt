@@ -10,4 +10,8 @@ data class ActorData(
     override val accountId: AccountId,
     override val type: AccountType,
     override val principalId: PrincipalId
-) : Account(accountId, type, principalId)
+) : Account(accountId, type, principalId) {
+    fun toAccountData(): AccountData {
+        return AccountData(accountId, type, principalId)
+    }
+}

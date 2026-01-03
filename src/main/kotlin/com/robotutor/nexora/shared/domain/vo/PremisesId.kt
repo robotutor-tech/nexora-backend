@@ -8,6 +8,6 @@ data class PremisesId(override val value: String) : Identifier, ValueObject {
     }
 
     override fun toString(): String {
-        return value
+        return "{ value: $value }"
     }
 }

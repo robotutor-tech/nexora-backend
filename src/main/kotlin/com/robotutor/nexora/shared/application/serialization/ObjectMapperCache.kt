@@ -13,5 +13,4 @@ object ObjectMapperCache {
         .registerModule(JavaTimeModule())
         .registerKotlinModule()
         .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-
 }

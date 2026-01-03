@@ -21,8 +21,4 @@ class ArgumentResolverConfigurer(
     )
 
     fun getResolvers() = resolvers.toList()
-
-    fun addCustomResolver(vararg resolver: ArgumentResolver) {
-        resolvers.plus(resolver).distinct()
-    }
 }

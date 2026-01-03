@@ -1,5 +1,6 @@
 package com.robotutor.nexora.module.zone.infrastructure.persistence
 
+import com.robotutor.nexora.common.cache.annotation.Cache
 import com.robotutor.nexora.module.zone.domain.aggregate.ZoneAggregate
 import com.robotutor.nexora.module.zone.domain.event.ZoneEventPublisher
 import com.robotutor.nexora.module.zone.domain.repository.ZoneRepository
@@ -46,6 +47,7 @@ class MongoZoneRepository(
             .map { ZoneDocumentMapper.toDomainModel(it) }
     }
 
+    @Cache("zone:zone-aggregate:zone-id:#{specification}")
     override fun findAll(specification: Specification<ZoneAggregate>): Flux<ZoneAggregate> {
         val query = Query(ZoneSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.find<ZoneDocument>(query)

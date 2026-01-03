@@ -1,5 +1,6 @@
 package com.robotutor.nexora.module.device.interfaces.controller
 
+import com.robotutor.nexora.common.resource.annotation.ResourceSelector
 import com.robotutor.nexora.module.device.application.command.GetDeviceQuery
 import com.robotutor.nexora.module.device.application.service.CommissionDeviceService
 import com.robotutor.nexora.module.device.application.service.GetDeviceService
@@ -9,6 +10,8 @@ import com.robotutor.nexora.module.device.interfaces.controller.mapper.DeviceMap
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.module.device.interfaces.controller.view.RegisterDeviceRequest
+import com.robotutor.nexora.shared.domain.vo.ActionType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.Resources
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
@@ -35,7 +38,10 @@ class DeviceController(
     }
 
     @GetMapping
-    fun getDevices(actorData: ActorData, resources: Resources): Flux<DeviceResponse> {
+    fun getDevices(
+        actorData: ActorData,
+        @ResourceSelector(ActionType.READ, ResourceType.DEVICE) resources: Resources
+    ): Flux<DeviceResponse> {
         val query = DeviceMapper.toGetDevicesQuery(resources, actorData)
         return getDeviceService.execute(query)
             .map { DeviceMapper.toDeviceResponse(it) }

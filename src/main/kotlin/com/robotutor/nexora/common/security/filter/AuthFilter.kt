@@ -1,8 +1,9 @@
 package com.robotutor.nexora.common.security.filter
 
-import com.robotutor.nexora.common.security.controllers.ExceptionHandlerRegistry
+import com.robotutor.nexora.common.cache.service.CacheService
 import com.robotutor.nexora.common.security.client.SessionValidatorClient
 import com.robotutor.nexora.common.security.config.AppConfig
+import com.robotutor.nexora.common.security.controllers.ExceptionHandlerRegistry
 import com.robotutor.nexora.common.security.domain.exception.SecurityError
 import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
 import com.robotutor.nexora.shared.application.logger.Logger
@@ -35,6 +36,7 @@ class AuthFilter(
     private val appConfig: AppConfig,
     private val exceptionHandlerRegistry: ExceptionHandlerRegistry,
     private val sessionValidator: SessionValidatorClient,
+    private val cacheService: CacheService
 ) : WebFilter {
     val logger = Logger(this::class.java)
 
@@ -75,7 +77,11 @@ class AuthFilter(
             return createMonoError(UnAuthorizedException(SecurityError.NEXORA0101))
         }
 
-        return sessionValidator.validate(authHeader)
+        return cacheService.retrieve(
+            "security:authorized:${authHeader.hashCode()}",
+            SessionValidationResult::class.java,
+            30
+        ) { sessionValidator.validate(authHeader) }
     }
 
     private fun setContextForResolvers(
@@ -88,8 +94,8 @@ class AuthFilter(
             is InternalData -> context.put(InternalData::class.java, principalData)
             is ActorData -> {
                 exchange.attributes[X_PREMISES_ID] = principalData.premisesId.value
-                var newContext = context.put(ActorData::class.java, principalData)
-                newContext = newContext.put(AccountData::class.java, principalData)
+                var newContext = context.put(AccountData::class.java, principalData.toAccountData())
+                newContext = newContext.put(ActorData::class.java, principalData)
                 newContext
             }
         }
