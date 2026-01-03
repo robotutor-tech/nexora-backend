@@ -28,15 +28,14 @@ class CacheAspect(
 
         return when (signature.returnType) {
             Mono::class.java -> {
+                @Suppress("UNCHECKED_CAST")
                 cacheService.retrieve(cacheName, returnType as Class<Any>, cache.ttlInSeconds) {
                     (pjp.proceed() as Mono<Any>)
-                        .map {
-                            it
-                        }
                 }
             }
 
             Flux::class.java -> {
+                @Suppress("UNCHECKED_CAST")
                 cacheService.retrieves(cacheName, returnType as Class<Any>, cache.ttlInSeconds) {
                     pjp.proceed() as Flux<Any>
                 }

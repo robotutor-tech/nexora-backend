@@ -7,6 +7,7 @@ import com.robotutor.nexora.common.security.client.view.InternalSessionPrincipal
 import com.robotutor.nexora.common.security.client.view.SessionValidationResponse
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.domain.vo.SessionValidationResult
+import com.robotutor.nexora.common.webclient.get
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
@@ -19,13 +20,12 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class SessionValidatorClient(private val webClient: WebClientWrapper, private val appConfig: AppConfig)  {
-     fun validate(token: String): Mono<SessionValidationResult> {
-        return webClient.get(
+class SessionValidatorClient(private val webClient: WebClientWrapper, private val appConfig: AppConfig) {
+    fun validate(token: String): Mono<SessionValidationResult> {
+        return webClient.get<SessionValidationResponse>(
             baseUrl = appConfig.iamBaseUrl,
             path = appConfig.validatePath,
-            headers = mapOf(HttpHeaders.AUTHORIZATION to token),
-            returnType = SessionValidationResponse::class.java
+            headers = mapOf(HttpHeaders.AUTHORIZATION to token)
         )
             .map {
                 SessionValidationResult(

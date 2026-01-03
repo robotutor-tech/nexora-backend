@@ -20,8 +20,6 @@ class CacheService(private val reactiveRedisTemplate: ReactiveRedisTemplate<Stri
         ttlInSeconds: Long = 60,
         switchIfAbsent: () -> Mono<T>
     ): Mono<T> {
-//        val clazz = switchIfAbsent.javaClass.enclosingMethod!!.genericReturnType
-//            .let { it as? Class<*> }?.genericSuperclass as Class<T>
         return getValue(key, clazz)
             .logOnSuccess(logger, "Successfully get value for $key")
             .logOnError(logger, "Failed to get value for $key")

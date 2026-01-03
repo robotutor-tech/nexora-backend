@@ -1,6 +1,7 @@
 package com.robotutor.nexora.common.security.filter
 
 import com.robotutor.nexora.common.cache.service.CacheService
+import com.robotutor.nexora.common.cache.service.retrieve
 import com.robotutor.nexora.common.security.client.SessionValidatorClient
 import com.robotutor.nexora.common.security.config.AppConfig
 import com.robotutor.nexora.common.security.controllers.ExceptionHandlerRegistry
@@ -77,11 +78,9 @@ class AuthFilter(
             return createMonoError(UnAuthorizedException(SecurityError.NEXORA0101))
         }
 
-        return cacheService.retrieve(
-            "security:authorized:${authHeader.hashCode()}",
-            SessionValidationResult::class.java,
-            30
-        ) { sessionValidator.validate(authHeader) }
+        return cacheService.retrieve("security:authorized:${authHeader.hashCode()}", 30) {
+            sessionValidator.validate(authHeader)
+        }
     }
 
     private fun setContextForResolvers(
