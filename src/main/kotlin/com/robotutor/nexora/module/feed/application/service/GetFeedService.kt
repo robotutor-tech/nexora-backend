@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 
 @Service
-class FeedService(
+class GetFeedService(
     private val feedRepository: FeedRepository,
     private val resourceSpecificationBuilder: ResourceSpecificationBuilder<FeedAggregate>,
 ) {

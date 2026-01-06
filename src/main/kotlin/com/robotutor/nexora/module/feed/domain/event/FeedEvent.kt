@@ -5,6 +5,7 @@ import com.robotutor.nexora.module.feed.domain.aggregate.FeedType
 import com.robotutor.nexora.module.feed.domain.vo.FeedValueRange
 import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.vo.FeedId
+import com.robotutor.nexora.shared.domain.vo.PremisesId
 
 sealed interface FeedEvent : Event
 
@@ -14,3 +15,5 @@ data class FeedRegisteredEvent(
     val type: FeedType,
     val range: FeedValueRange,
 ) : FeedEvent
+
+data class FeedValueUpdatedEvent(val feedId: FeedId, val premisesId: PremisesId, val value: Int) : FeedEvent

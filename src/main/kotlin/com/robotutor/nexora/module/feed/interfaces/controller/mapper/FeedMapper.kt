@@ -4,11 +4,14 @@ import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.feed.application.command.GetFeedsQuery
 import com.robotutor.nexora.module.feed.application.command.RegisterFeedsCommand
+import com.robotutor.nexora.module.feed.application.command.UpdateValueCommand
 import com.robotutor.nexora.module.feed.domain.aggregate.FeedAggregate
 import com.robotutor.nexora.module.feed.domain.vo.FeedValueRange
 import com.robotutor.nexora.module.feed.interfaces.controller.view.FeedResponse
 import com.robotutor.nexora.module.feed.interfaces.controller.view.FeedValueRangeResponse
 import com.robotutor.nexora.module.feed.interfaces.controller.view.RegisterFeedsRequest
+import com.robotutor.nexora.module.feed.interfaces.controller.view.UpdateValueRequest
+import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Resources
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 
@@ -40,6 +43,14 @@ object FeedMapper {
             deviceId = DeviceId(request.deviceId),
             modelNo = ModelNo(request.modelNo)
         )
+    }
+
+    fun toUpdateValueCommand(
+        feedId: String,
+        updateValueRequest: UpdateValueRequest,
+        actorData: ActorData
+    ): UpdateValueCommand {
+        return UpdateValueCommand(FeedId(feedId), updateValueRequest.value, actorData.premisesId)
     }
 }
 
