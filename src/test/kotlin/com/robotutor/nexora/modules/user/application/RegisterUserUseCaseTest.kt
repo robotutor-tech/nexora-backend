@@ -1,14 +1,14 @@
 //package com.robotutor.nexora.modules.user.application
 //
-//import com.robotutor.nexora.modules.auth.domain.entity.Password
-//import com.robotutor.nexora.modules.user.application.command.RegisterAuthUserCommand
-//import com.robotutor.nexora.modules.user.application.command.RegisterUserCommand
-//import com.robotutor.nexora.modules.user.application.service.RegisterAuthUser
-//import com.robotutor.nexora.modules.user.domain.entity.IdType
-//import com.robotutor.nexora.modules.user.domain.entity.User
-//import com.robotutor.nexora.modules.user.domain.event.UserEvent
-//import com.robotutor.nexora.modules.user.domain.exception.NexoraError
-//import com.robotutor.nexora.modules.user.domain.repository.UserRepository
+//import com.robotutor.nexora.module.auth.domain.entity.Password
+//import com.robotutor.nexora.module.user.application.command.RegisterAuthUserCommand
+//import com.robotutor.nexora.module.user.application.command.RegisterUserCommand
+//import com.robotutor.nexora.module.user.application.service.RegisterAuthUser
+//import com.robotutor.nexora.module.user.domain.entity.IdType
+//import com.robotutor.nexora.module.user.domain.entity.User
+//import com.robotutor.nexora.module.user.domain.event.UserEvent
+//import com.robotutor.nexora.module.user.domain.exception.NexoraError
+//import com.robotutor.nexora.module.user.domain.repository.UserRepository
 //import com.robotutor.nexora.shared.domain.exception.DuplicateDataException
 //import com.robotutor.nexora.shared.domain.model.*
 //import com.robotutor.nexora.shared.domain.service.IdGeneratorService

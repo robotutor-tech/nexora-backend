@@ -1,9 +1,9 @@
 //package com.robotutor.nexora.modules.user.application
 //
-//import com.robotutor.nexora.modules.user.application.command.GetUserCommand
-//import com.robotutor.nexora.modules.user.builder.UserBuilder
-//import com.robotutor.nexora.modules.user.domain.exception.NexoraError
-//import com.robotutor.nexora.modules.user.domain.repository.UserRepository
+//import com.robotutor.nexora.module.user.application.command.GetUserCommand
+//import com.robotutor.nexora.module.user.builder.UserBuilder
+//import com.robotutor.nexora.module.user.domain.exception.NexoraError
+//import com.robotutor.nexora.module.user.domain.repository.UserRepository
 //import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 //import com.robotutor.nexora.shared.domain.model.UserId
 //import com.robotutor.nexora.testUtils.assertErrorWith

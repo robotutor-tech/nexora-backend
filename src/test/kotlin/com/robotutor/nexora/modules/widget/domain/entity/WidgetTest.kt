@@ -1,7 +1,7 @@
 //package com.robotutor.nexora.modules.widget.domain.entity
 //
-//import com.robotutor.nexora.modules.widget.application.command.CreateWidgetCommand
-//import com.robotutor.nexora.modules.widget.domain.event.WidgetCreatedEvent
+//import com.robotutor.nexora.module.widget.application.command.CreateWidgetCommand
+//import com.robotutor.nexora.module.widget.domain.event.WidgetCreatedEvent
 //import com.robotutor.nexora.shared.domain.model.*
 //import io.kotest.matchers.shouldBe
 //import org.junit.jupiter.api.Test

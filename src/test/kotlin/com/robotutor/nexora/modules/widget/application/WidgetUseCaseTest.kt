@@ -1,12 +1,12 @@
 //package com.robotutor.nexora.modules.widget.application
 //
-//import com.robotutor.nexora.modules.widget.application.command.CreateWidgetCommand
-//import com.robotutor.nexora.modules.widget.domain.entity.IdType
-//import com.robotutor.nexora.modules.widget.domain.entity.Widget
-//import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
-//import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
-//import com.robotutor.nexora.modules.widget.domain.event.WidgetEvent
-//import com.robotutor.nexora.modules.widget.domain.repository.WidgetRepository
+//import com.robotutor.nexora.module.widget.application.command.CreateWidgetCommand
+//import com.robotutor.nexora.module.widget.domain.entity.IdType
+//import com.robotutor.nexora.module.widget.domain.entity.Widget
+//import com.robotutor.nexora.module.widget.domain.entity.WidgetId
+//import com.robotutor.nexora.module.widget.domain.entity.WidgetType
+//import com.robotutor.nexora.module.widget.domain.event.WidgetEvent
+//import com.robotutor.nexora.module.widget.domain.repository.WidgetRepository
 //import com.robotutor.nexora.shared.domain.event.ResourceCreatedEvent
 //import com.robotutor.nexora.shared.domain.model.*
 //import com.robotutor.nexora.shared.domain.service.IdGeneratorService

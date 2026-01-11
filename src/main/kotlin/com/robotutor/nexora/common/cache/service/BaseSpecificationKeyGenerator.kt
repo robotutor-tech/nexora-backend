@@ -7,17 +7,17 @@ abstract class BaseSpecificationKeyGenerator<A : Aggregate, S : Specification<A>
     val identifierKey: String
 ) : SpecificationKeyGenerator<A, String> {
 
-    @Suppress("UNCHECKED_CAST")
+
     final override fun generate(specification: Specification<A>): String {
         return when (specification) {
             is AndSpecification -> {
-                "{operator:AND, left:${generate(specification.left)}, right:${generate(specification.right)}}"
+                "{operator:AND, specifications:${specification.specifications.map { generate(it) }}}"
             }
 
             is OrSpecification ->
-                "{operator:OR, left:${generate(specification.left)}, right:${generate(specification.right)}}"
+                "{operator:OR, specifications:${specification.specifications.map { generate(it) }}}"
 
-            is NotSpecification -> "{operator:NOT, spec:${generate(specification.spec)}}"
+            is NotSpecification -> "{operator:NOT, spec:${generate(specification.specification)}}"
 
             is IdInSpecification -> if (specification.allowed.isEmpty()) "{$identifierKey: {allowed: []}}"
             else "{$identifierKey:{allowed: ${specification.allowed.map { it.value }}}}"

@@ -1,6 +1,6 @@
 //package com.robotutor.nexora.modules.user.infrastructure.persistence.repository
 //
-//import com.robotutor.nexora.modules.user.builder.UserBuilder
+//import com.robotutor.nexora.module.user.builder.UserBuilder
 //import com.robotutor.nexora.testUtils.assertNextWith
 //import io.kotest.matchers.shouldBe
 //import io.mockk.*

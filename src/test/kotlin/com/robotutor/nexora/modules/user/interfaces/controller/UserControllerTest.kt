@@ -1,13 +1,13 @@
 //package com.robotutor.nexora.modules.user.interfaces.controller
 //
-//import com.robotutor.nexora.modules.auth.domain.entity.Password
-//import com.robotutor.nexora.modules.user.application.RegisterUserService
-//import com.robotutor.nexora.modules.user.application.UserService
-//import com.robotutor.nexora.modules.user.application.command.GetUserCommand
-//import com.robotutor.nexora.modules.user.application.command.RegisterUserCommand
-//import com.robotutor.nexora.modules.user.builder.UserBuilder
-//import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserRequest
-//import com.robotutor.nexora.modules.user.interfaces.controller.dto.UserResponse
+//import com.robotutor.nexora.module.auth.domain.entity.Password
+//import com.robotutor.nexora.module.user.application.RegisterUserService
+//import com.robotutor.nexora.module.user.application.UserService
+//import com.robotutor.nexora.module.user.application.command.GetUserCommand
+//import com.robotutor.nexora.module.user.application.command.RegisterUserCommand
+//import com.robotutor.nexora.module.user.builder.UserBuilder
+//import com.robotutor.nexora.module.user.interfaces.controller.dto.UserRequest
+//import com.robotutor.nexora.module.user.interfaces.controller.dto.UserResponse
 //import com.robotutor.nexora.shared.domain.model.*
 //import com.robotutor.nexora.testUtils.assertNextWith
 //import io.kotest.matchers.shouldBe

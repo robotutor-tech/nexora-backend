@@ -1,10 +1,10 @@
 //package com.robotutor.nexora.modules.widget.interfaces.controller
 //
-//import com.robotutor.nexora.modules.widget.application.WidgetService
-//import com.robotutor.nexora.modules.widget.domain.entity.Widget
-//import com.robotutor.nexora.modules.widget.domain.entity.WidgetId
-//import com.robotutor.nexora.modules.widget.domain.entity.WidgetType
-//import com.robotutor.nexora.modules.widget.interfaces.controller.dto.WidgetResponse
+//import com.robotutor.nexora.module.widget.application.WidgetService
+//import com.robotutor.nexora.module.widget.domain.entity.Widget
+//import com.robotutor.nexora.module.widget.domain.entity.WidgetId
+//import com.robotutor.nexora.module.widget.domain.entity.WidgetType
+//import com.robotutor.nexora.module.widget.interfaces.controller.dto.WidgetResponse
 //import com.robotutor.nexora.shared.domain.model.*
 //import io.kotest.matchers.shouldBe
 //import io.mockk.clearAllMocks

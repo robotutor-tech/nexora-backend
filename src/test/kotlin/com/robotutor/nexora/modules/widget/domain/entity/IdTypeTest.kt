@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.widget.domain.entity
 
-import com.robotutor.nexora.modules.automation.domain.entity.IdType
+import com.robotutor.nexora.module.automation.domain.entity.IdType
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

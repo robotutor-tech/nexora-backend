@@ -1,5 +1,0 @@
-package com.robotutor.nexora.modules.automation.infrastructure.persistence.document.config
-
-import com.robotutor.nexora.modules.automation.domain.entity.config.ConfigType
-
-data class FeedValueConfigDocument(val feedId: String, val value: Int) : ConfigDocument(ConfigType.FEED_VALUE)

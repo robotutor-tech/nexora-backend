@@ -3,12 +3,12 @@ package com.robotutor.nexora.shared.domain.specification
 interface Specification<T> {
     fun isSatisfiedBy(candidate: T): Boolean
 
-    fun and(other: Specification<T>): Specification<T> {
-        return AndSpecification(this, other)
+    fun and(vararg other: Specification<T>): Specification<T> {
+        return AndSpecification(listOf(this, *other))
     }
 
-    fun or(other: Specification<T>): Specification<T> {
-        return OrSpecification(this, other)
+    fun or(vararg other: Specification<T>): Specification<T> {
+        return OrSpecification(listOf(this, *other))
     }
 
     fun not(): Specification<T> {

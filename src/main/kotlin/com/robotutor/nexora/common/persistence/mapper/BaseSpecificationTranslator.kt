@@ -16,13 +16,12 @@ abstract class BaseSpecificationTranslator<A : Aggregate, S : Specification<A>>(
     final override fun translate(specification: Specification<A>): Criteria {
         return when (specification) {
             is AndSpecification ->
-                Criteria().andOperator(translate(specification.left), translate(specification.right))
-
+                Criteria().andOperator(specification.specifications.map { translate(it) })
             is OrSpecification ->
-                Criteria().orOperator(translate(specification.left), translate(specification.right))
+                Criteria().orOperator(specification.specifications.map { translate(it) })
 
             is NotSpecification ->
-                Criteria().norOperator(translate(specification.spec))
+                Criteria().norOperator(translate(specification.specification))
 
             is IdInSpecification -> if (specification.allowed.isEmpty()) Criteria()
             else Criteria.where(identifierKey).`in`(specification.allowed.map { it.value })

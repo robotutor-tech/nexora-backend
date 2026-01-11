@@ -15,10 +15,7 @@ class SecretEncoderImpl : SecretEncoder {
         return HashedCredentialSecret(passwordEncoder.encode(secret.value))
     }
 
-    override fun matches(
-        secret: CredentialSecret,
-        hashedSecret: HashedCredentialSecret
-    ): Boolean {
+    override fun matches(secret: CredentialSecret, hashedSecret: HashedCredentialSecret): Boolean {
         return passwordEncoder.matches(secret.value, hashedSecret.value)
     }
 }

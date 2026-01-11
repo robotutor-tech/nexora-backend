@@ -1,6 +1,6 @@
 package com.robotutor.nexora.modules.user.builder
 
-import com.robotutor.nexora.modules.user.infrastructure.persistence.document.UserDocument
+import com.robotutor.nexora.module.user.infrastructure.persistence.document.UserDocument
 import java.time.Instant
 
 data class UserDocumentBuilder(

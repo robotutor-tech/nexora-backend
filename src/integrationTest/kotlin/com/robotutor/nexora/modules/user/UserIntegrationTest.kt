@@ -2,9 +2,9 @@ package com.robotutor.nexora.modules.user
 
 import com.robotutor.nexora.TEST_TOKEN
 import com.robotutor.nexora.annotation.IntegrationTest
-import com.robotutor.nexora.modules.auth.infrastructure.persistence.document.TOKEN_COLLECTION
-import com.robotutor.nexora.modules.user.builder.TokenDocumentBuilder
-import com.robotutor.nexora.modules.user.builder.UserDocumentBuilder
+import com.robotutor.nexora.module.auth.infrastructure.persistence.document.TOKEN_COLLECTION
+import com.robotutor.nexora.module.user.builder.TokenDocumentBuilder
+import com.robotutor.nexora.module.user.builder.UserDocumentBuilder
 import com.robotutor.nexora.module.user.domain.exception.UserError
 import com.robotutor.nexora.module.user.infrastructure.persistence.document.USER_COLLECTION
 import com.robotutor.nexora.module.user.interfaces.controller.view.UserResponse

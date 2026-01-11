@@ -1,13 +1,13 @@
 //package com.robotutor.nexora.modules.premises.interfaces.controller
 //
-//import com.robotutor.nexora.modules.premises.application.PremisesService
-//import com.robotutor.nexora.modules.premises.application.command.CreatePremisesCommand
-//import com.robotutor.nexora.modules.premises.application.dto.ActorWithRolesPremises
-//import com.robotutor.nexora.modules.premises.application.facade.dto.ActorWithRoles
-//import com.robotutor.nexora.modules.premises.application.facade.dto.Role
-//import com.robotutor.nexora.modules.premises.domain.entity.Address
-//import com.robotutor.nexora.modules.premises.domain.entity.Premises
-//import com.robotutor.nexora.modules.premises.interfaces.controller.dto.*
+//import com.robotutor.nexora.module.premises.application.PremisesService
+//import com.robotutor.nexora.module.premises.application.command.CreatePremisesCommand
+//import com.robotutor.nexora.module.premises.application.dto.ActorWithRolesPremises
+//import com.robotutor.nexora.module.premises.application.facade.dto.ActorWithRoles
+//import com.robotutor.nexora.module.premises.application.facade.dto.Role
+//import com.robotutor.nexora.module.premises.domain.entity.Address
+//import com.robotutor.nexora.module.premises.domain.entity.Premises
+//import com.robotutor.nexora.module.premises.interfaces.controller.dto.*
 //import com.robotutor.nexora.shared.domain.model.*
 //import com.robotutor.nexora.testUtils.assertNextWith
 //import io.kotest.matchers.shouldBe
