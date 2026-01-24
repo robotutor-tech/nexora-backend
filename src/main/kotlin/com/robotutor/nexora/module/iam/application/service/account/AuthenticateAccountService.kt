@@ -17,6 +17,7 @@ import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
+import com.robotutor.nexora.shared.utility.required
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -32,6 +33,7 @@ class AuthenticateAccountService(
 
     fun execute(command: AuthenticateAccountCommand): Mono<SessionTokens> {
         return accountRepository.findByCredentialId(command.credentialId)
+            .required(UnAuthorizedException(IAMError.NEXORA0202))
             .flatMap { account ->
                 val credential = account.getCredential(command.credentialId)
                 val matchResult = secretService.matches(command.secret, credential.secret)
@@ -49,7 +51,6 @@ class AuthenticateAccountService(
                     .publishEvent(eventPublisher, event)
                     .map { SessionTokens(session.getAccessToken(), refreshToken) }
             }
-            .switchIfEmpty(createMonoError(UnAuthorizedException(IAMError.NEXORA0202)))
             .logOnSuccess(logger, "Successfully authenticated account")
             .logOnError(logger, "Failed to authenticate account")
     }

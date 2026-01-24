@@ -353,7 +353,7 @@ class Device {
 ### Event Handler
 
 ```kotlin
-@Component
+@ComponentInline
 class DeviceActivatedEventHandler(
     private val notificationService: NotificationService
 ) {

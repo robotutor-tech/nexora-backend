@@ -9,6 +9,52 @@
 
 ---
 
+## 0) Implemented changes (Jan 2026)
+
+To make the pipeline real (not just conceptual), the following changes were applied:
+
+- **Execution pipeline is now end-to-end and consistent**
+  - `ExecuteAutomationService` now follows: **Load → Resolve → Validate → Execute**
+  - It returns `Mono<AutomationExecutionResult>` (application-level result)
+
+- **Executor pattern introduced (application layer)**
+  - Added `AutomationExecutor` contract and `DefaultAutomationExecutor` implementation.
+  - This keeps execution orchestration out of the domain and makes it easy to swap in a real executor later.
+
+- **Policy separation for create vs execute**
+  - Added `ExecuteAutomationPolicy` (currently delegates to `CreateAutomationPolicy`).
+  - This allows execute-time validation to diverge later (runtime checks, permissions, resource availability).
+
+- **Specification model unified**
+  - `ResolvedAutomation.condition`, `DataResolver`, and policies now use `com.robotutor.nexora.shared.domain.specification.Specification`.
+
+- **Option B (typed resolution) to prevent cross-mapping**
+  - `ComponentInline` value objects (e.g., `Voice`, `Wait`) no longer implement `ComponentData` directly.
+  - Every component resolves into a dedicated `ComponentData` type:
+    - `FeedValue -> FeedValueData`
+    - `FeedControl -> FeedControlData`
+    - `Automation -> AutomationData`
+    - `Voice -> VoiceData` (no I/O, but kept as separate data type for consistency)
+    - `Wait -> WaitData` (no I/O, but kept as separate data type for consistency)
+
+- **Strategy pattern (registry-based) for resolution**
+  - Introduced a single typed resolver strategy:
+    - `ComponentResolver<C, D>` (implements `resolve(component)`)
+  - Added `ComponentResolverRegistry` which discovers all resolvers from Spring and routes by component type.
+  - `DataResolver` delegates all leaf resolution to the registry; condition trees are still resolved recursively.
+
+  Notes:
+  - We intentionally resolve by **component type only** (not role) to keep the model simple.
+  - If you later find role-specific resolution is needed, you can evolve `ComponentResolver` into a role-aware handler
+    (e.g., `resolve(component, role)`) without changing the domain types.
+
+  ✅ To add a new component type, you now typically only need:
+  1) new ComponentInline VO (domain)
+  2) new ComponentData (domain)
+  3) new resolver bean implementing `ComponentResolver` (application)
+
+---
+
 ## 1) What problem we’re actually solving
 
 You’re building a component-based automation system where the domain must stay pure, but creating/executing automations requires **runtime context** (feeds, device capabilities, referenced automation existence, etc.).
@@ -127,48 +173,34 @@ This is already very close to your existing `CreateAutomationService`.
 `ExecuteAutomationCommand(automationId, ...)`
 
 ### Output
-`Mono<ExecutionResult>` (or a domain event / execution record)
+`Mono<AutomationExecutionResult>` (application result)
 
 ### Flow
 
 1) `automationRepository.findByAutomationId(automationId): Mono<AutomationAggregate>`
 2) `.flatMap(dataResolver::resolve): Mono<ResolvedAutomation>`
-3) `.enforcePolicy(executeAutomationPolicy, ...)` (or reuse the same policy if it matches)
-4) `.flatMap(executor::execute): Mono<ExecutionResult>`
-
-**Executor** here is a dedicated application service / domain service depending on whether it needs I/O.
-
-- If execution needs I/O (calling devices, writing feeds) → application service.
-- If execution is fully pure (building commands/events) → domain service.
+3) `.enforcePolicy(executeAutomationPolicy, ...)`
+4) `.flatMap(automationExecutor::execute): Mono<AutomationExecutionResult>`
 
 ---
 
 ## 6) The missing piece in your current code
 
-### 6.1 Policy implementation is incomplete
+### 6.1 Policy implementation must become business-real
 
-`CreateAutomationPolicy` currently has `TODO()` branches and doesn’t traverse the condition tree.
+The policy traversal is now in place for triggers/actions/condition trees.
 
-The intended rule is correct:
+Next (business) work is to add real reasons:
 
-- Validate triggers
-- Validate actions
-- Validate condition tree
+- feed existence / permission checks (if not already guaranteed by resolver)
+- operator/value range checks
+- cross-component compatibility rules
 
-But implementation must:
+### 6.2 Executor currently is a placeholder
 
-- walk the resolved condition spec tree
-- validate each resolved leaf
-- validate cross-component invariants (e.g. trigger/action compatibility)
+`DefaultAutomationExecutor` currently returns a result without side-effects.
 
-### 6.2 ExecuteAutomationService return type should be resolved
-
-Current code:
-
-- `ExecuteAutomationService.execute()` returns `Mono<AutomationAggregate>`
-- but `dataResolver.resolve(automation)` returns `Mono<ResolvedAutomation>`
-
-So execution service should return `Mono<ResolvedAutomation>` (if its only job is resolve) OR move into a proper execution pipeline and return `Mono<ExecutionResult>`.
+This is intentional: it wires the flow end-to-end while leaving action semantics open.
 
 ---
 
@@ -187,7 +219,7 @@ So execution service should return `Mono<ResolvedAutomation>` (if its only job i
      - a component VO
      - a resolver strategy
      - policy rules
-     - optional executor support
+     - executor support
 
 4) **Easy to evolve into resumable execution**
    - execution state can be stored in an `AutomationExecution` record
@@ -197,18 +229,7 @@ So execution service should return `Mono<ResolvedAutomation>` (if its only job i
 
 ## 8) Concrete next steps (sequence)
 
-1) Make `ExecuteAutomationService` consistent:
-   - either rename it to `ResolveAutomationService` and return `Mono<ResolvedAutomation>`
-   - or implement a full execution pipeline and return `Mono<ExecutionResult>`
-
-2) Implement `CreateAutomationPolicy` fully:
-   - traverse resolved triggers/actions
-   - traverse resolved condition tree
-   - validate component-specific invariants
-
-3) Define an `AutomationExecutor` contract (application layer):
-   - run actions in order
-   - support WAIT (later)
-
+1) Add a controller/Kafka handler call path for `ExecuteAutomationService`.
+2) Implement real validation rules in policies.
+3) Implement real side-effects in `AutomationExecutor` (with proper idempotency and retries).
 4) Decide canonical storage model (rule IDs vs embedded components) and align docs/mappers.
-

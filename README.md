@@ -256,6 +256,8 @@ Recommended Patterns:
 ## 13. Build, Run & Tooling
 Prerequisites: Java 21, Docker (for Mongo/Redis/Kafka if running locally).
 
+### Local Development
+
 Build:
 ```bash
 ./gradlew clean build
@@ -273,11 +275,48 @@ Integration Tests:
 
 Coverage Report (HTML): `build/jacocoHtml/index.html`.
 
+### Docker Deployment
+
+**Quick Start with Docker Compose:**
+```bash
+# Build and run all services (backend + MongoDB + Redis + Kafka)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f nexora-backend
+
+# Stop all services
+docker-compose down
+```
+
+**Manual Docker Build:**
+```bash
+# Build the Docker image (multi-stage build)
+docker build -t nexora-backend:latest .
+
+# Run the container
+docker run -p 8080:8080 \
+  -e SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nexora \
+  -e SPRING_DATA_REDIS_HOST=redis \
+  -e SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092 \
+  nexora-backend:latest
+```
+
+**Production Build & Push:**
+```bash
+# Build and push to Docker registry (with auto-versioning)
+./build.sh
+```
+
+For comprehensive Docker documentation, build optimizations, and deployment guides, see **[DOCKER.md](DOCKER.md)**.
+
 Key Dependencies:
 - Spring Boot 3.4.x WebFlux
 - Reactive MongoDB Starter
 - Reactor Kafka + Spring Kafka
 - Kotlin Coroutines Reactor
+- Spring Boot Actuator (health checks)
+
 - Redis Reactive Starter
 
 ---

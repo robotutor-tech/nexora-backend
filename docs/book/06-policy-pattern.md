@@ -93,7 +93,7 @@ class DeviceService {
 }
 
 // Location 3: DeviceValidator.kt
-@Component
+@ComponentInline
 class DeviceValidator {
     fun validateDeviceRegistration(request: DeviceRegistrationRequest) {
         // Yet another implementation! 😱

@@ -533,7 +533,7 @@ data class LegacyDeviceData(
 )
 
 // Anti-Corruption Layer
-@Component
+@ComponentInline
 class LegacyDeviceAdapter(
     private val legacyApi: LegacyDeviceApi
 ) {
@@ -618,7 +618,7 @@ class DeviceEventPublisher(
 }
 
 // Analytics Context consumes
-@Component
+@ComponentInline
 class DeviceRegisteredEventHandler {
     @KafkaListener(topics = ["device-events"])
     fun handle(event: DeviceRegisteredEvent) {
@@ -908,7 +908,7 @@ class AuthenticationController(
 }
 
 // Device Context consumes API
-@Component
+@ComponentInline
 class AuthenticationApiClient(
     private val restTemplate: RestTemplate,
     @Value("\${auth.service.url}") private val authServiceUrl: String
@@ -954,7 +954,7 @@ class DeviceEventPublisher(
 }
 
 // Billing Context listens to event
-@Component
+@ComponentInline
 class DeviceRegisteredEventHandler(
     private val customerRepository: CustomerRepository
 ) {
@@ -1031,7 +1031,7 @@ data class ActorDocument(
 )
 
 // Sync on user updates
-@Component
+@ComponentInline
 class UserUpdatedEventHandler(
     private val actorRepository: ActorRepository
 ) {

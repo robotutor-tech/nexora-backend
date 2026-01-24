@@ -502,7 +502,7 @@ class DeviceService(
 }
 
 // Step 2: Billing Service reacts to DeviceRegistered
-@Component
+@ComponentInline
 class DeviceRegisteredBillingHandler(
     private val billingService: BillingService,
     private val eventPublisher: EventPublisher
@@ -539,7 +539,7 @@ class DeviceRegisteredBillingHandler(
 }
 
 // Step 3: Inventory Service reacts to SubscriptionCreated
-@Component
+@ComponentInline
 class SubscriptionCreatedInventoryHandler(
     private val inventoryService: InventoryService,
     private val eventPublisher: EventPublisher
@@ -572,7 +572,7 @@ class SubscriptionCreatedInventoryHandler(
 }
 
 // Compensation: Device Service listens for failure events
-@Component
+@ComponentInline
 class CompensationHandler(
     private val deviceService: DeviceService,
     private val billingService: BillingService
@@ -617,7 +617,7 @@ sealed class SagaEvent {
     data class StepFailed(val step: String, val reason: String) : SagaEvent()
 }
 
-@Component
+@ComponentInline
 class DeviceRegistrationStateMachine {
     
     fun transition(
@@ -1207,7 +1207,7 @@ interface SagaStateRepository : MongoRepository<SagaStateDocument, String> {
 }
 
 // Recovery mechanism for stuck sagas
-@Component
+@ComponentInline
 class SagaRecoveryService(
     private val sagaStateRepository: SagaStateRepository,
     private val deviceRegistrationSaga: DeviceRegistrationSagaOrchestrator
@@ -1261,7 +1261,7 @@ class SagaRecoveryService(
 
 ```kotlin
 // Retry with exponential backoff
-@Component
+@ComponentInline
 class RetryableSagaStep {
     
     fun <T> executeWithRetry(
@@ -1322,7 +1322,7 @@ class ResilientDeviceRegistrationSaga(
 
 ```kotlin
 // Execute step with timeout
-@Component
+@ComponentInline
 class TimeLimitedSagaStep {
     
     fun <T> executeWithTimeout(

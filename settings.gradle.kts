@@ -1,1 +1,1 @@
-rootProject.name = "nexora"
+rootProject.name = "nexora-backend"

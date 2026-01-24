@@ -7,7 +7,7 @@ import com.robotutor.nexora.module.automation.domain.vo.component.Action
 import com.robotutor.nexora.module.automation.domain.vo.component.Condition
 import com.robotutor.nexora.module.automation.domain.vo.component.Trigger
 import com.robotutor.nexora.module.automation.domain.vo.component.data.ComponentData
-import com.robotutor.nexora.module.automation.domain.vo.component.specification.Specification
+import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.time.Instant

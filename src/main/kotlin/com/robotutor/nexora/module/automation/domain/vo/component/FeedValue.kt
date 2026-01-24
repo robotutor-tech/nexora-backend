@@ -2,4 +2,6 @@ package com.robotutor.nexora.module.automation.domain.vo.component
 
 import com.robotutor.nexora.shared.domain.vo.FeedId
 
-data class FeedValue(val feedId: FeedId, val value: Int) : Action
+data class FeedValue(val feedId: FeedId, val value: Int) :  Action{
+    override val type: ComponentType = ComponentType.FEED_VALUE
+}

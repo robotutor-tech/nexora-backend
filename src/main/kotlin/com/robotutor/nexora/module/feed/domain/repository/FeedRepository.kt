@@ -9,6 +9,6 @@ interface FeedRepository {
     fun save(feed: FeedAggregate): Mono<FeedAggregate>
     fun saveAll(feeds: List<FeedAggregate>): Flux<FeedAggregate>
     fun findAll(specification: Specification<FeedAggregate>): Flux<FeedAggregate>
-    fun findBySpecification(specification: Specification<FeedAggregate>): Mono<FeedAggregate>
+    fun find(specification: Specification<FeedAggregate>): Mono<FeedAggregate>
 }
 

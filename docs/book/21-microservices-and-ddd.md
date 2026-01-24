@@ -296,7 +296,7 @@ docker run -p 8080:8080 nexora/device-registry:1.0.0
 ---
 
 // 2. feed-ingestion-service (High traffic, streaming)
-@Component
+@ComponentInline
 class FeedIngestionKafkaConsumer(
     private val ingestUseCase: IngestFeedDataUseCase
 ) {
@@ -641,7 +641,7 @@ interface FeedIngestionClient {
     suspend fun getFeeds(deviceId: DeviceId): List<Feed>
 }
 
-@Component
+@ComponentInline
 class HttpFeedIngestionClient(
     private val webClient: WebClient
 ) : FeedIngestionClient {
@@ -675,7 +675,7 @@ class RegisterDeviceUseCase(
 }
 
 // feed-ingestion-service consumes event
-@Component
+@ComponentInline
 class DeviceRegisteredHandler(
     private val createDefaultFeedsUseCase: CreateDefaultFeedsUseCase
 ) {
@@ -708,7 +708,7 @@ class UserService(private val eventPublisher: EventPublisher) {
 }
 
 // 2. Device Context consumes via ACL
-@Component
+@ComponentInline
 class UserCreatedEventHandler(
     private val deviceOwnerRepository: DeviceOwnerRepository
 ) {

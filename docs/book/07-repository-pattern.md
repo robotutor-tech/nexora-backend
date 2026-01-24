@@ -995,7 +995,7 @@ interface UnitOfWork {
 }
 
 // SpringTransactionalUnitOfWork.kt
-@Component
+@ComponentInline
 class SpringTransactionalUnitOfWork : UnitOfWork {
     
     @Transactional

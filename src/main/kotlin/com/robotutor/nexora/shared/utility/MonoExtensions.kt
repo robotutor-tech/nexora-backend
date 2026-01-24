@@ -58,3 +58,7 @@ fun <T> createFluxError(throwable: Throwable): Flux<T> {
     }
 }
 
+fun <T> Mono<T>.required(exception: BaseException): Mono<T> {
+    return switchIfEmpty(createMonoError(exception))
+}
+

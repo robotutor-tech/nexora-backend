@@ -10,7 +10,7 @@ import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.utility.createMonoError
+import com.robotutor.nexora.shared.utility.required
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -23,13 +23,13 @@ class RefreshSessionService(
 
     fun execute(command: RefreshSessionCommand): Mono<SessionTokens> {
         return sessionRepository.findByTokenValueAndExpiredAtAfter(command.token)
+            .required(UnAuthorizedException(IAMError.NEXORA0205))
             .flatMap { session ->
                 val refreshToken = TokenValue.generate()
                 val refreshedSession = sessionService.refresh(session, refreshToken)
                 sessionRepository.save(refreshedSession)
                     .map { SessionTokens(refreshedSession.getAccessToken(), refreshToken) }
             }
-            .switchIfEmpty(createMonoError(UnAuthorizedException(IAMError.NEXORA0205)))
             .logOnSuccess(logger, "Successfully refreshed token")
             .logOnError(logger, "Failed to refresh token")
     }

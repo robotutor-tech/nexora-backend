@@ -516,7 +516,7 @@ class GetDeviceListQueryHandler(
 
 ```kotlin
 // Event handler updates read model
-@Component
+@ComponentInline
 class DeviceRegisteredReadModelUpdater(
     private val readModelRepository: DeviceListReadModelRepository,
     private val zoneRepository: ZoneRepository
@@ -718,7 +718,7 @@ data class DashboardReadModel(
 )
 
 // Updated by event handlers
-@Component
+@ComponentInline
 class DashboardReadModelUpdater(
     private val repository: DashboardReadModelRepository
 ) {
@@ -935,7 +935,7 @@ class GetPremisesStatisticsQueryHandler(
 
 ```kotlin
 // Projector - Builds read models from events
-@Component
+@ComponentInline
 class DeviceListProjector(
     private val readModelRepository: DeviceListReadModelRepository,
     private val zoneRepository: ZoneRepository
@@ -1290,7 +1290,7 @@ data class DeviceAnalyticsView(
 )
 
 // Each updated by separate projectors
-@Component
+@ComponentInline
 class DeviceListViewProjector {
     @EventListener
     fun project(event: DeviceEvent) {
@@ -1298,7 +1298,7 @@ class DeviceListViewProjector {
     }
 }
 
-@Component
+@ComponentInline
 class DeviceDetailViewProjector {
     @EventListener
     fun project(event: DeviceEvent) {
@@ -1306,7 +1306,7 @@ class DeviceDetailViewProjector {
     }
 }
 
-@Component
+@ComponentInline
 class DeviceAnalyticsViewProjector {
     @EventListener
     fun project(event: DeviceEvent) {

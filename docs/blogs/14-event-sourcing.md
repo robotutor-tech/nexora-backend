@@ -365,7 +365,7 @@ data class EventDocument(
     val uniqueIndex: String? = null
 )
 
-@Component
+@ComponentInline
 class MongoEventStore(
     private val mongoTemplate: MongoTemplate,
     private val objectMapper: ObjectMapper
@@ -711,7 +711,7 @@ class Device private constructor() : EventSourcedAggregate() {
 
 ```kotlin
 // Repository for event-sourced aggregates
-@Component
+@ComponentInline
 class EventSourcedDeviceRepository(
     private val eventStore: EventStore,
     private val eventDeserializer: EventDeserializer
@@ -760,7 +760,7 @@ class EventSourcedDeviceRepository(
 }
 
 // Event deserializer
-@Component
+@ComponentInline
 class EventDeserializer(
     private val objectMapper: ObjectMapper
 ) {
@@ -1125,7 +1125,7 @@ data class AggregateSnapshot(
 )
 
 // Snapshot store
-@Component
+@ComponentInline
 class SnapshotStore(
     private val mongoTemplate: MongoTemplate,
     private val objectMapper: ObjectMapper
@@ -1168,7 +1168,7 @@ class SnapshotStore(
 }
 
 // Repository with snapshot support
-@Component
+@ComponentInline
 class EventSourcedDeviceRepositoryWithSnapshots(
     private val eventStore: EventStore,
     private val snapshotStore: SnapshotStore,
@@ -1412,7 +1412,7 @@ data class DeviceRegisteredV2(
 ) : DeviceEvent()
 
 // Upcaster
-@Component
+@ComponentInline
 class DeviceEventUpcaster {
     
     fun upcast(event: DeviceEvent): DeviceEvent {
@@ -1437,7 +1437,7 @@ class DeviceEventUpcaster {
 }
 
 // Deserializer with upcasting
-@Component
+@ComponentInline
 class EventDeserializerWithUpcasting(
     private val objectMapper: ObjectMapper,
     private val upcaster: DeviceEventUpcaster

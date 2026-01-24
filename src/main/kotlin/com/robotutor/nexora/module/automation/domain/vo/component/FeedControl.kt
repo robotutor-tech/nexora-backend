@@ -7,6 +7,7 @@ data class FeedControl(
     val operator: ComparisonOperator,
     val value: Int
 ) : Trigger, ConditionSpecification<FeedControl> {
+    override val type: ComponentType = ComponentType.FEED_CONTROL
     override fun isSatisfiedBy(candidate: FeedControl): Boolean {
         return feedId == candidate.feedId && operator == candidate.operator && value == candidate.value
     }

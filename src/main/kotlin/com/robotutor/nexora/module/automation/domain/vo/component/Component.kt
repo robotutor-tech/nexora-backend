@@ -1,6 +1,19 @@
 package com.robotutor.nexora.module.automation.domain.vo.component
 
-sealed interface Component
-sealed interface Action : Component
-sealed interface Trigger : Component
-sealed interface Condition : Component
+import com.robotutor.nexora.shared.domain.vo.ValueObject
+
+sealed interface Component {
+    val type: ComponentType
+}
+
+sealed interface Action : ValueObject, Component
+sealed interface Trigger : ValueObject, Component
+sealed interface Condition : ValueObject, Component
+
+enum class ComponentType {
+    AUTOMATION,
+    FEED_CONTROL,
+    FEED_VALUE,
+    VOICE,
+    WAIT,
+}

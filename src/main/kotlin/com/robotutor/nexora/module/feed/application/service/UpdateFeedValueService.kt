@@ -18,7 +18,7 @@ class UpdateFeedValueService(
 
     fun execute(command: UpdateValueCommand): Mono<FeedAggregate> {
         val specification = feedByFeedIdAndPremisesIdSpecification(command.feedId, command.premisesId)
-        return feedRepository.findBySpecification(specification)
+        return feedRepository.find(specification)
             .map { feed -> feed.updateValue(command.value) }
             .flatMap { feed -> feedRepository.save(feed) }
             .logOnSuccess(logger, "Successfully get feeds")

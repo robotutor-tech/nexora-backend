@@ -1,6 +1,6 @@
 # Automation (Module) — Components, Resolution, and Intended Execution Model
 
-> Scope: This doc describes what the current **Automation** bounded context is trying to achieve, focused on the **Component** model (Trigger / Condition / Action) and the **resolution pipeline**.
+> Scope: This doc describes what the current **Automation** bounded context is trying to achieve, focused on the **ComponentInline** model (Trigger / Condition / Action) and the **resolution pipeline**.
 >
 > Notes:
 > - This module appears to be mid-refactor: some parts model automations as **references to Rule IDs**, while other parts model automations as **component value objects**.
@@ -25,14 +25,14 @@ This is a rules/automation engine bounded context, designed to stay DDD-friendly
 
 ## 2) Core domain concepts
 
-### 2.1 Component
+### 2.1 ComponentInline
 
-A **Component** is the generic building block of an automation.
+A **ComponentInline** is the generic building block of an automation.
 
-- `Component` (marker)
-- `Trigger : Component`
-- `Condition : Component`
-- `Action : Component`
+- `ComponentInline` (marker)
+- `Trigger : ComponentInline`
+- `Condition : ComponentInline`
+- `Action : ComponentInline`
 
 Conceptually:
 
@@ -70,7 +70,7 @@ This is the key principle:
 
 ---
 
-## 3) Component examples currently in the code
+## 3) ComponentInline examples currently in the code
 
 The module currently has early component types:
 
@@ -125,7 +125,7 @@ So the module introduces a “materialization” step that derives an execution-
 
 Resolution is implemented using a strategy pattern:
 
-- `ResolverStrategy<T : Component, D : ComponentData<T>>`
+- `ResolverStrategy<T : ComponentInline, D : ComponentData<T>>`
 - `ComponentResolverStrategyFactory` selects a resolver based on the component type
 
 Example strategies today:

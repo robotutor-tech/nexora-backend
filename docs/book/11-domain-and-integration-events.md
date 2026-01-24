@@ -469,7 +469,7 @@ class ActivateDeviceUseCase(
 }
 
 // Step 4: Domain Event Handlers (same context)
-@Component
+@ComponentInline
 class DeviceActivatedDomainEventHandler(
     private val notificationService: NotificationService,
     private val automationService: AutomationService
@@ -491,7 +491,7 @@ class DeviceActivatedDomainEventHandler(
 // Step 5: Integration Event Handlers (other contexts)
 
 // Analytics Context Handler
-@Component
+@ComponentInline
 class DeviceActivatedAnalyticsHandler {
     
     @KafkaListener(
@@ -514,7 +514,7 @@ class DeviceActivatedAnalyticsHandler {
 }
 
 // Billing Context Handler
-@Component
+@ComponentInline
 class DeviceActivatedBillingHandler {
     
     @KafkaListener(
@@ -568,7 +568,7 @@ class Device {
 }
 
 // Domain Event Handler - Automation in same context
-@Component
+@ComponentInline
 class FeedValueChangedAutomationHandler(
     private val automationRepository: AutomationRepository,
     private val automationExecutor: AutomationExecutor
@@ -603,7 +603,7 @@ data class FeedValueChangedIntegrationEvent(
 )
 
 // External system handler (e.g., Data Warehouse)
-@Component
+@ComponentInline
 class FeedValueChangedDataWarehouseHandler {
     
     @KafkaListener(
@@ -650,7 +650,7 @@ data class UserRegisteredIntegrationEvent(
 )
 
 // Device Context - Create Actor when User Registers
-@Component
+@ComponentInline
 class UserRegisteredDeviceContextHandler(
     private val actorRepository: ActorRepository
 ) {
@@ -679,7 +679,7 @@ class UserRegisteredDeviceContextHandler(
 }
 
 // Billing Context - Create Customer when User Registers
-@Component
+@ComponentInline
 class UserRegisteredBillingContextHandler(
     private val customerRepository: CustomerRepository
 ) {
@@ -716,7 +716,7 @@ class UserRegisteredBillingContextHandler(
 
 ```kotlin
 // Simple in-memory event publisher
-@Component
+@ComponentInline
 class SimpleEventPublisher {
     
     private val listeners = ConcurrentHashMap<Class<*>, MutableList<(Any) -> Unit>>()
@@ -738,7 +738,7 @@ class SimpleEventPublisher {
 }
 
 // Usage
-@Component
+@ComponentInline
 class DeviceEventHandlers(eventPublisher: SimpleEventPublisher) {
     
     init {
@@ -757,7 +757,7 @@ class DeviceEventHandlers(eventPublisher: SimpleEventPublisher) {
 
 ```kotlin
 // Using Spring's event system
-@Component
+@ComponentInline
 class SpringEventPublisher(
     private val applicationEventPublisher: ApplicationEventPublisher
 ) {
@@ -767,7 +767,7 @@ class SpringEventPublisher(
 }
 
 // Handler
-@Component
+@ComponentInline
 class DeviceEventHandlers {
     
     @EventListener
@@ -824,7 +824,7 @@ class TransactionalEventPublisher(
 }
 
 // Background processor publishes from outbox
-@Component
+@ComponentInline
 class OutboxEventProcessor(
     private val outboxRepository: OutboxEventRepository,
     private val kafkaTemplate: KafkaTemplate<String, String>
@@ -873,7 +873,7 @@ data class StoredEvent(
     val timestamp: Instant = Instant.now()
 )
 
-@Component
+@ComponentInline
 class EventStore(
     private val mongoTemplate: MongoTemplate,
     private val objectMapper: ObjectMapper
@@ -925,7 +925,7 @@ class EventStore(
 
 ```kotlin
 // Handler runs in same thread, same transaction
-@Component
+@ComponentInline
 class SynchronousDeviceEventHandler {
     
     @EventListener
@@ -942,7 +942,7 @@ class SynchronousDeviceEventHandler {
 
 ```kotlin
 // Handler runs in separate thread
-@Component
+@ComponentInline
 class AsynchronousDeviceEventHandler {
     
     @EventListener
@@ -975,7 +975,7 @@ class AsyncConfig {
 
 ```kotlin
 // Kafka consumer with retry and dead letter queue
-@Component
+@ComponentInline
 class ResilientKafkaEventHandler(
     private val kafkaTemplate: KafkaTemplate<String, String>
 ) {
@@ -1032,7 +1032,7 @@ fun kafkaErrorHandler(): ErrorHandler {
 
 ```kotlin
 // Ensure handlers can be called multiple times safely
-@Component
+@ComponentInline
 class IdempotentEventHandler(
     private val processedEventRepository: ProcessedEventRepository
 ) {
@@ -1104,7 +1104,7 @@ data class DeviceActivatedV2(
 )
 
 // Handler supports both versions
-@Component
+@ComponentInline
 class VersionedEventHandler {
     
     @KafkaListener(topics = ["device-events"])
@@ -1162,7 +1162,7 @@ class DeviceActivatedUpcaster : EventUpcaster<DeviceActivatedV1, DeviceActivated
 }
 
 // Handler with upcasting
-@Component
+@ComponentInline
 class UpcastingEventHandler(
     private val upcaster: DeviceActivatedUpcaster
 ) {
@@ -1191,7 +1191,7 @@ class UpcastingEventHandler(
 
 ```kotlin
 // Use Map for flexibility
-@Component
+@ComponentInline
 class FlexibleEventHandler {
     
     @KafkaListener(topics = ["device-events"])
@@ -1602,7 +1602,7 @@ activated.clearEvents()
 
 **2. Spring Events:**
 ```kotlin
-@Component
+@ComponentInline
 class DeviceEventPublisher(
     private val applicationEventPublisher: ApplicationEventPublisher
 ) {
@@ -1677,7 +1677,7 @@ class SendNotificationHandler {
 
 **Kafka (Cross-Context):**
 ```kotlin
-@Component
+@ComponentInline
 class DeviceActivatedIntegrationPublisher {
     
     @EventListener

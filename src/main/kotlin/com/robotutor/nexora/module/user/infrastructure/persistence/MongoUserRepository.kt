@@ -46,7 +46,7 @@ class MongoUserRepository(
             .map { UserDocumentMapper.toDomainModel(it) }
     }
 
-    @Cache("user:user-aggregate:email:#email:exists")
+    @Cache("user:user-aggregate:email:#{email.value}:exists")
     override fun existsByEmail(email: Email): Mono<Boolean> {
         return userDocumentRepository.existsByEmail(email.value)
     }

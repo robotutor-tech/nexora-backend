@@ -7,18 +7,17 @@ import com.robotutor.nexora.module.user.domain.repository.UserRepository
 import com.robotutor.nexora.module.user.domain.vo.UserId
 import com.robotutor.nexora.shared.application.cache.CacheNames
 import com.robotutor.nexora.shared.application.cache.annotation.Cached
-import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
-import com.robotutor.nexora.shared.utility.createMonoError
+import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
+import com.robotutor.nexora.shared.utility.required
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
 class GetUserService(
     private val userRepository: UserRepository,
-    
 ) {
     private val logger = Logger(this::class.java)
 
@@ -28,7 +27,7 @@ class GetUserService(
     )
     fun execute(query: GetUserQuery): Mono<UserAggregate> {
         return userRepository.findByUserId(UserId(query.principalId.value))
-            .switchIfEmpty(createMonoError(DataNotFoundException(UserError.NEXORA0205)))
+            .required(DataNotFoundException(UserError.NEXORA0205))
             .logOnSuccess(logger, "Successfully retrieved user", mapOf("principalId" to query.principalId))
             .logOnError(logger, "Failed to retrieve user", mapOf("principalId" to query.principalId))
     }

@@ -557,7 +557,7 @@ class DeviceEventTest {
 ### Testing Event Handlers
 
 ```kotlin
-@Component
+@ComponentInline
 class DeviceActivatedNotificationHandler(
     private val notificationService: NotificationService
 ) {

@@ -26,7 +26,6 @@ server:
 
 app:
   security:
-    opa-base-url: ${OPA_BASE_URL:http://localhost:8181}
     internal-access-token: ${INTERNAL_ACCESS_TOKEN:internalAccessToken123}
     un-secured-path:
       - "/users/register"
@@ -41,3 +40,5 @@ app:
     base-url: ${ZONE_BASE_URL:http://localhost:${server.port}}
   feed:
     base-url: ${FEED_BASE_URL:http://localhost:${server.port}}
+  automation:
+    feed-base-url: ${FEED_BASE_URL:http://localhost:${server.port}}

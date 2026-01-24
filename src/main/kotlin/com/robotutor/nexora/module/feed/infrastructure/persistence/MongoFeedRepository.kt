@@ -43,7 +43,7 @@ class MongoFeedRepository(
             .map { FeedDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findBySpecification(specification: Specification<FeedAggregate>): Mono<FeedAggregate> {
+    override fun find(specification: Specification<FeedAggregate>): Mono<FeedAggregate> {
         val query = Query(FeedSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.findOne<FeedDocument>(query)
             .map { FeedDocumentMapper.toDomainModel(it) }

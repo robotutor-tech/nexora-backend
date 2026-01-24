@@ -441,7 +441,7 @@ interface LegacyDeviceClient {
 }
 
 // ACL: Adapter + Translator
-@Component
+@ComponentInline
 class LegacyDeviceAdapter(
     private val legacyClient: LegacyDeviceClient,
     private val translator: LegacyDeviceTranslator
@@ -476,7 +476,7 @@ class LegacyDeviceAdapter(
 }
 
 // Translator (isolated translation logic)
-@Component
+@ComponentInline
 class LegacyDeviceTranslator {
     
     fun toDomain(legacy: LegacyDeviceData): Device {
@@ -611,7 +611,7 @@ enum class WeatherType {
 }
 
 // ACL: Simplifying adapter
-@Component
+@ComponentInline
 class WeatherServiceAdapter(
     private val weatherApiClient: WeatherApiClient,
     private val cache: CacheService
@@ -694,7 +694,7 @@ interface IoTProtocolAdapter {
 }
 
 // Zigbee adapter
-@Component
+@ComponentInline
 class ZigbeeProtocolAdapter(
     private val zigbeeGateway: ZigbeeGateway
 ) : IoTProtocolAdapter {
@@ -727,7 +727,7 @@ class ZigbeeProtocolAdapter(
 }
 
 // Z-Wave adapter
-@Component
+@ComponentInline
 class ZWaveProtocolAdapter(
     private val zWaveController: ZWaveController
 ) : IoTProtocolAdapter {
@@ -761,7 +761,7 @@ class ZWaveProtocolAdapter(
 }
 
 // WiFi adapter
-@Component
+@ComponentInline
 class WiFiProtocolAdapter(
     private val mqttClient: MqttClient
 ) : IoTProtocolAdapter {
@@ -801,7 +801,7 @@ class WiFiProtocolAdapter(
 }
 
 // Protocol factory (chooses adapter based on device)
-@Component
+@ComponentInline
 class IoTProtocolFactory(
     private val zigbeeAdapter: ZigbeeProtocolAdapter,
     private val zWaveAdapter: ZWaveProtocolAdapter,
@@ -865,7 +865,7 @@ interface StripeApi {
 }
 
 // Adapter translates between domain and external
-@Component
+@ComponentInline
 class StripePaymentAdapter(
     private val stripeApi: StripeApi,
     private val stripeKeyProvider: StripeKeyProvider
@@ -933,7 +933,7 @@ class StripePaymentAdapter(
 
 ```kotlin
 // Translator for complex conversions
-@Component
+@ComponentInline
 class DeviceDataTranslator {
     
     // External → Domain
@@ -1059,7 +1059,7 @@ interface ExternalDeviceManagementApi {
 }
 
 // Facade simplifies for domain
-@Component
+@ComponentInline
 class DeviceProvisioningFacade(
     private val externalApi: ExternalDeviceManagementApi,
     private val configProvider: DeviceConfigProvider,

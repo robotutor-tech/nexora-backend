@@ -930,7 +930,7 @@ class ActivateDeviceUseCase(
 }
 
 // Event handlers (loosely coupled) ✅
-@Component
+@ComponentInline
 class DeviceActivatedEventHandler(
     private val notificationService: NotificationService
 ) {
@@ -940,7 +940,7 @@ class DeviceActivatedEventHandler(
     }
 }
 
-@Component
+@ComponentInline
 class DeviceActivatedAnalyticsHandler(
     private val analyticsService: AnalyticsService
 ) {
@@ -1204,7 +1204,7 @@ class ActivateDeviceUseCase(
 }
 
 // Event Handlers ✅
-@Component
+@ComponentInline
 class DeviceRegisteredNotificationHandler(
     private val notificationService: NotificationService
 ) {
@@ -1214,7 +1214,7 @@ class DeviceRegisteredNotificationHandler(
     }
 }
 
-@Component
+@ComponentInline
 class DeviceActivatedAnalyticsHandler(
     private val analyticsService: AnalyticsService
 ) {

@@ -150,7 +150,7 @@ class LoadDeviceFromEventsUseCase(
 
 ```kotlin
 // Add performance monitoring
-@Component
+@ComponentInline
 class PerformanceMonitor {
     
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -191,7 +191,7 @@ class GetDeviceUseCase(
 
 ```kotlin
 // Count database queries
-@Component
+@ComponentInline
 class QueryCounter {
     
     private val queryCount = ThreadLocal<Int>()
@@ -213,7 +213,7 @@ class QueryCounter {
 
 // Intercept repository calls
 @Aspect
-@Component
+@ComponentInline
 class RepositoryQueryCounterAspect(
     private val queryCounter: QueryCounter
 ) {
@@ -400,7 +400,7 @@ fun getDeviceStatus(deviceId: DeviceId): DeviceStatus {
 
 ```kotlin
 // Simple in-memory cache
-@Component
+@ComponentInline
 class DeviceCache {
     
     private val cache = ConcurrentHashMap<DeviceId, Device>()
@@ -518,7 +518,7 @@ data class DeviceListReadModel(
 )
 
 // Update on events
-@Component
+@ComponentInline
 class DeviceListReadModelUpdater(
     private val readModelRepository: DeviceListReadModelRepository
 ) {
@@ -723,7 +723,7 @@ data class DeviceSnapshot(
     val timestamp: Long
 )
 
-@Component
+@ComponentInline
 class SnapshotStore(
     private val mongoTemplate: MongoTemplate,
     private val objectMapper: ObjectMapper
@@ -883,7 +883,7 @@ class MongoDeviceRepository(
 
 ```kotlin
 // Add metrics collection
-@Component
+@ComponentInline
 class PerformanceMetrics {
     
     private val registry = SimpleMeterRegistry()
@@ -1286,7 +1286,7 @@ repository.saveAll(devices)  // 1 DB call
 
 **Key Metrics to Track:**
 ```kotlin
-@Component
+@ComponentInline
 class PerformanceMetrics(
     private val meterRegistry: MeterRegistry
 ) {

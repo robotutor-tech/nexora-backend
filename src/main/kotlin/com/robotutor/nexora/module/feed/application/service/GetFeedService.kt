@@ -1,8 +1,10 @@
 package com.robotutor.nexora.module.feed.application.service
 
+import com.robotutor.nexora.module.feed.application.command.GetFeedQuery
 import com.robotutor.nexora.module.feed.application.command.GetFeedsQuery
 import com.robotutor.nexora.module.feed.domain.aggregate.FeedAggregate
 import com.robotutor.nexora.module.feed.domain.repository.FeedRepository
+import com.robotutor.nexora.module.feed.domain.specification.FeedByFeedIdSpecification
 import com.robotutor.nexora.module.feed.domain.specification.FeedByPremisesIdSpecification
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
@@ -10,6 +12,7 @@ import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.specification.ResourceSpecificationBuilder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @Service
 class GetFeedService(
@@ -24,5 +27,13 @@ class GetFeedService(
         return feedRepository.findAll(specification)
             .logOnSuccess(logger, "Successfully get feeds")
             .logOnError(logger, "Failed to get feeds")
+    }
+
+    fun execute(query: GetFeedQuery): Mono<FeedAggregate> {
+        val specification = FeedByFeedIdSpecification(query.feedId)
+            .and(FeedByPremisesIdSpecification(query.premisesId))
+        return feedRepository.find(specification)
+            .logOnSuccess(logger, "Successfully get feed")
+            .logOnError(logger, "Failed to get feed")
     }
 }

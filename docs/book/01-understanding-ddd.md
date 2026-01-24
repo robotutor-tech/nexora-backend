@@ -127,7 +127,7 @@ class DeviceService(
 }
 
 // 3. DeviceValidator.kt - Yet another validation layer!
-@Component
+@ComponentInline
 class DeviceValidator {
     fun validateDeviceRegistration(request: DeviceRegistrationRequest): ValidationResult {
         val errors = mutableListOf<String>()
