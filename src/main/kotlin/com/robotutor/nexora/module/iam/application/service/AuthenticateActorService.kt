@@ -4,14 +4,17 @@ import com.robotutor.nexora.module.iam.application.command.AuthenticateActorComm
 import com.robotutor.nexora.module.iam.application.view.SessionTokens
 import com.robotutor.nexora.module.iam.domain.event.ActorAuthenticatedEvent
 import com.robotutor.nexora.module.iam.domain.event.IAMEventPublisher
+import com.robotutor.nexora.module.iam.domain.exception.IAMError
 import com.robotutor.nexora.module.iam.domain.repository.ActorRepository
 import com.robotutor.nexora.module.iam.domain.repository.SessionRepository
 import com.robotutor.nexora.module.iam.domain.service.SessionService
 import com.robotutor.nexora.module.iam.domain.vo.TokenValue
-import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.event.publishEvent
+import com.robotutor.nexora.shared.domain.exception.BadDataException
+import com.robotutor.nexora.shared.utility.required
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -26,6 +29,7 @@ class AuthenticateActorService(
 
     fun execute(command: AuthenticateActorCommand): Mono<SessionTokens> {
         return actorRepository.findByAccountIdAndPremisesId(command.accountData.accountId, command.premisesId)
+            .required(BadDataException(IAMError.NEXORA0207))
             .flatMap { actor ->
                 val refreshToken = TokenValue.generate(240)
                 val session = sessionService.create(actor, command.accountData, refreshToken)

@@ -63,3 +63,7 @@ enum class FeedType {
     ACTUATOR,
 }
 
+enum class FeedState {
+    ACTIVE,
+    INACTIVE,
+}
