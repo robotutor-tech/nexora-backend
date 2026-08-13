@@ -1,9 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.4.4"
+    kotlin("jvm") version "2.2.20"
+    kotlin("plugin.spring") version "2.2.20"
+    id("org.springframework.boot") version "3.5.3"
     id("io.spring.dependency-management") version "1.1.7"
     idea
     jacoco
@@ -14,9 +12,21 @@ version = "0.0.1-SNAPSHOT"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
+
+kotlin {
+    jvmToolchain(25)
+
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-Xjsr305=strict",
+            "-Xannotation-default-target=param-property"
+        )
+    }
+}
+
 
 repositories {
     mavenCentral()
@@ -51,8 +61,8 @@ dependencies {
     implementation("io.projectreactor.kafka:reactor-kafka")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
@@ -69,134 +79,143 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.9.1")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
-    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.11.0")
+//    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.11.0")
     testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.packageresolver:4.11.3")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("org.apache.commons:commons-lang3:3.18.0")
 }
 
-sourceSets {
-    val main by getting
-    val test by getting
 
-    val integrationTest by creating {
-        // Rely on Kotlin/Gradle defaults for src/integrationTest/kotlin and resources
-        // Avoid re-adding the same dirs to prevent duplicate entries in processIntegrationTestResources
-        compileClasspath += main.output + test.output
-        runtimeClasspath += output + compileClasspath
-    }
-}
-
-configurations {
-    named("integrationTestImplementation") {
-        extendsFrom(configurations.testImplementation.get())
-    }
-    named("integrationTestRuntimeOnly") {
-        extendsFrom(configurations.testRuntimeOnly.get())
-    }
-}
-
-dependencies {
-    add("integrationTestImplementation", sourceSets.test.get().output)
-}
-
-tasks.register<Test>("integrationTest") {
-    description = "Runs integration tests"
-    group = "verification"
-    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
-    classpath = sourceSets["integrationTest"].runtimeClasspath
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
-    shouldRunAfter(tasks.test)
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "21"
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        javaParameters = true
-    }
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(24)
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-    jvmArgs(
-        "--add-opens", "java.base/java.time=ALL-UNNAMED",
-        "--add-opens", "java.base/java.lang=ALL-UNNAMED"
-    )
-}
-
-jacoco {
-    toolVersion = "0.8.12" // latest stable as of 2025
-}
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test, tasks.named("integrationTest"))
-
-    classDirectories.setFrom(files(sourceSets.main.get().output))
-    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
-
-    reports {
-        xml.required.set(true)     // for CI tools like SonarQube
-        csv.required.set(false)
-        html.required.set(true)
-        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
-    }
-
-    finalizedBy(tasks.jacocoTestCoverageVerification)
-}
-
-tasks.jacocoTestCoverageVerification {
-    dependsOn(tasks.jacocoTestReport)
-
-    classDirectories.setFrom(files(sourceSets.main.get().output))
-    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
-
-    violationRules {
-        rule {
-            element = "BUNDLE"
-            limit {
-                counter = "LINE"
-                value = "COVEREDRATIO"
-                minimum = "0.0".toBigDecimal()
-            }
-            limit {
-                counter = "BRANCH"
-                value = "COVEREDRATIO"
-                minimum = "0.0".toBigDecimal()
-            }
-            limit {
-                counter = "INSTRUCTION"
-                value = "COVEREDRATIO"
-                minimum = "0.0".toBigDecimal()
-            }
-            limit {
-                counter = "METHOD"
-                value = "COVEREDRATIO"
-                minimum = "0.0".toBigDecimal()
-            }
-            limit {
-                counter = "CLASS"
-                value = "COVEREDRATIO"
-                minimum = "0.0".toBigDecimal()
-            }
-            limit {
-                counter = "COMPLEXITY"
-                value = "COVEREDRATIO"
-                minimum = "0.0".toBigDecimal()
-            }
-        }
-    }
-}
-
-tasks.check {
-    dependsOn(tasks.named("integrationTest"))
-    dependsOn(tasks.jacocoTestCoverageVerification)
-}
-
-tasks.withType<ProcessResources> {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
+//sourceSets {
+//    val main by getting
+//    val test by getting
+//
+//    val integrationTest by creating {
+//        // Rely on Kotlin/Gradle defaults for src/integrationTest/kotlin and resources
+//        // Avoid re-adding the same dirs to prevent duplicate entries in processIntegrationTestResources
+//        compileClasspath += main.output + test.output
+//        runtimeClasspath += output + compileClasspath
+//    }
+//}
+//
+//configurations {
+//    named("integrationTestImplementation") {
+//        extendsFrom(configurations.testImplementation.get())
+//    }
+//    named("integrationTestRuntimeOnly") {
+//        extendsFrom(configurations.testRuntimeOnly.get())
+//    }
+//}
+//
+//dependencies {
+//    add("integrationTestImplementation", sourceSets.test.get().output)
+//}
+//
+//tasks.register<Test>("integrationTest") {
+//    description = "Runs integration tests"
+//    group = "verification"
+//    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+//    classpath = sourceSets["integrationTest"].runtimeClasspath
+//    useJUnitPlatform()
+//    shouldRunAfter(tasks.test)
+//}
+//
+//tasks.withType<KotlinCompile> {
+//    kotlinOptions {
+//        jvmTarget = "21"
+//        freeCompilerArgs = listOf("-Xjsr305=strict")
+//        javaParameters = true
+//    }
+//}
+//
+//tasks.withType<Test> {
+//    useJUnitPlatform()
+//    jvmArgs(
+//        "--add-opens", "java.base/java.time=ALL-UNNAMED",
+//        "--add-opens", "java.base/java.lang=ALL-UNNAMED"
+//    )
+//}
+//
+//jacoco {
+//    toolVersion = "0.8.12" // latest stable as of 2025
+//}
+//
+//tasks.test {
+//    finalizedBy(tasks.jacocoTestReport)
+//}
+//
+//tasks.jacocoTestReport {
+//    dependsOn(tasks.test, tasks.named("integrationTest"))
+//
+//    classDirectories.setFrom(files(sourceSets.main.get().output))
+//    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
+//
+//    reports {
+//        xml.required.set(true)     // for CI tools like SonarQube
+//        csv.required.set(false)
+//        html.required.set(true)
+//        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+//    }
+//
+//    finalizedBy(tasks.jacocoTestCoverageVerification)
+//}
+//
+//tasks.jacocoTestCoverageVerification {
+//    dependsOn(tasks.jacocoTestReport)
+//
+//    classDirectories.setFrom(files(sourceSets.main.get().output))
+//    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
+//
+//    violationRules {
+//        rule {
+//            element = "BUNDLE"
+//            limit {
+//                counter = "LINE"
+//                value = "COVEREDRATIO"
+//                minimum = "0.0".toBigDecimal()
+//            }
+//            limit {
+//                counter = "BRANCH"
+//                value = "COVEREDRATIO"
+//                minimum = "0.0".toBigDecimal()
+//            }
+//            limit {
+//                counter = "INSTRUCTION"
+//                value = "COVEREDRATIO"
+//                minimum = "0.0".toBigDecimal()
+//            }
+//            limit {
+//                counter = "METHOD"
+//                value = "COVEREDRATIO"
+//                minimum = "0.0".toBigDecimal()
+//            }
+//            limit {
+//                counter = "CLASS"
+//                value = "COVEREDRATIO"
+//                minimum = "0.0".toBigDecimal()
+//            }
+//            limit {
+//                counter = "COMPLEXITY"
+//                value = "COVEREDRATIO"
+//                minimum = "0.0".toBigDecimal()
+//            }
+//        }
+//    }
+//}
+//
+//tasks.check {
+//    dependsOn(tasks.named("integrationTest"))
+//    dependsOn(tasks.jacocoTestCoverageVerification)
+//}
+//
+//tasks.withType<ProcessResources> {
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//}

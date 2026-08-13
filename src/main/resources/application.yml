@@ -3,13 +3,13 @@ spring:
     name: NEXORA-BACKEND
   data:
     mongodb:
-      uri: ${MONGODB_URL:mongodb://username:password@localhost:27018/nexora?authSource=admin}
+      uri: ${MONGODB_URL:mongodb://username:password@localhost:27017/nexora?authSource=admin}
       auto-index-creation: true
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_BROKERS:localhost:9092}
+  Kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_BROKERS:localhost:29092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
