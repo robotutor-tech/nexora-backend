@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.message.services
+package com.robotutor.nexora.shared.message.services
 
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import com.robotutor.nexora.shared.application.logger.Logger
@@ -10,6 +10,7 @@ import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.message.message.EventMessage
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
 import org.springframework.http.HttpHeaders
@@ -25,7 +26,7 @@ class KafkaEventPublisher(
 ) {
     val logger = Logger(this::class.java)
 
-    fun publish(message: com.robotutor.nexora.common.message.message.EventMessage): Mono<SenderResult<Void>> {
+    fun publish(message: EventMessage): Mono<SenderResult<Void>> {
         val messageAsString = DefaultSerializer.serialize(message)
         return Mono.deferContextual { ctx ->
             val headers = createHeadersRecord(ctx)

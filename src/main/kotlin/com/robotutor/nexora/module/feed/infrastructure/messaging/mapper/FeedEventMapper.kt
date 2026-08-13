@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.feed.infrastructure.messaging.mapper
 
-import com.robotutor.nexora.common.message.mapper.EventMapper
-import com.robotutor.nexora.common.message.message.EventMessage
+import com.robotutor.nexora.shared.message.mapper.EventMapper
+import com.robotutor.nexora.shared.message.message.EventMessage
 import com.robotutor.nexora.module.feed.domain.event.FeedEvent
 import com.robotutor.nexora.module.feed.domain.event.FeedRegisteredEvent
 import com.robotutor.nexora.module.feed.domain.event.FeedValueUpdatedEvent

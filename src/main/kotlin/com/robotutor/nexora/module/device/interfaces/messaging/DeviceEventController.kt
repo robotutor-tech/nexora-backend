@@ -7,9 +7,9 @@ import com.robotutor.nexora.module.device.interfaces.messaging.mapper.DeviceEven
 import com.robotutor.nexora.module.device.interfaces.messaging.message.ActorRegisteredDeviceMessage
 import com.robotutor.nexora.module.device.interfaces.messaging.message.CompensateDeviceMessage
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.common.message.annotation.EventController
-import com.robotutor.nexora.common.message.annotation.EventListener
-import com.robotutor.nexora.common.message.annotation.Message
+import com.robotutor.nexora.shared.message.annotation.EventController
+import com.robotutor.nexora.shared.message.annotation.EventListener
+import com.robotutor.nexora.shared.message.annotation.Message
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")

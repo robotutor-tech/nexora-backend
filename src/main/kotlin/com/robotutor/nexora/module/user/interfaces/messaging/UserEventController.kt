@@ -1,8 +1,8 @@
 package com.robotutor.nexora.module.user.interfaces.messaging
 
-import com.robotutor.nexora.common.message.annotation.EventController
-import com.robotutor.nexora.common.message.annotation.EventListener
-import com.robotutor.nexora.common.message.annotation.Message
+import com.robotutor.nexora.shared.message.annotation.EventController
+import com.robotutor.nexora.shared.message.annotation.EventListener
+import com.robotutor.nexora.shared.message.annotation.Message
 import com.robotutor.nexora.module.user.application.service.ActivateUserService
 import com.robotutor.nexora.module.user.application.service.CompensateUserService
 import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate

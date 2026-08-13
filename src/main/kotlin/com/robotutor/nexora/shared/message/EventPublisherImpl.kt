@@ -1,9 +1,9 @@
-package com.robotutor.nexora.common.message
+package com.robotutor.nexora.shared.message
 
 import com.robotutor.nexora.shared.domain.Event
-import com.robotutor.nexora.common.message.mapper.EventMapper
+import com.robotutor.nexora.shared.message.mapper.EventMapper
 import com.robotutor.nexora.shared.domain.event.EventPublisher
-import com.robotutor.nexora.common.message.services.KafkaEventPublisher
+import com.robotutor.nexora.shared.message.services.KafkaEventPublisher
 import reactor.core.publisher.Mono
 
 open class EventPublisherImpl<T : Event>(

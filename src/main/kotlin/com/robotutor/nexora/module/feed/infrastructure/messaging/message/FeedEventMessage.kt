@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.feed.infrastructure.messaging.message
 
-import com.robotutor.nexora.common.message.message.EventMessage
+import com.robotutor.nexora.shared.message.message.EventMessage
 
 sealed class FeedEventMessage(name: String) : EventMessage(eventName = "feed.$name")
 

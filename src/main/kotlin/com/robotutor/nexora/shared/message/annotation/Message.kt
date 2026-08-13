@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.message.annotation
+package com.robotutor.nexora.shared.message.annotation
 
 import kotlin.annotation.AnnotationRetention.RUNTIME
 

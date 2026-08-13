@@ -1,10 +1,10 @@
-package com.robotutor.nexora.common.message.resolver
+package com.robotutor.nexora.shared.message.resolver
 
-import com.robotutor.nexora.common.message.annotation.Message
 import com.robotutor.nexora.common.resolver.ArgumentResolver
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError
+import com.robotutor.nexora.shared.message.annotation.Message
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Component

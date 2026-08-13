@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.message.config
+package com.robotutor.nexora.shared.message.config
 
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig

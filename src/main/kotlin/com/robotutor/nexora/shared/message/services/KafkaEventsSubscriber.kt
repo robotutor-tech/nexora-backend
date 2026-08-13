@@ -1,11 +1,11 @@
-package com.robotutor.nexora.common.message.services
+package com.robotutor.nexora.shared.message.services
 
+import com.robotutor.nexora.shared.message.annotation.EventController
+import com.robotutor.nexora.shared.message.annotation.EventListener
+import com.robotutor.nexora.shared.message.message.Message
+import com.robotutor.nexora.shared.message.resolver.ArgumentResolverConfigurer
 import com.robotutor.nexora.shared.utility.createFlux
 import com.robotutor.nexora.shared.utility.createMono
-import com.robotutor.nexora.common.message.annotation.EventController
-import com.robotutor.nexora.common.message.annotation.EventListener
-import com.robotutor.nexora.common.message.message.Message
-import com.robotutor.nexora.common.message.resolver.ArgumentResolverConfigurer
 import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.getBeansWithAnnotation
 import org.springframework.context.ApplicationContext

@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.message.resolver
+package com.robotutor.nexora.shared.message.resolver
 
 import com.robotutor.nexora.common.resolver.AccountDataResolver
 import com.robotutor.nexora.common.resolver.ActorDataResolver
