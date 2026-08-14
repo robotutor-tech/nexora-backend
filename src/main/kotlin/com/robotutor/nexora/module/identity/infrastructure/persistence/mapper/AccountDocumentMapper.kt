@@ -9,7 +9,7 @@ import com.robotutor.nexora.module.identity.infrastructure.persistence.document.
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.CredentialDocument
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
-import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object AccountDocumentMapper : DocumentMapper<AccountAggregate, AccountDocument> {
     override fun toMongoDocument(domain: AccountAggregate): AccountDocument {

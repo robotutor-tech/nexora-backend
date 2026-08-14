@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.zone.infrastructure.persistence
 
-import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.module.zone.domain.aggregate.ZoneAggregate
 import com.robotutor.nexora.module.zone.domain.event.ZoneEventPublisher
 import com.robotutor.nexora.module.zone.domain.repository.ZoneRepository

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.message.resolver
 
-import com.robotutor.nexora.common.resolver.ArgumentResolver
+import com.robotutor.nexora.shared.resolver.ArgumentResolver
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError

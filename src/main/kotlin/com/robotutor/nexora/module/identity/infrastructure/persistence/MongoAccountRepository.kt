@@ -8,7 +8,7 @@ import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.Ac
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.AccountDocumentRepository
 import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.shared.domain.vo.principal.SubjectId
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono

@@ -3,7 +3,7 @@ package com.robotutor.nexora.module.feed.infrastructure.persistence.mapper
 import com.robotutor.nexora.module.feed.domain.aggregate.FeedAggregate
 import com.robotutor.nexora.module.feed.domain.specification.FeedByPremisesIdSpecification
 import com.robotutor.nexora.module.feed.domain.specification.FeedSpecification
-import com.robotutor.nexora.common.persistence.mapper.BaseSpecificationTranslator
+import com.robotutor.nexora.shared.persistence.mapper.BaseSpecificationTranslator
 import com.robotutor.nexora.module.feed.domain.specification.FeedByFeedIdSpecification
 import org.springframework.data.mongodb.core.query.Criteria
 

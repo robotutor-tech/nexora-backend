@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.device.interfaces.controller
 
-import com.robotutor.nexora.common.resource.annotation.ResourceSelector
 import com.robotutor.nexora.module.device.application.command.GetDeviceQuery
 import com.robotutor.nexora.module.device.application.service.CommissionDeviceService
 import com.robotutor.nexora.module.device.application.service.GetDeviceService
@@ -10,6 +9,7 @@ import com.robotutor.nexora.module.device.interfaces.controller.mapper.DeviceMap
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.module.device.interfaces.controller.view.RegisterDeviceRequest
+import com.robotutor.nexora.shared.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.Resources

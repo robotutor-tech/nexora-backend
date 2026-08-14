@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.zone.interfaces.controller
 
-import com.robotutor.nexora.common.resource.annotation.ResourceSelector
 import com.robotutor.nexora.module.zone.application.command.GetZonesQuery
 import com.robotutor.nexora.module.zone.application.service.CreateWidgetsService
 import com.robotutor.nexora.module.zone.application.service.CreateZoneService
@@ -9,6 +8,7 @@ import com.robotutor.nexora.module.zone.interfaces.controller.mapper.ZoneMapper
 import com.robotutor.nexora.module.zone.interfaces.controller.view.WidgetsRequest
 import com.robotutor.nexora.module.zone.interfaces.controller.view.ZoneRequest
 import com.robotutor.nexora.module.zone.interfaces.controller.view.ZoneResponse
+import com.robotutor.nexora.shared.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.Resources

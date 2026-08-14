@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.automation.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.common.persistence.mapper.BaseSpecificationTranslator
+import com.robotutor.nexora.shared.persistence.mapper.BaseSpecificationTranslator
 import com.robotutor.nexora.module.automation.domain.aggregate.AutomationAggregate
 import com.robotutor.nexora.module.automation.domain.specification.AutomationByPremisesIdSpecification
 import com.robotutor.nexora.module.automation.domain.specification.AutomationSpecification

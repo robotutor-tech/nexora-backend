@@ -8,7 +8,7 @@ import com.robotutor.nexora.module.device.domain.vo.SerialNo
 import com.robotutor.nexora.module.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.module.device.infrastructure.persistence.document.DeviceMetaDataDocument
 import com.robotutor.nexora.shared.domain.vo.*
-import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
     override fun toMongoDocument(domain: DeviceAggregate): DeviceDocument {

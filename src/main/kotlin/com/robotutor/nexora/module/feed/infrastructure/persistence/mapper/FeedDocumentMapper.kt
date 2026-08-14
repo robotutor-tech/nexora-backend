@@ -6,7 +6,7 @@ import com.robotutor.nexora.module.feed.infrastructure.persistence.document.Feed
 import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object FeedDocumentMapper : DocumentMapper<FeedAggregate, FeedDocument> {
     override fun toMongoDocument(domain: FeedAggregate): FeedDocument {

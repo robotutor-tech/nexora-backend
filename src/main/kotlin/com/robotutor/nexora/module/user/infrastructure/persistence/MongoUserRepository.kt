@@ -1,8 +1,8 @@
 package com.robotutor.nexora.module.user.infrastructure.persistence
 
-import com.robotutor.nexora.common.cache.annotation.Cache
-import com.robotutor.nexora.common.cache.annotation.CacheEvicts
-import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.cache.annotation.Cache
+import com.robotutor.nexora.shared.cache.annotation.CacheEvicts
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.module.user.domain.event.UserEventPublisher
 import com.robotutor.nexora.module.user.domain.repository.UserRepository

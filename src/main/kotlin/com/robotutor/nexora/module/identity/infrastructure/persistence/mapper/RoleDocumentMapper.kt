@@ -8,7 +8,7 @@ import com.robotutor.nexora.module.identity.infrastructure.persistence.document.
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ResourceId
-import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
     override fun toMongoDocument(domain: RoleAggregate): RoleDocument {

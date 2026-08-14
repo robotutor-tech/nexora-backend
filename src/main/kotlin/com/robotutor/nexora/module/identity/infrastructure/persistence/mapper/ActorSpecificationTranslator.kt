@@ -4,7 +4,7 @@ import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.module.identity.domain.specification.ActorByAccountIdSpecification
 import com.robotutor.nexora.module.identity.domain.specification.ActorByPremisesIdSpecification
 import com.robotutor.nexora.module.identity.domain.specification.ActorSpecification
-import com.robotutor.nexora.common.persistence.mapper.BaseSpecificationTranslator
+import com.robotutor.nexora.shared.persistence.mapper.BaseSpecificationTranslator
 import org.springframework.data.mongodb.core.query.Criteria
 
 object ActorSpecificationTranslator : BaseSpecificationTranslator<ActorAggregate, ActorSpecification>("deviceId") {

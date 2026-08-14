@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.automation.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 import com.robotutor.nexora.module.automation.domain.aggregate.AutomationAggregate
 import com.robotutor.nexora.module.automation.domain.vo.Actions
 import com.robotutor.nexora.module.automation.domain.vo.AutomationId

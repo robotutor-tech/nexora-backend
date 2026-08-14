@@ -1,9 +1,9 @@
 package com.robotutor.nexora.shared.message.resolver
 
-import com.robotutor.nexora.common.resolver.AccountDataResolver
-import com.robotutor.nexora.common.resolver.ActorDataResolver
-import com.robotutor.nexora.common.resolver.ArgumentResolver
-import com.robotutor.nexora.common.resolver.ResourceResolver
+import com.robotutor.nexora.shared.resolver.AccountDataResolver
+import com.robotutor.nexora.shared.resolver.ActorDataResolver
+import com.robotutor.nexora.shared.resolver.ArgumentResolver
+import com.robotutor.nexora.shared.resolver.ResourceResolver
 import org.springframework.stereotype.Component
 
 @Component

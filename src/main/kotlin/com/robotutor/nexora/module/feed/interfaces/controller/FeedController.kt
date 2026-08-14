@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.feed.interfaces.controller
 
-import com.robotutor.nexora.common.resource.annotation.ResourceSelector
 import com.robotutor.nexora.module.feed.application.command.GetFeedQuery
 import com.robotutor.nexora.module.feed.application.service.GetFeedService
 import com.robotutor.nexora.module.feed.application.service.RegisterFeedService
@@ -9,6 +8,7 @@ import com.robotutor.nexora.module.feed.interfaces.controller.mapper.FeedMapper
 import com.robotutor.nexora.module.feed.interfaces.controller.view.FeedResponse
 import com.robotutor.nexora.module.feed.interfaces.controller.view.RegisterFeedsRequest
 import com.robotutor.nexora.module.feed.interfaces.controller.view.UpdateValueRequest
+import com.robotutor.nexora.shared.annotation.ResourceSelector
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.FeedId

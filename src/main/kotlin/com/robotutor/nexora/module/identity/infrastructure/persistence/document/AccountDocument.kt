@@ -4,7 +4,7 @@ import com.robotutor.nexora.module.identity.domain.aggregate.AccountAggregate
 import com.robotutor.nexora.module.identity.domain.aggregate.AccountStatus
 import com.robotutor.nexora.module.identity.domain.vo.CredentialKind
 import com.robotutor.nexora.shared.domain.vo.principal.SubjectType
-import com.robotutor.nexora.common.persistence.document.MongoDocument
+import com.robotutor.nexora.shared.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version

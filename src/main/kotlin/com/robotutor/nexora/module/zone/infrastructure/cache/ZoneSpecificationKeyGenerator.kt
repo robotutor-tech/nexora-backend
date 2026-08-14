@@ -1,8 +1,8 @@
 package com.robotutor.nexora.module.zone.infrastructure.cache
 
-import com.robotutor.nexora.common.cache.service.BaseSpecificationKeyGenerator
-import com.robotutor.nexora.common.cache.service.KeyGenerator
-import com.robotutor.nexora.common.cache.service.argumentIndexForSpecification
+import com.robotutor.nexora.shared.cache.service.BaseSpecificationKeyGenerator
+import com.robotutor.nexora.shared.cache.service.KeyGenerator
+import com.robotutor.nexora.shared.cache.service.argumentIndexForSpecification
 import com.robotutor.nexora.module.zone.domain.aggregate.ZoneAggregate
 import com.robotutor.nexora.module.zone.domain.specification.ZoneByPremisesSpecification
 import com.robotutor.nexora.module.zone.domain.specification.ZoneSpecification

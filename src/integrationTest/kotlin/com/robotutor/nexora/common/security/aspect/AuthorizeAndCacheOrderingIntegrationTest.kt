@@ -1,7 +1,7 @@
-package com.robotutor.nexora.common.security.aspect
+package com.robotutor.nexora.shared.security.aspect
 
-import com.robotutor.nexora.common.security.ports.AccessAuthorizer
-import com.robotutor.nexora.common.security.interfaces.annotation.HttpAuthorize
+import com.robotutor.nexora.shared.security.ports.AccessAuthorizer
+import com.robotutor.nexora.shared.security.interfaces.annotation.HttpAuthorize
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.application.cache.annotation.Cached
 import com.robotutor.nexora.shared.domain.vo.ActionType
@@ -46,8 +46,8 @@ class AuthorizeAndCacheOrderingIntegrationTest {
         fun cacheManager(): CacheManager = ConcurrentMapCacheManager(CacheNames.DEVICE_BY_ID, CacheNames.USER_BY_ID)
 
         @Bean
-        fun accessAuthorizer(): com.robotutor.nexora.common.security.ports.AccessAuthorizer = object :
-            com.robotutor.nexora.common.security.ports.AccessAuthorizer {
+        fun accessAuthorizer(): com.robotutor.nexora.shared.security.ports.AccessAuthorizer = object :
+            com.robotutor.nexora.shared.security.ports.AccessAuthorizer {
             override fun authorize(httpAuthorize: HttpAuthorize, resourceId: ResourceId): Mono<Boolean> {
                 // deny d2
                 return Mono.just(resourceId.value != "d2")

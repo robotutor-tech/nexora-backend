@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.automation.infrastructure.facade
 
-import com.robotutor.nexora.common.webclient.WebClientWrapper
+import com.robotutor.nexora.shared.webclient.WebClientWrapper
 import com.robotutor.nexora.module.automation.application.facade.FeedFacade
 import com.robotutor.nexora.module.automation.application.facade.view.FeedResponse
 import com.robotutor.nexora.module.automation.infrastructure.facade.config.AutomationConfig

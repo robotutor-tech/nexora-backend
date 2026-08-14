@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.security.resolver
 
-import com.robotutor.nexora.common.resolver.ArgumentResolver
+import com.robotutor.nexora.shared.resolver.ArgumentResolver
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.BindingContext

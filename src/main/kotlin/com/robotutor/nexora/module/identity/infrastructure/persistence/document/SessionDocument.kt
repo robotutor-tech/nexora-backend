@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.document
 
-import com.robotutor.nexora.common.persistence.document.MongoDocument
+import com.robotutor.nexora.shared.persistence.document.MongoDocument
 import com.robotutor.nexora.module.identity.domain.aggregate.Session
 import com.robotutor.nexora.module.identity.domain.aggregate.SessionStatus
 import org.springframework.data.annotation.Id

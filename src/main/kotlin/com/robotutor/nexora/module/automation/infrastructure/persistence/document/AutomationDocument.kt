@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.automation.infrastructure.persistence.document
 
-import com.robotutor.nexora.common.persistence.document.MongoDocument
+import com.robotutor.nexora.shared.persistence.document.MongoDocument
 import com.robotutor.nexora.module.automation.domain.aggregate.AutomationAggregate
 import com.robotutor.nexora.module.automation.domain.aggregate.AutomationState
 import com.robotutor.nexora.module.automation.domain.aggregate.ExecutionMode

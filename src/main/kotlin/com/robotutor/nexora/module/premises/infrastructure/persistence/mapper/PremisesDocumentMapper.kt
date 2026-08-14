@@ -7,7 +7,7 @@ import com.robotutor.nexora.module.premises.infrastructure.persistence.document.
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.common.persistence.mapper.DocumentMapper
+import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocument> {
     override fun toMongoDocument(domain: PremisesAggregate): PremisesDocument {

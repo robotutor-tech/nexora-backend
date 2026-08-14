@@ -1,6 +1,6 @@
 package com.robotutor.nexora.shared.outbox.recorder
 
-import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.shared.outbox.persistence.document.OutboxDocument
 import com.robotutor.nexora.shared.outbox.persistence.repository.OutboxDocumentRepository
 import com.robotutor.nexora.shared.application.ReactiveContext

@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.utils
+package com.robotutor.nexora.shared.utils
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test

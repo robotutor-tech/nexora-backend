@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.device.infrastructure.persistence
 
-import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.module.device.domain.event.DeviceEventPublisher
 import com.robotutor.nexora.module.device.domain.repository.DeviceRepository

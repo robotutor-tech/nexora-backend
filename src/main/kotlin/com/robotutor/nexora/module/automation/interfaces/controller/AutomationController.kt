@@ -1,12 +1,12 @@
 package com.robotutor.nexora.module.automation.interfaces.controller
 
-import com.robotutor.nexora.common.resource.annotation.ResourceSelector
 import com.robotutor.nexora.module.automation.application.command.GetAutomationsQuery
 import com.robotutor.nexora.module.automation.application.service.CreateAutomationService
 import com.robotutor.nexora.module.automation.application.service.GetAutomationService
 import com.robotutor.nexora.module.automation.interfaces.controller.mapper.AutomationMapper
 import com.robotutor.nexora.module.automation.interfaces.controller.view.AutomationRequest
 import com.robotutor.nexora.module.automation.interfaces.controller.view.AutomationResponse
+import com.robotutor.nexora.shared.annotation.ResourceSelector
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.Resources

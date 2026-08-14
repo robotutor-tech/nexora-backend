@@ -1,4 +1,4 @@
-package com.robotutor.nexora.common.security.aspect
+package com.robotutor.nexora.shared.security.aspect
 
 import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.domain.vo.ActionType
@@ -44,8 +44,8 @@ class ResourceSelectorAspectIntegrationTest {
         }
 
         @Bean
-        fun accessAuthorizer(): com.robotutor.nexora.common.security.ports.AccessAuthorizer = object :
-            com.robotutor.nexora.common.security.ports.AccessAuthorizer {
+        fun accessAuthorizer(): com.robotutor.nexora.shared.security.ports.AccessAuthorizer = object :
+            com.robotutor.nexora.shared.security.ports.AccessAuthorizer {
             override fun authorize(httpAuthorize: HttpAuthorize, resourceId: ResourceId): Mono<Boolean> {
                 return Mono.just(resourceId.value != "d2")
             }

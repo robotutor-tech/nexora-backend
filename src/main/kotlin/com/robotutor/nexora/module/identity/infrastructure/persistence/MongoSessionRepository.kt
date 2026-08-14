@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
-import com.robotutor.nexora.common.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.module.identity.domain.aggregate.Session
 import com.robotutor.nexora.module.identity.domain.event.IAMEventPublisher
 import com.robotutor.nexora.module.identity.domain.repository.SessionRepository

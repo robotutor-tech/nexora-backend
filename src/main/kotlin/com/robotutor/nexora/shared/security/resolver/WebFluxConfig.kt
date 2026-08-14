@@ -1,8 +1,8 @@
 package com.robotutor.nexora.shared.security.resolver
 
-import com.robotutor.nexora.common.resolver.AccountDataResolver
-import com.robotutor.nexora.common.resolver.ActorDataResolver
-import com.robotutor.nexora.common.resolver.ResourceResolver
+import com.robotutor.nexora.shared.resolver.AccountDataResolver
+import com.robotutor.nexora.shared.resolver.ActorDataResolver
+import com.robotutor.nexora.shared.resolver.ResourceResolver
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.config.WebFluxConfigurer
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer
