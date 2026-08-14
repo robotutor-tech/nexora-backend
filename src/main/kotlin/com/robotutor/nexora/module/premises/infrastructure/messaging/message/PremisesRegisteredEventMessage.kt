@@ -1,11 +1,14 @@
 package com.robotutor.nexora.module.premises.infrastructure.messaging.message
 
+import com.robotutor.nexora.shared.message.config.EventName
 import com.robotutor.nexora.shared.message.message.EventMessage
 
-sealed class PremisesEventMessage(eventName: String) : EventMessage("premises.$eventName")
+sealed interface PremisesEventMessage : EventMessage
 
 data class PremisesRegisteredEventMessage(
     val premisesId: String,
     val name: String,
-) : PremisesEventMessage("registered")
+) : PremisesEventMessage{
+    override val eventName: EventName = EventName.PREMISES_REGISTERED
+}
 

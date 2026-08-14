@@ -1,12 +1,19 @@
 package com.robotutor.nexora.module.identity.infrastructure.messaging.message
 
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.message.config.EventName
 
-sealed class AccountCreatedEventMessage(val accountId: String, type: String) :
-    IAMEventMessage("account.registered.$type")
+sealed class AccountCreatedEventMessage(val accountId: String) :
+    IAMEventMessage {
+
+}
 
 class UserAccountCreatedEventMessage(val userId: String, accountId: AccountId) :
-    AccountCreatedEventMessage(accountId = accountId.value, "user")
+    AccountCreatedEventMessage(accountId.value) {
+    override val eventName: EventName = EventName.ACCOUNT_CREATED
+}
 
 class DeviceAccountCreatedEventMessage(val deviceId: String, accountId: AccountId) :
-    AccountCreatedEventMessage(accountId = accountId.value, "device")
+    AccountCreatedEventMessage(accountId = accountId.value) {
+    override val eventName: EventName = EventName.ACCOUNT_CREATED
+}

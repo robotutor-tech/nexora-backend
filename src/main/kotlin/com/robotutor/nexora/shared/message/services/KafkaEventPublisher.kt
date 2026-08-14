@@ -30,7 +30,7 @@ class KafkaEventPublisher(
         val messageAsString = DefaultSerializer.serialize(message)
         return Mono.deferContextual { ctx ->
             val headers = createHeadersRecord(ctx)
-            val producerRecord = ProducerRecord(message.eventName, "", messageAsString)
+            val producerRecord = ProducerRecord(message.eventName.topic, "", messageAsString)
             headers.forEach { producerRecord.headers().add(it) }
             reactiveKafkaProducerTemplate.send(producerRecord)
         }

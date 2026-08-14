@@ -1,9 +1,7 @@
 package com.robotutor.nexora.shared.outbox.audit
 
 import com.robotutor.nexora.shared.domain.vo.ResourceType
-import com.robotutor.nexora.shared.message.config.KafkaTopic
-import com.robotutor.nexora.shared.message.message.EventMessage
-import java.time.Instant
+
 //
 //data class AuditEventMessage(
 ////    override val userId: String,

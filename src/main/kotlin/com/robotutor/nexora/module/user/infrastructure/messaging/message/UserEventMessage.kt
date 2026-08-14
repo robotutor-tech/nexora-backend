@@ -1,9 +1,18 @@
 package com.robotutor.nexora.module.user.infrastructure.messaging.message
 
+import com.robotutor.nexora.shared.message.config.EventName
 import com.robotutor.nexora.shared.message.message.EventMessage
 
-sealed class UserEventMessage(eventName: String) : EventMessage("user.$eventName")
+sealed interface UserEventMessage : EventMessage
 
-data class UserRegisteredEventMessage(val userId: String) : UserEventMessage("registered")
-data class UserActivatedEventMessage(val userId: String) : UserEventMessage("activated")
-data class UserCompensatedEventMessage(val userId: String) : UserEventMessage("compensated")
+class UserRegisteredEventMessage(val userId: String) : UserEventMessage {
+    override val eventName: EventName = EventName.USER_REGISTERED
+}
+
+data class UserActivatedEventMessage(val userId: String) : UserEventMessage {
+    override val eventName: EventName = EventName.USER_ACTIVATED
+}
+
+data class UserCompensatedEventMessage(val userId: String) : UserEventMessage {
+    override val eventName: EventName = EventName.USER_COMPENSATED
+}

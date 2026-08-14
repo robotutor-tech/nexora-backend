@@ -1,7 +1,10 @@
 package com.robotutor.nexora.module.automation.infrastructure.messaging.message
 
+import com.robotutor.nexora.shared.message.config.EventName
 import com.robotutor.nexora.shared.message.message.EventMessage
 
-sealed class AutomationEventMessage(name: String) : EventMessage(eventName = "automation.$name")
+sealed interface AutomationEventMessage : EventMessage
 
-data class AutomationRegisteredEventMessage(val automationId: String) : AutomationEventMessage("registered")
+data class AutomationRegisteredEventMessage(val automationId: String) : AutomationEventMessage {
+    override val eventName: EventName = EventName.AUTOMATION_REGISTERED
+}
