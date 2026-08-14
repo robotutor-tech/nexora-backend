@@ -9,6 +9,7 @@ abstract class BaseSpecificationKeyGenerator<A : Aggregate, S : Specification<A>
 
 
     final override fun generate(specification: Specification<A>): String {
+        @Suppress("UNCHECKED_CAST")
         return when (specification) {
             is AndSpecification -> {
                 "{operator:AND, specifications:${specification.specifications.map { generate(it) }}}"

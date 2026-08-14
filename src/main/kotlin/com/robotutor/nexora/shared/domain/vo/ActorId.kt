@@ -3,7 +3,7 @@ package com.robotutor.nexora.shared.domain.vo
 import com.robotutor.nexora.shared.domain.utility.validation
 import java.util.UUID
 
-data class ActorId(override val value: String) : Identifier, ValueObject {
+data class ActorId(override val value: String) : Identifier {
     init {
         validation(value.isBlank()) { "Actor id must not be blank" }
     }

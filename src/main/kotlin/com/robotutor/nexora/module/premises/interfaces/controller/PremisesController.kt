@@ -8,7 +8,7 @@ import com.robotutor.nexora.module.premises.interfaces.controller.mapper.Premise
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesCreateRequest
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.principal.UserData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -23,9 +23,9 @@ class PremisesController(
     @PostMapping
     fun registerPremises(
         @RequestBody @Validated premisesRequest: PremisesCreateRequest,
-        accountData: AccountData
+        userData: UserData
     ): Mono<PremisesResponse> {
-        val command = PremisesMapper.toRegisterPremisesCommand(premisesRequest, accountData)
+        val command = PremisesMapper.toRegisterPremisesCommand(premisesRequest, userData)
         return registerPremisesService.execute(command)
             .map { PremisesMapper.toPremisesResponse(it) }
     }

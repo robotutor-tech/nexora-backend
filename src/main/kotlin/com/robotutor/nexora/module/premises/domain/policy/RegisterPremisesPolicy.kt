@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 class RegisterPremisesPolicy : Policy<AccountData> {
     override fun evaluate(input: AccountData): PolicyResult {
         val reasons = mutableListOf<String>()
-        if (!input.isHuman()) {
-            reasons.add("Only humans can register premises")
-        }
+
         return PolicyResult.create(reasons)
     }
 }

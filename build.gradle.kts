@@ -59,15 +59,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("io.projectreactor.kafka:reactor-kafka")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+// JWT
+    implementation("io.jsonwebtoken:jjwt-api:0.12.7")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.7")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.7")
 
     implementation("io.lettuce:lettuce-core")
     implementation("net.javacrumbs.shedlock:shedlock-spring:7.7.0")
     implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:7.7.0")
-
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 

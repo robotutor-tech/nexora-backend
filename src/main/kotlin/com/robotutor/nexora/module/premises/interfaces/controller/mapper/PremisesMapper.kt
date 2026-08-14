@@ -1,21 +1,24 @@
 package com.robotutor.nexora.module.premises.interfaces.controller.mapper
 
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.module.premises.application.command.RegisterPremisesCommand
 import com.robotutor.nexora.module.premises.domain.aggregate.PremisesAggregate
 import com.robotutor.nexora.module.premises.domain.vo.Address
-import com.robotutor.nexora.module.premises.interfaces.controller.view.*
+import com.robotutor.nexora.module.premises.interfaces.controller.view.AddressRequest
+import com.robotutor.nexora.module.premises.interfaces.controller.view.AddressResponse
+import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesCreateRequest
+import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.principal.UserData
 
 object PremisesMapper {
     fun toRegisterPremisesCommand(
         premisesRequest: PremisesCreateRequest,
-        accountData: AccountData
+        userData: UserData
     ): RegisterPremisesCommand {
         return RegisterPremisesCommand(
             name = Name(premisesRequest.name),
             address = toAddress(premisesRequest.address),
-            owner = accountData
+            owner = userData
         )
     }
 

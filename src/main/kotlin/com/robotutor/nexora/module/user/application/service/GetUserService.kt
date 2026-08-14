@@ -26,9 +26,9 @@ class GetUserService(
         key = "T(com.robotutor.nexora.shared.application.cache.CacheKeys).userById(#query.principalId.value)",
     )
     fun execute(query: GetUserQuery): Mono<UserAggregate> {
-        return userRepository.findByUserId(UserId(query.principalId.value))
+        return userRepository.findByUserId(UserId(query.subjectId.value))
             .required(DataNotFoundException(UserError.NEXORA0205))
-            .logOnSuccess(logger, "Successfully retrieved user", mapOf("principalId" to query.principalId))
-            .logOnError(logger, "Failed to retrieve user", mapOf("principalId" to query.principalId))
+            .logOnSuccess(logger, "Successfully retrieved user", mapOf("principalId" to query.subjectId))
+            .logOnError(logger, "Failed to retrieve user", mapOf("principalId" to query.subjectId))
     }
 }

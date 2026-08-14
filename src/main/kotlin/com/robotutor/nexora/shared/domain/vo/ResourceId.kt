@@ -2,11 +2,11 @@ package com.robotutor.nexora.shared.domain.vo
 
 import com.robotutor.nexora.shared.domain.utility.validation
 
-interface Identifier {
+interface Identifier: ValueObject {
     val value: String
 }
 
-open class ResourceId(override val value: String) : Identifier, ValueObject {
+open class ResourceId(override val value: String) : Identifier {
     object ALL : ResourceId("*")
 
     init {
