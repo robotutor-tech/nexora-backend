@@ -15,14 +15,14 @@ import reactor.core.publisher.Mono
 @Service
 class CompensateUserService(
     private val userRepository: UserRepository,
-    private val eventPublisher: UserEventPublisher,
+//    private val eventPublisher: UserEventPublisher,
     
 ) {
     private val logger = Logger(this::class.java)
 
     fun execute(command: CompensateUserCommand): Mono<User> {
         return userRepository.deleteByUserId(command.userId)
-            .publishEvent(eventPublisher, UserCompensatedEvent(command.userId))
+//            .publishEvent(eventPublisher, UserCompensatedEvent(command.userId))
             .logOnSuccess(logger, "Successfully compensated user", mapOf("userId" to command.userId))
             .logOnError(logger, "Failed to compensate user", mapOf("userId" to command.userId))
     }

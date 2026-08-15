@@ -1,5 +1,6 @@
 package com.robotutor.nexora.shared.outbox.scheduler
 
+import com.robotutor.nexora.shared.message.message.KafkaMessage
 import com.robotutor.nexora.shared.message.services.KafkaEventPublisher
 import com.robotutor.nexora.shared.outbox.persistence.document.Status
 import com.robotutor.nexora.shared.outbox.persistence.repository.OutboxDocumentRepository
@@ -21,7 +22,7 @@ class MessagePublisher(
         println("================MESSAGE PUBLISHER SCHEDULER STARTED=================")
         outboxDocumentRepository.findAllByStatus(Status.PENDING)
             .flatMap { document ->
-                kafkaEventPublisher.publish(document.message)
+                kafkaEventPublisher.publish(KafkaMessage.from(document))
                     .flatMap { outboxDocumentRepository.save(document.markAsPublished()) }
                     .onErrorResume { outboxDocumentRepository.save(document.markAsDL()) }
             }

@@ -1,16 +1,16 @@
 package com.robotutor.nexora.module.device.infrastructure.persistence
 
-import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.module.device.domain.event.DeviceEventPublisher
 import com.robotutor.nexora.module.device.domain.repository.DeviceRepository
-import com.robotutor.nexora.shared.domain.vo.DeviceId
+import com.robotutor.nexora.module.device.infrastructure.messaging.mapper.DeviceEventMapper
 import com.robotutor.nexora.module.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.module.device.infrastructure.persistence.mapper.DeviceDocumentMapper
 import com.robotutor.nexora.module.device.infrastructure.persistence.mapper.DeviceSpecificationTranslator
 import com.robotutor.nexora.module.device.infrastructure.persistence.repository.DeviceDocumentRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.specification.Specification
+import com.robotutor.nexora.shared.domain.vo.DeviceId
+import com.robotutor.nexora.shared.outbox.publishEvents
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.find
 import org.springframework.data.mongodb.core.findOne
@@ -23,14 +23,13 @@ import reactor.core.publisher.Mono
 class MongoDeviceRepository(
     private val deviceDocumentRepository: DeviceDocumentRepository,
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
-    private val eventPublisher: DeviceEventPublisher,
 ) : DeviceRepository {
     override fun save(device: DeviceAggregate): Mono<DeviceAggregate> {
         val document = DeviceDocumentMapper.toMongoDocument(device)
         return deviceDocumentRepository.save(document)
             .retryOptimisticLockingFailure()
             .map { DeviceDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher)
+            .publishEvents(device, DeviceEventMapper)
     }
 
     override fun findByDeviceId(deviceId: DeviceId): Mono<DeviceAggregate> {

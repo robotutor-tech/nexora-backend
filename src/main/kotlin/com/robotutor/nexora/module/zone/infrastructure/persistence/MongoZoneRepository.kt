@@ -1,18 +1,18 @@
 package com.robotutor.nexora.module.zone.infrastructure.persistence
 
-import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.module.zone.domain.aggregate.ZoneAggregate
-import com.robotutor.nexora.module.zone.domain.event.ZoneEventPublisher
 import com.robotutor.nexora.module.zone.domain.repository.ZoneRepository
+import com.robotutor.nexora.module.zone.infrastructure.messaging.mapper.ZoneEventMapper
 import com.robotutor.nexora.module.zone.infrastructure.persistence.document.ZoneDocument
 import com.robotutor.nexora.module.zone.infrastructure.persistence.mapper.ZoneDocumentMapper
 import com.robotutor.nexora.module.zone.infrastructure.persistence.mapper.ZoneSpecificationTranslator
 import com.robotutor.nexora.module.zone.infrastructure.persistence.repository.ZoneDocumentRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ZoneId
+import com.robotutor.nexora.shared.outbox.publishEvents
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.find
 import org.springframework.data.mongodb.core.query.Query
@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono
 @Service
 class MongoZoneRepository(
     private val zoneDocumentRepository: ZoneDocumentRepository,
-    private val eventPublisher: ZoneEventPublisher,
     private val reactiveMongoTemplate: ReactiveMongoTemplate
 ) : ZoneRepository {
 
@@ -32,7 +31,7 @@ class MongoZoneRepository(
         return zoneDocumentRepository.save(zoneDocument)
             .retryOptimisticLockingFailure()
             .map { ZoneDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher, zone)
+            .publishEvents( zone, ZoneEventMapper)
     }
 
 

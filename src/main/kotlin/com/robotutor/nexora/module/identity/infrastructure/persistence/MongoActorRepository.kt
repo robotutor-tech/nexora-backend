@@ -3,6 +3,7 @@ package com.robotutor.nexora.module.identity.infrastructure.persistence
 import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
+import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.ActorDocument
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.ActorDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.ActorSpecificationTranslator
@@ -12,6 +13,7 @@ import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.outbox.publishEvents
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.exists
@@ -25,14 +27,13 @@ import reactor.core.publisher.Mono
 class MongoActorRepository(
     private val actorDocumentRepository: ActorDocumentRepository,
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
-    private val eventPublisher: IdentityEventPublisher,
 ) : ActorRepository {
     override fun save(actorAggregate: ActorAggregate): Mono<ActorAggregate> {
         val actorDocument = ActorDocumentMapper.toMongoDocument(actorAggregate)
         return actorDocumentRepository.save(actorDocument)
             .retryOptimisticLockingFailure()
             .map { ActorDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher, actorAggregate)
+            .publishEvents( actorAggregate, IdentityEventMapper)
     }
 
     override fun findAllByAccountId(accountId: AccountId): Flux<ActorAggregate> {

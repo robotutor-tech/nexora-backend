@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono
 @Service
 class CompensateDeviceService(
     private val deviceRepository: DeviceRepository,
-    private val eventPublisher: DeviceEventPublisher,
+//    private val eventPublisher: DeviceEventPublisher,
 ) {
 
     private val logger = Logger(this::class.java)
@@ -26,7 +26,7 @@ class CompensateDeviceService(
     @Authorize(ActionType.DELETE, ResourceType.DEVICE, expression = "#{command.deviceId}")
     fun execute(command: CompensateDeviceCommand): Mono<DeviceAggregate> {
         return deviceRepository.deleteByDeviceId(command.deviceId)
-            .publishEvent(eventPublisher, DeviceRegistrationCompensatedEvent(command.deviceId))
+//            .publishEvent(eventPublisher, DeviceRegistrationCompensatedEvent(command.deviceId))
             .logOnSuccess(logger, "Successfully compensate device registration", mapOf("deviceId" to command.deviceId))
             .logOnError(logger, "Failed to compensate device registration", mapOf("deviceId" to command.deviceId))
     }

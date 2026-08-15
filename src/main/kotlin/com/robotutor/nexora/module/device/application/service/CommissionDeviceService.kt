@@ -27,10 +27,8 @@ class CommissionDeviceService(
     private val deviceRepository: DeviceRepository,
     private val zoneFacade: ZoneFacade,
     private val feedFacade: FeedFacade,
-    private val eventPublisher: DeviceEventPublisher,
     private val commissionDevicePolicy: CommissionDevicePolicy,
-
-    ) {
+) {
     private val logger = Logger(this::class.java)
 
     @Authorize(ActionType.UPDATE, ResourceType.DEVICE, expression = "#{command.deviceId}")
@@ -52,10 +50,10 @@ class CommissionDeviceService(
                     }
             }
             .flatMap { device -> deviceRepository.save(device) }
-            .publishEvent(
-                eventPublisher,
-                DeviceCommissionedEvent(command.deviceId, command.actorData.actorId, command.actorData.premisesId)
-            )
+//            .publishEvent(
+//                eventPublisher,
+//                DeviceCommissionedEvent(command.deviceId, command.actorData.actorId, command.actorData.premisesId)
+//            )
             .logOnSuccess(logger, "Successfully updated device metadata")
             .logOnError(logger, "Failed to update device metadata")
     }

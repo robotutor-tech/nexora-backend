@@ -15,14 +15,13 @@ import reactor.core.publisher.Mono
 @Service
 class MongoGroupRepository(
     private val groupDocumentRepository: GroupDocumentRepository,
-    private val eventPublisher: IdentityEventPublisher,
 ) : GroupRepository {
     override fun save(groupAggregate: GroupAggregate): Mono<GroupAggregate> {
         val groupDocument = GroupDocumentMapper.toMongoDocument(groupAggregate)
         return groupDocumentRepository.save(groupDocument)
             .retryOptimisticLockingFailure()
             .map { GroupDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher, groupAggregate)
+//            .publishEvents(eventPublisher, groupAggregate)
     }
 
     override fun saveAll(groupAggregates: List<GroupAggregate>): Flux<GroupAggregate> {
@@ -30,7 +29,7 @@ class MongoGroupRepository(
         return groupDocumentRepository.saveAll(groupDocuments)
             .retryOptimisticLockingFailure()
             .map { GroupDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher, groupAggregates)
+//            .publishEvents(eventPublisher, groupAggregates)
     }
 
     override fun findAllByGroupIds(groupIds: Set<GroupId>): Flux<GroupAggregate> {

@@ -4,19 +4,14 @@ import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
-import com.robotutor.nexora.shared.context.ReactiveContext
 import com.robotutor.nexora.shared.context.ReactiveContext.CORRELATION_ID
-import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.PrincipalData
-import com.robotutor.nexora.shared.message.message.EventMessage
+import com.robotutor.nexora.shared.message.message.KafkaMessage
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
-import org.springframework.http.HttpHeaders
 import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.kafka.sender.SenderResult
-import reactor.util.context.ContextView
 
 @Service
 class KafkaEventPublisher(
@@ -24,39 +19,25 @@ class KafkaEventPublisher(
 ) {
     val logger = Logger(this::class.java)
 
-    fun publish(message: EventMessage): Mono<SenderResult<Void>> {
-        val messageAsString = DefaultSerializer.serialize(message)
-        return Mono.deferContextual { ctx ->
-            val headers = createHeadersRecord(ctx)
-            val producerRecord = ProducerRecord(message.eventName.topic, "", messageAsString)
-            headers.forEach { producerRecord.headers().add(it) }
-            reactiveKafkaProducerTemplate.send(producerRecord)
-        }
-            .logOnSuccess(logger, "Successfully published Kafka topic to ${message.eventName}")
-            .logOnError(logger, "Failed to publish Kafka topic to ${message.eventName}")
+    fun publish(message: KafkaMessage): Mono<SenderResult<Void>> {
+        val messageAsString = DefaultSerializer.serialize(message.eventMessage)
+        val topic = message.eventMessage.eventName.topic
+        val key = message.principalData?.principalId
+        val producerRecord = ProducerRecord(topic, key, messageAsString)
+        val headers = producerRecord.headers()
+        createKafkaHeaders(message).forEach { headers.add(it) }
+
+        return reactiveKafkaProducerTemplate.send(producerRecord)
+            .logOnSuccess(logger, "Successfully published Kafka topic to $topic")
+            .logOnError(logger, "Failed to publish Kafka topic to $topic")
     }
 
-    private fun createHeadersRecord(ctx: ContextView): MutableList<RecordHeader> {
-        val httpHeaders = ctx.getOrEmpty<HttpHeaders>(HttpHeaders::class.java)
-        val actorData = ctx.getOrEmpty<ActorData>(ActorData::class.java)
-        val principalData = ctx.getOrEmpty<PrincipalData>(PrincipalData::class.java)
-        val correlationId = ReactiveContext.getCorrelationId(ctx)
-
+    private fun createKafkaHeaders(message: KafkaMessage): List<RecordHeader> {
         val headers = mutableListOf<RecordHeader>()
-        headers.add(RecordHeader(CORRELATION_ID, correlationId.toByteArray()))
-        if (actorData.isPresent) {
+        headers.add(RecordHeader(CORRELATION_ID, message.correlationId.toByteArray()))
+        if (message.principalData != null) {
             headers.add(
-                RecordHeader("Actor", DefaultSerializer.serialize(actorData.get()).toByteArray())
-            )
-        }
-        if (principalData.isPresent) {
-            headers.add(
-                RecordHeader("Account", DefaultSerializer.serialize(principalData.get()).toByteArray())
-            )
-        }
-        if (httpHeaders.isPresent) {
-            headers.add(
-                RecordHeader("headers", DefaultSerializer.serialize(httpHeaders.get()).toByteArray())
+                RecordHeader("PrincipalData", DefaultSerializer.serialize(message.principalData).toByteArray())
             )
         }
         return headers

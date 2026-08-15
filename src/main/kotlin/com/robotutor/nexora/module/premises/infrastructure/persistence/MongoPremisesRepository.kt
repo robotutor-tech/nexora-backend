@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoPremisesRepository(
     val premisesDocumentRepository: PremisesDocumentRepository,
-    val eventPublisher: PremisesEventPublisher,
+//    val eventPublisher: PremisesEventPublisher,
 ) : PremisesRepository {
     @CacheEvicts(["premises:premises-aggregate:premises-id:#{premisesAggregate.premisesId.value}"])
     override fun save(premisesAggregate: PremisesAggregate): Mono<PremisesAggregate> {
@@ -26,7 +26,7 @@ class MongoPremisesRepository(
         return premisesDocumentRepository.save(premisesDocument)
             .retryOptimisticLockingFailure()
             .map { PremisesDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher, premisesAggregate)
+//            .publishEvents(eventPublisher, premisesAggregate)
     }
 
     override fun findAllByPremisesIdIn(premisesIds: List<PremisesId>): Flux<PremisesAggregate> {

@@ -28,7 +28,6 @@ class RegisterOwnerService(
     private val registerGroupService: RegisterGroupService,
     private val actorRepository: ActorRepository,
     private val permissionSeedProvider: PermissionSeedProvider,
-    private val eventPublisher: IdentityEventPublisher,
     private val registerPremisesOwnerPolicy: RegisterPremisesOwnerPolicy
 ) {
     fun execute(command: RegisterPremisesOwnerCommand): Mono<ActorAggregate> {
@@ -50,8 +49,8 @@ class RegisterOwnerService(
                 )
             }
             .flatMap { actorAggregate -> actorRepository.save(actorAggregate) }
-            .publishEvent(eventPublisher, PremisesOwnerRegisteredEvent(command.premisesId))
-            .publishEventOnError(eventPublisher, PremisesOwnerRegistrationFailedEvent(command.premisesId))
+//            .publishEvent(eventPublisher, PremisesOwnerRegisteredEvent(command.premisesId))
+//            .publishEventOnError(eventPublisher, PremisesOwnerRegistrationFailedEvent(command.premisesId))
     }
 
     private fun createDefaultGroups(
