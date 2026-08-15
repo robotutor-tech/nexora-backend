@@ -1,12 +1,12 @@
 package com.robotutor.nexora.module.user.interfaces.controller.mapper
 
 import com.robotutor.nexora.module.user.application.command.RegisterUserCommand
-import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
+import com.robotutor.nexora.module.user.domain.aggregate.User
 import com.robotutor.nexora.module.user.domain.vo.Email
 import com.robotutor.nexora.module.user.domain.vo.Mobile
+import com.robotutor.nexora.module.user.domain.vo.Name
 import com.robotutor.nexora.module.user.interfaces.controller.view.UserRequest
 import com.robotutor.nexora.module.user.interfaces.controller.view.UserResponse
-import com.robotutor.nexora.shared.domain.vo.Name
 
 object UserMapper {
     fun toRegisterUserCommand(userRequest: UserRequest): RegisterUserCommand {
@@ -17,17 +17,17 @@ object UserMapper {
         )
     }
 
-    fun toUserResponse(userAggregate: UserAggregate): UserResponse {
+    fun toUserResponse(user: User): UserResponse {
         return UserResponse(
-            userId = userAggregate.userId.value,
-            state = userAggregate.state().name,
-            name = userAggregate.name.value,
-            email = userAggregate.email.value,
-            mobile = userAggregate.mobile.value,
-            isEmailVerified = userAggregate.email.isVerified,
-            isMobileVerified = userAggregate.mobile.isVerified,
-            registeredAt = userAggregate.registeredAt,
-            updatedAt = userAggregate.updatedAt()
+            userId = user.userId.value,
+            state = user.state().name,
+            name = user.name.value,
+            email = user.email.value,
+            mobile = user.mobile.value,
+            isEmailVerified = user.email.isVerified,
+            isMobileVerified = user.mobile.isVerified,
+            registeredAt = user.registeredAt,
+            updatedAt = user.updatedAt()
         )
     }
 }

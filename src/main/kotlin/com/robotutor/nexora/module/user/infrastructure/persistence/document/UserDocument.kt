@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.user.infrastructure.persistence.document
 
-import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
+import com.robotutor.nexora.module.user.domain.aggregate.User
 import com.robotutor.nexora.module.user.domain.aggregate.UserState
 import com.robotutor.nexora.shared.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
@@ -29,4 +29,4 @@ data class UserDocument(
     val updatedAt: Instant,
     @Version
     val version: Long? = null
-) : MongoDocument<UserAggregate>
+) : MongoDocument<User>

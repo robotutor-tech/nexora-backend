@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.device.domain.repository
 
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.specification.Specification
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.identity.domain.aggregate
 
-import com.robotutor.nexora.module.identity.domain.event.IAMEvent
-import com.robotutor.nexora.module.identity.domain.exception.IAMError
+import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
+import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
 import com.robotutor.nexora.module.identity.domain.vo.PermissionOverride
 import com.robotutor.nexora.module.identity.domain.vo.RoleId
@@ -22,10 +22,10 @@ data class ActorAggregate(
     val status: ActorStatus = ActorStatus.ACTIVE,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-) : AggregateRoot<ActorAggregate, ActorId, IAMEvent>(actorId) {
+) : AggregateRoot<ActorAggregate, ActorId, IdentityEvent>(actorId) {
     fun ensureActive() {
         if (status != ActorStatus.ACTIVE) {
-            throw InvalidStateException(IAMError.NEXORA0206)
+            throw InvalidStateException(IdentityError.NEXORA0206)
         }
     }
 

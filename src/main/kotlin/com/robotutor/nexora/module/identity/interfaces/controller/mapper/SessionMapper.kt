@@ -5,9 +5,9 @@ import com.robotutor.nexora.module.identity.application.view.SessionValidationRe
 import com.robotutor.nexora.module.identity.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.AccessToken
 import com.robotutor.nexora.shared.domain.vo.Tokens
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.shared.domain.vo.principal.UserData
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.UserData
 import java.time.Instant
 
 object SessionMapper {

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.identity.domain.vo
 
 import com.robotutor.nexora.shared.domain.vo.ValueObject
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import java.time.Instant
 
 data class SessionData(

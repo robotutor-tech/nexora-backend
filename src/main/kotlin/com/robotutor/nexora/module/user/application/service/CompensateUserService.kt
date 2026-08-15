@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.user.application.service
 
 import com.robotutor.nexora.module.user.application.command.CompensateUserCommand
-import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
+import com.robotutor.nexora.module.user.domain.aggregate.User
 import com.robotutor.nexora.module.user.domain.event.UserCompensatedEvent
 import com.robotutor.nexora.module.user.domain.event.UserEventPublisher
 import com.robotutor.nexora.module.user.domain.repository.UserRepository
@@ -20,7 +20,7 @@ class CompensateUserService(
 ) {
     private val logger = Logger(this::class.java)
 
-    fun execute(command: CompensateUserCommand): Mono<UserAggregate> {
+    fun execute(command: CompensateUserCommand): Mono<User> {
         return userRepository.deleteByUserId(command.userId)
             .publishEvent(eventPublisher, UserCompensatedEvent(command.userId))
             .logOnSuccess(logger, "Successfully compensated user", mapOf("userId" to command.userId))

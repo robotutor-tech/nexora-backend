@@ -2,7 +2,7 @@ package com.robotutor.nexora.module.identity.application.service
 
 import com.robotutor.nexora.module.identity.application.command.CreateSessionCommand
 import com.robotutor.nexora.module.identity.application.command.RefreshSessionCommand
-import com.robotutor.nexora.module.identity.domain.exception.IAMError
+import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.repository.SessionRepository
 import com.robotutor.nexora.module.identity.domain.service.TokenGenerator
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
@@ -26,7 +26,7 @@ class RefreshSessionService(
     fun execute(command: RefreshSessionCommand): Mono<Tokens> {
         val sessionData = tokenGenerator.getSession(command.token)
         return sessionRepository.findBySessionId(sessionData.sessionId)
-            .required(UnAuthorizedException(IAMError.NEXORA0205))
+            .required(UnAuthorizedException(IdentityError.NEXORA0205))
             .flatMap { session ->
                 createSessionService.execute(CreateSessionCommand(session.accountData, SessionId.generate()))
             }

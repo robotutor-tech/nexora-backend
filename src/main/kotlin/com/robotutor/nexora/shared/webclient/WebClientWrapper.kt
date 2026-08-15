@@ -72,7 +72,6 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "GET", "url" to url),
-                                premisesId = metaDataHeaders.premisesId,
                                 correlationId = metaDataHeaders.correlationId,
                             )
                         )
@@ -123,7 +122,6 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "GET", "url" to url),
-                                premisesId = metaDataHeaders.premisesId,
                                 correlationId = metaDataHeaders.correlationId,
                             )
                         )
@@ -177,7 +175,6 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "POST", "url" to url),
-                                premisesId = metaDataHeaders.premisesId,
                                 correlationId = metaDataHeaders.correlationId,
                             )
                         )
@@ -232,7 +229,6 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "POST", "url" to url),
-                                premisesId = metaDataHeaders.premisesId,
                                 correlationId = metaDataHeaders.correlationId,
                             )
                         )
@@ -283,7 +279,6 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "GET", "url" to url),
-                                premisesId = metaDataHeaders.premisesId,
                                 correlationId = metaDataHeaders.correlationId,
                             )
                         )
@@ -336,7 +331,6 @@ class WebClientWrapper(private val webClient: WebClient) {
                             LogDetails(
                                 message = "Make request to Service successful",
                                 additionalDetails = mapOf("method" to "POST", "url" to url),
-                                premisesId = metaDataHeaders.premisesId,
                                 correlationId = metaDataHeaders.correlationId,
                             )
                         )

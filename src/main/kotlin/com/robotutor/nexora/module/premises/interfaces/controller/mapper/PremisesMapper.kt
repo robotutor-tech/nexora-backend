@@ -8,7 +8,7 @@ import com.robotutor.nexora.module.premises.interfaces.controller.view.AddressRe
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesCreateRequest
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.principal.UserData
+import com.robotutor.nexora.shared.domain.vo.UserData
 
 object PremisesMapper {
     fun toRegisterPremisesCommand(

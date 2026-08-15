@@ -2,7 +2,7 @@ package com.robotutor.nexora.module.identity.infrastructure.messaging.message
 
 import com.robotutor.nexora.shared.message.config.EventName
 
-sealed interface AccountRegistrationFailedEventMessage : IAMEventMessage
+sealed interface AccountRegistrationFailedEventMessage : IdentityEventMessage
 
 class UserAccountRegistrationFailedEventMessage(val userId: String) :
     AccountRegistrationFailedEventMessage {

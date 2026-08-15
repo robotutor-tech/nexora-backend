@@ -1,4 +1,4 @@
-package com.robotutor.nexora.shared.security.domain.exception
+package com.robotutor.nexora.shared.security.exception
 
 import com.robotutor.nexora.shared.domain.exception.ServiceError
 

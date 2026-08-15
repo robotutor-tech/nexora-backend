@@ -2,7 +2,7 @@ package com.robotutor.nexora.shared.resolver
 
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.stereotype.Component

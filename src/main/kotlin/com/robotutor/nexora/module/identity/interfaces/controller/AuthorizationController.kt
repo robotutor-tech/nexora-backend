@@ -6,7 +6,7 @@ import com.robotutor.nexora.module.identity.interfaces.controller.view.Authorize
 import com.robotutor.nexora.module.identity.interfaces.controller.view.AuthorizeResourceResponse
 import com.robotutor.nexora.module.identity.interfaces.controller.view.GetAuthorizedResourcesRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.GetAuthorizedResourcesResponse
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/iam/resources")
+@RequestMapping("/Identity/resources")
 class AuthorizationController(
     private val authorizeResourceService: AuthorizeResourceService,
 ) {

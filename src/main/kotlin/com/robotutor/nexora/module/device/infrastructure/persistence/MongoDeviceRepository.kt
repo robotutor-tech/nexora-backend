@@ -4,7 +4,7 @@ import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLocking
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.module.device.domain.event.DeviceEventPublisher
 import com.robotutor.nexora.module.device.domain.repository.DeviceRepository
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.infrastructure.persistence.document.DeviceDocument
 import com.robotutor.nexora.module.device.infrastructure.persistence.mapper.DeviceDocumentMapper
 import com.robotutor.nexora.module.device.infrastructure.persistence.mapper.DeviceSpecificationTranslator

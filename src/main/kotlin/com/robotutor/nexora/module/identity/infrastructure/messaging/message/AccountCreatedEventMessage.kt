@@ -4,7 +4,7 @@ import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.message.config.EventName
 
 sealed class AccountCreatedEventMessage(val accountId: String) :
-    IAMEventMessage {
+    IdentityEventMessage {
 
 }
 

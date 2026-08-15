@@ -1130,7 +1130,7 @@ DDD overhead isn't worth it for one-person projects.
 - Authentication
 - Device Management
 - Automation Engine
-- IAM (Identity and Access Management)
+- Identity (Identity and Access Management)
 - Analytics
 - Billing
 

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.user.domain.event
 
-import com.robotutor.nexora.module.user.domain.vo.UserId
 import com.robotutor.nexora.shared.domain.Event
+import com.robotutor.nexora.shared.domain.vo.UserId
 
 sealed interface UserEvent : Event
 

@@ -3,7 +3,7 @@ package com.robotutor.nexora.module.feed.infrastructure.persistence.mapper
 import com.robotutor.nexora.module.feed.domain.aggregate.FeedAggregate
 import com.robotutor.nexora.module.feed.domain.vo.FeedValueRange
 import com.robotutor.nexora.module.feed.infrastructure.persistence.document.FeedDocument
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper

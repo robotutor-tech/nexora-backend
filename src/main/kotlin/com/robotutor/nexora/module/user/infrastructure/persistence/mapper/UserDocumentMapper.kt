@@ -1,15 +1,15 @@
 package com.robotutor.nexora.module.user.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
+import com.robotutor.nexora.module.user.domain.aggregate.User
 import com.robotutor.nexora.module.user.domain.vo.Email
 import com.robotutor.nexora.module.user.domain.vo.Mobile
-import com.robotutor.nexora.module.user.domain.vo.UserId
+import com.robotutor.nexora.module.user.domain.vo.Name
 import com.robotutor.nexora.module.user.infrastructure.persistence.document.UserDocument
-import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.UserId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
-object UserDocumentMapper : DocumentMapper<UserAggregate, UserDocument> {
-    override fun toMongoDocument(domain: UserAggregate): UserDocument {
+object UserDocumentMapper : DocumentMapper<User, UserDocument> {
+    override fun toMongoDocument(domain: User): UserDocument {
         return UserDocument(
             id = domain.getObjectId(),
             userId = domain.userId.value,
@@ -25,8 +25,8 @@ object UserDocumentMapper : DocumentMapper<UserAggregate, UserDocument> {
         )
     }
 
-    override fun toDomainModel(document: UserDocument): UserAggregate {
-        return UserAggregate
+    override fun toDomainModel(document: UserDocument): User {
+        return User
             .create(
                 userId = UserId(document.userId),
                 name = Name(document.name),

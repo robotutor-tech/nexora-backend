@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.interfaces.controller.mapper
 
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.module.identity.application.command.AuthenticateActorCommand
 import com.robotutor.nexora.module.identity.application.command.RegisterMachineActorCommand
 import com.robotutor.nexora.module.identity.application.command.RegisterPremisesOwnerCommand

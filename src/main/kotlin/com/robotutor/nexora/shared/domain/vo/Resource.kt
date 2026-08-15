@@ -1,7 +1,6 @@
 package com.robotutor.nexora.shared.domain.vo
 
 import com.robotutor.nexora.module.automation.domain.vo.AutomationId
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.zone.domain.vo.WidgetId
 
 enum class ResourceType(val identifier: Class<out Identifier>) {

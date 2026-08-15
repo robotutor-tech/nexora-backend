@@ -1,8 +1,8 @@
 package com.robotutor.nexora.module.identity.application.service.account
 
 import com.robotutor.nexora.module.identity.application.command.GetAccountQuery
-import com.robotutor.nexora.module.identity.domain.aggregate.AccountAggregate
-import com.robotutor.nexora.module.identity.domain.exception.IAMError
+import com.robotutor.nexora.module.identity.domain.aggregate.Account
+import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.repository.AccountRepository
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
@@ -18,9 +18,9 @@ class GetAccountService(
 ) {
     private val logger = Logger(this::class.java)
 
-    fun execute(query: GetAccountQuery): Mono<AccountAggregate> {
+    fun execute(query: GetAccountQuery): Mono<Account> {
         return accountRepository.findByAccountId(query.accountId)
-            .required(DataNotFoundException(IAMError.NEXORA0203))
+            .required(DataNotFoundException(IdentityError.NEXORA0203))
             .logOnSuccess(logger, "Successfully retrieved account", mapOf("accountId" to query.accountId))
             .logOnError(logger, "Failed to retrieve account", mapOf("accountId" to query.accountId))
     }

@@ -5,7 +5,7 @@ import com.robotutor.nexora.module.identity.application.command.RegisterRoleComm
 import com.robotutor.nexora.module.identity.domain.policy.RegisterMachineActorPolicy
 import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleType
-import com.robotutor.nexora.module.identity.domain.exception.IAMError
+import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.policy.context.RegisterMachineActorPolicyContext
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
 import com.robotutor.nexora.module.identity.domain.specification.ActorByAccountIdSpecification
@@ -29,11 +29,9 @@ class RegisterMachineActorService(
         val specification = ActorByAccountIdSpecification(command.owner.accountId)
             .and(ActorByPremisesIdSpecification(command.premisesId))
         return actorRepository.exitsBySpecification(specification)
-            .enforcePolicy(
-                registerMachineActorPolicy,
-                { RegisterMachineActorPolicyContext(it, command.owner) },
-                IAMError.NEXORA0209
-            )
+            .enforcePolicy(registerMachineActorPolicy, IdentityError.NEXORA0209) {
+                RegisterMachineActorPolicyContext(it, command.owner)
+            }
             .flatMap { registerRoleService.execute(createMachineRoleCommand(command)) }
             .map { role ->
                 ActorAggregate.register(

@@ -2,7 +2,6 @@ package com.robotutor.nexora.module.device.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceMetadata
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.device.domain.vo.SerialNo
 import com.robotutor.nexora.module.device.infrastructure.persistence.document.DeviceDocument

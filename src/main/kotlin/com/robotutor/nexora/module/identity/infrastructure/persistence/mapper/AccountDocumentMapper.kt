@@ -1,34 +1,28 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.module.identity.domain.aggregate.AccountAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Account
 import com.robotutor.nexora.module.identity.domain.vo.Credential
 import com.robotutor.nexora.module.identity.domain.vo.CredentialId
-import com.robotutor.nexora.module.identity.domain.vo.HashedCredentialSecret
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectId
+import com.robotutor.nexora.module.identity.domain.vo.HashedSecret
+import com.robotutor.nexora.shared.domain.vo.SubjectId
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.AccountDocument
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.CredentialDocument
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
-object AccountDocumentMapper : DocumentMapper<AccountAggregate, AccountDocument> {
-    override fun toMongoDocument(domain: AccountAggregate): AccountDocument {
+object AccountDocumentMapper : DocumentMapper<Account, AccountDocument> {
+    override fun toMongoDocument(domain: Account): AccountDocument {
         return AccountDocument(
             id = domain.getObjectId(),
             accountId = domain.accountId.value,
-            type = domain.type,
+            subjectType = domain.subjectType,
             principalId = domain.subjectId.value,
             createdBy = domain.createdBy?.value,
-            credentials = domain.getCredentials().map {
-                CredentialDocument(
-                    kind = it.kind,
-                    credentialId = it.credentialId.value,
-                    secret = it.secret.value,
-                    createdAt = it.createdAt,
-                    updatedAt = it.updatedAt,
-                    metadata = it.metadata
-                )
-            },
+            credential = CredentialDocument(
+                credentialId = domain.credential.credentialId.value,
+                secret = domain.credential.hashedSecret.value,
+            ),
             status = domain.getStatus(),
             createdAt = domain.createdAt,
             updatedAt = domain.getUpdatedAt(),
@@ -36,22 +30,16 @@ object AccountDocumentMapper : DocumentMapper<AccountAggregate, AccountDocument>
         )
     }
 
-    override fun toDomainModel(document: AccountDocument): AccountAggregate {
-        return AccountAggregate.create(
+    override fun toDomainModel(document: AccountDocument): Account {
+        return Account.create(
             accountId = AccountId(document.accountId),
-            type = document.type,
-            subjectId = SubjectId(document.principalId),
+            type = document.subjectType,
+            subjectId = SubjectId.from(document.subjectType, document.principalId),
             createdBy = document.createdBy?.let { ActorId(it) },
-            credentials = document.credentials.map {
-                Credential(
-                    kind = it.kind,
-                    credentialId = CredentialId(it.credentialId),
-                    secret = HashedCredentialSecret(it.secret),
-                    createdAt = it.createdAt,
-                    updatedAt = it.updatedAt,
-                    metadata = it.metadata
-                )
-            },
+            credential = Credential(
+                credentialId = CredentialId.from(document.subjectType, document.credential.credentialId),
+                hashedSecret = HashedSecret.from(document.subjectType, document.credential.secret),
+            ),
             status = document.status,
             createdAt = document.createdAt,
             updatedAt = document.updatedAt,

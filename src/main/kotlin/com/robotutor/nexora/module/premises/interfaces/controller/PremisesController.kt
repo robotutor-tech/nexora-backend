@@ -8,7 +8,7 @@ import com.robotutor.nexora.module.premises.interfaces.controller.mapper.Premise
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesCreateRequest
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.principal.UserData
+import com.robotutor.nexora.shared.domain.vo.UserData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux

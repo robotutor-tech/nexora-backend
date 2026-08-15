@@ -3,46 +3,43 @@ package com.robotutor.nexora.module.identity.interfaces.controller
 import com.robotutor.nexora.module.identity.application.command.GetAccountQuery
 import com.robotutor.nexora.module.identity.application.service.account.AuthenticateAccountService
 import com.robotutor.nexora.module.identity.application.service.account.GetAccountService
-import com.robotutor.nexora.module.identity.application.service.account.RegisterAccountService
+import com.robotutor.nexora.module.identity.application.service.account.RegisterUserAccountService
 import com.robotutor.nexora.module.identity.application.service.account.RotateCredentialService
 import com.robotutor.nexora.module.identity.interfaces.controller.mapper.AccountMapper
-import com.robotutor.nexora.module.identity.interfaces.controller.mapper.CredentialMapper
 import com.robotutor.nexora.module.identity.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.module.identity.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/iam/accounts")
+@RequestMapping("/identity/accounts")
 class AccountController(
-    private val registerAccountService: RegisterAccountService,
+    private val registerUserAccountService: RegisterUserAccountService,
     private val authenticateAccountService: AuthenticateAccountService,
     private val getAccountService: GetAccountService,
     private val rotateCredentialService: RotateCredentialService
 ) {
 
     @PostMapping("/register")
-    fun registerMachine(@RequestBody @Validated registerAccountRequest: RegisterAccountRequest): Mono<AccountResponse> {
-        val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, null)
-        return registerAccountService.execute(command)
+    fun registerMachine(@RequestBody registerUserAccountRequest: RegisterUserAccountRequest): Mono<AccountResponse> {
+        val command = AccountMapper.toRegisterUserAccountCommand(registerUserAccountRequest)
+        return registerUserAccountService.execute(command)
             .map { AccountMapper.toAccountResponse(it) }
     }
 
-    @PostMapping("/register/machine")
-    fun registerMachine(
-        @RequestBody @Validated registerAccountRequest: RegisterAccountRequest,
-        actorData: ActorData
-    ): Mono<AccountResponse> {
-        val command = AccountMapper.toRegisterAccountCommand(registerAccountRequest, actorData)
-        return registerAccountService.execute(command)
-            .map { AccountMapper.toAccountResponse(it) }
-    }
+//    @PostMapping("/register/machine")
+//    fun registerMachine(
+//        @RequestBody @Validated registerUserAccountRequest: RegisterUserAccountRequest,
+//        actorData: ActorData
+//    ): Mono<AccountResponse> {
+//        val command = AccountMapper.toRegisterUserAccountCommand(registerUserAccountRequest, actorData)
+//        return registerAccountService.execute(command)
+//            .map { AccountMapper.toAccountResponse(it) }
+//    }
 
     @PostMapping("/authenticate")
-    fun authenticate(@RequestBody @Validated authenticateAccountRequest: AuthenticateAccountRequest): Mono<TokenResponses> {
+    fun authenticate(@RequestBody authenticateAccountRequest: AuthenticateAccountRequest): Mono<TokenResponses> {
         val command = AccountMapper.toAuthenticateAccountCommand(authenticateAccountRequest)
         return authenticateAccountService.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
@@ -54,12 +51,12 @@ class AccountController(
         return getAccountService.execute(query).map { AccountMapper.toAccountResponse(it) }
     }
 
-    @PatchMapping("/principal/{principalId}/credentials/rotate")
-    fun rotateCredentials(@PathVariable principalId: String, actorData: ActorData): Mono<CredentialRotatedResponse> {
-        val command = AccountMapper.toRotateCredentialsCommand(principalId, actorData)
-        return rotateCredentialService.execute(command)
-            .map { CredentialMapper.toCredentialRotatedResponse(it) }
-    }
+//    @PatchMapping("/principal/{principalId}/credentials/rotate")
+//    fun rotateCredentials(@PathVariable principalId: String, actorData: ActorData): Mono<CredentialRotatedResponse> {
+//        val command = AccountMapper.toRotateCredentialsCommand(principalId, actorData)
+//        return rotateCredentialService.execute(command)
+//            .map { CredentialMapper.toCredentialRotatedResponse(it) }
+//    }
 
 
 //

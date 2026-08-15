@@ -6,13 +6,13 @@ import com.robotutor.nexora.module.user.domain.event.UserRegisteredEvent
 import com.robotutor.nexora.module.user.domain.exception.UserError
 import com.robotutor.nexora.module.user.domain.vo.Email
 import com.robotutor.nexora.module.user.domain.vo.Mobile
-import com.robotutor.nexora.module.user.domain.vo.UserId
+import com.robotutor.nexora.module.user.domain.vo.Name
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.exception.InvalidStateException
-import com.robotutor.nexora.shared.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.UserId
 import java.time.Instant
 
-class UserAggregate private constructor(
+class User private constructor(
     val userId: UserId,
     val name: Name,
     val email: Email,
@@ -20,13 +20,13 @@ class UserAggregate private constructor(
     val registeredAt: Instant,
     private var state: UserState,
     private var updatedAt: Instant,
-) : AggregateRoot<UserAggregate, UserId, UserEvent>(userId) {
+) : AggregateRoot<User, UserId, UserEvent>(userId) {
 
     fun state(): UserState = state
     fun updatedAt(): Instant = updatedAt
 
     companion object {
-        fun register(name: Name, email: Email, mobile: Mobile): UserAggregate {
+        fun register(name: Name, email: Email, mobile: Mobile): User {
             val userId = UserId.generate()
             val user = create(userId = userId, name = name, email = email, mobile = mobile)
             user.addEvent(UserRegisteredEvent(user.userId))
@@ -41,8 +41,8 @@ class UserAggregate private constructor(
             state: UserState = UserState.REGISTERED,
             registeredAt: Instant = Instant.now(),
             updatedAt: Instant = Instant.now()
-        ): UserAggregate {
-            return UserAggregate(
+        ): User {
+            return User(
                 userId = userId,
                 state = state,
                 name = name,
@@ -54,7 +54,7 @@ class UserAggregate private constructor(
         }
     }
 
-    fun activate(): UserAggregate {
+    fun activate(): User {
         if (state != UserState.REGISTERED) {
             throw InvalidStateException(UserError.NEXORA0202)
         }

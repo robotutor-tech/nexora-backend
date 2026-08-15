@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.identity.domain.service
 
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectType
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.SubjectType
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant

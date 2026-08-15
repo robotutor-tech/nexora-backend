@@ -13,7 +13,7 @@ import com.robotutor.nexora.module.zone.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.ZoneId
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 
 object ZoneMapper {
     fun toCreateZoneCommand(request: ZoneRequest, actorData: ActorData): CreateZoneCommand {

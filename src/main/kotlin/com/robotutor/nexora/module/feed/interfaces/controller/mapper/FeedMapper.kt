@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.feed.interfaces.controller.mapper
 
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.feed.application.command.GetFeedsQuery
 import com.robotutor.nexora.module.feed.application.command.RegisterFeedsCommand
@@ -13,7 +12,8 @@ import com.robotutor.nexora.module.feed.interfaces.controller.view.RegisterFeeds
 import com.robotutor.nexora.module.feed.interfaces.controller.view.UpdateValueRequest
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Resources
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 
 object FeedMapper {
     fun toGetFeedsQuery(resources: Resources, actorData: ActorData): GetFeedsQuery {

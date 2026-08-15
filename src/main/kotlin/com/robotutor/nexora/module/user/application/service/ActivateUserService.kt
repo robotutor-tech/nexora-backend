@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.user.application.service
 
 import com.robotutor.nexora.module.user.application.command.ActivateUserCommand
-import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
+import com.robotutor.nexora.module.user.domain.aggregate.User
 import com.robotutor.nexora.module.user.domain.repository.UserRepository
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
@@ -16,7 +16,7 @@ class ActivateUserService(
 ) {
     private val logger = Logger(this::class.java)
 
-    fun execute(command: ActivateUserCommand): Mono<UserAggregate> {
+    fun execute(command: ActivateUserCommand): Mono<User> {
         return userRepository.findByUserId(command.userId)
             .map { user -> user.activate() }
             .flatMap { user -> userRepository.save(user) }

@@ -30,8 +30,4 @@ internal object ReactiveContext {
     fun putStartTime(context: Context, startTime: Instant): Context {
         return context.put(START_TIME, startTime)
     }
-
-    fun getStartTime(context: ContextView): Instant {
-        return context.getOrDefault<Instant>(START_TIME, null) ?: Instant.now()
-    }
 }

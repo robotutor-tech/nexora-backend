@@ -11,15 +11,15 @@ import com.robotutor.nexora.module.identity.interfaces.controller.view.ActorResp
 import com.robotutor.nexora.module.identity.interfaces.controller.view.AuthenticateActorRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.TokenResponses
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/iam/actors")
+@RequestMapping("/Identity/actors")
 class ActorController(
     private val getActorService: GetActorService,
     private val authenticateActorService: AuthenticateActorService,

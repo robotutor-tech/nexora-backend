@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.domain.aggregate
 
-import com.robotutor.nexora.module.identity.domain.event.IAMEvent
+import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
 import com.robotutor.nexora.module.identity.domain.vo.RoleId
 import com.robotutor.nexora.shared.domain.AggregateRoot
@@ -16,7 +16,7 @@ data class GroupAggregate(
     val type: GroupType,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-) : AggregateRoot<GroupAggregate, GroupId, IAMEvent>(groupId) {
+) : AggregateRoot<GroupAggregate, GroupId, IdentityEvent>(groupId) {
     companion object {
         fun register(name: Name, premisesId: PremisesId, type: GroupType, roleIds: List<RoleId>): GroupAggregate {
             val roleAggregate = GroupAggregate(

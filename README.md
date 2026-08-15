@@ -71,7 +71,7 @@ DDD principles applied:
 Current contexts (under `src/main/kotlin/com/robotutor/nexora/modules`):
 - `auth` – Invitations, tokens, auth users, registration events.
 - `user` – User identity & profile (extension point).
-- `iam` – Access control / entitlements (integration via security ports).
+- `Identity` – Access control / entitlements (integration via security ports).
 - `device` – Device registry & metadata (future automation integration).
 - `premises` – Physical premises, hierarchical structure.
 - `zone` – Sub-areas within premises.
@@ -380,7 +380,7 @@ src/main/kotlin/com/robotutor/nexora/
     automation/
     feed/
     user/
-    iam/
+    Identity/
     widget/
     seed/
   common/security/... (ports, strategies, facades)
@@ -406,7 +406,7 @@ src/main/kotlin/com/robotutor/nexora/
 - Read model projections for `feed` and `widget`
 - Central exception handling / problem+json responses
 - Observability: OpenTelemetry tracing
-- Policy-based authorization in `iam`
+- Policy-based authorization in `Identity`
 
 ---
 If you are reviewing this as a technical principal: the structure was intentionally optimized for **clarity of domain boundaries**, **reactive purity**, and **incremental scalability**. Feedback on boundary sharpness, event granularity, and shared-kernel surface is welcome.

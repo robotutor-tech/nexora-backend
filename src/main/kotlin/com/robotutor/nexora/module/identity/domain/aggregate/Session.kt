@@ -1,10 +1,10 @@
 package com.robotutor.nexora.module.identity.domain.aggregate
 
-import com.robotutor.nexora.module.identity.domain.event.IAMEvent
+import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.vo.HashAccessToken
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import java.time.Instant
 
 class Session private constructor(
@@ -14,7 +14,7 @@ class Session private constructor(
     val expiresAt: Instant,
     val token: HashAccessToken,
     private var status: SessionStatus,
-) : AggregateRoot<Session, SessionId, IAMEvent>(sessionId) {
+) : AggregateRoot<Session, SessionId, IdentityEvent>(sessionId) {
 
     fun getStatus(): SessionStatus {
         return status

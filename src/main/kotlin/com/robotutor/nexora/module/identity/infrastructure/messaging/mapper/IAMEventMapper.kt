@@ -3,11 +3,11 @@ package com.robotutor.nexora.module.identity.infrastructure.messaging.mapper
 import com.robotutor.nexora.module.identity.domain.event.*
 import com.robotutor.nexora.module.identity.infrastructure.messaging.message.*
 import com.robotutor.nexora.shared.message.mapper.EventMapper
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectType
+import com.robotutor.nexora.shared.domain.vo.SubjectType
 import com.robotutor.nexora.shared.message.message.EventMessage
 
-object IAMEventMapper : EventMapper<IAMEvent> {
-    override fun toEventMessage(event: IAMEvent): EventMessage {
+object IdentityEventMapper : EventMapper<IdentityEvent> {
+    override fun toEventMessage(event: IdentityEvent): EventMessage {
         return when (event) {
             is AccountCreatedEvent -> toAccountCreatedEventMessage(event)
             is AccountRegistrationFailedEvent -> toAccountRegistrationFailedEventMessage(event)
@@ -20,7 +20,7 @@ object IAMEventMapper : EventMapper<IAMEvent> {
     }
 
     private fun toCredentialUpdatedEventMessage(event: CredentialUpdatedEvent): CredentialUpdatedEventMessage {
-        return CredentialUpdatedEventMessage(event.accountId.value, event.kind)
+        return CredentialUpdatedEventMessage(event.accountId.value)
     }
 
     private fun toAccountCreatedEventMessage(event: AccountCreatedEvent): AccountCreatedEventMessage {

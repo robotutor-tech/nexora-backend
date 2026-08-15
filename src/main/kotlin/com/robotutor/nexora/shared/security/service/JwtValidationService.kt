@@ -1,16 +1,21 @@
 package com.robotutor.nexora.shared.security.service
 
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.identity.domain.vo.SessionData
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
-import com.robotutor.nexora.module.user.domain.vo.UserId
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
 import com.robotutor.nexora.shared.domain.vo.AccessToken
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.ActorId
+import com.robotutor.nexora.shared.domain.vo.DeviceData
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.principal.*
+import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.UserData
+import com.robotutor.nexora.shared.domain.vo.UserId
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import io.jsonwebtoken.Jwts
@@ -39,7 +44,10 @@ open class JwtValidationService {
 
 
         val subjectType = SubjectType.valueOf(claims[subjectType] as String)
-        val subjectId = SubjectId(claims[subjectId] as String)
+        val subjectId = when (subjectType) {
+            SubjectType.USER -> UserId(claims[subjectId] as String)
+            SubjectType.DEVICE -> DeviceId(claims[subjectId] as String)
+        }
         val accountId = AccountId(claims[accountId] as String)
         val accountType = AccountType.valueOf(claims[principalType] as String)
 

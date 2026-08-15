@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
 import com.robotutor.nexora.module.identity.domain.aggregate.GroupAggregate
-import com.robotutor.nexora.module.identity.domain.event.IAMEventPublisher
+import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
 import com.robotutor.nexora.module.identity.domain.repository.GroupRepository
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.GroupDocumentMapper
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono
 @Service
 class MongoGroupRepository(
     private val groupDocumentRepository: GroupDocumentRepository,
-    private val eventPublisher: IAMEventPublisher,
+    private val eventPublisher: IdentityEventPublisher,
 ) : GroupRepository {
     override fun save(groupAggregate: GroupAggregate): Mono<GroupAggregate> {
         val groupDocument = GroupDocumentMapper.toMongoDocument(groupAggregate)

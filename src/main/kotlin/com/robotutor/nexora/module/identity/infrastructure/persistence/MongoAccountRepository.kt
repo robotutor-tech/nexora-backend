@@ -1,52 +1,52 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
-import com.robotutor.nexora.module.identity.domain.aggregate.AccountAggregate
-import com.robotutor.nexora.module.identity.domain.event.IAMEventPublisher
+import com.robotutor.nexora.module.identity.domain.aggregate.Account
 import com.robotutor.nexora.module.identity.domain.repository.AccountRepository
 import com.robotutor.nexora.module.identity.domain.vo.CredentialId
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.AccountDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.AccountDocumentRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.SubjectId
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectId
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
 class MongoAccountRepository(
     private val accountDocumentRepository: AccountDocumentRepository,
-    private val eventPublisher: IAMEventPublisher,
+//    private val eventPublisher: IdentityEventPublisher,
 ) : AccountRepository {
-    override fun save(accountAggregate: AccountAggregate): Mono<AccountAggregate> {
-        val accountDocument = AccountDocumentMapper.toMongoDocument(accountAggregate)
+    override fun save(account: Account): Mono<Account> {
+        val accountDocument = AccountDocumentMapper.toMongoDocument(account)
         return accountDocumentRepository.save(accountDocument)
             .retryOptimisticLockingFailure()
             .map { AccountDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher, accountAggregate)
+//            .publishEvents(eventPublisher, account)
     }
 
-    override fun findByCredentialId(credentialId: CredentialId): Mono<AccountAggregate> {
-        return accountDocumentRepository.findByCredentials_CredentialId(credentialId.value)
+    override fun findByCredentialId(credentialId: CredentialId): Mono<Account> {
+        return accountDocumentRepository.findByCredential_CredentialId(credentialId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findByAccountId(accountId: AccountId): Mono<AccountAggregate> {
+    override fun findByAccountId(accountId: AccountId): Mono<Account> {
         return accountDocumentRepository.findByAccountId(accountId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findByPrincipalId(subjectId: SubjectId): Mono<AccountAggregate> {
+    override fun findByPrincipalId(subjectId: SubjectId): Mono<Account> {
         return accountDocumentRepository.findByPrincipalId(subjectId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
 
-    override fun deleteByAccountId(accountId: AccountId): Mono<AccountAggregate> {
+    override fun deleteByAccountId(accountId: AccountId): Mono<Account> {
         return accountDocumentRepository.deleteByAccountId(accountId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
 
-    override fun existsByCredentialId(credentialId: CredentialId): Mono<Boolean> {
-        return accountDocumentRepository.existsByCredentials_CredentialId(credentialId.value)
+    override fun findAll(specification: Specification<Account>): Flux<Account> {
+        return Flux.empty<Account>()
     }
 }

@@ -4,7 +4,7 @@ import com.robotutor.nexora.module.identity.domain.vo.SessionData
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.vo.AccessToken
 import com.robotutor.nexora.shared.domain.vo.Tokens
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 
 interface TokenGenerator {
     fun generateTokens(accountData: AccountData, sessionId: SessionId): Tokens

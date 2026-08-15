@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
 import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
-import com.robotutor.nexora.module.identity.domain.event.IAMEventPublisher
+import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.ActorDocument
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.ActorDocumentMapper
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono
 class MongoActorRepository(
     private val actorDocumentRepository: ActorDocumentRepository,
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
-    private val eventPublisher: IAMEventPublisher,
+    private val eventPublisher: IdentityEventPublisher,
 ) : ActorRepository {
     override fun save(actorAggregate: ActorAggregate): Mono<ActorAggregate> {
         val actorDocument = ActorDocumentMapper.toMongoDocument(actorAggregate)

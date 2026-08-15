@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.device.infrastructure.facade
 
 import com.robotutor.nexora.module.device.application.facade.FeedFacade
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.device.infrastructure.config.FeedConfig
 import com.robotutor.nexora.module.device.infrastructure.facade.view.FeedResponse

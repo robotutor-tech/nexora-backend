@@ -5,7 +5,7 @@ import com.robotutor.nexora.module.device.domain.event.DeviceEvent
 import com.robotutor.nexora.module.device.domain.event.DeviceMetadataUpdatedEvent
 import com.robotutor.nexora.module.device.domain.event.DeviceRegisteredEvent
 import com.robotutor.nexora.module.device.domain.exception.DeviceError
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.device.domain.vo.SerialNo
 import com.robotutor.nexora.shared.domain.AggregateRoot

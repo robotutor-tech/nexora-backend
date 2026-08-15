@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.device.domain.specification
 
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 
 class DeviceByDeviceIdSpecification(val deviceId: DeviceId) : DeviceSpecification {
     override fun isSatisfiedBy(candidate: DeviceAggregate): Boolean {

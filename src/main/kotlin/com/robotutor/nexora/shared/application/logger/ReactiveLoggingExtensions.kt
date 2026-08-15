@@ -19,7 +19,6 @@ fun <T> Mono<T>.logOnSuccess(
                 val logDetails = LogDetails(
                     message = message,
                     additionalDetails = additionalDetails,
-                    premisesId = traceData.premisesId.value,
                     correlationId = traceData.correlationId
                 )
                 logger.info(logDetails)
@@ -41,7 +40,6 @@ fun <T> Mono<T>.logOnError(
                     message = message,
                     additionalDetails = additionalDetails,
                     errorCode = errorCode,
-                    premisesId = traceData.premisesId.value,
                     correlationId = traceData.correlationId
                 )
                 logger.error(logDetails, throwable)
@@ -76,7 +74,6 @@ fun <T> Flux<T>.logOnSuccess(
                     LogDetails(
                         message = message,
                         additionalDetails = additionalDetails,
-                        premisesId = traceData.premisesId.value,
                         correlationId = traceData.correlationId
                     )
                 )
@@ -98,7 +95,6 @@ fun <T> Flux<T>.logOnError(
                         message = message,
                         additionalDetails = additionalDetails,
                         errorCode = errorCode,
-                        premisesId = traceData.premisesId.value,
                         correlationId = traceData.correlationId
                     ),
                     throwable

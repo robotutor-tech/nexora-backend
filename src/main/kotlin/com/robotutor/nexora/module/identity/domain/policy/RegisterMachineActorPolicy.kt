@@ -3,7 +3,7 @@ package com.robotutor.nexora.module.identity.domain.policy
 import com.robotutor.nexora.module.identity.domain.policy.context.RegisterMachineActorPolicyContext
 import com.robotutor.nexora.shared.domain.policy.Policy
 import com.robotutor.nexora.shared.domain.policy.PolicyResult
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectType
+import com.robotutor.nexora.shared.domain.vo.SubjectType
 import org.springframework.stereotype.Service
 
 @Service

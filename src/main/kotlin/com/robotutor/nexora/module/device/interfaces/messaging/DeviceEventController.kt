@@ -6,7 +6,7 @@ import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.module.device.interfaces.messaging.mapper.DeviceEventMapper
 import com.robotutor.nexora.module.device.interfaces.messaging.message.ActorRegisteredDeviceMessage
 import com.robotutor.nexora.module.device.interfaces.messaging.message.CompensateDeviceMessage
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.message.annotation.EventController
 import com.robotutor.nexora.shared.message.annotation.EventListener
 import com.robotutor.nexora.shared.message.annotation.Message

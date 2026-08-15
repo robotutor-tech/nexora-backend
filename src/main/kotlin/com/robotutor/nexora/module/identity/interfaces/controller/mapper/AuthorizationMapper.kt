@@ -9,7 +9,7 @@ import com.robotutor.nexora.module.identity.interfaces.controller.view.GetAuthor
 import com.robotutor.nexora.module.identity.interfaces.controller.view.GetAuthorizedResourcesResponse
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.domain.vo.Resources
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 
 object AuthorizationMapper {
     fun toAuthorizeResourceCommand(

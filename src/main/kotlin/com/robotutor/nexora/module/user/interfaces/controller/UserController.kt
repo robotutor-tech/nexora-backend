@@ -6,10 +6,8 @@ import com.robotutor.nexora.module.user.application.service.RegisterUserService
 import com.robotutor.nexora.module.user.interfaces.controller.mapper.UserMapper
 import com.robotutor.nexora.module.user.interfaces.controller.view.UserRequest
 import com.robotutor.nexora.module.user.interfaces.controller.view.UserResponse
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectId
-import com.robotutor.nexora.shared.domain.vo.principal.UserData
+import com.robotutor.nexora.shared.domain.vo.UserData
 import org.springframework.http.HttpStatus
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
@@ -22,7 +20,7 @@ class UserController(
 
     @PostMapping("/register")
     @ResponseStatus(code = HttpStatus.CREATED)
-    fun register(@RequestBody @Validated userRequest: UserRequest): Mono<UserResponse> {
+    fun register(@RequestBody userRequest: UserRequest): Mono<UserResponse> {
         val command = UserMapper.toRegisterUserCommand(userRequest)
         return registerUserService.execute(command)
             .map { UserMapper.toUserResponse(it) }
@@ -34,9 +32,9 @@ class UserController(
             .map { UserMapper.toUserResponse(it) }
     }
 
-    @GetMapping("/{accountId}")
-    fun getUser(@PathVariable accountId: String): Mono<UserResponse> {
-        return getUserService.execute(GetUserQuery(SubjectId(accountId)))
-            .map { UserMapper.toUserResponse(it) }
-    }
+//    @GetMapping("/{accountId}")
+//    fun getUser(@PathVariable accountId: String): Mono<UserResponse> {
+//        return getUserService.execute(GetUserQuery(SubjectId(accountId)))
+//            .map { UserMapper.toUserResponse(it) }
+//    }
 }

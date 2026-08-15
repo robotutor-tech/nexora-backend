@@ -84,7 +84,7 @@ Throughout this series, we'll use **SmartHome Hub** - a smart home automation pl
 - **Authentication** - Login, tokens, security
 - **Device Management** - Device registration, health
 - **Automation** - Rules, triggers, actions
-- **IAM** - Authorization, roles, permissions
+- **Identity** - Authorization, roles, permissions
 
 This real-world example will help you understand how DDD patterns solve actual problems.
 

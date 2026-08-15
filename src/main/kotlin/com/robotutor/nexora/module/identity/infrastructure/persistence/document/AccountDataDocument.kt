@@ -2,7 +2,7 @@ package com.robotutor.nexora.module.identity.infrastructure.persistence.document
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectType
+import com.robotutor.nexora.shared.domain.vo.SubjectType
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

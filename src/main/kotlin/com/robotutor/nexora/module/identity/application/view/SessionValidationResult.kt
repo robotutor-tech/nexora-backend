@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.application.view
 
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import java.time.Instant
 
 data class SessionValidationResult(

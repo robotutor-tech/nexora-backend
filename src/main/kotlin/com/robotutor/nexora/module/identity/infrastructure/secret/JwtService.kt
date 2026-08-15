@@ -5,10 +5,10 @@ import com.robotutor.nexora.module.identity.domain.service.TokenGenerator
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.vo.AccessToken
 import com.robotutor.nexora.shared.domain.vo.Tokens
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.shared.domain.vo.principal.DeviceData
-import com.robotutor.nexora.shared.domain.vo.principal.UserData
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.DeviceData
+import com.robotutor.nexora.shared.domain.vo.UserData
 import com.robotutor.nexora.shared.security.service.JwtValidationService
 import io.jsonwebtoken.Jwts
 import org.springframework.stereotype.Service

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.domain.policy.context
 
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 
 data class RegisterMachineActorPolicyContext(
     val actorAlreadyExists: Boolean,

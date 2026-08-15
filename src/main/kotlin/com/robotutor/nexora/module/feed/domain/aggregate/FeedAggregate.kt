@@ -1,11 +1,11 @@
 package com.robotutor.nexora.module.feed.domain.aggregate
 
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.feed.domain.event.FeedEvent
 import com.robotutor.nexora.module.feed.domain.event.FeedRegisteredEvent
 import com.robotutor.nexora.module.feed.domain.event.FeedValueUpdatedEvent
 import com.robotutor.nexora.module.feed.domain.vo.FeedValueRange
 import com.robotutor.nexora.shared.domain.AggregateRoot
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.time.Instant

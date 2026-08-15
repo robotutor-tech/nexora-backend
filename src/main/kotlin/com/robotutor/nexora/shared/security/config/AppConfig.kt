@@ -7,9 +7,9 @@ data class AppConfig(
     val refreshPath: String = "/refresh",
     val internalAccessToken: String,
     val unSecuredPath: List<String> = emptyList(),
-    val iamBaseUrl: String = "",
-    val validatePath: String = "/iam/sessions/validate",
-    val accountPath: String = "/iam/accounts/{accountId}",
-    val authorizeResourcePath: String = "/iam/resources/authorize",
-    val resourcePath: String = "/iam/resources"
+    val IdentityBaseUrl: String = "",
+    val validatePath: String = "/Identity/sessions/validate",
+    val accountPath: String = "/Identity/accounts/{accountId}",
+    val authorizeResourcePath: String = "/Identity/resources/authorize",
+    val resourcePath: String = "/Identity/resources"
 )

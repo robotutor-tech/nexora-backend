@@ -18,7 +18,7 @@ class CreateAutomationService(
 ) {
     fun execute(command: CreateAutomationCommand): Mono<AutomationAggregate> {
         return dataResolver.resolve(command)
-            .enforcePolicy(createAutomationPolicy, { it }, AutomationError.NEXORA0301)
+            .enforcePolicy(createAutomationPolicy, AutomationError.NEXORA0301)
             .map {
                 AutomationAggregate.register(
                     premisesId = command.premisesId,

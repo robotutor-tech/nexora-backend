@@ -9,7 +9,7 @@ This epic delivers multi-tenant premises creation and role assignment.
 
 ## Current implementation status (repo check)
 - Premises endpoints exist: `context/premises/interfaces/controller/PremisesController.kt`.
-- IAM role/resource authorization endpoints exist: `context/iam/interfaces/controller/AuthorizationController.kt`.
+- Identity role/resource authorization endpoints exist: `context/Identity/interfaces/controller/AuthorizationController.kt`.
 - “View assigned premises with pagination + search” was not found as a dedicated API; existing `GET /premises` takes `premisesIds` as input.
 
 ---
@@ -43,7 +43,7 @@ This epic delivers multi-tenant premises creation and role assignment.
 2. Permissions baseline is defined at least for MVP endpoints.
 
 **Evidence pointers:**
-- IAM supports actors and resource authorization (`/iam/actors`, `/iam/resources`).
+- Identity supports actors and resource authorization (`/Identity/actors`, `/Identity/resources`).
 - Explicit default role seeding per premises not validated from code yet.
 
 ---

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.device.domain.event
 
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceMetadata
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId

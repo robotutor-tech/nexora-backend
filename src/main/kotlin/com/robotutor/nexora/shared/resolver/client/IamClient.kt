@@ -4,14 +4,14 @@ import com.robotutor.nexora.shared.webclient.WebClientWrapper
 import com.robotutor.nexora.shared.security.config.AppConfig
 import org.springframework.stereotype.Service
 
-@Service("IamClientResourceResolver")
-class IamClient(
+@Service("IdentityClientResourceResolver")
+class IdentityClient(
     private val webClient: WebClientWrapper,
     private val appConfig: AppConfig
 ) {
 //    fun authorize(httpAuthorize: Authorize, resourceId: ResourceId): Mono<Boolean> {
 //        return webClient.post(
-//            baseUrl = appConfig.iamBaseUrl,
+//            baseUrl = appConfig.IdentityBaseUrl,
 //            path = appConfig.authorizeResourcePath,
 //            body = mapOf(
 //                "resourceId" to resourceId.value,
@@ -25,7 +25,7 @@ class IamClient(
 //
 //    fun getResource(resourceSelector: ResourceSelector): Mono<Resources> {
 //        return webClient.post(
-//            baseUrl = appConfig.iamBaseUrl,
+//            baseUrl = appConfig.IdentityBaseUrl,
 //            path = appConfig.resourcePath,
 //            body = mapOf(
 //                "actionType" to resourceSelector.action,

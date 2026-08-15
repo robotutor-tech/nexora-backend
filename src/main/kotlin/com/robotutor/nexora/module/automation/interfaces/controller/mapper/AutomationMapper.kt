@@ -18,7 +18,7 @@ import com.robotutor.nexora.module.automation.interfaces.controller.view.compone
 import com.robotutor.nexora.module.automation.interfaces.controller.view.component.response.WaitResponse
 import com.robotutor.nexora.shared.domain.vo.FeedId
 import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import java.util.concurrent.TimeUnit
 
 object AutomationMapper {

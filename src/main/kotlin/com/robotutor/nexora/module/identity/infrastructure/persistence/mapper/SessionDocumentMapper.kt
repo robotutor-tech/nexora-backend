@@ -1,23 +1,11 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.module.identity.domain.aggregate.Session
-import com.robotutor.nexora.module.identity.domain.vo.*
-import com.robotutor.nexora.module.identity.infrastructure.persistence.document.UserDataDocument
-import com.robotutor.nexora.module.identity.infrastructure.persistence.document.ActorDataDocument
-import com.robotutor.nexora.module.identity.infrastructure.persistence.document.SessionDocument
-import com.robotutor.nexora.module.identity.infrastructure.persistence.document.AccountDataDocument
-import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.ActorId
-import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectId
+import com.robotutor.nexora.module.identity.domain.vo.HashAccessToken
+import com.robotutor.nexora.module.identity.domain.vo.SessionId
+import com.robotutor.nexora.module.identity.infrastructure.persistence.document.*
+import com.robotutor.nexora.shared.domain.vo.*
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
-import com.robotutor.nexora.module.identity.infrastructure.persistence.document.DeviceDataDocument
-import com.robotutor.nexora.module.user.domain.vo.UserId
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
-import com.robotutor.nexora.shared.domain.vo.principal.DeviceData
-import com.robotutor.nexora.shared.domain.vo.principal.UserData
 
 object SessionDocumentMapper : DocumentMapper<Session, SessionDocument> {
     override fun toMongoDocument(domain: Session): SessionDocument {
@@ -83,7 +71,7 @@ object SessionDocumentMapper : DocumentMapper<Session, SessionDocument> {
                 actorId = ActorId(accountDataDocument.actorId),
                 premisesId = PremisesId(accountDataDocument.premisesId),
                 accountId = AccountId(accountDataDocument.accountId),
-                subjectId = SubjectId(accountDataDocument.subjectId),
+                subjectId = SubjectId.from(accountDataDocument.subjectType, accountDataDocument.subjectId),
                 subjectType = accountDataDocument.subjectType
             )
 

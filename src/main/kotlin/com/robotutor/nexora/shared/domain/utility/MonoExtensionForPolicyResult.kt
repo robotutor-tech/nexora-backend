@@ -9,11 +9,11 @@ import com.robotutor.nexora.shared.domain.exception.ServiceError
 import com.robotutor.nexora.shared.domain.policy.Policy
 import reactor.core.publisher.Mono
 
-fun <T, C> Mono<T>.enforcePolicy(
-    policy: Policy<C>,
-    mapper: (T) -> C,
-    error: ServiceError,
-): Mono<T> {
+fun <T> Mono<T>.enforcePolicy(policy: Policy<T>, error: ServiceError): Mono<T> {
+    return this.enforcePolicy(policy, error) { it }
+}
+
+fun <T, C> Mono<T>.enforcePolicy(policy: Policy<C>, error: ServiceError, mapper: (T) -> C): Mono<T> {
     return flatMap { result ->
         evaluatePolicy(policy, mapper(result), error)
             .map { result }

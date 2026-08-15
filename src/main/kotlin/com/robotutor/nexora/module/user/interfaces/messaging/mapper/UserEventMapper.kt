@@ -2,9 +2,9 @@ package com.robotutor.nexora.module.user.interfaces.messaging.mapper
 
 import com.robotutor.nexora.module.user.application.command.ActivateUserCommand
 import com.robotutor.nexora.module.user.application.command.CompensateUserCommand
-import com.robotutor.nexora.module.user.domain.vo.UserId
 import com.robotutor.nexora.module.user.interfaces.messaging.message.ActivateUserMessage
 import com.robotutor.nexora.module.user.interfaces.messaging.message.CompensateUserMessage
+import com.robotutor.nexora.shared.domain.vo.UserId
 
 object UserEventMapper {
     fun toActivateUserCommand(eventMessage: ActivateUserMessage): ActivateUserCommand {

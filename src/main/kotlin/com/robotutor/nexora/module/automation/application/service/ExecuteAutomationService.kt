@@ -21,7 +21,7 @@ class ExecuteAutomationService(
     fun execute(command: ExecuteAutomationCommand): Mono<AutomationExecutionResult> {
         return automationRepository.findByAutomationId(command.automationId)
             .flatMap { automation -> dataResolver.resolve(automation) }
-            .enforcePolicy(executeAutomationPolicy, { it }, AutomationError.NEXORA0301)
+            .enforcePolicy(executeAutomationPolicy, AutomationError.NEXORA0301)
             .flatMap { resolved -> automationExecutor.execute(resolved) }
     }
 }

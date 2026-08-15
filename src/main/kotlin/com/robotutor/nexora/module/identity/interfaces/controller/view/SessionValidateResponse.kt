@@ -2,7 +2,7 @@ package com.robotutor.nexora.module.identity.interfaces.controller.view
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectType
+import com.robotutor.nexora.shared.domain.vo.SubjectType
 
 data class SessionValidateResponse(
     val isValid: Boolean,

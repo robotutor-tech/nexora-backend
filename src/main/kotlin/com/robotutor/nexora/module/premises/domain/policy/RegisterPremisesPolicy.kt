@@ -2,7 +2,7 @@ package com.robotutor.nexora.module.premises.domain.policy
 
 import com.robotutor.nexora.shared.domain.policy.Policy
 import com.robotutor.nexora.shared.domain.policy.PolicyResult
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import org.springframework.stereotype.Service
 
 @Service

@@ -23,7 +23,9 @@ class CreateZoneService(
 
     fun execute(command: CreateZoneCommand): Mono<ZoneAggregate> {
         return zoneRepository.existsByPremisesIdAndName(command.premisesId, command.name)
-            .enforcePolicy(createZonePolicy, { DuplicateZoneNameContext(it, command.name) }, ZoneError.NEXORA0201)
+            .enforcePolicy(createZonePolicy, ZoneError.NEXORA0201) {
+                DuplicateZoneNameContext(it, command.name)
+            }
             .map { ZoneAggregate.createZone(command.premisesId, command.name, command.createdBy) }
             .flatMap { zone -> zoneRepository.save(zone) }
             .logOnSuccess(logger, "Successfully created zone")

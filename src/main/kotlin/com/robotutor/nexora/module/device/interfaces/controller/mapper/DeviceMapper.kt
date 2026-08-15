@@ -5,17 +5,13 @@ import com.robotutor.nexora.module.device.application.command.GetDevicesQuery
 import com.robotutor.nexora.module.device.application.command.RegisterDeviceCommand
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceMetadata
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.device.domain.vo.SerialNo
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceMetaDataRequest
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceMetaDataResponse
 import com.robotutor.nexora.module.device.interfaces.controller.view.DeviceResponse
 import com.robotutor.nexora.module.device.interfaces.controller.view.RegisterDeviceRequest
-import com.robotutor.nexora.shared.domain.vo.Name
-import com.robotutor.nexora.shared.domain.vo.Resources
-import com.robotutor.nexora.shared.domain.vo.ZoneId
-import com.robotutor.nexora.shared.domain.vo.principal.ActorData
+import com.robotutor.nexora.shared.domain.vo.*
 
 object DeviceMapper {
     fun toRegisterDeviceCommand(request: RegisterDeviceRequest, actorData: ActorData): RegisterDeviceCommand {

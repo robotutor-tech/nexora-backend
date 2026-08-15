@@ -4,7 +4,7 @@ import com.robotutor.nexora.module.premises.application.command.ActivatePremises
 import com.robotutor.nexora.module.premises.application.command.CompensatePremisesRegistrationCommand
 import com.robotutor.nexora.module.premises.interfaces.messaging.message.PremisesOwnerRegisteredMessage
 import com.robotutor.nexora.module.premises.interfaces.messaging.message.PremisesOwnerRegistrationFailedMessage
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 
 object PremisesEventMapper {

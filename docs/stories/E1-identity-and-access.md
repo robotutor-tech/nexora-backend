@@ -9,8 +9,8 @@ This epic delivers secure user identity: registration, verification, login, reco
 
 ## Current implementation status (repo check)
 - User registration endpoint exists: `context/user/interfaces/controller/UserController.kt` (`POST /users/register`).
-- IAM account registration/authentication endpoints exist: `context/iam/interfaces/controller/AccountController.kt` (`POST /iam/accounts/register`, `POST /iam/accounts/authenticate`).
-- Session validation/refresh exists: `context/iam/interfaces/controller/SessionController.kt`.
+- Identity account registration/authentication endpoints exist: `context/Identity/interfaces/controller/AccountController.kt` (`POST /Identity/accounts/register`, `POST /Identity/accounts/authenticate`).
+- Session validation/refresh exists: `context/Identity/interfaces/controller/SessionController.kt`.
 - No email/mobile verification or OTP password reset endpoints were found.
 
 ---
@@ -30,7 +30,7 @@ This epic delivers secure user identity: registration, verification, login, reco
 
 **Evidence pointers:**
 - `POST /users/register` in `UserController`.
-- `POST /iam/accounts/register` in `AccountController`.
+- `POST /Identity/accounts/register` in `AccountController`.
 
 ---
 
@@ -47,8 +47,8 @@ This epic delivers secure user identity: registration, verification, login, reco
 3. Rate limiting / lockout behavior is defined (even if MVP uses basic throttling).
 
 **Evidence pointers:**
-- `POST /iam/accounts/authenticate` (account authentication)
-- `GET /iam/sessions/validate`, `GET /iam/sessions/refresh`
+- `POST /Identity/accounts/authenticate` (account authentication)
+- `GET /Identity/sessions/validate`, `GET /Identity/sessions/refresh`
 
 ---
 
@@ -110,7 +110,7 @@ This epic delivers secure user identity: registration, verification, login, reco
 2. Email/mobile change requires re-verification.
 
 **Evidence pointers:**
-- Credential rotation endpoint exists: `PATCH /iam/accounts/principal/{principalId}/credentials/rotate`.
+- Credential rotation endpoint exists: `PATCH /Identity/accounts/principal/{principalId}/credentials/rotate`.
 
 ---
 

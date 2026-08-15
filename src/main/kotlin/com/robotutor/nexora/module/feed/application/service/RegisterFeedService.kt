@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.feed.application.service
 
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.device.domain.vo.ModelNo
 import com.robotutor.nexora.module.feed.application.command.RegisterFeedCommand
 import com.robotutor.nexora.module.feed.application.command.RegisterFeedsCommand
@@ -9,6 +8,7 @@ import com.robotutor.nexora.module.feed.domain.aggregate.FeedType
 import com.robotutor.nexora.module.feed.domain.repository.FeedRepository
 import com.robotutor.nexora.module.feed.domain.vo.FeedMode
 import com.robotutor.nexora.module.feed.domain.vo.FeedValueRange
+import com.robotutor.nexora.shared.domain.vo.DeviceId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux

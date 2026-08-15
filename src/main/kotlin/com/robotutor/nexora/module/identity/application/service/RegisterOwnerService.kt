@@ -9,10 +9,10 @@ import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
 import com.robotutor.nexora.module.identity.domain.aggregate.GroupType
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleType
-import com.robotutor.nexora.module.identity.domain.event.IAMEventPublisher
+import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
 import com.robotutor.nexora.module.identity.domain.event.PremisesOwnerRegisteredEvent
 import com.robotutor.nexora.module.identity.domain.event.PremisesOwnerRegistrationFailedEvent
-import com.robotutor.nexora.module.identity.domain.exception.IAMError
+import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
 import com.robotutor.nexora.module.identity.domain.specification.ActorByPremisesIdSpecification
 import com.robotutor.nexora.shared.domain.event.publishEvent
@@ -28,12 +28,12 @@ class RegisterOwnerService(
     private val registerGroupService: RegisterGroupService,
     private val actorRepository: ActorRepository,
     private val permissionSeedProvider: PermissionSeedProvider,
-    private val eventPublisher: IAMEventPublisher,
+    private val eventPublisher: IdentityEventPublisher,
     private val registerPremisesOwnerPolicy: RegisterPremisesOwnerPolicy
 ) {
     fun execute(command: RegisterPremisesOwnerCommand): Mono<ActorAggregate> {
         return actorRepository.exitsBySpecification(ActorByPremisesIdSpecification(command.premisesId))
-            .enforcePolicy(registerPremisesOwnerPolicy, { it }, IAMError.NEXORA0201)
+            .enforcePolicy(registerPremisesOwnerPolicy, IdentityError.NEXORA0201)
             .flatMap {
                 registerRoleService.execute(createDefaultRoles(command)).collectList()
             }

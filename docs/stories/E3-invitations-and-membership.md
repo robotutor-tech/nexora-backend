@@ -8,7 +8,7 @@ This epic enables multi-user premises membership management.
 > - ❌ **NOT DONE**: Not implemented or currently commented out.
 
 ## Current implementation status (repo check)
-- Invitation HTTP controller exists at `context/iam/interfaces/controller/InvitationController.kt`, but its endpoints are **commented out**.
+- Invitation HTTP controller exists at `context/Identity/interfaces/controller/InvitationController.kt`, but its endpoints are **commented out**.
 - No active `InvitationUseCase` implementation was found by code search.
 
 ---

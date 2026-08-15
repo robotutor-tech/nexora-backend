@@ -2,7 +2,7 @@ package com.robotutor.nexora.module.identity.domain.exception
 
 import com.robotutor.nexora.shared.domain.exception.ServiceError
 
-enum class IAMError(override val errorCode: String, override val message: String) : ServiceError {
+enum class IdentityError(override val errorCode: String, override val message: String) : ServiceError {
     NEXORA0201("NEXORA-0201", "Account registration denied"),
     NEXORA0202("NEXORA-0202", "Invalid credentials."),
     NEXORA0203("NEXORA-0203", "Account not found."),

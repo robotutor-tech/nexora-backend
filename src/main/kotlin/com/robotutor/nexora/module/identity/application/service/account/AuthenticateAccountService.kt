@@ -1,24 +1,18 @@
 package com.robotutor.nexora.module.identity.application.service.account
 
-import com.robotutor.nexora.module.device.domain.vo.DeviceId
 import com.robotutor.nexora.module.identity.application.command.AuthenticateAccountCommand
 import com.robotutor.nexora.module.identity.application.command.CreateSessionCommand
 import com.robotutor.nexora.module.identity.application.service.CreateSessionService
-import com.robotutor.nexora.module.identity.domain.aggregate.AccountAggregate
-import com.robotutor.nexora.module.identity.domain.exception.IAMError
+import com.robotutor.nexora.module.identity.domain.aggregate.Account
+import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.repository.AccountRepository
 import com.robotutor.nexora.module.identity.domain.service.SecretEncoder
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
-import com.robotutor.nexora.module.user.domain.vo.UserId
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.domain.vo.Tokens
-import com.robotutor.nexora.shared.domain.vo.principal.AccountData
-import com.robotutor.nexora.shared.domain.vo.principal.DeviceData
-import com.robotutor.nexora.shared.domain.vo.principal.SubjectType
-import com.robotutor.nexora.shared.domain.vo.principal.UserData
+import com.robotutor.nexora.shared.domain.vo.*
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import com.robotutor.nexora.shared.utility.required
@@ -35,14 +29,13 @@ class AuthenticateAccountService(
 
     fun execute(command: AuthenticateAccountCommand): Mono<Tokens> {
         return accountRepository.findByCredentialId(command.credentialId)
-            .required(UnAuthorizedException(IAMError.NEXORA0202))
+            .required(UnAuthorizedException(IdentityError.NEXORA0202))
             .flatMap { account ->
-                val credential = account.getCredential(command.credentialId)
-                val matchResult = secretService.matches(command.secret, credential.secret)
+                val matchResult = secretService.matches(command.secret, account.credential.hashedSecret)
                 if (matchResult) {
                     createMono(account)
                 } else {
-                    createMonoError(UnAuthorizedException(IAMError.NEXORA0202))
+                    createMonoError(UnAuthorizedException(IdentityError.NEXORA0202))
                 }
             }
             .flatMap { account ->
@@ -61,10 +54,10 @@ class AuthenticateAccountService(
             .logOnError(logger, "Failed to authenticate account")
     }
 
-    private fun createAccountData(account: AccountAggregate): AccountData {
-        return when (account.type) {
-            SubjectType.USER -> UserData(UserId.from(account.subjectId), account.accountId)
-            SubjectType.DEVICE -> DeviceData(DeviceId.from(account.subjectId), account.accountId)
+    private fun createAccountData(account: Account): AccountData {
+        return when (account.subjectType) {
+            SubjectType.USER -> UserData.from(account.accountId, account.subjectId)
+            SubjectType.DEVICE -> DeviceData.from(account.accountId, account.subjectId)
         }
     }
 }
