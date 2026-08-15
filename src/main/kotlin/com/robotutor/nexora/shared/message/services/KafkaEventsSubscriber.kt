@@ -2,6 +2,7 @@ package com.robotutor.nexora.shared.message.services
 
 import com.robotutor.nexora.shared.message.annotation.EventController
 import com.robotutor.nexora.shared.message.annotation.EventListener
+import com.robotutor.nexora.shared.message.config.EventName
 import com.robotutor.nexora.shared.message.message.Message
 import com.robotutor.nexora.shared.message.resolver.ArgumentResolverConfigurer
 import com.robotutor.nexora.shared.utility.createFlux
@@ -77,17 +78,17 @@ private data class KafkaHandler(
 )
 
 private class KafkaHandlerRegistry(
-    private val handlers: MutableMap<String, MutableList<KafkaHandler>> = mutableMapOf()
+    private val handlers: MutableMap<EventName, MutableList<KafkaHandler>> = mutableMapOf()
 ) {
-    fun add(topic: String, kafkaHandler: KafkaHandler) {
-        handlers.getOrPut(topic) { mutableListOf() }.add(kafkaHandler)
+    fun add(eventName: EventName, kafkaHandler: KafkaHandler) {
+        handlers.getOrPut(eventName) { mutableListOf() }.add(kafkaHandler)
     }
 
-    fun getHandlers(topic: String): List<KafkaHandler> {
-        return handlers.getOrDefault(topic, listOf())
+    fun getHandlers(eventName: EventName): List<KafkaHandler> {
+        return handlers.getOrDefault(eventName, listOf())
     }
 
-    fun getKeys(): List<String> {
+    fun getKeys(): List<EventName> {
         return handlers.keys.toList()
     }
 }

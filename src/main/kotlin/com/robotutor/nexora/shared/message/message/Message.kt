@@ -1,3 +1,5 @@
 package com.robotutor.nexora.shared.message.message
 
-data class Message(val topic: String, val value: String)
+import com.robotutor.nexora.shared.message.config.EventName
+
+data class Message(val topic: EventName, val value: String)

@@ -7,11 +7,11 @@ import com.robotutor.nexora.shared.message.message.EventMessage
 sealed interface IAMEventMessage : EventMessage
 
 data class CredentialUpdatedEventMessage(val accountId: String, val kind: CredentialKind) : IAMEventMessage {
-    override val eventName: EventName = EventName.IDENTITY_CREDENTIAL_UPDATED
+    override val eventName: EventName = EventName.IDENTITY_ACCOUNT_CREDENTIAL_UPDATED
 }
 
 data class AccountAuthenticatedEventMessage(val accountId: String, val type: String) : IAMEventMessage {
-    override val eventName: EventName = EventName.ACCOUNT_AUTHENTICATED
+    override val eventName: EventName = EventName.IDENTITY_ACCOUNT_AUTHENTICATED
 }
 
 class ActorAuthenticatedEventMessage(
@@ -20,7 +20,7 @@ class ActorAuthenticatedEventMessage(
     val actorId: String,
     val premisesId: String
 ) : IAMEventMessage {
-    override val eventName: EventName = EventName.ACTOR_AUTHENTICATED
+    override val eventName: EventName = EventName.IDENTITY_ACTOR_AUTHENTICATED
 }
 
 

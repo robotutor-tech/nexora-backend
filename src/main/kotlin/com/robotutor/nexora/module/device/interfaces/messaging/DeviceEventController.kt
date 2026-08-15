@@ -10,6 +10,7 @@ import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.message.annotation.EventController
 import com.robotutor.nexora.shared.message.annotation.EventListener
 import com.robotutor.nexora.shared.message.annotation.Message
+import com.robotutor.nexora.shared.message.config.EventName
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")
@@ -19,13 +20,13 @@ class DeviceEventController(
     private val actorRegisteredDeviceService: ActivateDeviceService
 ) {
 
-    @EventListener(["iam.account.registered.device"])
+    @EventListener([EventName.IDENTITY_ACCOUNT_REGISTERED_DEVICE])
     fun activateDevice(@Message message: ActorRegisteredDeviceMessage, actorData: ActorData): Mono<DeviceAggregate> {
         val command = DeviceEventMapper.toActorRegisteredDeviceCommand(message, actorData)
         return actorRegisteredDeviceService.execute(command)
     }
 
-    @EventListener(["iam.account.registration.failed.device"])
+    @EventListener([EventName.IDENTITY_ACCOUNT_REGISTRATION_FAILED_DEVICE])
     fun compensateDevice(@Message message: CompensateDeviceMessage): Mono<DeviceAggregate> {
         val command = DeviceEventMapper.toCompensateDeviceCommand(message)
         return compensateDeviceService.execute(command)

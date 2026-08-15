@@ -34,8 +34,8 @@ class KafkaEventPublisher(
             headers.forEach { producerRecord.headers().add(it) }
             reactiveKafkaProducerTemplate.send(producerRecord)
         }
-            .logOnSuccess(logger, "Successfully published kafka topic to ${message.eventName}")
-            .logOnError(logger, "Failed to publish kafka topic to ${message.eventName}")
+            .logOnSuccess(logger, "Successfully published Kafka topic to ${message.eventName}")
+            .logOnError(logger, "Failed to publish Kafka topic to ${message.eventName}")
     }
 
     private fun createHeadersRecord(ctx: ContextView): MutableList<RecordHeader> {

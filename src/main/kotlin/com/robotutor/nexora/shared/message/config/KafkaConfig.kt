@@ -21,7 +21,7 @@ class KafkaConfig {
     @Value("\${spring.kafka.consumer.group-id}")
     private lateinit var groupId: String
 
-    private fun receiverOptions(topics: List<String>): ReceiverOptions<String, String> {
+    private fun receiverOptions(topics: List<EventName>): ReceiverOptions<String, String> {
         val consumerProps = mapOf<String, Any>(
             ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
             ConsumerConfig.GROUP_ID_CONFIG to groupId,
@@ -30,11 +30,11 @@ class KafkaConfig {
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest"
         )
 
-        return ReceiverOptions.create<String, String>(consumerProps).subscription(topics)
+        return ReceiverOptions.create<String, String>(consumerProps).subscription(topics.map { it.topic })
     }
 
     @Bean
-    fun kafkaReceiverFactory(): (List<String>) -> ReactiveKafkaConsumerTemplate<String, String> {
+    fun kafkaReceiverFactory(): (List<EventName>) -> ReactiveKafkaConsumerTemplate<String, String> {
         return { topics ->
             val receiverOptions = receiverOptions(topics)
             ReactiveKafkaConsumerTemplate(receiverOptions)

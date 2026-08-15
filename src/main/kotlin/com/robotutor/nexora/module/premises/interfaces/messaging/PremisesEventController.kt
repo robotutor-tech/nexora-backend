@@ -10,6 +10,7 @@ import com.robotutor.nexora.shared.domain.vo.principal.AccountData
 import com.robotutor.nexora.shared.message.annotation.EventController
 import com.robotutor.nexora.shared.message.annotation.EventListener
 import com.robotutor.nexora.shared.message.annotation.Message
+import com.robotutor.nexora.shared.message.config.EventName
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")
@@ -18,7 +19,8 @@ class PremisesEventController(
     private val activatePremisesService: ActivatePremisesService,
     private val compensatePremisesRegistrationService: CompensatePremisesRegistrationService
 ) {
-    @EventListener(["iam.premises.owner.registered"])
+
+    @EventListener([EventName.IDENTITY_PREMISES_OWNER_REGISTERED])
     fun activatePremises(
         @Message message: PremisesOwnerRegisteredMessage,
         accountData: AccountData
@@ -27,7 +29,8 @@ class PremisesEventController(
         return activatePremisesService.execute(command)
     }
 
-    @EventListener(["iam.premises.owner.registration.failed"])
+
+    @EventListener([EventName.IDENTITY_PREMISES_OWNER_REGISTRATION_FAILED])
     fun compensatePremisesRegistration(
         @Message message: PremisesOwnerRegistrationFailedMessage,
         accountData: AccountData

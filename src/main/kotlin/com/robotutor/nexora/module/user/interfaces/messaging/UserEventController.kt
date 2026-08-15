@@ -9,6 +9,7 @@ import com.robotutor.nexora.module.user.domain.aggregate.UserAggregate
 import com.robotutor.nexora.module.user.interfaces.messaging.mapper.UserEventMapper
 import com.robotutor.nexora.module.user.interfaces.messaging.message.ActivateUserMessage
 import com.robotutor.nexora.module.user.interfaces.messaging.message.CompensateUserMessage
+import com.robotutor.nexora.shared.message.config.EventName
 import reactor.core.publisher.Mono
 
 @Suppress("UNUSED")
@@ -18,13 +19,13 @@ class UserEventController(
     private val compensateUserService: CompensateUserService
 ) {
 
-    @EventListener(["iam.account.registered.user"])
+    @EventListener([EventName.IDENTITY_ACCOUNT_REGISTERED_USER])
     fun activateUser(@Message message: ActivateUserMessage): Mono<UserAggregate> {
         val command = UserEventMapper.toActivateUserCommand(message)
         return activateUserService.execute(command)
     }
 
-    @EventListener(["iam.account.registration.failed.user"])
+    @EventListener([EventName.IDENTITY_ACCOUNT_REGISTRATION_FAILED_USER])
     fun compensateUser(@Message message: CompensateUserMessage): Mono<UserAggregate> {
         val command = UserEventMapper.toCompensateUserCommand(message)
         return compensateUserService.execute(command)

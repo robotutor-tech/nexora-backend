@@ -7,6 +7,7 @@ import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import com.robotutor.nexora.shared.domain.vo.principal.ActorData
 import com.robotutor.nexora.shared.domain.vo.principal.AccountData
+import com.robotutor.nexora.shared.message.config.EventName
 import com.robotutor.nexora.shared.message.message.Message
 import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.http.HttpHeaders
@@ -20,19 +21,19 @@ import java.nio.charset.StandardCharsets
 
 @Service
 class KafkaConsumer(
-    private val kafkaReceiverFactory: (List<String>) -> ReactiveKafkaConsumerTemplate<String, String>,
+    private val kafkaReceiverFactory: (List<EventName>) -> ReactiveKafkaConsumerTemplate<String, String>,
     private val kafkaEventPublisher: KafkaEventPublisher
 ) {
     val logger = Logger(this::class.java)
 
-    fun consume(topics: List<String>, process: (it: Message) -> Mono<Any>): Flux<Any> {
+    fun consume(topics: List<EventName>, process: (it: Message) -> Mono<Any>): Flux<Any> {
         val kafkaReceiver = kafkaReceiverFactory(topics)
         return kafkaReceiver.receive()
             .flatMap({ receiverRecord ->
                 val message = receiverRecord.value()
                 val topic = receiverRecord.topic()
                 createMono(message)
-                    .flatMap { process(Message(topic, it)) }
+                    .flatMap { process(Message(EventName.from(topic), it)) }
                     .contextWrite { ctx -> writeContext(receiverRecord, ctx) }
                     .doFinally { receiverRecord.receiverOffset().acknowledge() }
                     .logOnSuccess(logger, "Successfully consumed kafka topic to $topic")
