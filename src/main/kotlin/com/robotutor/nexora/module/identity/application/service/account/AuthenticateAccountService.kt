@@ -54,10 +54,10 @@ class AuthenticateAccountService(
             .logOnError(logger, "Failed to authenticate account")
     }
 
-    private fun createAccountData(account: Account): AccountData {
-        return when (account.subjectType) {
-            SubjectType.USER -> UserData.from(account.accountId, account.subjectId)
-            SubjectType.DEVICE -> DeviceData.from(account.accountId, account.subjectId)
+    private fun createAccountData(account: Account): PrincipalData {
+        return when (account.accountType) {
+            AccountType.USER -> UserData.from(account.accountId, account.subjectId)
+            AccountType.DEVICE -> DeviceData.from(account.accountId, account.subjectId)
         }
     }
 }

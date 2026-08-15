@@ -25,10 +25,10 @@ class CreateSessionService(
 
     @Transactional
     fun execute(command: CreateSessionCommand): Mono<Tokens> {
-        val tokens = tokenGenerator.generateTokens(command.accountData, command.sessionId)
+        val tokens = tokenGenerator.generateTokens(command.principalData, command.sessionId)
         val token = secretEncoder.encode(tokens.refreshToken)
-        val expiresAt = sessionExpiryService.getExpiryForRefreshToken(command.accountData)
-        val session = Session.register(command.sessionId, command.accountData, token, expiresAt)
+        val expiresAt = sessionExpiryService.getExpiryForRefreshToken(command.principalData)
+        val session = Session.register(command.sessionId, command.principalData, token, expiresAt)
         return sessionRepository.save(session)
             .logOnSuccess(logger, "Successfully created new session")
             .logOnError(logger, "Failed to create new session")

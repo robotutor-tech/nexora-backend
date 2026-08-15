@@ -4,7 +4,8 @@ import com.robotutor.nexora.module.identity.application.service.RegisterOwnerSer
 import com.robotutor.nexora.module.identity.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.module.identity.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.module.identity.interfaces.controller.view.OwnerCreationRequest
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
+import com.robotutor.nexora.shared.domain.vo.UserData
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,9 +19,9 @@ class PremisesOwnerController(private val registerOwnerService: RegisterOwnerSer
     @PostMapping("/register")
     fun registerPremisesResource(
         @RequestBody eventMessage: OwnerCreationRequest,
-        accountData: AccountData
+        userData: UserData,
     ): Mono<ActorResponse> {
-        val command = ActorMapper.toRegisterOwnerCommand(eventMessage, accountData)
+        val command = ActorMapper.toRegisterOwnerCommand(eventMessage, userData)
         return registerOwnerService.execute(command)
             .map { ActorMapper.toActorResponse(it) }
     }

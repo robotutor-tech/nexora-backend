@@ -2,14 +2,11 @@ package com.robotutor.nexora.shared.webclient
 
 import com.robotutor.nexora.shared.application.logger.LogDetails
 import com.robotutor.nexora.shared.application.logger.Logger
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.CORRELATION_ID
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.getCorrelationId
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.context.ReactiveContext
+import com.robotutor.nexora.shared.context.ReactiveContext.CORRELATION_ID
 import com.robotutor.nexora.shared.domain.exception.BaseException
-import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
@@ -344,8 +341,7 @@ class WebClientWrapper(private val webClient: WebClient) {
         metaDataHeaders: MetadataHeaders
     ) {
         metaDataHeaders.headers.remove(HttpHeaders.CONTENT_LENGTH)
-        httpHeaders.set(X_PREMISES_ID, metaDataHeaders.premisesId)
-        httpHeaders.set(CORRELATION_ID, metaDataHeaders.premisesId)
+        httpHeaders.set(CORRELATION_ID, metaDataHeaders.correlationId)
         httpHeaders.putAll(metaDataHeaders.headers)
         headers.map {
             httpHeaders.set(it.key, it.value)
@@ -369,15 +365,13 @@ class WebClientWrapper(private val webClient: WebClient) {
     private fun getMetaDataHeaders(): Mono<MetadataHeaders> {
         return Mono.deferContextual { ctx ->
             val headers = ctx.get(HttpHeaders::class.java)
-            val premisesId = getPremisesId(ctx).value
-            val correlationId = getCorrelationId(ctx)
-            createMono(MetadataHeaders(headers, premisesId, correlationId))
+            ReactiveContext.getCorrelationId()
+                .map { MetadataHeaders(headers, it) }
         }
     }
 }
 
 private data class MetadataHeaders(
     val headers: HttpHeaders,
-    val premisesId: String,
     val correlationId: String
 )

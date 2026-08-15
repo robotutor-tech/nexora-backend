@@ -1,7 +1,10 @@
 package com.robotutor.nexora.module.identity.domain.service
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
+import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.DeviceData
+import com.robotutor.nexora.shared.domain.vo.UserData
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
@@ -9,17 +12,19 @@ import java.time.Instant
 @Service
 class SessionExpiryService {
 
-    fun getExpiryForRefreshToken(accountData: AccountData): Instant {
-        return when (accountData.subjectType) {
-            SubjectType.USER -> Instant.now().plus(Duration.ofHours(7))
-            SubjectType.DEVICE -> Instant.now().plus(Duration.ofDays(30))
+    fun getExpiryForRefreshToken(principalData: PrincipalData): Instant {
+        return when (principalData) {
+            is DeviceData -> Instant.now().plus(Duration.ofDays(30))
+            is UserData -> Instant.now().plus(Duration.ofDays(7))
+            is ActorData -> Instant.now().plus(Duration.ofDays(7))
         }
     }
 
-    fun getExpiryForAccessToken(accountData: AccountData): Instant {
-        return when (accountData.subjectType) {
-            SubjectType.USER -> Instant.now().plus(Duration.ofHours(1))
-            SubjectType.DEVICE -> Instant.now().plus(Duration.ofDays(1))
+    fun getExpiryForAccessToken(principalData: PrincipalData): Instant {
+        return when (principalData) {
+            is DeviceData -> Instant.now().plus(Duration.ofHours(1))
+            is UserData -> Instant.now().plus(Duration.ofDays(1))
+            is ActorData -> Instant.now().plus(Duration.ofDays(1))
         }
     }
 }

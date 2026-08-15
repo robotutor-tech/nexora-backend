@@ -1,15 +1,13 @@
 package com.robotutor.nexora.shared.message.services
 
 import com.robotutor.nexora.shared.application.logger.Logger
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.CORRELATION_ID
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.X_PREMISES_ID
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.getCorrelationId
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.getPremisesId
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
+import com.robotutor.nexora.shared.context.ReactiveContext
+import com.robotutor.nexora.shared.context.ReactiveContext.CORRELATION_ID
 import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.message.message.EventMessage
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
@@ -41,21 +39,19 @@ class KafkaEventPublisher(
     private fun createHeadersRecord(ctx: ContextView): MutableList<RecordHeader> {
         val httpHeaders = ctx.getOrEmpty<HttpHeaders>(HttpHeaders::class.java)
         val actorData = ctx.getOrEmpty<ActorData>(ActorData::class.java)
-        val accountData = ctx.getOrEmpty<AccountData>(AccountData::class.java)
-        val correlationId = getCorrelationId(ctx)
-        val premisesId = getPremisesId(ctx)
+        val principalData = ctx.getOrEmpty<PrincipalData>(PrincipalData::class.java)
+        val correlationId = ReactiveContext.getCorrelationId(ctx)
 
         val headers = mutableListOf<RecordHeader>()
         headers.add(RecordHeader(CORRELATION_ID, correlationId.toByteArray()))
-        headers.add(RecordHeader(X_PREMISES_ID, premisesId.value.toByteArray()))
         if (actorData.isPresent) {
             headers.add(
                 RecordHeader("Actor", DefaultSerializer.serialize(actorData.get()).toByteArray())
             )
         }
-        if (accountData.isPresent) {
+        if (principalData.isPresent) {
             headers.add(
-                RecordHeader("Account", DefaultSerializer.serialize(accountData.get()).toByteArray())
+                RecordHeader("Account", DefaultSerializer.serialize(principalData.get()).toByteArray())
             )
         }
         if (httpHeaders.isPresent) {

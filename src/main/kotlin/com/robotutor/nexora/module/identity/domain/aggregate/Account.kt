@@ -8,12 +8,12 @@ import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.SubjectId
-import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import java.time.Instant
 
 class Account private constructor(
     val accountId: AccountId,
-    val subjectType: SubjectType,
+    val accountType: AccountType,
     val subjectId: SubjectId,
     val createdBy: ActorId?,
     val createdAt: Instant,
@@ -28,19 +28,19 @@ class Account private constructor(
     companion object {
         fun register(
             accountId: AccountId,
-            type: SubjectType,
+            type: AccountType,
             subjectId: SubjectId,
             credential: Credential,
             createdBy: ActorId? = null,
         ): Account {
             val account = create(accountId, type, subjectId, credential, createdBy)
-            account.addEvent(AccountCreatedEvent(account.accountId, account.subjectType, account.subjectId))
+            account.addEvent(AccountCreatedEvent(account.accountId, account.accountType, account.subjectId))
             return account
         }
 
         fun create(
             accountId: AccountId,
-            type: SubjectType,
+            type: AccountType,
             subjectId: SubjectId,
             credential: Credential,
             createdBy: ActorId? = null,
@@ -50,7 +50,7 @@ class Account private constructor(
         ): Account {
             return Account(
                 accountId = accountId,
-                subjectType = type,
+                accountType = type,
                 subjectId = subjectId,
                 createdBy = createdBy,
                 credential = credential,

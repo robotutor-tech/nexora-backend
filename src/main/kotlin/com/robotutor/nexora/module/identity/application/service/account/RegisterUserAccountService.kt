@@ -15,7 +15,7 @@ import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.utility.enforcePolicy
-import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -42,7 +42,7 @@ class RegisterUserAccountService(
                 val hashedPassword = secretEncoder.encode(command.password)
                 Account.register(
                     accountId = accountId,
-                    type = SubjectType.USER,
+                    type = AccountType.USER,
                     subjectId = command.userId,
                     credential = Credential(command.email, hashedPassword),
                 )

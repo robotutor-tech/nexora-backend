@@ -5,7 +5,7 @@ import com.robotutor.nexora.module.identity.domain.service.TokenGenerator
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.vo.AccessToken
 import com.robotutor.nexora.shared.domain.vo.Tokens
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.DeviceData
 import com.robotutor.nexora.shared.domain.vo.UserData
@@ -19,23 +19,23 @@ import java.util.*
 class JwtService(
     private val sessionExpiryService: SessionExpiryService
 ) : TokenGenerator, JwtValidationService() {
-    override fun generateTokens(accountData: AccountData, sessionId: SessionId): Tokens {
+    override fun generateTokens(principalData: PrincipalData, sessionId: SessionId): Tokens {
         val accessToken = generateAccessToken(
-            principal = accountData,
+            principal = principalData,
             sessionId = sessionId,
-            expiresAt = sessionExpiryService.getExpiryForAccessToken(accountData),
+            expiresAt = sessionExpiryService.getExpiryForAccessToken(principalData),
         )
         val refreshToken = generateAccessToken(
-            principal = accountData,
+            principal = principalData,
             sessionId = sessionId,
-            expiresAt = sessionExpiryService.getExpiryForRefreshToken(accountData),
+            expiresAt = sessionExpiryService.getExpiryForRefreshToken(principalData),
         )
         return Tokens(accessToken, refreshToken)
     }
 
 
     private fun generateAccessToken(
-        principal: AccountData,
+        principal: PrincipalData,
         sessionId: SessionId,
         expiresAt: Instant
     ): AccessToken {
@@ -44,18 +44,22 @@ class JwtService(
             .subject(sessionId.value)
             .issuedAt(Date())
             .expiration(Date.from(expiresAt))
-            .claim(accountId, principal.accountId.value)
-            .claim(subjectId, principal.subjectId.value)
-            .claim(subjectType, principal.subjectType)
-            .claim(principalType, principal.accountType)
+            .claim(principalId, principal.principalId.value)
+            .claim(principalType, principal.principalType)
 
         when (principal) {
             is ActorData -> jwtBuilder.claim(actorId, principal.actorId.value)
                 .claim(premisesId, principal.premisesId.value)
+                .claim(accountId, principal.accountData.accountId.value)
+                .claim(accountType, principal.accountData.principalType)
 
             is DeviceData -> jwtBuilder.claim(deviceId, principal.deviceId.value)
+                .claim(accountId, principal.accountId.value)
+                .claim(accountType, principal.principalType)
 
             is UserData -> jwtBuilder.claim(userId, principal.userId.value)
+                .claim(accountId, principal.accountId.value)
+                .claim(accountType, principal.principalType)
         }
 
         val token = jwtBuilder.signWith(getKey(), Jwts.SIG.HS256).compact()

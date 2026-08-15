@@ -4,12 +4,12 @@ import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.vo.HashAccessToken
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.AggregateRoot
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import java.time.Instant
 
 class Session private constructor(
     val sessionId: SessionId,
-    val accountData: AccountData,
+    val principalData: PrincipalData,
     val issuedAt: Instant,
     val expiresAt: Instant,
     val token: HashAccessToken,
@@ -24,7 +24,7 @@ class Session private constructor(
     companion object {
         fun create(
             sessionId: SessionId,
-            accountData: AccountData,
+            principalData: PrincipalData,
             issuedAt: Instant,
             expiredAt: Instant,
             token: HashAccessToken,
@@ -32,7 +32,7 @@ class Session private constructor(
         ): Session {
             return Session(
                 sessionId = sessionId,
-                accountData = accountData,
+                principalData = principalData,
                 token = token,
                 issuedAt = issuedAt,
                 expiresAt = expiredAt,
@@ -42,13 +42,13 @@ class Session private constructor(
 
         fun register(
             sessionId: SessionId,
-            accountData: AccountData,
+            principalData: PrincipalData,
             token: HashAccessToken,
             expiresAt: Instant
         ): Session {
             return create(
                 sessionId = sessionId,
-                accountData = accountData,
+                principalData = principalData,
                 token = token,
                 expiredAt = expiresAt,
                 issuedAt = Instant.now(),

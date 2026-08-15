@@ -20,11 +20,7 @@ fun <T, C> Mono<T>.enforcePolicy(policy: Policy<C>, error: ServiceError, mapper:
     }
 }
 
-fun <C> evaluatePolicy(
-    policy: Policy<C>,
-    value: C,
-    error: ServiceError
-): Mono<PolicyResult> {
+fun <C> evaluatePolicy(policy: Policy<C>, value: C, error: ServiceError): Mono<PolicyResult> {
     val policyResult = policy.evaluate(value)
     return if (!policyResult.isAllowed()) {
         val errorResponse = ErrorResponse(

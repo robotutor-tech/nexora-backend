@@ -1,26 +1,26 @@
 package com.robotutor.nexora.shared.outbox.recorder
 
+import com.robotutor.nexora.shared.context.ReactiveContext
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import com.robotutor.nexora.shared.outbox.persistence.document.OutboxDocument
 import com.robotutor.nexora.shared.outbox.persistence.repository.OutboxDocumentRepository
-import com.robotutor.nexora.shared.application.ReactiveContext
-import com.robotutor.nexora.shared.message.message.EventMessage
+import com.robotutor.nexora.shared.outbox.entity.OutboxEvent
+import com.robotutor.nexora.shared.outbox.persistence.mapper.PrincipalDataDocumentMapper
+import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
-import java.time.Instant
 
 @Component
-class OutboxRecorder(
-    private val outboxRepository: OutboxDocumentRepository
-) : Recorder {
-    override fun record(message: EventMessage): Mono<OutboxDocument> {
-        return ReactiveContext.getTraceData()
+class OutboxRecorder(private val outboxRepository: OutboxDocumentRepository) : Recorder {
+    override fun record(message: OutboxEvent): Mono<OutboxDocument> {
+        return ReactiveContext.getContextData()
             .map {
                 OutboxDocument(
-                    eventId = "message.eventId",
+                    message = message.message,
                     correlationId = it.correlationId,
-                    message = message,
-                    occurredAt = Instant.now() //message.occurredAt
+                    eventId = message.eventId.value,
+                    occurredAt = message.occurredAt,
+                    principalData = it.principalData?.let { PrincipalDataDocumentMapper.toMongoDocument(it) }
                 )
             }
             .flatMap { outboxRepository.save(it) }

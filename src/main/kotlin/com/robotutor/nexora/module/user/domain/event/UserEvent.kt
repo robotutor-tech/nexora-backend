@@ -8,4 +8,3 @@ sealed interface UserEvent : Event
 data class UserRegisteredEvent(val userId: UserId) : UserEvent
 data class UserActivatedEvent(val userId: UserId) : UserEvent
 data class UserCompensatedEvent(val userId: UserId) : UserEvent
-

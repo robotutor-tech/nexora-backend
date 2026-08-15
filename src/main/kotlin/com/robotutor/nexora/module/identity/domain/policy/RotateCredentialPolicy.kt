@@ -3,14 +3,14 @@ package com.robotutor.nexora.module.identity.domain.policy
 import com.robotutor.nexora.module.identity.domain.policy.context.RotateCredentialPolicyContext
 import com.robotutor.nexora.shared.domain.policy.Policy
 import com.robotutor.nexora.shared.domain.policy.PolicyResult
-import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import org.springframework.stereotype.Service
 
 @Service
 class RotateCredentialPolicy : Policy<RotateCredentialPolicyContext> {
     override fun evaluate(input: RotateCredentialPolicyContext): PolicyResult {
         val reasons = mutableListOf<String>()
-        if (input.account.subjectType !== SubjectType.DEVICE) {
+        if (input.account.accountType !== AccountType.DEVICE) {
             reasons.add("Account is not MACHINE type")
         }
         if (input.account.createdBy != input.actorData.actorId) {

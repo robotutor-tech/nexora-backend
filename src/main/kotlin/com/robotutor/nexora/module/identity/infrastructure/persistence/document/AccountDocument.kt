@@ -2,7 +2,7 @@ package com.robotutor.nexora.module.identity.infrastructure.persistence.document
 
 import com.robotutor.nexora.module.identity.domain.aggregate.Account
 import com.robotutor.nexora.module.identity.domain.aggregate.AccountStatus
-import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -20,7 +20,7 @@ data class AccountDocument(
     val id: String? = null,
     @Indexed(unique = true)
     val accountId: String,
-    val subjectType: SubjectType,
+    val accountType: AccountType,
     val principalId: String,
     val createdBy: String?,
     val credential: CredentialDocument,

@@ -12,7 +12,9 @@ import com.robotutor.nexora.module.identity.interfaces.controller.view.Authentic
 import com.robotutor.nexora.module.identity.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.TokenResponses
 import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.DeviceData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -53,9 +55,9 @@ class ActorController(
     @PostMapping("/machine")
     fun registerMachineActor(
         @RequestBody @Validated actorRequest: MachineActorRequest,
-        accountData: AccountData
+        deviceData: DeviceData,
     ): Mono<ActorResponse> {
-        val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, accountData)
+        val command = ActorMapper.toRegisterMachineActorCommand(actorRequest, deviceData)
         return registerMachineActorService.execute(command)
             .map { ActorMapper.toActorResponse(it) }
     }

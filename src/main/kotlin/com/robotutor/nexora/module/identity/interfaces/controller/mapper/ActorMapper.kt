@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.interfaces.controller.mapper
 
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.module.identity.application.command.AuthenticateActorCommand
 import com.robotutor.nexora.module.identity.application.command.RegisterMachineActorCommand
 import com.robotutor.nexora.module.identity.application.command.RegisterPremisesOwnerCommand
@@ -10,8 +10,11 @@ import com.robotutor.nexora.module.identity.interfaces.controller.view.ActorResp
 import com.robotutor.nexora.module.identity.interfaces.controller.view.AuthenticateActorRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.OwnerCreationRequest
+import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.DeviceData
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ResourceId
+import com.robotutor.nexora.shared.domain.vo.UserData
 
 object ActorMapper {
     fun toActorResponse(actorAggregate: ActorAggregate): ActorResponse {
@@ -39,18 +42,21 @@ object ActorMapper {
 
     fun toRegisterOwnerCommand(
         eventMessage: OwnerCreationRequest,
-        accountData: AccountData
+        userData: UserData,
     ): RegisterPremisesOwnerCommand {
         return RegisterPremisesOwnerCommand(
             premisesId = PremisesId(eventMessage.premisesId),
-            owner = accountData
+            owner = userData
         )
     }
 
-    fun toRegisterMachineActorCommand(actorRequest: MachineActorRequest, accountData: AccountData): RegisterMachineActorCommand {
+    fun toRegisterMachineActorCommand(
+        actorRequest: MachineActorRequest,
+        deviceData: DeviceData,
+    ): RegisterMachineActorCommand {
         return RegisterMachineActorCommand(
             premisesId = PremisesId(actorRequest.premisesId),
-            owner = accountData,
+            owner = deviceData,
             deviceId = ResourceId(actorRequest.deviceId)
         )
     }

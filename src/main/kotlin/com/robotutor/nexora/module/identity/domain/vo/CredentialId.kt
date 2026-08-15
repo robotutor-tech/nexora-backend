@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.identity.domain.vo
 
 import com.robotutor.nexora.shared.domain.utility.validation
-import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.domain.vo.ValueObject
 
 
@@ -9,10 +9,10 @@ sealed interface CredentialId : ValueObject {
     val value: String
 
     companion object {
-        fun from(subjectType: SubjectType, credentialId: String): CredentialId {
-            return when (subjectType) {
-                SubjectType.DEVICE -> ApiKey(credentialId)
-                SubjectType.USER -> Email(credentialId)
+        fun from(accountType: AccountType, credentialId: String): CredentialId {
+            return when (accountType) {
+                AccountType.DEVICE -> ApiKey(credentialId)
+                AccountType.USER -> Email(credentialId)
             }
         }
     }

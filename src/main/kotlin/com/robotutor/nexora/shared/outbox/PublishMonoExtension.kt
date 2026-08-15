@@ -7,6 +7,7 @@ import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.vo.Identifier
 import com.robotutor.nexora.shared.message.mapper.EventMapper
+import com.robotutor.nexora.shared.outbox.entity.OutboxEvent
 import com.robotutor.nexora.shared.outbox.recorder.RecorderInfrastructure
 import com.robotutor.nexora.shared.utility.createFlux
 import reactor.core.publisher.Mono
@@ -18,13 +19,13 @@ fun <D : Event, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEve
     val logger = Logger(this.javaClass)
     return flatMap { result ->
         createFlux(aggregate.domainEvents)
-//            .flatMap { mapper.toEventMessage(it) }
-//            .flatMap {
-//                val additionalDetails = mapOf("event" to it.eventName, "eventId" to it.eventId)
-//                RecorderInfrastructure.recorder.record(it)
-//                    .logOnSuccess(logger, "Successfully added event to outbox", additionalDetails)
-//                    .logOnError(logger, "Failed to add event to outbox", additionalDetails)
-//            }
+            .map { OutboxEvent(mapper.toEventMessage(it)) }
+            .flatMap {
+                val additionalDetails = mapOf("event" to it.message.eventName, "eventId" to it.eventId)
+                RecorderInfrastructure.recorder.record(it)
+                    .logOnSuccess(logger, "Successfully added event to outbox", additionalDetails)
+                    .logOnError(logger, "Failed to add event to outbox", additionalDetails)
+            }
             .collectList()
             .map {
                 aggregate.clearEvents()

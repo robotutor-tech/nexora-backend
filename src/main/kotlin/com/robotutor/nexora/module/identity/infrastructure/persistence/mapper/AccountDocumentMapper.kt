@@ -16,7 +16,7 @@ object AccountDocumentMapper : DocumentMapper<Account, AccountDocument> {
         return AccountDocument(
             id = domain.getObjectId(),
             accountId = domain.accountId.value,
-            subjectType = domain.subjectType,
+            accountType = domain.accountType,
             principalId = domain.subjectId.value,
             createdBy = domain.createdBy?.value,
             credential = CredentialDocument(
@@ -33,12 +33,12 @@ object AccountDocumentMapper : DocumentMapper<Account, AccountDocument> {
     override fun toDomainModel(document: AccountDocument): Account {
         return Account.create(
             accountId = AccountId(document.accountId),
-            type = document.subjectType,
-            subjectId = SubjectId.from(document.subjectType, document.principalId),
+            type = document.accountType,
+            subjectId = SubjectId.from(document.accountType, document.principalId),
             createdBy = document.createdBy?.let { ActorId(it) },
             credential = Credential(
-                credentialId = CredentialId.from(document.subjectType, document.credential.credentialId),
-                hashedSecret = HashedSecret.from(document.subjectType, document.credential.secret),
+                credentialId = CredentialId.from(document.accountType, document.credential.credentialId),
+                hashedSecret = HashedSecret.from(document.accountType, document.credential.secret),
             ),
             status = document.status,
             createdAt = document.createdAt,

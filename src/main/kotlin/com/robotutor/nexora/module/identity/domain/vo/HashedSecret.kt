@@ -1,15 +1,15 @@
 package com.robotutor.nexora.module.identity.domain.vo
 
-import com.robotutor.nexora.shared.domain.vo.SubjectType
+import com.robotutor.nexora.shared.domain.vo.AccountType
 
 sealed interface HashedSecret {
     val value: String
 
     companion object {
-        fun from(subjectType: SubjectType, secret: String): HashedSecret {
-            return when (subjectType) {
-                SubjectType.DEVICE -> HashedApiSecret(secret)
-                SubjectType.USER -> HashedPassword(secret)
+        fun from(accountType: AccountType, secret: String): HashedSecret {
+            return when (accountType) {
+                AccountType.DEVICE -> HashedApiSecret(secret)
+                AccountType.USER -> HashedPassword(secret)
             }
         }
     }

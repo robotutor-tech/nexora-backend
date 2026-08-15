@@ -25,7 +25,7 @@ object AccountMapper {
     fun toAccountResponse(account: Account): AccountResponse {
         return AccountResponse(
             accountId = account.accountId.value,
-            type = account.subjectType,
+            type = account.accountType,
             principalId = account.subjectId.value,
             status = account.getStatus(),
             createdAt = account.createdAt,

@@ -1,7 +1,7 @@
 package com.robotutor.nexora.shared.application.logger
 
-import com.robotutor.nexora.shared.application.ReactiveContext
-import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.context.ContextData
+import com.robotutor.nexora.shared.context.ReactiveContext
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import reactor.core.publisher.Flux
@@ -14,7 +14,7 @@ fun <T> Mono<T>.logOnSuccess(
     additionalDetails: Map<String, Any?> = emptyMap()
 ): Mono<T> {
     return flatMap { value ->
-        ReactiveContext.getTraceData()
+        ReactiveContext.getContextData()
             .map { traceData ->
                 val logDetails = LogDetails(
                     message = message,
@@ -34,7 +34,7 @@ fun <T> Mono<T>.logOnError(
     errorCode: String? = null,
 ): Mono<T> {
     return onErrorResume { throwable ->
-        ReactiveContext.getTraceData()
+        ReactiveContext.getContextData()
             .flatMap { traceData ->
                 val logDetails = LogDetails(
                     message = message,
@@ -54,13 +54,13 @@ fun <T> Flux<T>.logOnSuccess(
     additionalDetails: Map<String, Any?> = emptyMap(),
 ): Flux<T> {
     val hasElements = AtomicBoolean(false)
-    var traceData = TraceData("missing-correlation-id", PremisesId("missing-premises-id"))
+    var contextData = ContextData("missing-correlation-id", null)
     return flatMap { result ->
         if (!hasElements.get()) {
-            ReactiveContext.getTraceData()
+            ReactiveContext.getContextData()
                 .map {
                     hasElements.set(true)
-                    traceData = it
+                    contextData = it
                     result
                 }
         } else {
@@ -74,7 +74,9 @@ fun <T> Flux<T>.logOnSuccess(
                     LogDetails(
                         message = message,
                         additionalDetails = additionalDetails,
-                        correlationId = traceData.correlationId
+                        correlationId = contextData.correlationId,
+                        principalData = contextData.principalData
+
                     )
                 )
             }
@@ -88,14 +90,16 @@ fun <T> Flux<T>.logOnError(
     additionalDetails: Map<String, Any?> = emptyMap(),
 ): Flux<T> {
     return onErrorResume { throwable ->
-        ReactiveContext.getTraceData()
-            .map { traceData ->
+        ReactiveContext.getContextData()
+            .map { contextData ->
                 logger.error(
                     LogDetails(
                         message = message,
                         additionalDetails = additionalDetails,
                         errorCode = errorCode,
-                        correlationId = traceData.correlationId
+                        correlationId = contextData.correlationId,
+                        principalData = contextData.principalData
+
                     ),
                     throwable
                 )

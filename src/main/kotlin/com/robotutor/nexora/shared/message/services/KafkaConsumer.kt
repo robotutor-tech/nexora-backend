@@ -1,12 +1,12 @@
 package com.robotutor.nexora.shared.message.services
 
 import com.robotutor.nexora.shared.application.logger.Logger
-import com.robotutor.nexora.shared.application.logger.ReactiveContext.CORRELATION_ID
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
+import com.robotutor.nexora.shared.context.ReactiveContext.CORRELATION_ID
 import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.message.config.EventName
 import com.robotutor.nexora.shared.message.message.Message
 import com.robotutor.nexora.shared.utility.createMono
@@ -59,8 +59,8 @@ class KafkaConsumer(
         }
         account?.let {
             newCtx = newCtx.put(
-                AccountData::class.java,
-                DefaultSerializer.deserialize(account, AccountData::class.java)
+                PrincipalData::class.java,
+                DefaultSerializer.deserialize(account, PrincipalData::class.java)
             )
         }
         httpHeaders?.let {

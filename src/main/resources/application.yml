@@ -26,14 +26,12 @@ server:
 
 app:
   security:
-    internal-access-token: ${INTERNAL_ACCESS_TOKEN:internalAccessToken123}
     un-secured-path:
       - "/users/register"
-      - "/Identity/accounts/register"
-      - "/Identity/accounts/authenticate"
-      - "/Identity/sessions/validate"
-      - "/Identity/sessions/refresh"
-    Identity-base-url: ${Identity_BASE_URL:http://localhost:${server.port}}
+      - "/identity/accounts/register"
+      - "/identity/accounts/authenticate"
+      - "/identity/sessions/validate"
+      - "/identity/sessions/refresh"
     jwt:
       secret: ${JWT_SECRET:secret}
   zone:

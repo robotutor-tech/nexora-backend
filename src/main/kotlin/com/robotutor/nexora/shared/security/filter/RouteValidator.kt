@@ -20,6 +20,4 @@ class RouteValidator(private val appConfig: AppConfig) {
         val headerName = if (isRefreshPath) REFRESH_TOKEN_HEADER else HttpHeaders.AUTHORIZATION
         return request.headers.getFirst(headerName)?.removePrefix(BEARER_PREFIX)
     }
-
-
 }

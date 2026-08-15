@@ -4,9 +4,11 @@ import com.robotutor.nexora.module.identity.application.command.ValidateTokenCom
 import com.robotutor.nexora.module.identity.application.view.SessionValidationResult
 import com.robotutor.nexora.module.identity.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.AccessToken
-import com.robotutor.nexora.shared.domain.vo.Tokens
 import com.robotutor.nexora.shared.domain.vo.AccountData
+import com.robotutor.nexora.shared.domain.vo.Tokens
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.DeviceData
 import com.robotutor.nexora.shared.domain.vo.UserData
 import java.time.Instant
 
@@ -26,27 +28,26 @@ object SessionMapper {
         return SessionValidateResponse(
             isValid = sessionValidationResult.isValid,
             expiresIn = sessionValidationResult.expiresAt.epochSecond - Instant.now().epochSecond,
-            principal = toSessionPrincipalResponse(sessionValidationResult.accountData),
+            principal = toSessionPrincipalResponse(sessionValidationResult.principalData),
         )
     }
 
-    private fun toSessionPrincipalResponse(principal: AccountData): AccountDataResponse {
+    private fun toSessionPrincipalResponse(principal: PrincipalData): PrincipalDataResponse {
         return when (principal) {
-            is UserData -> AccountPrincipalResponse(
-                principal.accountId.value,
-                principal.subjectType,
-                principal.subjectId.value
-            )
-
             is ActorData -> ActorPrincipalResponse(
                 principal.actorId.value,
                 principal.premisesId.value,
-                principal.accountId.value,
-                principal.subjectType,
-                principal.subjectId.value
+                toAccountPrincipalResponse(principal.accountData)
             )
 
-            else -> throw IllegalArgumentException("Illegal principal $principal")
+            is AccountData -> toAccountPrincipalResponse(principal)
+        }
+    }
+
+    private fun toAccountPrincipalResponse(accountData: AccountData): AccountPrincipalResponse {
+        return when (accountData) {
+            is DeviceData -> DevicePrincipalResponse(accountData.accountId.value, accountData.principalId.value)
+            is UserData -> UserPrincipalResponse(accountData.userId.value, accountData.principalId.value)
         }
     }
 }

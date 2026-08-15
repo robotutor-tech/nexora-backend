@@ -60,8 +60,8 @@ class DeviceController(
 //    }
 
     @GetMapping("/me")
-    fun getDevice(accountData: AccountData): Mono<DeviceResponse> {
-        return getDeviceService.execute(GetDeviceQuery(DeviceId(accountData.subjectId.value)))
+    fun getDevice(principalData: PrincipalData): Mono<DeviceResponse> {
+        return getDeviceService.execute(GetDeviceQuery(DeviceId(principalData.principalId.value)))
             .map { DeviceMapper.toDeviceResponse(it) }
     }
 

@@ -22,7 +22,9 @@ class RegisterUserService(
 
     fun execute(command: RegisterUserCommand): Mono<User> {
         return userRepository.existsByEmail(command.email)
-            .enforcePolicy(registerUserPolicy, UserError.NEXORA0201) { DuplicateUserContext(it, command.email) }
+            .enforcePolicy(registerUserPolicy, UserError.NEXORA0201) {
+                DuplicateUserContext(it, command.email)
+            }
             .map { User.register(name = command.name, email = command.email, mobile = command.mobile) }
             .flatMap { user -> userRepository.save(user) }
             .logOnSuccess(logger, "Successfully registered user")

@@ -1,35 +1,30 @@
-package com.robotutor.nexora.module.identity.interfaces.controller.view
+package com.robotutor.nexora.shared.outbox.persistence.document
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.domain.vo.PrincipalType
-
-data class SessionValidateResponse(
-    val isValid: Boolean,
-    val principal: PrincipalDataResponse,
-    val expiresIn: Number,
-)
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "principalType",
+    property = "principalType"
 )
 @JsonSubTypes(
-    JsonSubTypes.Type(value = AccountPrincipalResponse::class, name = "ACCOUNT"),
-    JsonSubTypes.Type(value = ActorPrincipalResponse::class, name = "ACTOR"),
+    JsonSubTypes.Type(value = AccountDataDocument::class, name = "ACCOUNT"),
+    JsonSubTypes.Type(value = ActorDataDocument::class, name = "ACTOR")
 )
-sealed interface PrincipalDataResponse {
+sealed interface PrincipalDataDocument {
     val principalId: String
     val principalType: PrincipalType
 }
 
-data class ActorPrincipalResponse(
+data class ActorDataDocument(
     val actorId: String,
     val premisesId: String,
-    val accountPrincipalResponse: AccountPrincipalResponse,
-) : PrincipalDataResponse {
+    val accountData: AccountDataDocument,
+) : PrincipalDataDocument {
     override val principalId: String = actorId
     override val principalType: PrincipalType = PrincipalType.ACTOR
 }
@@ -37,34 +32,32 @@ data class ActorPrincipalResponse(
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "accountType",
+    property = "accountType"
 )
 @JsonSubTypes(
-    JsonSubTypes.Type(value = AccountPrincipalResponse::class, name = "DEVICE"),
-    JsonSubTypes.Type(value = ActorPrincipalResponse::class, name = "USER"),
+    JsonSubTypes.Type(value = DeviceDataDocument::class, name = "DEVICE"),
+    JsonSubTypes.Type(value = UserDataDocument::class, name = "USER")
 )
-sealed class AccountPrincipalResponse : PrincipalDataResponse {
+sealed class AccountDataDocument : PrincipalDataDocument {
     abstract val accountId: String
     abstract val accountType: AccountType
     override val principalType: PrincipalType = PrincipalType.ACCOUNT
-
 }
 
-data class UserPrincipalResponse(
+
+data class UserDataDocument(
+    override val principalId: String,
     override val accountId: String,
-    override val principalId: String
-) : AccountPrincipalResponse() {
+) : AccountDataDocument() {
     override val accountType: AccountType = AccountType.USER
 }
 
-
-data class DevicePrincipalResponse(
+data class DeviceDataDocument(
+    override val principalId: String,
     override val accountId: String,
-    override val principalId: String
-) : AccountPrincipalResponse() {
+) : AccountDataDocument() {
     override val accountType: AccountType = AccountType.DEVICE
 }
-
 
 
 

@@ -27,26 +27,23 @@ class AuthenticationFilter(
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val token = routeValidator.getToken(exchange.request)
-        return jwtValidationService.validate(token ?: "")
-            .map { principalData ->
-                val authentication = UsernamePasswordAuthenticationToken(principalData, null, emptyList())
-                SecurityContextImpl(authentication)
-            }
-            .flatMap { securityContext ->
+        try {
+            val principalData = jwtValidationService.validate(token ?: "")
+            val authentication = UsernamePasswordAuthenticationToken(principalData, null, emptyList())
+            val securityContext = createMono(SecurityContextImpl(authentication))
+            return chain.filter(exchange)
+                .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(securityContext))
+        } catch (ex: Throwable) {
+            return if (routeValidator.isUnsecured(exchange.request)) {
                 chain.filter(exchange)
-                    .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(createMono(securityContext)))
+            } else {
+                val responseEntity = exceptionHandlerRegistry.handle(ex)
+                exchange.response.statusCode = responseEntity.statusCode
+                val buffer = exchange.response.bufferFactory().wrap(
+                    serialize(responseEntity.body).toByteArray(),
+                )
+                exchange.response.writeWith(Mono.just(buffer))
             }
-            .onErrorResume(BaseException::class.java) { ex ->
-                if (routeValidator.isUnsecured(exchange.request)) {
-                    chain.filter(exchange)
-                } else {
-                    val responseEntity = exceptionHandlerRegistry.handle(ex)
-                    exchange.response.statusCode = responseEntity.statusCode
-                    val buffer = exchange.response.bufferFactory().wrap(
-                        serialize(responseEntity.body).toByteArray(),
-                    )
-                    exchange.response.writeWith(Mono.just(buffer))
-                }
-            }
+        }
     }
 }

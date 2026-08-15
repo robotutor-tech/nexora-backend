@@ -3,6 +3,7 @@ package com.robotutor.nexora.module.identity.infrastructure.persistence.document
 import com.robotutor.nexora.shared.persistence.document.MongoDocument
 import com.robotutor.nexora.module.identity.domain.aggregate.Session
 import com.robotutor.nexora.module.identity.domain.aggregate.SessionStatus
+import com.robotutor.nexora.shared.outbox.persistence.document.PrincipalDataDocument
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -19,7 +20,7 @@ data class SessionDocument(
     val id: String? = null,
     @Indexed(unique = true)
     val sessionId: String,
-    val accountDataDocument: AccountDataDocument,
+    val accountDataDocument: PrincipalDataDocument,
     val token: String,
     val issuedAt: Instant,
     val status: SessionStatus,

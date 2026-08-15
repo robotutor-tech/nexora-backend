@@ -27,12 +27,10 @@ class AuthenticateActorService(
             .required(BadDataException(IdentityError.NEXORA0207))
             .flatMap { actor ->
                 val command = CreateSessionCommand(
-                    accountData = ActorData(
+                    principalData = ActorData(
                         actorId = actor.actorId,
                         premisesId = actor.premisesId,
-                        accountId = actor.accountId,
-                        subjectId = command.accountData.subjectId,
-                        subjectType = command.accountData.subjectType
+                        accountData = command.accountData,
                     ),
                     sessionId = SessionId.generate()
                 )

@@ -1,31 +1,28 @@
 package com.robotutor.nexora.module.user.infrastructure.persistence
 
 import com.robotutor.nexora.module.user.domain.aggregate.User
-import com.robotutor.nexora.module.user.domain.event.UserEventPublisher
 import com.robotutor.nexora.module.user.domain.repository.UserRepository
 import com.robotutor.nexora.module.user.domain.vo.Email
+import com.robotutor.nexora.module.user.infrastructure.messaging.mapper.UserEventMapper
 import com.robotutor.nexora.module.user.infrastructure.persistence.mapper.UserDocumentMapper
 import com.robotutor.nexora.module.user.infrastructure.persistence.repository.UserDocumentRepository
 import com.robotutor.nexora.shared.cache.annotation.Cache
 import com.robotutor.nexora.shared.cache.annotation.CacheEvicts
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.vo.UserId
+import com.robotutor.nexora.shared.outbox.publishEvents
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
 @Component
-class MongoUserRepository(
-    private val userDocumentRepository: UserDocumentRepository,
-    private val eventPublisher: UserEventPublisher,
-) : UserRepository {
+class MongoUserRepository(private val userDocumentRepository: UserDocumentRepository) : UserRepository {
     @CacheEvicts(["user:user-aggregate:user-id:#userAggregate.userId", "user:user-aggregate:email:#email", "user:user-aggregate:email:#email:exists"])
     override fun save(user: User): Mono<User> {
         val userDocument = UserDocumentMapper.toMongoDocument(user)
         return userDocumentRepository.save(userDocument)
             .retryOptimisticLockingFailure()
             .map { UserDocumentMapper.toDomainModel(it) }
-            .publishEvents(eventPublisher, user)
+            .publishEvents(user, UserEventMapper)
     }
 
     @CacheEvicts(["user:user-aggregate:user-id:#userAggregate.userId", "user:user-aggregate:email:#email", "user:user-aggregate:email:#email:exists"])

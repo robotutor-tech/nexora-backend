@@ -28,7 +28,7 @@ class RefreshSessionService(
         return sessionRepository.findBySessionId(sessionData.sessionId)
             .required(UnAuthorizedException(IdentityError.NEXORA0205))
             .flatMap { session ->
-                createSessionService.execute(CreateSessionCommand(session.accountData, SessionId.generate()))
+                createSessionService.execute(CreateSessionCommand(session.principalData, SessionId.generate()))
             }
             .logOnSuccess(logger, "Successfully refreshed token")
             .logOnError(logger, "Failed to refresh token")

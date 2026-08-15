@@ -4,25 +4,12 @@ import com.robotutor.nexora.module.identity.domain.vo.SessionData
 import com.robotutor.nexora.module.identity.domain.vo.SessionId
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError
 import com.robotutor.nexora.shared.domain.exception.UnAuthorizedException
-import com.robotutor.nexora.shared.domain.vo.AccessToken
-import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.AccountId
-import com.robotutor.nexora.shared.domain.vo.AccountType
-import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.ActorId
-import com.robotutor.nexora.shared.domain.vo.DeviceData
-import com.robotutor.nexora.shared.domain.vo.DeviceId
-import com.robotutor.nexora.shared.domain.vo.PremisesId
-import com.robotutor.nexora.shared.domain.vo.SubjectType
-import com.robotutor.nexora.shared.domain.vo.UserData
-import com.robotutor.nexora.shared.domain.vo.UserId
-import com.robotutor.nexora.shared.utility.createMono
-import com.robotutor.nexora.shared.utility.createMonoError
+import com.robotutor.nexora.shared.domain.vo.*
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Mono
 import javax.crypto.SecretKey
 
 @Service
@@ -32,7 +19,8 @@ open class JwtValidationService {
 
     protected val accountId = "accountId"
     protected val subjectId = "subjectId"
-    protected val subjectType = "subjectType"
+    protected val accountType = "accountType"
+    protected val principalId = "principalId"
     protected val principalType = "principalType"
     protected val actorId = "actorId"
     protected val premisesId = "premisesId"
@@ -42,32 +30,15 @@ open class JwtValidationService {
     fun getSession(token: AccessToken): SessionData {
         val claims = Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token.value).payload
 
+        val principalType = PrincipalType.valueOf(claims[principalType] as String)
 
-        val subjectType = SubjectType.valueOf(claims[subjectType] as String)
-        val subjectId = when (subjectType) {
-            SubjectType.USER -> UserId(claims[subjectId] as String)
-            SubjectType.DEVICE -> DeviceId(claims[subjectId] as String)
-        }
-        val accountId = AccountId(claims[accountId] as String)
-        val accountType = AccountType.valueOf(claims[principalType] as String)
+        val accountData = when (principalType) {
+            PrincipalType.ACCOUNT -> resolveAccount(claims)
 
-        val accountData = when (accountType) {
-            AccountType.USER -> UserData(
-                userId = UserId(claims[userId] as String),
-                accountId = accountId
-            )
-
-            AccountType.DEVICE -> DeviceData(
-                deviceId = DeviceId(claims[deviceId] as String),
-                accountId = accountId
-            )
-
-            AccountType.ACTOR -> ActorData(
+            PrincipalType.ACTOR -> ActorData(
                 actorId = ActorId(claims[actorId] as String),
                 premisesId = PremisesId(claims[premisesId] as String),
-                accountId = accountId,
-                subjectId = subjectId,
-                subjectType = subjectType,
+                accountData = resolveAccount(claims)
             )
         }
 
@@ -75,16 +46,31 @@ open class JwtValidationService {
             sessionId = SessionId(claims.subject),
             issuedAt = claims.issuedAt.toInstant(),
             expiresAt = claims.expiration.toInstant(),
-            accountData = accountData,
+            principalData = accountData,
         )
     }
 
-    fun validate(token: String): Mono<AccountData> {
+    private fun resolveAccount(claims: Claims): AccountData {
+        val accountType = AccountType.valueOf(claims[accountType] as String)
+        val accountId = AccountId(claims[accountId] as String)
+        return when (accountType) {
+            AccountType.DEVICE -> DeviceData(
+                deviceId = DeviceId(claims[deviceId] as String),
+                accountId = accountId,
+            )
+
+            AccountType.USER -> UserData(
+                userId = UserId(claims[userId] as String),
+                accountId = accountId,
+            )
+        }
+    }
+
+    fun validate(token: String): PrincipalData {
         try {
-            val session = getSession(AccessToken(token))
-            return createMono(session.accountData)
+            return getSession(AccessToken(token)).principalData
         } catch (_: Throwable) {
-            return createMonoError(UnAuthorizedException(SharedNexoraError.NEXORA0101))
+            throw UnAuthorizedException(SharedNexoraError.NEXORA0101)
         }
     }
 

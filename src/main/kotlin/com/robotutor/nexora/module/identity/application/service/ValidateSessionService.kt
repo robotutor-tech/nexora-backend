@@ -14,7 +14,7 @@ class ValidateSessionService(private val tokenGenerator: TokenGenerator) {
         return createMono(
             SessionValidationResult(
                 isValid = true,
-                accountData = session.accountData,
+                principalData = session.principalData,
                 expiresAt = session.expiresAt
             )
         )

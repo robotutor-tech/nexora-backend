@@ -55,7 +55,7 @@ object DeviceMapper {
     fun toCommissionDeviceCommand(metadata: DeviceMetaDataRequest, actorData: ActorData): CommissionDeviceCommand {
         return CommissionDeviceCommand(
             actorData = actorData,
-            deviceId = DeviceId(actorData.subjectId.value),
+            deviceId = DeviceId(actorData.accountData.principalId.value),
             metadata = DeviceMetadata(
                 modelNo = ModelNo(metadata.modelNo),
                 serialNo = SerialNo(metadata.serialNo),

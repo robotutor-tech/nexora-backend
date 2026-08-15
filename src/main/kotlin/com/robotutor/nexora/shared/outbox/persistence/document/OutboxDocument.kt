@@ -17,9 +17,10 @@ data class OutboxDocument(
     val eventId: String,
     val correlationId: String,
     val message: EventMessage,
+    val occurredAt: Instant,
+    val principalData: PrincipalDataDocument?,
     var status: Status = Status.PENDING,
     val createdAt: Instant = Instant.now(),
-    val occurredAt: Instant,
     @Version
     val version: Long? = null,
 ){
