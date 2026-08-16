@@ -51,15 +51,15 @@ class JwtService(
             is ActorData -> jwtBuilder.claim(actorId, principal.actorId.value)
                 .claim(premisesId, principal.premisesId.value)
                 .claim(accountId, principal.accountData.accountId.value)
-                .claim(accountType, principal.accountData.principalType)
+                .claim(accountType, principal.accountData.accountType)
 
             is DeviceData -> jwtBuilder.claim(deviceId, principal.deviceId.value)
                 .claim(accountId, principal.accountId.value)
-                .claim(accountType, principal.principalType)
+                .claim(accountType, principal.accountType)
 
             is UserData -> jwtBuilder.claim(userId, principal.userId.value)
                 .claim(accountId, principal.accountId.value)
-                .claim(accountType, principal.principalType)
+                .claim(accountType, principal.accountType)
         }
 
         val token = jwtBuilder.signWith(getKey(), Jwts.SIG.HS256).compact()

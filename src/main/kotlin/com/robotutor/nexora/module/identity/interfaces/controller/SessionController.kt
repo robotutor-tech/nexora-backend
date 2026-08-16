@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/Identity/sessions")
+@RequestMapping("/identity/sessions")
 class SessionController(
     private val validateSessionService: ValidateSessionService,
     private val refreshSessionService: RefreshSessionService,
