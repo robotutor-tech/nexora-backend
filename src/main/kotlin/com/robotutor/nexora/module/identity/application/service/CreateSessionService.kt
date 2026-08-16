@@ -10,6 +10,8 @@ import com.robotutor.nexora.module.identity.domain.service.SecretEncoder
 import com.robotutor.nexora.module.identity.domain.service.SessionExpiryService
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.outbox.auditOnSuccess
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
@@ -30,9 +32,14 @@ class CreateSessionService(
         val expiresAt = sessionExpiryService.getExpiryForRefreshToken(command.principalData)
         val session = Session.register(command.sessionId, command.principalData, token, expiresAt)
         return sessionRepository.save(session)
+            .auditOnSuccess(
+                "SESSION_CREATED",
+                ResourceType.SESSION,
+                session.sessionId,
+                principal = command.principalData
+            )
             .logOnSuccess(logger, "Successfully created new session")
             .logOnError(logger, "Failed to create new session")
-//            .auditOnSuccess("SESSION_CREATED", ResourceType.USER_SESSION, session.sessionId, command.toMetadata())
             .map { tokens }
     }
 }

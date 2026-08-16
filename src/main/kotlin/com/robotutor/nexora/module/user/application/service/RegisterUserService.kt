@@ -15,6 +15,7 @@ import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.UserData
 import com.robotutor.nexora.shared.outbox.auditOnSuccess
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
 
 @Service
@@ -24,6 +25,7 @@ class RegisterUserService(
 ) {
     private val logger = Logger(this::class.java)
 
+    @Transactional
     fun execute(command: RegisterUserCommand): Mono<User> {
         return userRepository.existsByEmail(command.email)
             .enforcePolicy(registerUserPolicy, UserError.NEXORA0201) {

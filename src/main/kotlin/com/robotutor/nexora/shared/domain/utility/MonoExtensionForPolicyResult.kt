@@ -1,5 +1,6 @@
 package com.robotutor.nexora.shared.domain.utility
 
+import com.robotutor.nexora.shared.domain.exception.BaseException
 import com.robotutor.nexora.shared.utility.createMono
 import com.robotutor.nexora.shared.utility.createMonoError
 import com.robotutor.nexora.shared.domain.exception.ErrorResponse
@@ -17,6 +18,23 @@ fun <T, C> Mono<T>.enforcePolicy(policy: Policy<C>, error: ServiceError, mapper:
     return flatMap { result ->
         evaluatePolicy(policy, mapper(result), error)
             .map { result }
+    }
+}
+
+fun <T, C> Mono<T>.enforcePolicy(policy: Policy<C>, exception: BaseException, mapper: (T) -> C): Mono<T> {
+    return flatMap { result ->
+        evaluatePolicy(policy, mapper(result), exception)
+            .map { result }
+    }
+}
+
+
+fun <C> evaluatePolicy(policy: Policy<C>, value: C, exception: BaseException): Mono<PolicyResult> {
+    val policyResult = policy.evaluate(value)
+    return if (!policyResult.isAllowed()) {
+        createMonoError(exception)
+    } else {
+        createMono(policyResult)
     }
 }
 

@@ -15,6 +15,7 @@ import com.robotutor.nexora.shared.message.mapper.EventMapper
 import com.robotutor.nexora.shared.outbox.auditOnSuccess
 import com.robotutor.nexora.shared.outbox.publishEvent
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
 
 @Service
@@ -24,6 +25,7 @@ class CompensateUserAccountCreationService(
 ) {
     private val logger = Logger(this::class.java)
 
+    @Transactional
     fun execute(command: CompensateUserAccountCreationCommand): Mono<User> {
         return userRepository.deleteByUserId(command.userId)
             .auditOnSuccess(

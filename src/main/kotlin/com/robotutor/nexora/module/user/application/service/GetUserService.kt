@@ -13,6 +13,7 @@ import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.vo.UserId
 import com.robotutor.nexora.shared.utility.required
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
 
 @Service
@@ -21,10 +22,7 @@ class GetUserService(
 ) {
     private val logger = Logger(this::class.java)
 
-    @Cached(
-        cacheName = CacheNames.USER_BY_ID,
-        key = "T(com.robotutor.nexora.shared.application.cache.CacheKeys).userById(#query.principalId.value)",
-    )
+    @Transactional
     fun execute(query: GetUserQuery): Mono<User> {
         return userRepository.findByUserId(UserId(query.subjectId.value))
             .required(DataNotFoundException(UserError.NEXORA0205))

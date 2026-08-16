@@ -1,6 +1,7 @@
 package com.robotutor.nexora.shared.domain.vo
 
 import com.robotutor.nexora.module.automation.domain.vo.AutomationId
+import com.robotutor.nexora.module.identity.domain.vo.SessionId
 import com.robotutor.nexora.module.zone.domain.vo.WidgetId
 
 enum class ResourceType(val identifier: Class<out Identifier>) {
@@ -12,6 +13,7 @@ enum class ResourceType(val identifier: Class<out Identifier>) {
     ZONE(ZoneId::class.java),
     USER(UserId::class.java),
     ACCOUNT(AccountId::class.java),
+    SESSION(SessionId::class.java),
 }
 
 enum class ActionType {
