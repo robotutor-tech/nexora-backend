@@ -63,7 +63,7 @@
 //
 //        every { configValidation.validate(config, Actor) } returns Mono.just(config)
 //        every { ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config) } returns Mono.empty()
-//        every { idGeneratorService.generateId(any(), any<Class<RuleId>>()) } returns Mono.just(ruleId)
+//        every { idGeneratorService.generate(any(), any<Class<RuleId>>()) } returns Mono.just(ruleId)
 //        every { ruleRepository.save(any()) } answers { Mono.just(firstArg()) }
 //        every { resourceCreatedEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //
@@ -83,7 +83,7 @@
 //        verify(exactly = 1) {
 //            configValidation.validate(config, Actor)
 //            ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config)
-//            idGeneratorService.generateId(com.robotutor.nexora.modules.automation.domain.entity.IdType.RULE_ID, RuleId::class.java)
+//            idGeneratorService.generate(com.robotutor.nexora.modules.automation.domain.entity.IdType.RULE_ID, RuleId::class.java)
 //            ruleRepository.save(any())
 //            resourceCreatedEventPublisherDeprecated.publish(any())
 //        }
@@ -113,7 +113,7 @@
 //            ruleRepository.findByTypeAndPremisesIdAndConfig(command.type, Actor.premisesId, config)
 //        }
 //        verify(exactly = 0) {
-//            idGeneratorService.generateId(any(), any<Class<RuleId>>())
+//            idGeneratorService.generate(any(), any<Class<RuleId>>())
 //            ruleRepository.save(any())
 //            resourceCreatedEventPublisherDeprecated.publish(any())
 //        }

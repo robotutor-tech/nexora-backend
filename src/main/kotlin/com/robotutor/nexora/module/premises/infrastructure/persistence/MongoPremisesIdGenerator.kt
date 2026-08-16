@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
 class MongoPremisesIdGenerator(private val idGeneratorService: IdGeneratorService) : PremisesIdGenerator {
 
     override fun generate(): Mono<PremisesId> {
-        return idGeneratorService.generateId(IdType.PREMISE_ID)
+        return idGeneratorService.generate(IdType.PREMISE_ID)
             .map { PremisesId(it) }
     }
 }

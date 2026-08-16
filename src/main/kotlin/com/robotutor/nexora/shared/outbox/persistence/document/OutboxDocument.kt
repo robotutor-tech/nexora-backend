@@ -1,6 +1,8 @@
 package com.robotutor.nexora.shared.outbox.persistence.document
 
 import com.robotutor.nexora.shared.message.message.EventMessage
+import com.robotutor.nexora.shared.message.message.KafkaMessage
+import com.robotutor.nexora.shared.message.message.MessageContext
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
 import org.springframework.data.annotation.Version
@@ -15,15 +17,13 @@ data class OutboxDocument(
     val id: String? = null,
     @Indexed(unique = true)
     val eventId: String,
-    val correlationId: String,
     val message: EventMessage,
-    val occurredAt: Instant,
-    val principalData: PrincipalDataDocument?,
+    val context: MessageContextDocument,
     var status: Status = Status.PENDING,
     val createdAt: Instant = Instant.now(),
     @Version
     val version: Long? = null,
-){
+) {
     fun markAsPublished(): OutboxDocument {
         this.status = Status.PUBLISHED
         return this

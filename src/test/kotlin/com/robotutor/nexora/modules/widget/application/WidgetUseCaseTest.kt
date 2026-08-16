@@ -64,7 +64,7 @@
 //        )
 //        val generatedWidgetId = WidgetId("widget-000001")
 //
-//        every { idGeneratorService.generateId(IdType.WIDGET_ID, WidgetId::class.java) } returns Mono.just(generatedWidgetId)
+//        every { idGeneratorService.generate(IdType.WIDGET_ID, WidgetId::class.java) } returns Mono.just(generatedWidgetId)
 //        every { widgetRepository.save(any()) } answers { Mono.just(firstArg()) }
 //        every { resourceEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
 //        every { widgetEventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
@@ -83,7 +83,7 @@
 //        }
 //
 //        verify(exactly = 1) {
-//            idGeneratorService.generateId(IdType.WIDGET_ID, WidgetId::class.java)
+//            idGeneratorService.generate(IdType.WIDGET_ID, WidgetId::class.java)
 //            widgetRepository.save(any())
 //            resourceEventPublisherDeprecated.publish(any())
 //            widgetEventPublisherDeprecated.publish(any())

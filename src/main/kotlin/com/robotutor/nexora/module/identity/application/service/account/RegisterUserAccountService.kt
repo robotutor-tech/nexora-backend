@@ -16,6 +16,9 @@ import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.utility.enforcePolicy
 import com.robotutor.nexora.shared.domain.vo.AccountType
+import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.domain.vo.UserData
+import com.robotutor.nexora.shared.outbox.auditOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -25,7 +28,6 @@ class RegisterUserAccountService(
     private val accountIdGenerator: AccountIdGenerator,
     private val accountRepository: AccountRepository,
     private val secretEncoder: SecretEncoder,
-//    private val eventPublisher: IdentityEventPublisher,
 ) {
     private val logger = Logger(this::class.java)
 
@@ -47,7 +49,15 @@ class RegisterUserAccountService(
                     credential = Credential(command.email, hashedPassword),
                 )
             }
-            .flatMap { accountAggregate -> accountRepository.save(accountAggregate) }
+            .flatMap { account ->
+                accountRepository.save(account)
+                    .auditOnSuccess(
+                        "USER_ACCOUNT_CREATED",
+                        ResourceType.ACCOUNT,
+                        account.accountId,
+                        principal = UserData(command.userId, account.accountId)
+                    )
+            }
 //            .publishEventOnError(eventPublisher, AccountRegistrationFailedEvent(command.type, command.subjectId))
             .logOnSuccess(logger, "Successfully registered account")
             .logOnError(logger, "Failed to register account")

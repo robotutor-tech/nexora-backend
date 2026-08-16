@@ -3,11 +3,19 @@ package com.robotutor.nexora.shared.outbox
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.context.ReactiveContext
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.Event
+import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.Identifier
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
+import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.message.mapper.EventMapper
-import com.robotutor.nexora.shared.outbox.entity.OutboxEvent
+import com.robotutor.nexora.shared.message.message.MessageContext
+import com.robotutor.nexora.shared.outbox.audit.AuditEventMessage
+import com.robotutor.nexora.shared.outbox.audit.AuditState
+import com.robotutor.nexora.shared.outbox.audit.ResourceMessage
+import com.robotutor.nexora.shared.outbox.persistence.mapper.PrincipalDataDocumentMapper
 import com.robotutor.nexora.shared.outbox.recorder.RecorderInfrastructure
 import com.robotutor.nexora.shared.utility.createFlux
 import reactor.core.publisher.Mono
@@ -19,9 +27,9 @@ fun <D : Event, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEve
     val logger = Logger(this.javaClass)
     return flatMap { result ->
         createFlux(aggregate.domainEvents)
-            .map { OutboxEvent(mapper.toEventMessage(it)) }
+            .map { mapper.toEventMessage(it) }
             .flatMap {
-                val additionalDetails = mapOf("event" to it.message.eventName, "eventId" to it.eventId)
+                val additionalDetails = mapOf("event" to it.eventName)
                 RecorderInfrastructure.recorder.record(it)
                     .logOnSuccess(logger, "Successfully added event to outbox", additionalDetails)
                     .logOnError(logger, "Failed to add event to outbox", additionalDetails)
@@ -34,39 +42,38 @@ fun <D : Event, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEve
     }
 }
 
-//fun <T> Mono<T>.auditOnSuccess(
-//    action: String,
-//    type: ResourceType,
-//    identifier: Identifier,
-//    metadata: Map<String, Any?> = emptyMap(),
-//    userId: UserId? = null,
-//): Mono<T> {
-//    val logger = Logger(this.javaClass)
-//    return flatMap { domain ->
-//        Mono.zip(ReactiveContext.getTraceData(), ReactiveContext.getPrincipalData())
-//            .flatMap {
-//                val event = DomainEvent()
-//                val id = merchantId?.value
-//                    ?: if (it.t2 is MerchantData) (it.t2 as MerchantData).merchantId.value else null
-//                RecorderInfrastructure.recorder.record(
-//                    AuditEventMessage(
-//                        userId = (userId ?: it.t2.identifier).value,
-//                        action = action,
-//                        resource = ResourceMessage(type, identifier.value),
-//                        merchantId = id,
-//                        metadata = metadata,
-//                        state = AuditState.SUCCESS,
-//                        eventId = event.eventId.value,
-//                        correlationId = it.t1.correlationId,
-//                        occurredAt = event.occurredAt
-//                    )
-//                )
-//                    .logOnSuccess(logger, "Successfully added audit event")
-//                    .logOnError(logger, "Failed to add audit event")
-//            }
-//            .then(Mono.fromCallable { domain })
-//    }
-//}
+fun <T> Mono<T>.auditOnSuccess(
+    action: String,
+    type: ResourceType,
+    identifier: Identifier,
+    metadata: Map<String, Any?> = emptyMap(),
+    principal: PrincipalData? = null,
+): Mono<T> {
+    val logger = Logger(this.javaClass)
+    return flatMap { domain ->
+        ReactiveContext.getContextData()
+            .flatMap {
+                val principal = principal ?: it.principalData
+                val premisesId = if (principal is ActorData) principal.premisesId.value else null
+                val principalId = principal?.principalId?.value ?: "missing"
+                RecorderInfrastructure.recorder.record(
+                    AuditEventMessage(
+                        principalId = principalId,
+                        principalType = it.principalData?.principalType?.name ?: "UNKNOWN",
+                        action = action,
+                        resource = ResourceMessage(type, identifier.value),
+                        state = AuditState.SUCCESS,
+                        principalData = principal?.let { PrincipalDataDocumentMapper.toDocument(it) },
+                        premisesId = premisesId,
+                        metadata = metadata,
+                    )
+                )
+                    .logOnSuccess(logger, "Successfully added audit event")
+                    .logOnError(logger, "Failed to add audit event")
+            }
+            .then(Mono.fromCallable { domain })
+    }
+}
 
 //fun <T> Flux<T>.auditOnSuccess(
 //    action: String,

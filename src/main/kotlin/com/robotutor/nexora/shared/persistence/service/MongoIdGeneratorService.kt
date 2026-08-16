@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 @Repository
 class MongoIdGeneratorService(private val mongoTemplate: ReactiveMongoTemplate) : IdGeneratorService {
 
-    override fun generateId(idType: IdSequenceType): Mono<String> {
+    override fun generate(idType: IdSequenceType): Mono<String> {
         return mongoTemplate.findAndModify<IdSequenceDocument>(
             Query.query(Criteria.where("idType").`is`(idType.name)),
             Update().inc("sequence", 1),

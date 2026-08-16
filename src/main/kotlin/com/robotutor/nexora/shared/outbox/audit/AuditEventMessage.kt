@@ -1,21 +1,22 @@
 package com.robotutor.nexora.shared.outbox.audit
 
 import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.message.config.EventName
+import com.robotutor.nexora.shared.message.message.EventMessage
+import com.robotutor.nexora.shared.outbox.persistence.document.PrincipalDataDocument
 
-//
-//data class AuditEventMessage(
-////    override val userId: String,
-//    val action: String,
-//    val resource: ResourceMessage,
-//    val state: AuditState,
-//    val merchantId: String? = null,
-//    val metadata: Map<String, Any?> = emptyMap(),
-////    override val eventId: String,
-////    override val correlationId: String,
-////    override val occurredAt: Instant,
-//) : EventMessage {
-//    override val topic: KafkaTopic = KafkaTopic.AUDITORY
-//}
+data class AuditEventMessage(
+    val principalId: String,
+    val principalType: String,
+    val action: String,
+    val resource: ResourceMessage,
+    val state: AuditState,
+    val premisesId: String? = null,
+    val metadata: Map<String, Any?> = emptyMap(),
+    val principalData: PrincipalDataDocument? = null,
+) : EventMessage {
+    override val eventName: EventName = EventName.AUDITORY
+}
 
 data class ResourceMessage(
     val type: ResourceType,

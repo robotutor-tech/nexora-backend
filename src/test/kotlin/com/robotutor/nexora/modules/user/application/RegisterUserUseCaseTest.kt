@@ -59,7 +59,7 @@
 //        val registerAuthUserCommand = RegisterAuthUserCommand(userId, email, password)
 //
 //        every { userRepository.findByEmail(any()) } returns Mono.empty()
-//        every { idGeneratorService.generateId(any(), any<Class<SequenceId>>()) } returns Mono.just(userId)
+//        every { idGeneratorService.generate(any(), any<Class<SequenceId>>()) } returns Mono.just(userId)
 //        every { userRepository.save(any()) } returns Mono.just(user)
 //        every { registerAuthUser.register(any()) } returns Mono.just(registerAuthUserCommand)
 //        every { eventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
@@ -70,7 +70,7 @@
 //            it shouldBe user
 //        }
 //        verify(exactly = 1) {
-//            idGeneratorService.generateId(IdType.USER_ID, UserId::class.java)
+//            idGeneratorService.generate(IdType.USER_ID, UserId::class.java)
 //            userRepository.save(any())
 //            registerAuthUser.register(any())
 //            userRepository.findByEmail(email)
@@ -89,7 +89,7 @@
 //        val command = RegisterUserCommand(email, password, name, mobile)
 //
 //        every { userRepository.findByEmail(email) } returns Mono.just(user)
-//        every { idGeneratorService.generateId(any(), any<Class<SequenceId>>()) } returns Mono.just(userId)
+//        every { idGeneratorService.generate(any(), any<Class<SequenceId>>()) } returns Mono.just(userId)
 //
 //        val result = registerUserService.register(command)
 //
@@ -98,7 +98,7 @@
 //        }
 //        verify(exactly = 1) {
 //            userRepository.findByEmail(email)
-//            idGeneratorService.generateId(any(), any<Class<SequenceId>>())
+//            idGeneratorService.generate(any(), any<Class<SequenceId>>())
 //        }
 //        verify(exactly = 0) {
 //            userRepository.save(any())
@@ -119,7 +119,7 @@
 //        val authError = RuntimeException("Auth registration failed")
 //
 //        every { userRepository.findByEmail(any()) } returns Mono.empty()
-//        every { idGeneratorService.generateId(any(), any<Class<UserId>>()) } returns Mono.just(userId)
+//        every { idGeneratorService.generate(any(), any<Class<UserId>>()) } returns Mono.just(userId)
 //        every { userRepository.save(any()) } returns Mono.just(user)
 //        every { registerAuthUser.register(any()) } returns Mono.error(authError)
 //        every { userRepository.deleteByUserId(any()) } returns Mono.just(user)
@@ -129,7 +129,7 @@
 //            it shouldBe authError
 //        }
 //        verify(exactly = 1) {
-//            idGeneratorService.generateId(IdType.USER_ID, UserId::class.java)
+//            idGeneratorService.generate(IdType.USER_ID, UserId::class.java)
 //            userRepository.save(user)
 //            registerAuthUser.register(RegisterAuthUserCommand(userId, email, password))
 //            userRepository.findByEmail(email)

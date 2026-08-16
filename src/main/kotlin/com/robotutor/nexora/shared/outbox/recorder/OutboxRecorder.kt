@@ -1,27 +1,23 @@
 package com.robotutor.nexora.shared.outbox.recorder
 
 import com.robotutor.nexora.shared.context.ReactiveContext
-import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
+import com.robotutor.nexora.shared.message.message.EventMessage
+import com.robotutor.nexora.shared.message.message.MessageContext
 import com.robotutor.nexora.shared.outbox.persistence.document.OutboxDocument
+import com.robotutor.nexora.shared.outbox.persistence.mapper.MessageContextDocumentMapper
 import com.robotutor.nexora.shared.outbox.persistence.repository.OutboxDocumentRepository
-import com.robotutor.nexora.shared.outbox.entity.OutboxEvent
-import com.robotutor.nexora.shared.outbox.persistence.mapper.PrincipalDataDocumentMapper
-import com.robotutor.nexora.shared.utility.createMono
+import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
 @Component
 class OutboxRecorder(private val outboxRepository: OutboxDocumentRepository) : Recorder {
-    override fun record(message: OutboxEvent): Mono<OutboxDocument> {
+    override fun record(message: EventMessage): Mono<OutboxDocument> {
         return ReactiveContext.getContextData()
+            .map { MessageContext(message.eventName, it.correlationId, it.principalData) }
             .map {
-                OutboxDocument(
-                    message = message.message,
-                    correlationId = it.correlationId,
-                    eventId = message.eventId.value,
-                    occurredAt = message.occurredAt,
-                    principalData = it.principalData?.let { PrincipalDataDocumentMapper.toMongoDocument(it) }
-                )
+                val contextDocument = MessageContextDocumentMapper.toDocument(it)
+                OutboxDocument(eventId = contextDocument.eventId, message = message, context = contextDocument)
             }
             .flatMap { outboxRepository.save(it) }
             .retryOptimisticLockingFailure()

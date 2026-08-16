@@ -4,5 +4,5 @@ import com.robotutor.nexora.shared.persistence.document.IdSequenceType
 import reactor.core.publisher.Mono
 
 interface IdGeneratorService {
-    fun generateId(idType: IdSequenceType): Mono<String>
+    fun generate(idType: IdSequenceType): Mono<String>
 }

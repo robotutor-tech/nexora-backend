@@ -11,7 +11,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 fun <T> Mono<T>.logOnSuccess(
     logger: Logger,
     message: String,
-    additionalDetails: Map<String, Any?> = emptyMap()
+    additionalDetails: Map<String, Any?> = emptyMap(),
+    level: LogLevel = LogLevel.INFO,
 ): Mono<T> {
     return flatMap { value ->
         ReactiveContext.getContextData()
@@ -21,7 +22,7 @@ fun <T> Mono<T>.logOnSuccess(
                     additionalDetails = additionalDetails,
                     correlationId = traceData.correlationId
                 )
-                logger.info(logDetails)
+                logger.log(logDetails, level)
                 value
             }
     }
@@ -32,6 +33,7 @@ fun <T> Mono<T>.logOnError(
     message: String,
     additionalDetails: Map<String, Any?> = emptyMap(),
     errorCode: String? = null,
+    level: LogLevel = LogLevel.ERROR
 ): Mono<T> {
     return onErrorResume { throwable ->
         ReactiveContext.getContextData()
@@ -42,7 +44,7 @@ fun <T> Mono<T>.logOnError(
                     errorCode = errorCode,
                     correlationId = traceData.correlationId
                 )
-                logger.error(logDetails, throwable)
+                logger.log(logDetails, level, throwable)
                 createMonoError(throwable)
             }
     }
@@ -52,6 +54,7 @@ fun <T> Flux<T>.logOnSuccess(
     logger: Logger,
     message: String,
     additionalDetails: Map<String, Any?> = emptyMap(),
+    level: LogLevel = LogLevel.INFO,
 ): Flux<T> {
     val hasElements = AtomicBoolean(false)
     var contextData = ContextData("missing-correlation-id", null)
@@ -70,15 +73,14 @@ fun <T> Flux<T>.logOnSuccess(
     }
         .doOnComplete {
             if (hasElements.get()) {
-                logger.info(
-                    LogDetails(
-                        message = message,
-                        additionalDetails = additionalDetails,
-                        correlationId = contextData.correlationId,
-                        principalData = contextData.principalData
+                val details = LogDetails(
+                    message = message,
+                    additionalDetails = additionalDetails,
+                    correlationId = contextData.correlationId,
+                    principalData = contextData.principalData
 
-                    )
                 )
+                logger.log(details, level)
             }
         }
 }
@@ -88,21 +90,20 @@ fun <T> Flux<T>.logOnError(
     message: String,
     errorCode: String? = null,
     additionalDetails: Map<String, Any?> = emptyMap(),
+    level: LogLevel = LogLevel.ERROR,
 ): Flux<T> {
     return onErrorResume { throwable ->
         ReactiveContext.getContextData()
             .map { contextData ->
-                logger.error(
-                    LogDetails(
-                        message = message,
-                        additionalDetails = additionalDetails,
-                        errorCode = errorCode,
-                        correlationId = contextData.correlationId,
-                        principalData = contextData.principalData
+                val details = LogDetails(
+                    message = message,
+                    additionalDetails = additionalDetails,
+                    errorCode = errorCode,
+                    correlationId = contextData.correlationId,
+                    principalData = contextData.principalData
 
-                    ),
-                    throwable
                 )
+                logger.log(details, level, throwable)
             }
             .flatMap { createMonoError(throwable) }
     }

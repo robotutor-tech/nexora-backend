@@ -10,6 +10,8 @@ enum class ResourceType(val identifier: Class<out Identifier>) {
     PREMISES(PremisesId::class.java),
     WIDGET(WidgetId::class.java),
     ZONE(ZoneId::class.java),
+    USER(UserId::class.java),
+    ACCOUNT(AccountId::class.java),
 }
 
 enum class ActionType {

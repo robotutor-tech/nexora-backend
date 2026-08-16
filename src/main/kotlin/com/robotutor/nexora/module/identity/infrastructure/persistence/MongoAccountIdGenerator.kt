@@ -10,6 +10,6 @@ import reactor.core.publisher.Mono
 @Component
 class MongoAccountIdGenerator(private val idGeneratorService: IdGeneratorService) : AccountIdGenerator {
     override fun generate(): Mono<AccountId> {
-        return idGeneratorService.generateId(IdType.ACCOUNT_ID).map { AccountId(it) }
+        return idGeneratorService.generate(IdType.ACCOUNT_ID).map { AccountId(it) }
     }
 }

@@ -10,6 +10,10 @@ import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
 import com.robotutor.nexora.shared.domain.utility.enforcePolicy
+import com.robotutor.nexora.shared.domain.vo.AccountId
+import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.domain.vo.UserData
+import com.robotutor.nexora.shared.outbox.auditOnSuccess
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -26,7 +30,16 @@ class RegisterUserService(
                 DuplicateUserContext(it, command.email)
             }
             .map { User.register(name = command.name, email = command.email, mobile = command.mobile) }
-            .flatMap { user -> userRepository.save(user) }
+            .flatMap { user ->
+                userRepository.save(user)
+                    .auditOnSuccess(
+                        "USER_REGISTERED",
+                        ResourceType.USER,
+                        user.userId,
+                        command.toMetaData(),
+                        UserData(user.userId, AccountId("UNKNOWN"))
+                    )
+            }
             .logOnSuccess(logger, "Successfully registered user")
             .logOnError(logger, "Failed to registered user")
     }

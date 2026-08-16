@@ -70,7 +70,7 @@
 //            principal = UserContext(owner.userId)
 //        )
 //
-//        every { idGeneratorService.generateId(IdType.PREMISE_ID, PremisesId::class.java) } returns Mono.just(generatedPremisesId)
+//        every { idGeneratorService.generate(IdType.PREMISE_ID, PremisesId::class.java) } returns Mono.just(generatedPremisesId)
 //        every { premisesRepository.save(any()) } answers { Mono.just(firstArg()) }
 //        // No domain events yet in Premises.register, so eventPublisher.publish won't be invoked; mock anyway
 //        every { eventPublisherDeprecated.publish(any()) } returns Mono.just(Unit)
@@ -83,7 +83,7 @@
 //        }
 //
 //        verify(exactly = 1) {
-//            idGeneratorService.generateId(IdType.PREMISE_ID, PremisesId::class.java)
+//            idGeneratorService.generate(IdType.PREMISE_ID, PremisesId::class.java)
 //            premisesRepository.save(match { it.premisesId == generatedPremisesId && it.name == Name("Home") && it.address == address && it.owner == owner.userId })
 //            premisesResourceFacade.register(RegisterPremisesResourceCommand(generatedPremisesId, owner))
 //        }

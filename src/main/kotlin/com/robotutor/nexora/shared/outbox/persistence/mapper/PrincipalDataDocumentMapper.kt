@@ -4,7 +4,7 @@ import com.robotutor.nexora.shared.domain.vo.*
 import com.robotutor.nexora.shared.outbox.persistence.document.*
 
 object PrincipalDataDocumentMapper {
-    fun toMongoDocument(principalData: PrincipalData): PrincipalDataDocument {
+    fun toDocument(principalData: PrincipalData): PrincipalDataDocument {
         return when (principalData) {
             is ActorData -> ActorDataDocument(
                 actorId = principalData.actorId.value,
@@ -17,7 +17,7 @@ object PrincipalDataDocumentMapper {
     }
 
 
-    fun toDomainModel(principalDataDocument: PrincipalDataDocument): PrincipalData {
+    fun toDomain(principalDataDocument: PrincipalDataDocument): PrincipalData {
         return when (principalDataDocument) {
             is ActorDataDocument -> ActorData(
                 actorId = ActorId(principalDataDocument.actorId),

@@ -12,7 +12,7 @@ object SessionDocumentMapper : DocumentMapper<Session, SessionDocument> {
         return SessionDocument(
             id = domain.getObjectId(),
             sessionId = domain.sessionId.value,
-            accountDataDocument = PrincipalDataDocumentMapper.toMongoDocument(domain.principalData),
+            accountDataDocument = PrincipalDataDocumentMapper.toDocument(domain.principalData),
             token = domain.token.value,
             status = domain.getStatus(),
             issuedAt = domain.issuedAt,
@@ -26,7 +26,7 @@ object SessionDocumentMapper : DocumentMapper<Session, SessionDocument> {
             sessionId = SessionId(document.sessionId),
             token = HashAccessToken(document.token),
             issuedAt = document.issuedAt,
-            principalData = PrincipalDataDocumentMapper.toDomainModel(document.accountDataDocument),
+            principalData = PrincipalDataDocumentMapper.toDomain(document.accountDataDocument),
             expiredAt = document.expiresAt,
             status = document.status,
         ).setObjectIdAndVersion(document.id, document.version)

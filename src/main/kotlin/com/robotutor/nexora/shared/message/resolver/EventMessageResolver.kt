@@ -2,6 +2,7 @@ package com.robotutor.nexora.shared.message.resolver
 
 import com.robotutor.nexora.shared.resolver.ArgumentResolver
 import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
+import com.robotutor.nexora.shared.context.ReactiveContext.EVENT_MESSAGE
 import com.robotutor.nexora.shared.domain.exception.DataNotFoundException
 import com.robotutor.nexora.shared.domain.exception.SharedNexoraError
 import com.robotutor.nexora.shared.message.annotation.Message
@@ -20,7 +21,7 @@ class EventMessageResolver : ArgumentResolver {
 
     override fun resolveArgument(parameter: Parameter): Mono<Any> {
         return Mono.deferContextual { context ->
-            val eventMessage = context.getOrDefault<String>("EventMessage", null)
+            val eventMessage = context.getOrDefault<String>(EVENT_MESSAGE, null)
             if (eventMessage != null) {
                 createMono(DefaultSerializer.deserialize(eventMessage, parameter.type))
             } else {

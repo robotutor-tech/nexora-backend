@@ -5,7 +5,7 @@ import java.util.*
 
 data class EventId(override val value: String) : Identifier {
     companion object {
-        fun generateId(): EventId {
+        fun generate(): EventId {
             return EventId(UUID.randomUUID().toString())
         }
     }
