@@ -8,7 +8,7 @@ import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.time.Instant
 
-data class GroupAggregate(
+data class Group(
     val groupId: GroupId,
     val name: Name,
     val premisesId: PremisesId,
@@ -16,10 +16,10 @@ data class GroupAggregate(
     val type: GroupType,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-) : AggregateRoot<GroupAggregate, GroupId, IdentityEvent>(groupId) {
+) : AggregateRoot<Group, GroupId, IdentityEvent>(groupId) {
     companion object {
-        fun register(name: Name, premisesId: PremisesId, type: GroupType, roleIds: List<RoleId>): GroupAggregate {
-            val roleAggregate = GroupAggregate(
+        fun register(name: Name, premisesId: PremisesId, type: GroupType, roleIds: List<RoleId>): Group {
+            val roleAggregate = Group(
                 groupId = GroupId.generate(),
                 name = name,
                 type = type,

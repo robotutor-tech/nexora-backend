@@ -22,9 +22,8 @@ class MessagePublisher(
         outboxDocumentRepository.findAllByStatus(Status.PENDING)
             .flatMap { document ->
                 kafkaEventPublisher.publish(document.message, document.context)
-                    .map { document.markAsPublished() }
-                    .onErrorReturn(document.markAsDL())
-                    .flatMap { outboxDocumentRepository.save(it) }
+                    .flatMap { outboxDocumentRepository.save(document.markAsPublished()) }
+                    .onErrorResume { outboxDocumentRepository.save(document.markAsPublished()) }
             }
             .doOnComplete {
                 println("================MESSAGE PUBLISHER SCHEDULER STOPPED=================")

@@ -1,10 +1,9 @@
 package com.robotutor.nexora.module.identity.interfaces.controller.mapper
 
-import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.module.identity.application.command.AuthenticateActorCommand
 import com.robotutor.nexora.module.identity.application.command.RegisterMachineActorCommand
 import com.robotutor.nexora.module.identity.application.command.RegisterPremisesOwnerCommand
-import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Actor
 import com.robotutor.nexora.module.identity.domain.vo.TokenValue
 import com.robotutor.nexora.module.identity.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.module.identity.interfaces.controller.view.AuthenticateActorRequest
@@ -17,14 +16,14 @@ import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.domain.vo.UserData
 
 object ActorMapper {
-    fun toActorResponse(actorAggregate: ActorAggregate): ActorResponse {
+    fun toActorResponse(actor: Actor): ActorResponse {
         return ActorResponse(
-            actorId = actorAggregate.actorId.value,
-            accountId = actorAggregate.accountId.value,
-            premisesId = actorAggregate.premisesId.value,
-            status = actorAggregate.status,
-            createdAt = actorAggregate.createdAt,
-            updatedAt = actorAggregate.updatedAt
+            actorId = actor.actorId.value,
+            accountId = actor.accountId.value,
+            premisesId = actor.premisesId.value,
+            status = actor.status,
+            createdAt = actor.createdAt,
+            updatedAt = actor.updatedAt
         )
     }
 

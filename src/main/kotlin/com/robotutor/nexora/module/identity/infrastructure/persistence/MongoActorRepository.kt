@@ -1,14 +1,12 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
-import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
-import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
+import com.robotutor.nexora.module.identity.domain.aggregate.Actor
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
 import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.ActorDocument
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.ActorDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.ActorSpecificationTranslator
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.ActorDocumentRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
@@ -28,41 +26,41 @@ class MongoActorRepository(
     private val actorDocumentRepository: ActorDocumentRepository,
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : ActorRepository {
-    override fun save(actorAggregate: ActorAggregate): Mono<ActorAggregate> {
-        val actorDocument = ActorDocumentMapper.toMongoDocument(actorAggregate)
+    override fun save(actor: Actor): Mono<Actor> {
+        val actorDocument = ActorDocumentMapper.toMongoDocument(actor)
         return actorDocumentRepository.save(actorDocument)
             .retryOptimisticLockingFailure()
             .map { ActorDocumentMapper.toDomainModel(it) }
-            .publishEvents( actorAggregate, IdentityEventMapper)
+            .publishEvents( actor, IdentityEventMapper)
     }
 
-    override fun findAllByAccountId(accountId: AccountId): Flux<ActorAggregate> {
+    override fun findAllByAccountId(accountId: AccountId): Flux<Actor> {
         return actorDocumentRepository.findAllByAccountId(accountId.value)
             .map { ActorDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findByAccountIdAndPremisesId(accountId: AccountId, premisesId: PremisesId): Mono<ActorAggregate> {
+    override fun findByAccountIdAndPremisesId(accountId: AccountId, premisesId: PremisesId): Mono<Actor> {
         return actorDocumentRepository.findByAccountIdAndPremisesId(accountId.value, premisesId.value)
             .map { ActorDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findByActorIdAndPremisesId(actorId: ActorId, premisesId: PremisesId): Mono<ActorAggregate> {
+    override fun findByActorIdAndPremisesId(actorId: ActorId, premisesId: PremisesId): Mono<Actor> {
         return actorDocumentRepository.findByActorIdAndPremisesId(actorId.value, premisesId.value)
             .map { ActorDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findByActorId(actorId: ActorId): Mono<ActorAggregate> {
+    override fun findByActorId(actorId: ActorId): Mono<Actor> {
         return actorDocumentRepository.findByActorId(actorId.value)
             .map { ActorDocumentMapper.toDomainModel(it) }
     }
 
-    override fun findBySpecification(specification: Specification<ActorAggregate>): Mono<ActorAggregate> {
+    override fun findBySpecification(specification: Specification<Actor>): Mono<Actor> {
         val query = Query(ActorSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.findOne<ActorDocument>(query)
             .map { ActorDocumentMapper.toDomainModel(it) }
     }
 
-    override fun exitsBySpecification(specification: Specification<ActorAggregate>): Mono<Boolean> {
+    override fun exitsBySpecification(specification: Specification<Actor>): Mono<Boolean> {
         val query = Query(ActorSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.exists<ActorDocument>(query)
     }

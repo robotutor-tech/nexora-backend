@@ -1,12 +1,12 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
-import com.robotutor.nexora.module.identity.domain.aggregate.GroupAggregate
-import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
+import com.robotutor.nexora.module.identity.domain.aggregate.Group
 import com.robotutor.nexora.module.identity.domain.repository.GroupRepository
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
+import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.GroupDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.GroupDocumentRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
+import com.robotutor.nexora.shared.outbox.publishEvents
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -16,23 +16,23 @@ import reactor.core.publisher.Mono
 class MongoGroupRepository(
     private val groupDocumentRepository: GroupDocumentRepository,
 ) : GroupRepository {
-    override fun save(groupAggregate: GroupAggregate): Mono<GroupAggregate> {
-        val groupDocument = GroupDocumentMapper.toMongoDocument(groupAggregate)
+    override fun save(group: Group): Mono<Group> {
+        val groupDocument = GroupDocumentMapper.toMongoDocument(group)
         return groupDocumentRepository.save(groupDocument)
             .retryOptimisticLockingFailure()
             .map { GroupDocumentMapper.toDomainModel(it) }
-//            .publishEvents(eventPublisher, groupAggregate)
+            .publishEvents( group, IdentityEventMapper)
     }
 
-    override fun saveAll(groupAggregates: List<GroupAggregate>): Flux<GroupAggregate> {
-        val groupDocuments = groupAggregates.map { GroupDocumentMapper.toMongoDocument(it) }
+    override fun saveAll(groups: List<Group>): Flux<Group> {
+        val groupDocuments = groups.map { GroupDocumentMapper.toMongoDocument(it) }
         return groupDocumentRepository.saveAll(groupDocuments)
             .retryOptimisticLockingFailure()
             .map { GroupDocumentMapper.toDomainModel(it) }
 //            .publishEvents(eventPublisher, groupAggregates)
     }
 
-    override fun findAllByGroupIds(groupIds: Set<GroupId>): Flux<GroupAggregate> {
+    override fun findAllByGroupIds(groupIds: Set<GroupId>): Flux<Group> {
         return groupDocumentRepository.findAllByGroupIdIn(groupIds.map { it.value })
             .map { GroupDocumentMapper.toDomainModel(it) }
     }

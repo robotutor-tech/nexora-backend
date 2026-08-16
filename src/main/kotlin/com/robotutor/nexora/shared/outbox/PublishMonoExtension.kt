@@ -7,9 +7,11 @@ import com.robotutor.nexora.shared.context.ReactiveContext
 import com.robotutor.nexora.shared.domain.AggregateRoot
 import com.robotutor.nexora.shared.domain.Event
 import com.robotutor.nexora.shared.domain.vo.ActorData
+import com.robotutor.nexora.shared.domain.vo.DeviceData
 import com.robotutor.nexora.shared.domain.vo.Identifier
 import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
+import com.robotutor.nexora.shared.domain.vo.UserData
 import com.robotutor.nexora.shared.message.mapper.EventMapper
 import com.robotutor.nexora.shared.message.message.MessageContext
 import com.robotutor.nexora.shared.outbox.audit.AuditEventMessage
@@ -54,18 +56,36 @@ fun <T> Mono<T>.auditOnSuccess(
         ReactiveContext.getContextData()
             .flatMap {
                 val principal = principal ?: it.principalData
-                val premisesId = if (principal is ActorData) principal.premisesId.value else null
-                val principalId = principal?.principalId?.value ?: "missing"
+                var actorId: String? = null
+                var premisesId: String? = null
+                var userId: String? = null
+                var deviceId: String? = null
+                if (principal is ActorData) {
+                    actorId = principal.actorId.value
+                    premisesId = principal.premisesId.value
+                    if (principal.accountData is UserData) {
+                        userId = principal.accountData.userId.value
+                    }
+                    if (principal.accountData is DeviceData) {
+                        deviceId = principal.accountData.deviceId.value
+                    }
+                }
+                if (principal is UserData) {
+                    userId = principal.userId.value
+                }
+                if (principal is DeviceData) {
+                    deviceId = principal.deviceId.value
+                }
                 RecorderInfrastructure.recorder.record(
                     AuditEventMessage(
-                        principalId = principalId,
-                        principalType = it.principalData?.principalType?.name ?: "UNKNOWN",
                         action = action,
                         resource = ResourceMessage(type, identifier.value),
                         state = AuditState.SUCCESS,
-                        principalData = principal?.let { PrincipalDataDocumentMapper.toDocument(it) },
                         premisesId = premisesId,
                         metadata = metadata,
+                        userId = userId,
+                        deviceId = deviceId,
+                        actorId = actorId,
                     )
                 )
                     .logOnSuccess(logger, "Successfully added audit event")

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.module.identity.domain.aggregate.GroupAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Group
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
 import com.robotutor.nexora.module.identity.domain.vo.RoleId
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.GroupDocument
@@ -8,8 +8,8 @@ import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
-object GroupDocumentMapper : DocumentMapper<GroupAggregate, GroupDocument> {
-    override fun toMongoDocument(domain: GroupAggregate): GroupDocument {
+object GroupDocumentMapper : DocumentMapper<Group, GroupDocument> {
+    override fun toMongoDocument(domain: Group): GroupDocument {
         return GroupDocument(
             id = domain.getObjectId(),
             groupId = domain.groupId.value,
@@ -23,8 +23,8 @@ object GroupDocumentMapper : DocumentMapper<GroupAggregate, GroupDocument> {
         )
     }
 
-    override fun toDomainModel(document: GroupDocument): GroupAggregate {
-        return GroupAggregate(
+    override fun toDomainModel(document: GroupDocument): Group {
+        return Group(
             groupId = GroupId(document.groupId),
             name = Name(document.name),
             premisesId = PremisesId(document.premisesId),

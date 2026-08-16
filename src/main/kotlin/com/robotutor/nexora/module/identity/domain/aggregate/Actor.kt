@@ -12,7 +12,7 @@ import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.time.Instant
 
-data class ActorAggregate(
+data class Actor(
     val actorId: ActorId,
     val accountId: AccountId,
     val premisesId: PremisesId,
@@ -22,7 +22,7 @@ data class ActorAggregate(
     val status: ActorStatus = ActorStatus.ACTIVE,
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
-) : AggregateRoot<ActorAggregate, ActorId, IdentityEvent>(actorId) {
+) : AggregateRoot<Actor, ActorId, IdentityEvent>(actorId) {
     fun ensureActive() {
         if (status != ActorStatus.ACTIVE) {
             throw InvalidStateException(IdentityError.NEXORA0206)
@@ -35,15 +35,15 @@ data class ActorAggregate(
             premisesId: PremisesId,
             roleIds: List<RoleId>,
             groupIds: List<GroupId>
-        ): ActorAggregate {
-            val actorAggregate = ActorAggregate(
+        ): Actor {
+            val actor = Actor(
                 actorId = ActorId.generate(),
                 accountId = accountId,
                 premisesId = premisesId,
                 roleIds = roleIds.toSet(),
                 groupIds = groupIds.toSet()
             )
-            return actorAggregate
+            return actor
         }
     }
 }

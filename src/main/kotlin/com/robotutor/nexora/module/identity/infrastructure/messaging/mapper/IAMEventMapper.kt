@@ -25,8 +25,8 @@ object IdentityEventMapper : EventMapper<IdentityEvent> {
 
     private fun toAccountCreatedEventMessage(event: AccountCreatedEvent): AccountCreatedEventMessage {
         return when (event.type) {
-            AccountType.USER -> UserAccountCreatedEventMessage(event.subjectId.value, event.accountId)
-            AccountType.DEVICE -> DeviceAccountCreatedEventMessage(event.subjectId.value, event.accountId)
+            AccountType.USER -> UserAccountCreatedEventMessage(event.subjectId.value, event.accountId.value)
+            AccountType.DEVICE -> DeviceAccountCreatedEventMessage(event.subjectId.value, event.accountId.value)
         }
     }
 

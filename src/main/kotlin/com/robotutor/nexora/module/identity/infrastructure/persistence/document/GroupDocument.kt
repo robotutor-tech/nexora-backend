@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.document
 
 import com.robotutor.nexora.shared.persistence.document.MongoDocument
-import com.robotutor.nexora.module.identity.domain.aggregate.GroupAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Group
 import com.robotutor.nexora.module.identity.domain.aggregate.GroupType
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.TypeAlias
@@ -28,4 +28,4 @@ data class GroupDocument(
     val updatedAt: Instant,
     @Version
     val version: Long? = null,
-) : MongoDocument<GroupAggregate>
+) : MongoDocument<Group>

@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Actor
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
 import com.robotutor.nexora.module.identity.domain.vo.Permission
 import com.robotutor.nexora.module.identity.domain.vo.PermissionOverride
@@ -14,8 +14,8 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
-object ActorDocumentMapper : DocumentMapper<ActorAggregate, ActorDocument> {
-    override fun toMongoDocument(domain: ActorAggregate): ActorDocument {
+object ActorDocumentMapper : DocumentMapper<Actor, ActorDocument> {
+    override fun toMongoDocument(domain: Actor): ActorDocument {
         return ActorDocument(
             id = domain.getObjectId(),
             actorId = domain.actorId.value,
@@ -40,8 +40,8 @@ object ActorDocumentMapper : DocumentMapper<ActorAggregate, ActorDocument> {
         )
     }
 
-    override fun toDomainModel(document: ActorDocument): ActorAggregate {
-        return ActorAggregate(
+    override fun toDomainModel(document: ActorDocument): Actor {
+        return Actor(
             actorId = ActorId(document.actorId),
             accountId = AccountId(document.accountId),
             premisesId = PremisesId(document.premisesId),

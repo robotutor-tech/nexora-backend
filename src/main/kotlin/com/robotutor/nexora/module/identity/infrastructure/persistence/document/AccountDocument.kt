@@ -21,7 +21,7 @@ data class AccountDocument(
     @Indexed(unique = true)
     val accountId: String,
     val accountType: AccountType,
-    val principalId: String,
+    val subjectId: String,
     val createdBy: String?,
     val credential: CredentialDocument,
     val status: AccountStatus,

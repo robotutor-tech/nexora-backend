@@ -24,9 +24,10 @@ class AddAuditService(private val auditRepository: AuditRepository) {
             state = command.state,
             metadata = command.metadata,
             occurredAt = command.occurredAt,
-            principalId = command.principalId,
-            principalType = command.principalType,
-            principalData = command.principalData,
+            userId = command.userId,
+            deviceId = command.deviceId,
+            actorId = command.actorId,
+            premisesId = command.premisesId,
         )
         return auditRepository.save(audit)
             .logOnSuccess(logger, "Successfully saved Audit.")

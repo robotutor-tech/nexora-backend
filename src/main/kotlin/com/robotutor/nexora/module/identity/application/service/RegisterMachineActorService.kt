@@ -3,7 +3,7 @@ package com.robotutor.nexora.module.identity.application.service
 import com.robotutor.nexora.module.identity.application.command.RegisterMachineActorCommand
 import com.robotutor.nexora.module.identity.application.command.RegisterRoleCommand
 import com.robotutor.nexora.module.identity.domain.policy.RegisterMachineActorPolicy
-import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Actor
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleType
 import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.policy.context.RegisterMachineActorPolicyContext
@@ -25,7 +25,7 @@ class RegisterMachineActorService(
     private val actorRepository: ActorRepository,
     private val registerMachineActorPolicy: RegisterMachineActorPolicy,
 ) {
-    fun execute(command: RegisterMachineActorCommand): Mono<ActorAggregate> {
+    fun execute(command: RegisterMachineActorCommand): Mono<Actor> {
         val specification = ActorByAccountIdSpecification(command.owner.accountId)
             .and(ActorByPremisesIdSpecification(command.premisesId))
         return actorRepository.exitsBySpecification(specification)
@@ -34,7 +34,7 @@ class RegisterMachineActorService(
             }
             .flatMap { registerRoleService.execute(createMachineRoleCommand(command)) }
             .map { role ->
-                ActorAggregate.register(
+                Actor.register(
                     accountId = command.owner.accountId,
                     premisesId = command.premisesId,
                     roleIds = listOf(role.roleId),

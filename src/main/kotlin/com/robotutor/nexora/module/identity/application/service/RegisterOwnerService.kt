@@ -5,18 +5,13 @@ import com.robotutor.nexora.module.identity.application.command.RegisterPremises
 import com.robotutor.nexora.module.identity.application.command.RegisterRoleCommand
 import com.robotutor.nexora.module.identity.domain.policy.RegisterPremisesOwnerPolicy
 import com.robotutor.nexora.module.identity.application.seed.PermissionSeedProvider
-import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Actor
 import com.robotutor.nexora.module.identity.domain.aggregate.GroupType
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleAggregate
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleType
-import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
-import com.robotutor.nexora.module.identity.domain.event.PremisesOwnerRegisteredEvent
-import com.robotutor.nexora.module.identity.domain.event.PremisesOwnerRegistrationFailedEvent
 import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
 import com.robotutor.nexora.module.identity.domain.specification.ActorByPremisesIdSpecification
-import com.robotutor.nexora.shared.domain.event.publishEvent
-import com.robotutor.nexora.shared.domain.event.publishEventOnError
 import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.utility.enforcePolicy
 import org.springframework.stereotype.Service
@@ -30,7 +25,7 @@ class RegisterOwnerService(
     private val permissionSeedProvider: PermissionSeedProvider,
     private val registerPremisesOwnerPolicy: RegisterPremisesOwnerPolicy
 ) {
-    fun execute(command: RegisterPremisesOwnerCommand): Mono<ActorAggregate> {
+    fun execute(command: RegisterPremisesOwnerCommand): Mono<Actor> {
         return actorRepository.exitsBySpecification(ActorByPremisesIdSpecification(command.premisesId))
             .enforcePolicy(registerPremisesOwnerPolicy, IdentityError.NEXORA0201)
             .flatMap {
@@ -41,7 +36,7 @@ class RegisterOwnerService(
                     .map { Pair(it, roles) }
             }
             .map { pair ->
-                ActorAggregate.register(
+                Actor.register(
                     accountId = command.owner.accountId,
                     premisesId = command.premisesId,
                     roleIds = pair.second.map { it.roleId },

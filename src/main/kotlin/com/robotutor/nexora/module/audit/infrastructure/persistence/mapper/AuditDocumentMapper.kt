@@ -13,17 +13,19 @@ object AuditDocumentMapper : DocumentMapper<Audit, AuditDocument> {
             id = domain.getObjectId(),
             auditId = domain.auditId.value,
             eventId = domain.eventId.value,
+            userId = domain.userId,
+            deviceId = domain.deviceId,
+            actorId = domain.actorId,
+            premisesId = domain.premisesId,
             action = domain.action,
             resource = domain.resource,
             state = domain.state,
-            principalData = domain.principalData,
-            principalId = domain.principalId,
-            principalType = domain.principalType,
             metadata = domain.metadata,
             createdAt = domain.createdAt,
             occurredAt = domain.occurredAt,
             version = domain.getVersion(),
-        )
+
+            )
     }
 
     override fun toDomainModel(document: AuditDocument): Audit {
@@ -36,9 +38,10 @@ object AuditDocumentMapper : DocumentMapper<Audit, AuditDocument> {
             metadata = document.metadata,
             createdAt = document.createdAt,
             occurredAt = document.occurredAt,
-            principalId = document.principalId,
-            principalType = document.principalType,
-            principalData = document.principalData
+            userId = document.userId,
+            deviceId = document.deviceId,
+            actorId = document.actorId,
+            premisesId = document.premisesId,
         )
             .setObjectIdAndVersion(document.id, document.version)
     }

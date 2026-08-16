@@ -12,7 +12,7 @@ interface AccountRepository {
     fun save(account: Account): Mono<Account>
     fun findByCredentialId(credentialId: CredentialId): Mono<Account>
     fun findByAccountId(accountId: AccountId): Mono<Account>
-    fun findByPrincipalId(subjectId: SubjectId): Mono<Account>
+    fun findBySubjectId(subjectId: SubjectId): Mono<Account>
     fun deleteByAccountId(accountId: AccountId): Mono<Account>
     fun findAll(specification: Specification<Account>): Flux<Account>
 }

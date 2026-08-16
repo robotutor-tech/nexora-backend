@@ -17,7 +17,7 @@ object AccountDocumentMapper : DocumentMapper<Account, AccountDocument> {
             id = domain.getObjectId(),
             accountId = domain.accountId.value,
             accountType = domain.accountType,
-            principalId = domain.subjectId.value,
+            subjectId = domain.subjectId.value,
             createdBy = domain.createdBy?.value,
             credential = CredentialDocument(
                 credentialId = domain.credential.credentialId.value,
@@ -34,7 +34,7 @@ object AccountDocumentMapper : DocumentMapper<Account, AccountDocument> {
         return Account.create(
             accountId = AccountId(document.accountId),
             type = document.accountType,
-            subjectId = SubjectId.from(document.accountType, document.principalId),
+            subjectId = SubjectId.from(document.accountType, document.subjectId),
             createdBy = document.createdBy?.let { ActorId(it) },
             credential = Credential(
                 credentialId = CredentialId.from(document.accountType, document.credential.credentialId),

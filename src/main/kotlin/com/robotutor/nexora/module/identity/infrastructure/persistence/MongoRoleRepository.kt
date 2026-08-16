@@ -1,13 +1,11 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleAggregate
-import com.robotutor.nexora.module.identity.domain.event.IdentityEventPublisher
 import com.robotutor.nexora.module.identity.domain.repository.RoleRepository
 import com.robotutor.nexora.module.identity.domain.vo.RoleId
 import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.RoleDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.RoleDocumentRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.outbox.publishEvents
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service

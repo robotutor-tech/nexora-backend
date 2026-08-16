@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.document
 
-import com.robotutor.nexora.module.identity.domain.aggregate.ActorAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Actor
 import com.robotutor.nexora.module.identity.domain.aggregate.ActorStatus
 import com.robotutor.nexora.module.identity.domain.vo.PermissionEffect
 import com.robotutor.nexora.shared.persistence.document.MongoDocument
@@ -31,7 +31,7 @@ data class ActorDocument(
     val updatedAt: Instant,
     @Version
     val version: Long? = null,
-) : MongoDocument<ActorAggregate>
+) : MongoDocument<Actor>
 
 data class PermissionOverrideDocument(
     val permission: PermissionDocument,
