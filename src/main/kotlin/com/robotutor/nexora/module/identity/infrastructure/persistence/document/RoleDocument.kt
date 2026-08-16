@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.document
 
-import com.robotutor.nexora.module.identity.domain.aggregate.RoleAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Role
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleType
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
@@ -30,7 +30,7 @@ data class RoleDocument(
     val updatedAt: Instant,
     @Version
     val version: Long? = null,
-) : MongoDocument<RoleAggregate>
+) : MongoDocument<Role>
 
 data class PermissionDocument(
     val resourceType: ResourceType,

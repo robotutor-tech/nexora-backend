@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.module.identity.domain.aggregate.RoleAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Role
 import com.robotutor.nexora.module.identity.domain.vo.Permission
 import com.robotutor.nexora.module.identity.domain.vo.RoleId
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.PermissionDocument
@@ -10,8 +10,8 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
-object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
-    override fun toMongoDocument(domain: RoleAggregate): RoleDocument {
+object RoleDocumentMapper : DocumentMapper<Role, RoleDocument> {
+    override fun toMongoDocument(domain: Role): RoleDocument {
         return RoleDocument(
             id = domain.getObjectId(),
             roleId = domain.roleId.value,
@@ -27,8 +27,8 @@ object RoleDocumentMapper : DocumentMapper<RoleAggregate, RoleDocument> {
         )
     }
 
-    override fun toDomainModel(document: RoleDocument): RoleAggregate {
-        return RoleAggregate(
+    override fun toDomainModel(document: RoleDocument): Role {
+        return Role(
             roleId = RoleId(document.roleId),
             name = Name(document.name),
             premisesId = PremisesId(document.premisesId),

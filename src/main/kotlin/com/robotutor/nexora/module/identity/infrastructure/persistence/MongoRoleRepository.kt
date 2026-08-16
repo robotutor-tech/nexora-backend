@@ -1,10 +1,9 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
-import com.robotutor.nexora.module.identity.domain.aggregate.RoleAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Role
 import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.repository.RoleRepository
 import com.robotutor.nexora.module.identity.domain.vo.RoleId
-import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.RoleDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.RoleDocumentRepository
 import com.robotutor.nexora.shared.message.mapper.EventMapper
@@ -19,23 +18,23 @@ class MongoRoleRepository(
     private val roleDocumentRepository: RoleDocumentRepository,
     private val eventMapper: EventMapper<IdentityEvent>,
 ) : RoleRepository {
-    override fun save(roleAggregate: RoleAggregate): Mono<RoleAggregate> {
-        val roleDocument = RoleDocumentMapper.toMongoDocument(roleAggregate)
+    override fun save(role: Role): Mono<Role> {
+        val roleDocument = RoleDocumentMapper.toMongoDocument(role)
         return roleDocumentRepository.save(roleDocument)
             .retryOptimisticLockingFailure()
             .map { RoleDocumentMapper.toDomainModel(it) }
-            .publishEvents(roleAggregate, eventMapper)
+            .publishEvents(role, eventMapper)
     }
 
-    override fun saveAll(roleAggregates: List<RoleAggregate>): Flux<RoleAggregate> {
-        val roleDocuments = roleAggregates.map { roleAggregate -> RoleDocumentMapper.toMongoDocument(roleAggregate) }
+    override fun saveAll(roles: List<Role>): Flux<Role> {
+        val roleDocuments = roles.map { roleAggregate -> RoleDocumentMapper.toMongoDocument(roleAggregate) }
         return roleDocumentRepository.saveAll(roleDocuments)
             .retryOptimisticLockingFailure()
             .map { RoleDocumentMapper.toDomainModel(it) }
 //            .publishEvents(eventPublisher, roleAggregates)
     }
 
-    override fun findAllByRoleIds(roleIds: Set<RoleId>): Flux<RoleAggregate> {
+    override fun findAllByRoleIds(roleIds: Set<RoleId>): Flux<Role> {
         return roleDocumentRepository.findAllByRoleIdIn(roleIds.map { it.value })
             .map { RoleDocumentMapper.toDomainModel(it) }
     }

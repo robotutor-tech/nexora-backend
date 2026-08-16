@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/Identity/resources")
+@RequestMapping("/identity/resources")
 class AuthorizationController(
     private val authorizeResourceService: AuthorizeResourceService,
 ) {

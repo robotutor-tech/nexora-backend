@@ -4,7 +4,6 @@ import com.robotutor.nexora.module.identity.application.service.RegisterOwnerSer
 import com.robotutor.nexora.module.identity.interfaces.controller.mapper.ActorMapper
 import com.robotutor.nexora.module.identity.interfaces.controller.view.ActorResponse
 import com.robotutor.nexora.module.identity.interfaces.controller.view.OwnerCreationRequest
-import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.UserData
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/Identity/premises-owners")
+@RequestMapping("/identity/premises-owners")
 class PremisesOwnerController(private val registerOwnerService: RegisterOwnerService) {
 
     @PostMapping("/register")

@@ -12,7 +12,6 @@ import com.robotutor.nexora.module.identity.interfaces.controller.view.Authentic
 import com.robotutor.nexora.module.identity.interfaces.controller.view.MachineActorRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.TokenResponses
 import com.robotutor.nexora.shared.domain.vo.AccountData
-import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.DeviceData
 import org.springframework.validation.annotation.Validated
@@ -21,7 +20,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/Identity/actors")
+@RequestMapping("/identity/actors")
 class ActorController(
     private val getActorService: GetActorService,
     private val authenticateActorService: AuthenticateActorService,

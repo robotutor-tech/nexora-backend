@@ -7,7 +7,7 @@ import com.robotutor.nexora.module.identity.domain.policy.RegisterPremisesOwnerP
 import com.robotutor.nexora.module.identity.application.seed.PermissionSeedProvider
 import com.robotutor.nexora.module.identity.domain.aggregate.Actor
 import com.robotutor.nexora.module.identity.domain.aggregate.GroupType
-import com.robotutor.nexora.module.identity.domain.aggregate.RoleAggregate
+import com.robotutor.nexora.module.identity.domain.aggregate.Role
 import com.robotutor.nexora.module.identity.domain.aggregate.RoleType
 import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
@@ -50,7 +50,7 @@ class RegisterOwnerService(
 
     private fun createDefaultGroups(
         command: RegisterPremisesOwnerCommand,
-        roles: List<RoleAggregate>
+        roles: List<Role>
     ): List<RegisterGroupCommand> {
         return listOf(
             RegisterGroupCommand(
