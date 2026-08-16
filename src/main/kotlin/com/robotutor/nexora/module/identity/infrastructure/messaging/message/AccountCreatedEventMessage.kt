@@ -8,10 +8,10 @@ sealed interface AccountCreatedEventMessage : IdentityEventMessage {
 
 data class UserAccountCreatedEventMessage(val userId: String, override val accountId: String) :
     AccountCreatedEventMessage {
-    override val eventName: EventName = EventName.ACCOUNT_CREATED
+    override val eventName: EventName = EventName.USER_ACCOUNT_CREATED
 }
 
 data class DeviceAccountCreatedEventMessage(val deviceId: String, override val accountId: String) :
     AccountCreatedEventMessage {
-    override val eventName: EventName = EventName.ACCOUNT_CREATED
+    override val eventName: EventName = EventName.DEVICE_ACCOUNT_CREATED
 }

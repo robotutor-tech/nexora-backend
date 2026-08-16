@@ -15,8 +15,8 @@ class MessagePublisher(
     private val outboxDocumentRepository: OutboxDocumentRepository,
 ) {
 
-    @Scheduled(cron = "0/30 * * * * *")
-    @SchedulerLock(name = "messagePublisherJob", lockAtMostFor = "PT4M", lockAtLeastFor = "PT2M")
+    @Scheduled(cron = "0/10 * * * * *")
+    @SchedulerLock(name = "messagePublisherJob", lockAtMostFor = "PT4M", lockAtLeastFor = "PT1M")
     fun start() {
         println("================MESSAGE PUBLISHER SCHEDULER STARTED=================")
         outboxDocumentRepository.findAllByStatus(Status.PENDING)

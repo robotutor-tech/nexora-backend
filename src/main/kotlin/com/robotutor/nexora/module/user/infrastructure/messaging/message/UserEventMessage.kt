@@ -13,6 +13,6 @@ data class UserActivatedEventMessage(val userId: String) : UserEventMessage {
     override val eventName: EventName = EventName.USER_ACTIVATED
 }
 
-data class UserCompensatedEventMessage(val userId: String) : UserEventMessage {
-    override val eventName: EventName = EventName.USER_COMPENSATED
+data class UserAccountCreationCompensatedEventMessage(val userId: String) : UserEventMessage {
+    override val eventName: EventName = EventName.USER_ACCOUNT_CREATION_COMPENSATED
 }

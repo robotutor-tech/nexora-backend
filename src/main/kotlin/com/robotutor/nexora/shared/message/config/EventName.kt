@@ -5,7 +5,7 @@ enum class EventName(val topic: String) {
     AUTOMATION_REGISTERED("automation.registered"),
     USER_REGISTERED("user.registered"),
     USER_ACTIVATED("user.activated"),
-    USER_COMPENSATED("user.compensated"),
+    USER_ACCOUNT_CREATION_COMPENSATED("user.account.creation.compensated"),
     ZONE_CREATED("zone.created"),
     PREMISES_OWNER_REGISTRATION_FAILED("premes.consumer.registered"),
     PREMISES_OWNER_REGISTERED("premes.consumer.registered"),
@@ -20,8 +20,11 @@ enum class EventName(val topic: String) {
     IDENTITY_PREMISES_OWNER_REGISTERED("identity.premises.owner.registered"),
     IDENTITY_PREMISES_OWNER_REGISTRATION_FAILED("identity.premises.owner.registration.failed"),
     ACCOUNT_REGISTRATION_FAILED("account.registration.failed"),
-    ACCOUNT_CREATED("account.created"),
     REGISTRATION_COMPLETED("registration.completed"),
+    USER_ACCOUNT_CREATED("user.account.created"),
+    DEVICE_ACCOUNT_CREATED("device.account.created"),
+    USER_ACCOUNT_CREATION_FAILED("user.account.creation.failed"),
+    DEVICE_ACCOUNT_CREATION_FAILED("device.account.creation.failed"),
     ;
 
     override fun toString(): String {

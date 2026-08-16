@@ -5,12 +5,14 @@ import com.robotutor.nexora.module.identity.infrastructure.messaging.message.*
 import com.robotutor.nexora.shared.message.mapper.EventMapper
 import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.message.message.EventMessage
+import org.springframework.stereotype.Component
 
-object IdentityEventMapper : EventMapper<IdentityEvent> {
+@Component
+class IdentityEventMapper : EventMapper<IdentityEvent> {
     override fun toEventMessage(event: IdentityEvent): EventMessage {
         return when (event) {
             is AccountCreatedEvent -> toAccountCreatedEventMessage(event)
-            is AccountRegistrationFailedEvent -> toAccountRegistrationFailedEventMessage(event)
+            is AccountCreationFailedEvent -> toAccountCreationFailedEventMessage(event)
             is AccountAuthenticatedEvent -> toAccountAuthenticatedEventMessage(event)
             is ActorAuthenticatedEvent -> toActorAuthenticatedEventMessage(event)
             is PremisesOwnerRegistrationFailedEvent -> toPremisesOwnerRegistrationFailedEventMessage(event)
@@ -30,10 +32,10 @@ object IdentityEventMapper : EventMapper<IdentityEvent> {
         }
     }
 
-    private fun toAccountRegistrationFailedEventMessage(event: AccountRegistrationFailedEvent): AccountRegistrationFailedEventMessage {
+    private fun toAccountCreationFailedEventMessage(event: AccountCreationFailedEvent): AccountCreationFailedEventMessage {
         return when (event.type) {
-            AccountType.USER -> UserAccountRegistrationFailedEventMessage(event.subjectId.value)
-            AccountType.DEVICE -> DeviceAccountRegistrationFailedEventMessage(event.subjectId.value)
+            AccountType.USER -> UserAccountCreationFailedEventMessage(event.subjectId.value)
+            AccountType.DEVICE -> DeviceAccountCreationFailedEventMessage(event.subjectId.value)
         }
     }
 

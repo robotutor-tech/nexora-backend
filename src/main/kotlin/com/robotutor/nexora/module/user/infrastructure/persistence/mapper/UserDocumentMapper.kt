@@ -26,16 +26,15 @@ object UserDocumentMapper : DocumentMapper<User, UserDocument> {
     }
 
     override fun toDomainModel(document: UserDocument): User {
-        return User
-            .create(
-                userId = UserId(document.userId),
-                name = Name(document.name),
-                email = Email(document.email, document.isEmailVerified),
-                mobile = Mobile(document.mobile, document.isMobileVerified),
-                registeredAt = document.registeredAt,
-                updatedAt = document.updatedAt,
-                state = document.state,
-            )
+        return User.create(
+            userId = UserId(document.userId),
+            name = Name(document.name),
+            email = Email(document.email, document.isEmailVerified),
+            mobile = Mobile(document.mobile, document.isMobileVerified),
+            registeredAt = document.registeredAt,
+            updatedAt = document.updatedAt,
+            state = document.state,
+        )
             .setObjectIdAndVersion(document.id, document.version)
     }
 }

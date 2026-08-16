@@ -21,6 +21,7 @@ data class AccountDocument(
     @Indexed(unique = true)
     val accountId: String,
     val accountType: AccountType,
+    @Indexed(unique = true)
     val subjectId: String,
     val createdBy: String?,
     val credential: CredentialDocument,
@@ -32,6 +33,7 @@ data class AccountDocument(
 ) : MongoDocument<Account>
 
 data class CredentialDocument(
+    @Indexed(unique = true)
     val credentialId: String,
     val secret: String,
 )

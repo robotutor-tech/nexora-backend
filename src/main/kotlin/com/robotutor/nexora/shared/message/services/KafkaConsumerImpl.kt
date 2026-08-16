@@ -1,10 +1,6 @@
 package com.robotutor.nexora.shared.message.services
 
-import com.robotutor.nexora.shared.application.logger.LogDetails
-import com.robotutor.nexora.shared.application.logger.LogLevel
-import com.robotutor.nexora.shared.application.logger.Logger
-import com.robotutor.nexora.shared.application.logger.logOnError
-import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.application.logger.*
 import com.robotutor.nexora.shared.message.message.Message
 import com.robotutor.nexora.shared.message.persistence.document.DLDocument
 import com.robotutor.nexora.shared.message.persistence.document.KafkaHeader
@@ -17,7 +13,6 @@ import reactor.core.publisher.Mono
 import reactor.util.retry.Retry
 import java.nio.charset.StandardCharsets
 import java.time.Duration
-import java.util.logging.Level.WARNING
 
 @Service
 class KafkaConsumerImpl(
@@ -44,13 +39,16 @@ class KafkaConsumerImpl(
                             })
                     .logOnSuccess(logger, "Successfully consumed Kafka topic to $topic")
                     .logOnError(logger, "Failed to consume Kafka topic to $topic")
+                    .map {
+                        receiverRecord.receiverOffset().acknowledge()
+                        it
+                    }
                     .onErrorResume {
                         val document = DLDocument(topic = topic, message = message, headers = headers)
                         dlRepository.save(document)
                             .logOnSuccess(logger, "Successfully added message in DLQ for $topic")
                             .logOnError(logger, "Failed to add message in DLQ for $topic")
                     }
-                    .doFinally { receiverRecord.receiverOffset().acknowledge() }
             }
     }
 }

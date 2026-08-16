@@ -1,11 +1,13 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
 import com.robotutor.nexora.module.identity.domain.aggregate.Group
+import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.repository.GroupRepository
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
 import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.GroupDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.GroupDocumentRepository
+import com.robotutor.nexora.shared.message.mapper.EventMapper
 import com.robotutor.nexora.shared.outbox.publishEvents
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
 import org.springframework.stereotype.Service
@@ -15,13 +17,14 @@ import reactor.core.publisher.Mono
 @Service
 class MongoGroupRepository(
     private val groupDocumentRepository: GroupDocumentRepository,
+    private val eventMapper: EventMapper<IdentityEvent>,
 ) : GroupRepository {
     override fun save(group: Group): Mono<Group> {
         val groupDocument = GroupDocumentMapper.toMongoDocument(group)
         return groupDocumentRepository.save(groupDocument)
             .retryOptimisticLockingFailure()
             .map { GroupDocumentMapper.toDomainModel(it) }
-            .publishEvents( group, IdentityEventMapper)
+            .publishEvents(group, eventMapper)
     }
 
     override fun saveAll(groups: List<Group>): Flux<Group> {

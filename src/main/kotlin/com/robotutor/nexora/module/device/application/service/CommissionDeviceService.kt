@@ -4,8 +4,6 @@ import com.robotutor.nexora.module.device.application.command.CommissionDeviceCo
 import com.robotutor.nexora.module.device.application.facade.FeedFacade
 import com.robotutor.nexora.module.device.application.facade.ZoneFacade
 import com.robotutor.nexora.module.device.domain.aggregate.DeviceAggregate
-import com.robotutor.nexora.module.device.domain.event.DeviceCommissionedEvent
-import com.robotutor.nexora.module.device.domain.event.DeviceEventPublisher
 import com.robotutor.nexora.module.device.domain.exception.DeviceError
 import com.robotutor.nexora.module.device.domain.policy.CommissionDevicePolicy
 import com.robotutor.nexora.module.device.domain.repository.DeviceRepository
@@ -15,7 +13,6 @@ import com.robotutor.nexora.shared.application.annotation.Authorize
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
-import com.robotutor.nexora.shared.domain.event.publishEvent
 import com.robotutor.nexora.shared.domain.utility.enforcePolicy
 import com.robotutor.nexora.shared.domain.vo.ActionType
 import com.robotutor.nexora.shared.domain.vo.ResourceType

@@ -1,6 +1,7 @@
 package com.robotutor.nexora.module.identity.infrastructure.persistence
 
 import com.robotutor.nexora.module.identity.domain.aggregate.Actor
+import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.repository.ActorRepository
 import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.document.ActorDocument
@@ -11,8 +12,10 @@ import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.message.mapper.EventMapper
 import com.robotutor.nexora.shared.outbox.publishEvents
 import com.robotutor.nexora.shared.persistence.repository.retryOptimisticLockingFailure
+import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.exists
 import org.springframework.data.mongodb.core.findOne
@@ -25,13 +28,14 @@ import reactor.core.publisher.Mono
 class MongoActorRepository(
     private val actorDocumentRepository: ActorDocumentRepository,
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
+    private val eventMapper: EventMapper<IdentityEvent>,
 ) : ActorRepository {
     override fun save(actor: Actor): Mono<Actor> {
         val actorDocument = ActorDocumentMapper.toMongoDocument(actor)
         return actorDocumentRepository.save(actorDocument)
             .retryOptimisticLockingFailure()
             .map { ActorDocumentMapper.toDomainModel(it) }
-            .publishEvents( actor, IdentityEventMapper)
+            .publishEvents(actor, eventMapper)
     }
 
     override fun findAllByAccountId(accountId: AccountId): Flux<Actor> {

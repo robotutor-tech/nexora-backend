@@ -8,7 +8,7 @@ sealed interface IdentityEvent : Event
 data class AccountCreatedEvent(val accountId: AccountId, val type: AccountType, val subjectId: SubjectId) :
     IdentityEvent
 
-data class AccountRegistrationFailedEvent(val type: AccountType, val subjectId: SubjectId) : IdentityEvent
+data class AccountCreationFailedEvent(val type: AccountType, val subjectId: SubjectId) : IdentityEvent
 data class CredentialUpdatedEvent(val accountId: AccountId) : IdentityEvent
 data class AccountAuthenticatedEvent(val accountId: AccountId, val type: AccountType, val subjectId: SubjectId) :
     IdentityEvent

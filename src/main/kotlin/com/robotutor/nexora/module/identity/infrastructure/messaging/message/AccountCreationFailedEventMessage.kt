@@ -2,14 +2,14 @@ package com.robotutor.nexora.module.identity.infrastructure.messaging.message
 
 import com.robotutor.nexora.shared.message.config.EventName
 
-sealed interface AccountRegistrationFailedEventMessage : IdentityEventMessage
+sealed interface AccountCreationFailedEventMessage : IdentityEventMessage
 
-class UserAccountRegistrationFailedEventMessage(val userId: String) :
-    AccountRegistrationFailedEventMessage {
-    override val eventName: EventName = EventName.ACCOUNT_REGISTRATION_FAILED
+class UserAccountCreationFailedEventMessage(val userId: String) :
+    AccountCreationFailedEventMessage {
+    override val eventName: EventName = EventName.USER_ACCOUNT_CREATION_FAILED
 }
 
-class DeviceAccountRegistrationFailedEventMessage(val deviceId: String) :
-    AccountRegistrationFailedEventMessage {
-    override val eventName: EventName = EventName.ACCOUNT_REGISTRATION_FAILED
+class DeviceAccountCreationFailedEventMessage(val deviceId: String) :
+    AccountCreationFailedEventMessage {
+    override val eventName: EventName = EventName.DEVICE_ACCOUNT_CREATION_FAILED
 }

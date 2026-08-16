@@ -2,6 +2,8 @@ package com.robotutor.nexora.module.identity.application.service.account
 
 import com.robotutor.nexora.module.identity.application.command.RegisterUserAccountCommand
 import com.robotutor.nexora.module.identity.domain.aggregate.Account
+import com.robotutor.nexora.module.identity.domain.event.AccountCreationFailedEvent
+import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.exception.IdentityError
 import com.robotutor.nexora.module.identity.domain.policy.RegisterAccountPolicy
 import com.robotutor.nexora.module.identity.domain.policy.context.RegisterAccountPolicyContext
@@ -14,11 +16,14 @@ import com.robotutor.nexora.module.identity.domain.vo.Credential
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.event.publishEventOnError
 import com.robotutor.nexora.shared.domain.utility.enforcePolicy
 import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.UserData
+import com.robotutor.nexora.shared.message.mapper.EventMapper
 import com.robotutor.nexora.shared.outbox.auditOnSuccess
+import com.robotutor.nexora.shared.outbox.publishEventOnError
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
@@ -28,6 +33,7 @@ class RegisterUserAccountService(
     private val accountIdGenerator: AccountIdGenerator,
     private val accountRepository: AccountRepository,
     private val secretEncoder: SecretEncoder,
+    private val eventMapper: EventMapper<IdentityEvent>
 ) {
     private val logger = Logger(this::class.java)
 
@@ -58,7 +64,7 @@ class RegisterUserAccountService(
                         principal = UserData(command.userId, account.accountId)
                     )
             }
-//            .publishEventOnError(eventPublisher, AccountRegistrationFailedEvent(command.type, command.subjectId))
+            .publishEventOnError(AccountCreationFailedEvent(AccountType.USER, command.userId), eventMapper)
             .logOnSuccess(logger, "Successfully registered account")
             .logOnError(logger, "Failed to register account")
     }

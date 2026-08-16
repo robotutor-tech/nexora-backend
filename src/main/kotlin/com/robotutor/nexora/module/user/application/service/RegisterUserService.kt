@@ -39,8 +39,8 @@ class RegisterUserService(
                         command.toMetaData(),
                         UserData(user.userId, AccountId("UNKNOWN"))
                     )
+                    .logOnSuccess(logger, "Successfully registered user")
             }
-            .logOnSuccess(logger, "Successfully registered user")
             .logOnError(logger, "Failed to registered user")
     }
 }

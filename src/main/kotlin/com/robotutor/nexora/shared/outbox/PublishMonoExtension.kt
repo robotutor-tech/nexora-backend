@@ -13,34 +13,56 @@ import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.ResourceType
 import com.robotutor.nexora.shared.domain.vo.UserData
 import com.robotutor.nexora.shared.message.mapper.EventMapper
-import com.robotutor.nexora.shared.message.message.MessageContext
+import com.robotutor.nexora.shared.message.message.EventMessage
 import com.robotutor.nexora.shared.outbox.audit.AuditEventMessage
 import com.robotutor.nexora.shared.outbox.audit.AuditState
 import com.robotutor.nexora.shared.outbox.audit.ResourceMessage
-import com.robotutor.nexora.shared.outbox.persistence.mapper.PrincipalDataDocumentMapper
 import com.robotutor.nexora.shared.outbox.recorder.RecorderInfrastructure
 import com.robotutor.nexora.shared.utility.createFlux
+import com.robotutor.nexora.shared.utility.createMonoError
 import reactor.core.publisher.Mono
 
 fun <D : Event, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvents(
     aggregate: AggregateRoot<T, ID, D>,
     mapper: EventMapper<D>,
 ): Mono<T> {
-    val logger = Logger(this.javaClass)
     return flatMap { result ->
         createFlux(aggregate.domainEvents)
-            .map { mapper.toEventMessage(it) }
             .flatMap {
-                val additionalDetails = mapOf("event" to it.eventName)
-                RecorderInfrastructure.recorder.record(it)
-                    .logOnSuccess(logger, "Successfully added event to outbox", additionalDetails)
-                    .logOnError(logger, "Failed to add event to outbox", additionalDetails)
+                RecorderInfrastructure.recorder.record(mapper.toEventMessage(it))
             }
             .collectList()
             .map {
                 aggregate.clearEvents()
                 result
             }
+    }
+}
+
+fun <D : Event, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEvent(
+    event: D,
+    mapper: EventMapper<D>
+): Mono<T> {
+    return flatMap { result ->
+        RecorderInfrastructure.recorder.record(mapper.toEventMessage(event))
+            .map { result }
+    }
+}
+
+fun <D : Event, ID : Identifier, T : AggregateRoot<T, ID, D>> Mono<T>.publishEventOnError(
+    event: D,
+    mapper: EventMapper<D>
+): Mono<T> {
+    val logger = Logger(this.javaClass)
+    return onErrorResume { throwable ->
+        val eventMessage: EventMessage = mapper.toEventMessage(event)
+        val additionalDetails = mapOf("event" to eventMessage.eventName)
+
+        RecorderInfrastructure.recorder.record(eventMessage)
+            .logOnSuccess(logger, "Successfully added event to outbox", additionalDetails)
+            .logOnError(logger, "Failed to add event to outbox", additionalDetails)
+            .then(createMonoError(throwable))
+
     }
 }
 
@@ -88,57 +110,11 @@ fun <T> Mono<T>.auditOnSuccess(
                         actorId = actorId,
                     )
                 )
-                    .logOnSuccess(logger, "Successfully added audit event")
-                    .logOnError(logger, "Failed to add audit event")
             }
+            .logOnSuccess(logger, "Successfully added audit event")
+            .logOnError(logger, "Failed to add audit event")
             .then(Mono.fromCallable { domain })
     }
 }
 
-//fun <T> Flux<T>.auditOnSuccess(
-//    action: String,
-//    type: ResourceType,
-//    identifier: Identifier,
-//    metadata: Map<String, Any?> = emptyMap(),
-//    userId: UserId? = null,
-//    merchantId: MerchantId? = null,
-//): Mono<T> {
-//    val logger = Logger(this.javaClass)
-//    val audits = mutableListOf<AuditEventMessage>()
-//    val hasElements = AtomicBoolean(false)
-//    var traceData: TraceData? = null
-//    var principalData: PrincipalData? = null
-//    return flatMap { result ->
-//        if (!hasElements.get()) {
-//            Mono.zip(ReactiveContext.getTraceData(), ReactiveContext.getPrincipalData())
-//                .map {
-//                    hasElements.set(true)
-//                    traceData = it.t1
-//                    principalData = it.t2
-//                    result
-//                }
-//        } else {
-//            @Suppress("UNCHECKED_CAST")
-//            createMono(result as Any) as Mono<T>
-//        }
-//    }
-//        .doOnComplete {
-//            RecorderInfrastructure.recorder.record(
-//                AuditEventMessage(
-//                    userId = (userId ?: it.t2.identifier).value,
-//                    action = action,
-//                    resource = ResourceMessage(type, identifier.value),
-//                    merchantId = id,
-//                    metadata = metadata,
-//                    state = AuditState.SUCCESS,
-//                    eventId = event.eventId.value,
-//                    correlationId = it.t1.correlationId,
-//                    occurredAt = event.occurredAt
-//                )
-//            )
-//                .logOnSuccess(logger, "Successfully added audit event")
-//                .logOnError(logger, "Failed to add audit event")
-//        }
-//
-//
-//}
+

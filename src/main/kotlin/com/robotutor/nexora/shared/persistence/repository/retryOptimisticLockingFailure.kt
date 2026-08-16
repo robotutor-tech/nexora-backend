@@ -8,12 +8,12 @@ import java.time.Duration
 
 fun <T> Mono<T>.retryOptimisticLockingFailure(): Mono<T> {
     return retryWhen(
-        Retry.fixedDelay(5, Duration.ofMillis(500))
+        Retry.fixedDelay(3, Duration.ofMillis(500))
             .filter { it is OptimisticLockingFailureException })
 }
 
 fun <T> Flux<T>.retryOptimisticLockingFailure(): Flux<T> {
     return retryWhen(
-        Retry.fixedDelay(5, Duration.ofMillis(500))
+        Retry.fixedDelay(3, Duration.ofMillis(500))
             .filter { it is OptimisticLockingFailureException })
 }

@@ -15,6 +15,6 @@ class SchedulerConfig {
 
     @Bean
     fun lockProvider(connectionFactory: RedisConnectionFactory): LockProvider {
-        return RedisLockProvider(connectionFactory, "marketplace")
+        return RedisLockProvider(connectionFactory, "nexora")
     }
 }
