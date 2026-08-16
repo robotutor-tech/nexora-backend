@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.premises.infrastructure.persistence.mapper
 
-import com.robotutor.nexora.module.premises.domain.aggregate.PremisesAggregate
+import com.robotutor.nexora.module.premises.domain.aggregate.Premises
 import com.robotutor.nexora.module.premises.domain.vo.Address
 import com.robotutor.nexora.module.premises.infrastructure.persistence.document.AddressDocument
 import com.robotutor.nexora.module.premises.infrastructure.persistence.document.PremisesDocument
@@ -9,8 +9,8 @@ import com.robotutor.nexora.shared.domain.vo.AccountId
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
-object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocument> {
-    override fun toMongoDocument(domain: PremisesAggregate): PremisesDocument {
+object PremisesDocumentMapper : DocumentMapper<Premises, PremisesDocument> {
+    override fun toMongoDocument(domain: Premises): PremisesDocument {
         return PremisesDocument(
             id = domain.getObjectId(),
             premisesId = domain.premisesId.value,
@@ -24,8 +24,8 @@ object PremisesDocumentMapper : DocumentMapper<PremisesAggregate, PremisesDocume
         )
     }
 
-    override fun toDomainModel(document: PremisesDocument): PremisesAggregate {
-        return PremisesAggregate
+    override fun toDomainModel(document: PremisesDocument): Premises {
+        return Premises
             .create(
                 premisesId = PremisesId(document.premisesId),
                 name = Name(document.name),

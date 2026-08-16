@@ -1,7 +1,7 @@
 package com.robotutor.nexora.module.premises.application.service
 
 import com.robotutor.nexora.module.premises.application.command.CompensatePremisesRegistrationCommand
-import com.robotutor.nexora.module.premises.domain.aggregate.PremisesAggregate
+import com.robotutor.nexora.module.premises.domain.aggregate.Premises
 import com.robotutor.nexora.module.premises.domain.repository.PremisesRepository
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
@@ -16,7 +16,7 @@ class CompensatePremisesRegistrationService(
 ) {
     private val logger = Logger(this::class.java)
 
-    fun execute(command: CompensatePremisesRegistrationCommand): Mono<PremisesAggregate> {
+    fun execute(command: CompensatePremisesRegistrationCommand): Mono<Premises> {
         return premisesRepository.deleteByPremisesIdAndOwnerId(command.premisesId, command.ownerId)
 
             .flatMap { premises -> premisesRepository.save(premises) }

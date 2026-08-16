@@ -2,12 +2,11 @@ package com.robotutor.nexora.module.premises.interfaces.messaging
 
 import com.robotutor.nexora.module.premises.application.service.ActivatePremisesService
 import com.robotutor.nexora.module.premises.application.service.CompensatePremisesRegistrationService
-import com.robotutor.nexora.module.premises.domain.aggregate.PremisesAggregate
+import com.robotutor.nexora.module.premises.domain.aggregate.Premises
 import com.robotutor.nexora.module.premises.interfaces.messaging.mapper.PremisesEventMapper
 import com.robotutor.nexora.module.premises.interfaces.messaging.message.PremisesOwnerRegisteredMessage
 import com.robotutor.nexora.module.premises.interfaces.messaging.message.PremisesOwnerRegistrationFailedMessage
 import com.robotutor.nexora.shared.domain.vo.ActorData
-import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.message.annotation.EventController
 import com.robotutor.nexora.shared.message.annotation.EventListener
 import com.robotutor.nexora.shared.message.annotation.Message
@@ -25,7 +24,7 @@ class PremisesEventController(
     fun activatePremises(
         @Message message: PremisesOwnerRegisteredMessage,
         actorData: ActorData
-    ): Mono<PremisesAggregate> {
+    ): Mono<Premises> {
         val command = PremisesEventMapper.toActivatePremisesCommand(message, actorData)
         return activatePremisesService.execute(command)
     }
@@ -35,7 +34,7 @@ class PremisesEventController(
     fun compensatePremisesRegistration(
         @Message message: PremisesOwnerRegistrationFailedMessage,
         actorData: ActorData
-    ): Mono<PremisesAggregate> {
+    ): Mono<Premises> {
         val command = PremisesEventMapper.toCompensatePremisesRegistrationCommand(message, actorData)
         return compensatePremisesRegistrationService.execute(command)
     }

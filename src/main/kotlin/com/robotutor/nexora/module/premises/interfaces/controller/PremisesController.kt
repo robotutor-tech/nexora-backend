@@ -22,7 +22,7 @@ class PremisesController(
 ) {
     @PostMapping
     fun registerPremises(
-        @RequestBody @Validated premisesRequest: PremisesCreateRequest,
+        @RequestBody premisesRequest: PremisesCreateRequest,
         userData: UserData
     ): Mono<PremisesResponse> {
         val command = PremisesMapper.toRegisterPremisesCommand(premisesRequest, userData)

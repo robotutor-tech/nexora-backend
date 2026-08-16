@@ -39,16 +39,13 @@ class KafkaConsumerImpl(
                             })
                     .logOnSuccess(logger, "Successfully consumed Kafka topic to $topic")
                     .logOnError(logger, "Failed to consume Kafka topic to $topic")
-                    .map {
-                        receiverRecord.receiverOffset().acknowledge()
-                        it
-                    }
                     .onErrorResume {
                         val document = DLDocument(topic = topic, message = message, headers = headers)
                         dlRepository.save(document)
                             .logOnSuccess(logger, "Successfully added message in DLQ for $topic")
                             .logOnError(logger, "Failed to add message in DLQ for $topic")
                     }
+                    .doFirst { receiverRecord.receiverOffset().acknowledge() }
             }
     }
 }

@@ -1,15 +1,12 @@
-package com.robotutor.nexora.shared.security.resolver
+package com.robotutor.nexora.shared.resolver
 
-import com.robotutor.nexora.shared.resolver.ArgumentResolver
 import org.springframework.core.MethodParameter
-import org.springframework.stereotype.Component
 import org.springframework.web.reactive.BindingContext
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
-@Component
-class HandlerResolver {
+object HandlerMethodResolver {
     fun from(argumentResolver: ArgumentResolver): HandlerMethodArgumentResolver {
         return object : HandlerMethodArgumentResolver {
             override fun supportsParameter(parameter: MethodParameter): Boolean {

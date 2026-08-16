@@ -1,6 +1,6 @@
 package com.robotutor.nexora.module.premises.infrastructure.persistence.document
 
-import com.robotutor.nexora.module.premises.domain.aggregate.PremisesAggregate
+import com.robotutor.nexora.module.premises.domain.aggregate.Premises
 import com.robotutor.nexora.module.premises.domain.aggregate.PremisesState
 import com.robotutor.nexora.shared.persistence.document.MongoDocument
 import org.springframework.data.annotation.Id
@@ -27,7 +27,7 @@ data class PremisesDocument(
     val updatedAt: Instant,
     @Version
     val version: Long? = null
-) : MongoDocument<PremisesAggregate>
+) : MongoDocument<Premises>
 
 data class AddressDocument(
     val street: String,

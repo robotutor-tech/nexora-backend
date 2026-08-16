@@ -25,7 +25,6 @@ data class UserData(val userId: UserId, override val accountId: AccountId) : Acc
     override val principalId: PrincipalId = userId
     override val accountType: AccountType = AccountType.USER
 
-
     companion object {
         fun from(accountId: AccountId, subjectId: SubjectId): UserData {
             return UserData(UserId(subjectId.value), accountId)

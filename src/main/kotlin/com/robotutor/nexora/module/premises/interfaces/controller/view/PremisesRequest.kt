@@ -22,8 +22,6 @@ data class AddressRequest(
 )
 
 data class PremisesCreateRequest(
-    @field:NotBlank(message = "Name is required")
-    @field:Size(min = 2, max = 30, message = "Name should not be less than 2 char or more than 30 char")
     val name: String,
     val address: AddressRequest
 )

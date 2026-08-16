@@ -11,7 +11,7 @@ import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.time.Instant
 
-class PremisesAggregate private constructor(
+class Premises private constructor(
     val premisesId: PremisesId,
     val ownerId: AccountId,
     val createdAt: Instant,
@@ -19,19 +19,14 @@ class PremisesAggregate private constructor(
     val address: Address,
     private var state: PremisesState,
     private var updatedAt: Instant,
-) : AggregateRoot<PremisesAggregate, PremisesId, PremisesEvent>(premisesId) {
+) : AggregateRoot<Premises, PremisesId, PremisesEvent>(premisesId) {
 
     fun getState(): PremisesState = state
     fun getUpdatedAt(): Instant = updatedAt
 
 
     companion object {
-        fun register(
-            premisesId: PremisesId,
-            name: Name,
-            address: Address,
-            ownerId: AccountId,
-        ): PremisesAggregate {
+        fun register(premisesId: PremisesId, name: Name, address: Address, ownerId: AccountId): Premises {
             val premises = create(premisesId = premisesId, name = name, address = address, ownerId = ownerId)
             premises.addEvent(
                 PremisesRegisteredEvent(premises.premisesId, premises.name, premises.ownerId)
@@ -47,8 +42,8 @@ class PremisesAggregate private constructor(
             state: PremisesState = PremisesState.REGISTERED,
             createdAt: Instant = Instant.now(),
             updatedAt: Instant = Instant.now(),
-        ): PremisesAggregate {
-            return PremisesAggregate(
+        ): Premises {
+            return Premises(
                 premisesId = premisesId,
                 ownerId = ownerId,
                 createdAt = createdAt,
@@ -60,7 +55,7 @@ class PremisesAggregate private constructor(
         }
     }
 
-    fun activate(): PremisesAggregate {
+    fun activate(): Premises {
         if (state != PremisesState.REGISTERED) {
             throw InvalidStateException(PremisesError.NEXORA0502)
         }
