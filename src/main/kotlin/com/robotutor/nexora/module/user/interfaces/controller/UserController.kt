@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.user.interfaces.controller
 
-import com.robotutor.nexora.module.user.application.command.GetUserQuery
 import com.robotutor.nexora.module.user.application.service.GetUserService
 import com.robotutor.nexora.module.user.application.service.RegisterUserService
 import com.robotutor.nexora.module.user.interfaces.controller.mapper.UserMapper
@@ -28,13 +27,7 @@ class UserController(
 
     @GetMapping("/me")
     fun me(userData: UserData): Mono<UserResponse> {
-        return getUserService.execute(GetUserQuery(userData.userId))
+        return getUserService.execute(userData.userId)
             .map { UserMapper.toUserResponse(it) }
     }
-
-//    @GetMapping("/{accountId}")
-//    fun getUser(@PathVariable accountId: String): Mono<UserResponse> {
-//        return getUserService.execute(GetUserQuery(SubjectId(accountId)))
-//            .map { UserMapper.toUserResponse(it) }
-//    }
 }

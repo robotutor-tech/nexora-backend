@@ -7,6 +7,6 @@ enum class UserError(override val errorCode: String, override val message: Strin
     NEXORA0202("NEXORA-0202", "User is not in REGISTERED state."),
     NEXORA0203("NEXORA-0203", "Registered user must not have accountId."),
     NEXORA0204("NEXORA-0204", "User is not in registered state."),
-    NEXORA0205("NEXORA-0205", "User not found!!."),
+    NEXORA0205("NEXORA-0205", "User not found."),
 
 }

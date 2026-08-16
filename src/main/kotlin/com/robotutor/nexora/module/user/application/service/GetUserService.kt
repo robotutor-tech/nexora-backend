@@ -1,11 +1,8 @@
 package com.robotutor.nexora.module.user.application.service
 
-import com.robotutor.nexora.module.user.application.command.GetUserQuery
 import com.robotutor.nexora.module.user.domain.aggregate.User
 import com.robotutor.nexora.module.user.domain.exception.UserError
 import com.robotutor.nexora.module.user.domain.repository.UserRepository
-import com.robotutor.nexora.shared.application.cache.CacheNames
-import com.robotutor.nexora.shared.application.cache.annotation.Cached
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
@@ -23,10 +20,10 @@ class GetUserService(
     private val logger = Logger(this::class.java)
 
     @Transactional
-    fun execute(query: GetUserQuery): Mono<User> {
-        return userRepository.findByUserId(UserId(query.subjectId.value))
+    fun execute(userId: UserId): Mono<User> {
+        return userRepository.findByUserId(userId)
             .required(DataNotFoundException(UserError.NEXORA0205))
-            .logOnSuccess(logger, "Successfully retrieved user", mapOf("principalId" to query.subjectId))
-            .logOnError(logger, "Failed to retrieve user", mapOf("principalId" to query.subjectId))
+            .logOnSuccess(logger, "Successfully retrieved user")
+            .logOnError(logger, "Failed to retrieve user")
     }
 }
