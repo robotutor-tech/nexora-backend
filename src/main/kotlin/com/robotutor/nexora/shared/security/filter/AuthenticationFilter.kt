@@ -1,10 +1,6 @@
 package com.robotutor.nexora.shared.security.filter
 
-import com.robotutor.nexora.shared.application.logger.Logger
-import com.robotutor.nexora.shared.application.serialization.DefaultSerializer.serialize
-import com.robotutor.nexora.shared.domain.exception.BaseException
-import com.robotutor.nexora.shared.security.controllers.ExceptionHandlerRegistry
-import com.robotutor.nexora.shared.security.service.JwtValidationService
+import com.robotutor.nexora.shared.security.service.ContextService
 import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -16,34 +12,25 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
+const val CONTEXT_HEADER = "x-context-data"
+
 @Component
-@Order(1)
-class AuthenticationFilter(
-    private val routeValidator: RouteValidator,
-    private val exceptionHandlerRegistry: ExceptionHandlerRegistry,
-    private val jwtValidationService: JwtValidationService,
-) : WebFilter {
-    val logger = Logger(this::class.java)
+@Order(2)
+class AuthenticationFilter(private val contextService: ContextService, private val routeValidator: RouteValidator) :
+    WebFilter {
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        val token = routeValidator.getToken(exchange.request)
-        try {
-            val principalData = jwtValidationService.validate(token ?: "")
-            val authentication = UsernamePasswordAuthenticationToken(principalData, null, emptyList())
-            val securityContext = createMono(SecurityContextImpl(authentication))
+        if (exchange.request.uri.path.startsWith("/api")) {
             return chain.filter(exchange)
-                .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(securityContext))
-        } catch (ex: Throwable) {
-            return if (routeValidator.isUnsecured(exchange.request)) {
-                chain.filter(exchange)
-            } else {
-                val responseEntity = exceptionHandlerRegistry.handle(ex)
-                exchange.response.statusCode = responseEntity.statusCode
-                val buffer = exchange.response.bufferFactory().wrap(
-                    serialize(responseEntity.body).toByteArray(),
-                )
-                exchange.response.writeWith(Mono.just(buffer))
-            }
         }
+        if (routeValidator.isUnsecured(exchange.request)) {
+            return chain.filter(exchange)
+        }
+        val token = exchange.request.headers.getFirst(CONTEXT_HEADER)
+        val principalData = contextService.getPrincipalData(token)
+        val authentication = UsernamePasswordAuthenticationToken(principalData, null, emptyList())
+        val securityContext = createMono(SecurityContextImpl(authentication))
+        return chain.filter(exchange)
+            .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(securityContext))
     }
 }

@@ -35,6 +35,10 @@ class MongoAccountRepository(
             .map { AccountDocumentMapper.toDomainModel(it) }
     }
 
+    override fun existsByCredentialId(credentialId: CredentialId): Mono<Boolean> {
+        return accountDocumentRepository.existsByCredential_CredentialId(credentialId.value)
+    }
+
     override fun findByAccountId(accountId: AccountId): Mono<Account> {
         return accountDocumentRepository.findByAccountId(accountId.value)
             .map { AccountDocumentMapper.toDomainModel(it) }

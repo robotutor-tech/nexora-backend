@@ -21,9 +21,10 @@ class AccountController(
     private val rotateCredentialService: RotateCredentialService
 ) {
 
-    @PostMapping("/register")
-    fun registerMachine(@RequestBody registerUserAccountRequest: RegisterUserAccountRequest): Mono<AccountResponse> {
-        val command = AccountMapper.toRegisterUserAccountCommand(registerUserAccountRequest)
+    @PostMapping("/users/register")
+    fun registerUserAccount(@RequestBody request: RegisterUserAccountRequest): Mono<AccountResponse> {
+        println("--------------$request--------------------")
+        val command = AccountMapper.toRegisterUserAccountCommand(request)
         return registerUserAccountService.execute(command)
             .map { AccountMapper.toAccountResponse(it) }
     }

@@ -31,17 +31,18 @@ class RegisterUserService(
             .enforcePolicy(registerUserPolicy, UserError.NEXORA0201) {
                 DuplicateUserContext(it, command.email)
             }
-            .map { User.register(name = command.name, email = command.email, mobile = command.mobile) }
+            .map { User.register(fullName = command.fullName, email = command.email, mobile = command.mobile) }
             .flatMap { user ->
+                val userData = UserData(user.userId, AccountId("UNKNOWN"))
                 userRepository.save(user)
                     .auditOnSuccess(
                         "USER_REGISTERED",
                         ResourceType.USER,
                         user.userId,
                         command.toMetaData(),
-                        UserData(user.userId, AccountId("UNKNOWN"))
+                        userData
                     )
-                    .logOnSuccess(logger, "Successfully registered user")
+                    .logOnSuccess(logger, "Successfully registered user", mapOf("userId" to user.userId.value))
             }
             .logOnError(logger, "Failed to registered user")
     }

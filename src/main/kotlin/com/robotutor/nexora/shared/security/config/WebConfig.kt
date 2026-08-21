@@ -11,14 +11,7 @@ import org.springframework.web.reactive.result.method.annotation.RequestMappingH
 @Configuration
 class WebConfig {
     @Bean
-    fun handlerMapping(): RequestMappingHandlerMapping {
-        return RequestMappingHandlerMapping()
-    }
-
-    @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-        return http
-            .csrf { it.disable() }
-            .build()
+        return http.csrf { it.disable() }.build()
     }
 }

@@ -44,6 +44,12 @@ repositories {
 //    githubMavenRepository("logging-starter")
 }
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2025.0.0")
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -59,6 +65,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("io.projectreactor.kafka:reactor-kafka")
+
+//    Gateway
+    implementation("org.springframework.cloud:spring-cloud-starter-gateway-server-webflux")
 
 // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.7")

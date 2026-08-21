@@ -11,4 +11,5 @@ interface AccountDocumentRepository : ReactiveCrudRepository<AccountDocument, St
     fun findBySubjectId(subjectId: String): Mono<AccountDocument>
     fun deleteByAccountId(accountId: String): Mono<AccountDocument>
     fun findByCredential_CredentialId(credentialId: String): Mono<AccountDocument>
+    fun existsByCredential_CredentialId(credentialId: String): Mono<Boolean>
 }

@@ -21,17 +21,29 @@ spring:
     listener:
       ack-mode: manual
 
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: nexora
+              uri: http://localhost:9001
+              predicates:
+                - Path=/api/**
+              filters:
+                - StripPrefix=1
+
 server:
   port: ${PORT:9001}
 
 app:
   security:
     un-secured-path:
-      - "/users/register"
-      - "/identity/accounts/register"
+      - "/identity/accounts/users/register"
       - "/identity/accounts/authenticate"
       - "/identity/sessions/validate"
       - "/identity/sessions/refresh"
+      - "/users/register"
     jwt:
       secret: ${JWT_SECRET:secret}
   zone:
@@ -40,3 +52,5 @@ app:
     base-url: ${FEED_BASE_URL:http://localhost:${server.port}}
   automation:
     feed-base-url: ${FEED_BASE_URL:http://localhost:${server.port}}
+  identity:
+    user-base-url: ${USER_BASE_URL:http://localhost:${server.port}}

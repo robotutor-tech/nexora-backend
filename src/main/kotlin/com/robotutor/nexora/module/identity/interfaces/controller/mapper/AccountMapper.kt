@@ -11,14 +11,16 @@ import com.robotutor.nexora.module.identity.interfaces.controller.view.Authentic
 import com.robotutor.nexora.module.identity.interfaces.controller.view.RegisterUserAccountRequest
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.DeviceId
-import com.robotutor.nexora.shared.domain.vo.UserId
+import com.robotutor.nexora.shared.domain.vo.FullName
+import com.robotutor.nexora.shared.domain.vo.Mobile
 
 object AccountMapper {
     fun toRegisterUserAccountCommand(request: RegisterUserAccountRequest): RegisterUserAccountCommand {
         return RegisterUserAccountCommand(
             email = Email(request.email),
             password = RawPassword(request.password),
-            userId = UserId(request.userId)
+            name = FullName(request.name),
+            mobile = Mobile(request.mobile),
         )
     }
 

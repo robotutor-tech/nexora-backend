@@ -3,7 +3,7 @@ package com.robotutor.nexora.module.user.infrastructure.persistence.mapper
 import com.robotutor.nexora.module.user.domain.aggregate.User
 import com.robotutor.nexora.module.user.domain.vo.Email
 import com.robotutor.nexora.module.user.domain.vo.Mobile
-import com.robotutor.nexora.module.user.domain.vo.Name
+import com.robotutor.nexora.shared.domain.vo.FullName
 import com.robotutor.nexora.module.user.infrastructure.persistence.document.UserDocument
 import com.robotutor.nexora.shared.domain.vo.UserId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
@@ -13,7 +13,7 @@ object UserDocumentMapper : DocumentMapper<User, UserDocument> {
         return UserDocument(
             id = domain.getObjectId(),
             userId = domain.userId.value,
-            name = domain.name.value,
+            name = domain.fullName.value,
             email = domain.email.value,
             mobile = domain.mobile.value,
             isEmailVerified = domain.email.isVerified,
@@ -28,7 +28,7 @@ object UserDocumentMapper : DocumentMapper<User, UserDocument> {
     override fun toDomainModel(document: UserDocument): User {
         return User.create(
             userId = UserId(document.userId),
-            name = Name(document.name),
+            fullName = FullName(document.name),
             email = Email(document.email, document.isEmailVerified),
             mobile = Mobile(document.mobile, document.isMobileVerified),
             registeredAt = document.registeredAt,

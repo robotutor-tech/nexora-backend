@@ -12,6 +12,9 @@ const val BEARER_PREFIX = "Bearer "
 class RouteValidator(private val appConfig: AppConfig) {
 
     fun isUnsecured(request: ServerHttpRequest): Boolean {
+        if (request.uri.path.startsWith("/api")) {
+            return appConfig.unSecuredPath.any { request.uri.path == "/api$it" }
+        }
         return appConfig.unSecuredPath.any { request.uri.path == it }
     }
 

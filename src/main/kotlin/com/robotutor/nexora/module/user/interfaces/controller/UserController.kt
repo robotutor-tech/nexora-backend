@@ -19,8 +19,8 @@ class UserController(
 
     @PostMapping("/register")
     @ResponseStatus(code = HttpStatus.CREATED)
-    fun register(@RequestBody userRequest: UserRequest): Mono<UserResponse> {
-        val command = UserMapper.toRegisterUserCommand(userRequest)
+    fun register(@RequestBody request: UserRequest): Mono<UserResponse> {
+        val command = UserMapper.toRegisterUserCommand(request)
         return registerUserService.execute(command)
             .map { UserMapper.toUserResponse(it) }
     }

@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono
 interface AccountRepository {
     fun save(account: Account): Mono<Account>
     fun findByCredentialId(credentialId: CredentialId): Mono<Account>
+    fun existsByCredentialId(credentialId: CredentialId): Mono<Boolean>
     fun findByAccountId(accountId: AccountId): Mono<Account>
     fun findBySubjectId(subjectId: SubjectId): Mono<Account>
     fun deleteByAccountId(accountId: AccountId): Mono<Account>

@@ -18,7 +18,7 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 import java.time.Instant
 
 @Component
-@Order(2)
+@Order(3)
 class LoggingFilter : WebFilter {
     val logger = Logger(this::class.java)
 
