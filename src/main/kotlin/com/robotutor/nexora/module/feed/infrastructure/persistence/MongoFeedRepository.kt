@@ -1,14 +1,12 @@
 package com.robotutor.nexora.module.feed.infrastructure.persistence
 
 import com.robotutor.nexora.module.feed.domain.aggregate.FeedAggregate
-import com.robotutor.nexora.module.feed.domain.event.FeedEventPublisher
 import com.robotutor.nexora.module.feed.domain.repository.FeedRepository
 import com.robotutor.nexora.module.feed.infrastructure.messaging.mapper.FeedEventMapper
 import com.robotutor.nexora.module.feed.infrastructure.persistence.document.FeedDocument
 import com.robotutor.nexora.module.feed.infrastructure.persistence.mapper.FeedDocumentMapper
 import com.robotutor.nexora.module.feed.infrastructure.persistence.mapper.FeedSpecificationTranslator
 import com.robotutor.nexora.module.feed.infrastructure.persistence.repository.FeedDocumentRepository
-import com.robotutor.nexora.shared.domain.event.publishEvents
 import com.robotutor.nexora.shared.domain.specification.Specification
 import com.robotutor.nexora.shared.outbox.publishEvents
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
@@ -25,29 +23,29 @@ class MongoFeedRepository(
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : FeedRepository {
     override fun save(feed: FeedAggregate): Mono<FeedAggregate> {
-        val document = FeedDocumentMapper.toMongoDocument(feed)
+        val document = FeedDocumentMapper.toDocument(feed)
         return feedDocumentRepository.save(document)
-            .map { FeedDocumentMapper.toDomainModel(it) }
+            .map { FeedDocumentMapper.toDomain(it) }
             .publishEvents(feed, FeedEventMapper)
     }
 
     override fun saveAll(feeds: List<FeedAggregate>): Flux<FeedAggregate> {
-        val documents = feeds.map { FeedDocumentMapper.toMongoDocument(it) }
+        val documents = feeds.map { FeedDocumentMapper.toDocument(it) }
         return feedDocumentRepository.saveAll(documents)
-            .map { FeedDocumentMapper.toDomainModel(it) }
+            .map { FeedDocumentMapper.toDomain(it) }
 //            .publishEvents(eventPublisher, feeds)
     }
 
     override fun findAll(specification: Specification<FeedAggregate>): Flux<FeedAggregate> {
         val query = Query(FeedSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.find<FeedDocument>(query)
-            .map { FeedDocumentMapper.toDomainModel(it) }
+            .map { FeedDocumentMapper.toDomain(it) }
     }
 
     override fun find(specification: Specification<FeedAggregate>): Mono<FeedAggregate> {
         val query = Query(FeedSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.findOne<FeedDocument>(query)
-            .map { FeedDocumentMapper.toDomainModel(it) }
+            .map { FeedDocumentMapper.toDomain(it) }
     }
 }
 

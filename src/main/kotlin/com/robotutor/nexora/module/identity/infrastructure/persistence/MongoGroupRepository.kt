@@ -4,7 +4,6 @@ import com.robotutor.nexora.module.identity.domain.aggregate.Group
 import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.repository.GroupRepository
 import com.robotutor.nexora.module.identity.domain.vo.GroupId
-import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.GroupDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.GroupDocumentRepository
 import com.robotutor.nexora.shared.message.mapper.EventMapper
@@ -20,23 +19,23 @@ class MongoGroupRepository(
     private val eventMapper: EventMapper<IdentityEvent>,
 ) : GroupRepository {
     override fun save(group: Group): Mono<Group> {
-        val groupDocument = GroupDocumentMapper.toMongoDocument(group)
+        val groupDocument = GroupDocumentMapper.toDocument(group)
         return groupDocumentRepository.save(groupDocument)
             .retryOptimisticLockingFailure()
-            .map { GroupDocumentMapper.toDomainModel(it) }
+            .map { GroupDocumentMapper.toDomain(it) }
             .publishEvents(group, eventMapper)
     }
 
     override fun saveAll(groups: List<Group>): Flux<Group> {
-        val groupDocuments = groups.map { GroupDocumentMapper.toMongoDocument(it) }
+        val groupDocuments = groups.map { GroupDocumentMapper.toDocument(it) }
         return groupDocumentRepository.saveAll(groupDocuments)
             .retryOptimisticLockingFailure()
-            .map { GroupDocumentMapper.toDomainModel(it) }
+            .map { GroupDocumentMapper.toDomain(it) }
 //            .publishEvents(eventPublisher, groupAggregates)
     }
 
     override fun findAllByGroupIds(groupIds: Set<GroupId>): Flux<Group> {
         return groupDocumentRepository.findAllByGroupIdIn(groupIds.map { it.value })
-            .map { GroupDocumentMapper.toDomainModel(it) }
+            .map { GroupDocumentMapper.toDomain(it) }
     }
 }

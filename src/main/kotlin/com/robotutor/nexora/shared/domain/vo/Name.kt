@@ -2,12 +2,15 @@ package com.robotutor.nexora.shared.domain.vo
 
 import com.robotutor.nexora.shared.domain.utility.validation
 
-data class Name(val value: String) : ValueObject {
+@JvmInline
+value class Name private constructor(val value: String) : ValueObject {
     init {
-        validation(value.trim().length !in 4..30) { "Name must be between 4 and 30 characters long" }
+        validation(value.length !in 2..30) { "Name must be between 2 and 30 characters long" }
     }
 
-    override fun toString(): String {
-        return value
+    companion object {
+        fun of(value: String): Name {
+            return Name(value.trim())
+        }
     }
 }

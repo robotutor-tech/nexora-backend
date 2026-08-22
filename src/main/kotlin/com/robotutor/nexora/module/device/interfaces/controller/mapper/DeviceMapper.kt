@@ -16,7 +16,7 @@ import com.robotutor.nexora.shared.domain.vo.*
 object DeviceMapper {
     fun toRegisterDeviceCommand(request: RegisterDeviceRequest, actorData: ActorData): RegisterDeviceCommand {
         return RegisterDeviceCommand(
-            name = Name(request.name),
+            name = Name.of(request.name),
             zoneId = ZoneId(request.zoneId),
             premisesId = actorData.premisesId,
             registeredBy = actorData.actorId,
@@ -59,8 +59,8 @@ object DeviceMapper {
             metadata = DeviceMetadata(
                 modelNo = ModelNo(metadata.modelNo),
                 serialNo = SerialNo(metadata.serialNo),
-                osName = Name(metadata.osName),
-                osVersion = Name(metadata.osVersion),
+                osName = Name.of(metadata.osName),
+                osVersion = Name.of(metadata.osVersion),
             )
         )
     }

@@ -26,7 +26,7 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 import java.util.concurrent.TimeUnit
 
 object AutomationDocumentMapper : DocumentMapper<AutomationAggregate, AutomationDocument> {
-    override fun toMongoDocument(domain: AutomationAggregate): AutomationDocument {
+    override fun toDocument(domain: AutomationAggregate): AutomationDocument {
         return AutomationDocument(
             id = domain.getObjectId(),
             automationId = domain.automationId.value,
@@ -45,11 +45,11 @@ object AutomationDocumentMapper : DocumentMapper<AutomationAggregate, Automation
         )
     }
 
-    override fun toDomainModel(document: AutomationDocument): AutomationAggregate {
+    override fun toDomain(document: AutomationDocument): AutomationAggregate {
         return AutomationAggregate.create(
             automationId = AutomationId(document.automationId),
             premisesId = PremisesId(document.premisesId),
-            name = Name(document.name),
+            name = Name.of(document.name),
             triggers = Triggers(document.triggers.map { toComponent(it) as Trigger }),
             actions = Actions(document.actions.map { toComponent(it) as Action }),
             condition = null,

@@ -25,16 +25,16 @@ class MongoAutomationRepository(
 
 ) : AutomationRepository {
     override fun save(automationAggregate: AutomationAggregate): Mono<AutomationAggregate> {
-        val document = AutomationDocumentMapper.toMongoDocument(automationAggregate)
+        val document = AutomationDocumentMapper.toDocument(automationAggregate)
         return automationDocumentRepository.save(document)
-            .map { AutomationDocumentMapper.toDomainModel(it) }
+            .map { AutomationDocumentMapper.toDomain(it) }
             .publishEvents(automationAggregate, AutomationEventMapper)
     }
 
     override fun findAll(specification: Specification<AutomationAggregate>): Flux<AutomationAggregate> {
         val query = Query(AutomationSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.find<AutomationDocument>(query)
-            .map { AutomationDocumentMapper.toDomainModel(it) }
+            .map { AutomationDocumentMapper.toDomain(it) }
     }
 
     override fun findByAutomationIdAndPremisesId(
@@ -42,11 +42,11 @@ class MongoAutomationRepository(
         premisesId: PremisesId
     ): Mono<AutomationAggregate> {
         return automationDocumentRepository.findByAutomationIdAndPremisesId(automationId.value, premisesId.value)
-            .map { AutomationDocumentMapper.toDomainModel(it) }
+            .map { AutomationDocumentMapper.toDomain(it) }
     }
 
     override fun findByAutomationId(automationId: AutomationId): Mono<AutomationAggregate> {
         return automationDocumentRepository.findByAutomationId(automationId.value)
-            .map { AutomationDocumentMapper.toDomainModel(it) }
+            .map { AutomationDocumentMapper.toDomain(it) }
     }
 }

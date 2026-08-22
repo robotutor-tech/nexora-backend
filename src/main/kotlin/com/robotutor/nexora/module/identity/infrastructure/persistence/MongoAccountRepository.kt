@@ -4,7 +4,6 @@ import com.robotutor.nexora.module.identity.domain.aggregate.Account
 import com.robotutor.nexora.module.identity.domain.event.IdentityEvent
 import com.robotutor.nexora.module.identity.domain.repository.AccountRepository
 import com.robotutor.nexora.module.identity.domain.vo.CredentialId
-import com.robotutor.nexora.module.identity.infrastructure.messaging.mapper.IdentityEventMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.mapper.AccountDocumentMapper
 import com.robotutor.nexora.module.identity.infrastructure.persistence.repository.AccountDocumentRepository
 import com.robotutor.nexora.shared.domain.specification.Specification
@@ -23,16 +22,16 @@ class MongoAccountRepository(
     private val eventMapper: EventMapper<IdentityEvent>,
 ) : AccountRepository {
     override fun save(account: Account): Mono<Account> {
-        val accountDocument = AccountDocumentMapper.toMongoDocument(account)
+        val accountDocument = AccountDocumentMapper.toDocument(account)
         return accountDocumentRepository.save(accountDocument)
             .retryOptimisticLockingFailure()
-            .map { AccountDocumentMapper.toDomainModel(it) }
+            .map { AccountDocumentMapper.toDomain(it) }
             .publishEvents(account, eventMapper)
     }
 
     override fun findByCredentialId(credentialId: CredentialId): Mono<Account> {
         return accountDocumentRepository.findByCredential_CredentialId(credentialId.value)
-            .map { AccountDocumentMapper.toDomainModel(it) }
+            .map { AccountDocumentMapper.toDomain(it) }
     }
 
     override fun existsByCredentialId(credentialId: CredentialId): Mono<Boolean> {
@@ -41,17 +40,17 @@ class MongoAccountRepository(
 
     override fun findByAccountId(accountId: AccountId): Mono<Account> {
         return accountDocumentRepository.findByAccountId(accountId.value)
-            .map { AccountDocumentMapper.toDomainModel(it) }
+            .map { AccountDocumentMapper.toDomain(it) }
     }
 
     override fun findBySubjectId(subjectId: SubjectId): Mono<Account> {
         return accountDocumentRepository.findBySubjectId(subjectId.value)
-            .map { AccountDocumentMapper.toDomainModel(it) }
+            .map { AccountDocumentMapper.toDomain(it) }
     }
 
     override fun deleteByAccountId(accountId: AccountId): Mono<Account> {
         return accountDocumentRepository.deleteByAccountId(accountId.value)
-            .map { AccountDocumentMapper.toDomainModel(it) }
+            .map { AccountDocumentMapper.toDomain(it) }
     }
 
     override fun findAll(specification: Specification<Account>): Flux<Account> {

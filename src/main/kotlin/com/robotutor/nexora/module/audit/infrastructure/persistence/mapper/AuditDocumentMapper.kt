@@ -8,7 +8,7 @@ import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object AuditDocumentMapper : DocumentMapper<Audit, AuditDocument> {
 
-    override fun toMongoDocument(domain: Audit): AuditDocument {
+    override fun toDocument(domain: Audit): AuditDocument {
         return AuditDocument(
             id = domain.getObjectId(),
             auditId = domain.auditId.value,
@@ -28,7 +28,7 @@ object AuditDocumentMapper : DocumentMapper<Audit, AuditDocument> {
             )
     }
 
-    override fun toDomainModel(document: AuditDocument): Audit {
+    override fun toDomain(document: AuditDocument): Audit {
         return Audit(
             eventId = EventId(document.eventId),
             auditId = AuditId(document.auditId),

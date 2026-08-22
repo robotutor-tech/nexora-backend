@@ -3,6 +3,8 @@ package com.robotutor.nexora.module.premises.interfaces.controller.mapper
 import com.robotutor.nexora.module.premises.application.command.RegisterPremisesCommand
 import com.robotutor.nexora.module.premises.domain.aggregate.Premises
 import com.robotutor.nexora.module.premises.domain.vo.Address
+import com.robotutor.nexora.module.premises.domain.vo.PostalCode
+import com.robotutor.nexora.module.premises.domain.vo.Street
 import com.robotutor.nexora.module.premises.interfaces.controller.view.AddressRequest
 import com.robotutor.nexora.module.premises.interfaces.controller.view.AddressResponse
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesCreateRequest
@@ -11,10 +13,10 @@ import com.robotutor.nexora.shared.domain.vo.Name
 import com.robotutor.nexora.shared.domain.vo.UserData
 
 object PremisesMapper {
-    fun toRegisterPremisesCommand(premisesRequest: PremisesCreateRequest, userData: UserData): RegisterPremisesCommand {
+    fun toRegisterPremisesCommand(request: PremisesCreateRequest, userData: UserData): RegisterPremisesCommand {
         return RegisterPremisesCommand(
-            name = Name(premisesRequest.name),
-            address = toAddress(premisesRequest.address),
+            name = Name.of(request.name),
+            address = toAddress(request.address),
             owner = userData
         )
     }
@@ -32,21 +34,12 @@ object PremisesMapper {
 
     private fun toAddressResponse(address: Address): AddressResponse {
         return AddressResponse(
-            street = address.street,
-            city = address.city,
-            state = address.state,
-            country = address.country,
-            postalCode = address.postalCode
+            street = address.street.value,
+            postalCode = address.postalCode.value
         )
     }
 
-    private fun toAddress(addressRequest: AddressRequest): Address {
-        return Address(
-            street = addressRequest.street,
-            city = addressRequest.city,
-            state = addressRequest.state,
-            country = addressRequest.country,
-            postalCode = addressRequest.postalCode
-        )
+    private fun toAddress(request: AddressRequest): Address {
+        return Address(street = Street.of(request.street), postalCode = PostalCode.of(request.postalCode))
     }
 }

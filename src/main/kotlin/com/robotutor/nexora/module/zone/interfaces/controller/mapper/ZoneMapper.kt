@@ -17,7 +17,7 @@ import com.robotutor.nexora.shared.domain.vo.ActorData
 
 object ZoneMapper {
     fun toCreateZoneCommand(request: ZoneRequest, actorData: ActorData): CreateZoneCommand {
-        return CreateZoneCommand(name = Name(request.name), actorData.premisesId, actorData.actorId)
+        return CreateZoneCommand(name = Name.of(request.name), actorData.premisesId, actorData.actorId)
     }
 
     fun toZoneResponse(zone: ZoneAggregate): ZoneResponse {

@@ -9,7 +9,7 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object FeedDocumentMapper : DocumentMapper<FeedAggregate, FeedDocument> {
-    override fun toMongoDocument(domain: FeedAggregate): FeedDocument {
+    override fun toDocument(domain: FeedAggregate): FeedDocument {
         return FeedDocument(
             id = domain.getObjectId(),
             feedId = domain.feedId.value,
@@ -26,7 +26,7 @@ object FeedDocumentMapper : DocumentMapper<FeedAggregate, FeedDocument> {
         )
     }
 
-    override fun toDomainModel(document: FeedDocument): FeedAggregate {
+    override fun toDomain(document: FeedDocument): FeedAggregate {
         return FeedAggregate.create(
             feedId = FeedId(document.feedId),
             deviceId = DeviceId(document.deviceId),

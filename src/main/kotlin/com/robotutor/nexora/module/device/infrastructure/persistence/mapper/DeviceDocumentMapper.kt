@@ -10,7 +10,7 @@ import com.robotutor.nexora.shared.domain.vo.*
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
-    override fun toMongoDocument(domain: DeviceAggregate): DeviceDocument {
+    override fun toDocument(domain: DeviceAggregate): DeviceDocument {
         return DeviceDocument(
             id = domain.getObjectId(),
             deviceId = domain.deviceId.value,
@@ -28,11 +28,11 @@ object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
         )
     }
 
-    override fun toDomainModel(document: DeviceDocument): DeviceAggregate {
+    override fun toDomain(document: DeviceDocument): DeviceAggregate {
         return DeviceAggregate.create(
             deviceId = DeviceId(document.deviceId),
             premisesId = PremisesId(document.premisesId),
-            name = Name(document.name),
+            name = Name.of(document.name),
             feedIds = document.feedIds.map { FeedId(it) }.toSet(),
             state = document.state,
             health = document.health,
@@ -45,8 +45,8 @@ object DeviceDocumentMapper : DocumentMapper<DeviceAggregate, DeviceDocument> {
     }
 
     private fun toDeviceMetaData(metaDataDocument: DeviceMetaDataDocument): DeviceMetadata = DeviceMetadata(
-        osName = Name(metaDataDocument.osName),
-        osVersion = Name(metaDataDocument.osVersion),
+        osName = Name.of(metaDataDocument.osName),
+        osVersion = Name.of(metaDataDocument.osVersion),
         modelNo = ModelNo(metaDataDocument.modelNo),
         serialNo = SerialNo(metaDataDocument.serialNo)
     )

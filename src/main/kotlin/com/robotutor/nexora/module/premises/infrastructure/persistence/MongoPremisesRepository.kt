@@ -20,27 +20,27 @@ class MongoPremisesRepository(
 ) : PremisesRepository {
     @CacheEvicts(["premises:premises-aggregate:premises-id:#{premisesAggregate.premisesId.value}"])
     override fun save(premises: Premises): Mono<Premises> {
-        val premisesDocument = PremisesDocumentMapper.toMongoDocument(premises)
+        val premisesDocument = PremisesDocumentMapper.toDocument(premises)
         return premisesDocumentRepository.save(premisesDocument)
             .retryOptimisticLockingFailure()
-            .map { PremisesDocumentMapper.toDomainModel(it) }
+            .map { PremisesDocumentMapper.toDomain(it) }
 //            .publishEvents(eventPublisher, premisesAggregate)
     }
 
     override fun findAllByPremisesIdIn(premisesIds: List<PremisesId>): Flux<Premises> {
         return premisesDocumentRepository.findAllByPremisesIdIn(premisesIds.map { it.value })
-            .map { PremisesDocumentMapper.toDomainModel(it) }
+            .map { PremisesDocumentMapper.toDomain(it) }
     }
 
     @Cache("premises:premises-aggregate:premises-id:#{premisesId.value}")
     override fun findByPremisesId(premisesId: PremisesId): Mono<Premises> {
         return premisesDocumentRepository.findByPremisesId(premisesId.value)
-            .map { PremisesDocumentMapper.toDomainModel(it) }
+            .map { PremisesDocumentMapper.toDomain(it) }
     }
 
     @CacheEvicts(["premises:premises-aggregate:premises-id:#{premisesId.value}"])
     override fun deleteByPremisesIdAndOwnerId(premisesId: PremisesId, ownerId: AccountId): Mono<Premises> {
         return premisesDocumentRepository.deleteByPremisesIdAndOwnerId(premisesId.value, ownerId.value)
-            .map { PremisesDocumentMapper.toDomainModel(it) }
+            .map { PremisesDocumentMapper.toDomain(it) }
     }
 }

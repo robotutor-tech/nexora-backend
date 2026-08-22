@@ -9,7 +9,7 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object GroupDocumentMapper : DocumentMapper<Group, GroupDocument> {
-    override fun toMongoDocument(domain: Group): GroupDocument {
+    override fun toDocument(domain: Group): GroupDocument {
         return GroupDocument(
             id = domain.getObjectId(),
             groupId = domain.groupId.value,
@@ -23,10 +23,10 @@ object GroupDocumentMapper : DocumentMapper<Group, GroupDocument> {
         )
     }
 
-    override fun toDomainModel(document: GroupDocument): Group {
+    override fun toDomain(document: GroupDocument): Group {
         return Group(
             groupId = GroupId(document.groupId),
-            name = Name(document.name),
+            name = Name.of(document.name),
             premisesId = PremisesId(document.premisesId),
             roleIds = document.roleIds.map { RoleId(it) }.toSet(),
             type = document.type,

@@ -9,7 +9,7 @@ import com.robotutor.nexora.shared.domain.vo.UserId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object UserDocumentMapper : DocumentMapper<User, UserDocument> {
-    override fun toMongoDocument(domain: User): UserDocument {
+    override fun toDocument(domain: User): UserDocument {
         return UserDocument(
             id = domain.getObjectId(),
             userId = domain.userId.value,
@@ -25,7 +25,7 @@ object UserDocumentMapper : DocumentMapper<User, UserDocument> {
         )
     }
 
-    override fun toDomainModel(document: UserDocument): User {
+    override fun toDomain(document: UserDocument): User {
         return User.create(
             userId = UserId(document.userId),
             fullName = FullName.of(document.name),

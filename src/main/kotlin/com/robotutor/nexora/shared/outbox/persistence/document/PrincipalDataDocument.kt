@@ -2,15 +2,10 @@ package com.robotutor.nexora.shared.outbox.persistence.document
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.robotutor.nexora.shared.domain.vo.AccountData
 import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.domain.vo.PrincipalType
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "principalType"
-)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
     JsonSubTypes.Type(value = AccountDataDocument::class, name = "ACCOUNT"),
     JsonSubTypes.Type(value = ActorDataDocument::class, name = "ACTOR")
@@ -29,11 +24,7 @@ data class ActorDataDocument(
     override val principalType: PrincipalType = PrincipalType.ACTOR
 }
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "accountType"
-)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
     JsonSubTypes.Type(value = DeviceDataDocument::class, name = "DEVICE"),
     JsonSubTypes.Type(value = UserDataDocument::class, name = "USER")

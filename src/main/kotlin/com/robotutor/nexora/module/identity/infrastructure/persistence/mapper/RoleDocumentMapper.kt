@@ -11,7 +11,7 @@ import com.robotutor.nexora.shared.domain.vo.ResourceId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object RoleDocumentMapper : DocumentMapper<Role, RoleDocument> {
-    override fun toMongoDocument(domain: Role): RoleDocument {
+    override fun toDocument(domain: Role): RoleDocument {
         return RoleDocument(
             id = domain.getObjectId(),
             roleId = domain.roleId.value,
@@ -27,10 +27,10 @@ object RoleDocumentMapper : DocumentMapper<Role, RoleDocument> {
         )
     }
 
-    override fun toDomainModel(document: RoleDocument): Role {
+    override fun toDomain(document: RoleDocument): Role {
         return Role(
             roleId = RoleId(document.roleId),
-            name = Name(document.name),
+            name = Name.of(document.name),
             premisesId = PremisesId(document.premisesId),
             permissions = document.permissions.map {
                 Permission(

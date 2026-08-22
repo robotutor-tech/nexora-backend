@@ -1,8 +1,9 @@
 package com.robotutor.nexora.shared.security.filter
 
 import com.robotutor.nexora.shared.application.logger.Logger
-import com.robotutor.nexora.shared.application.serialization.DefaultSerializer.serialize
+import com.robotutor.nexora.shared.application.serialization.DefaultSerializer
 import com.robotutor.nexora.shared.security.controllers.ExceptionHandlerRegistry
+import com.robotutor.nexora.shared.security.service.ContextService
 import com.robotutor.nexora.shared.security.service.JwtValidationService
 import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.core.annotation.Order
@@ -14,6 +15,7 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
+import java.util.*
 
 @Component
 @Order(1)
@@ -21,6 +23,7 @@ class GatewayAuthenticationFilter(
     private val routeValidator: RouteValidator,
     private val exceptionHandlerRegistry: ExceptionHandlerRegistry,
     private val jwtValidationService: JwtValidationService,
+    private val contextService: ContextService,
 ) : WebFilter {
     val logger = Logger(this::class.java)
 
@@ -33,7 +36,12 @@ class GatewayAuthenticationFilter(
             val principalData = jwtValidationService.validate(token ?: "")
             val authentication = UsernamePasswordAuthenticationToken(principalData, null, emptyList())
             val securityContext = createMono(SecurityContextImpl(authentication))
-            return chain.filter(exchange)
+            val request = exchange.request
+                .mutate()
+                .header(CONTEXT_HEADER, contextService.generateContext(principalData))
+                .header(CORRELATION_ID_HEADER, UUID.randomUUID().toString())
+                .build()
+            return chain.filter(exchange.mutate().request(request).build())
                 .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(securityContext))
         } catch (ex: Throwable) {
             return if (routeValidator.isUnsecured(exchange.request)) {
@@ -42,7 +50,7 @@ class GatewayAuthenticationFilter(
                 val responseEntity = exceptionHandlerRegistry.handle(ex)
                 exchange.response.statusCode = responseEntity.statusCode
                 val buffer = exchange.response.bufferFactory().wrap(
-                    serialize(responseEntity.body).toByteArray(),
+                    DefaultSerializer.serialize(responseEntity.body).toByteArray(),
                 )
                 exchange.response.writeWith(Mono.just(buffer))
             }

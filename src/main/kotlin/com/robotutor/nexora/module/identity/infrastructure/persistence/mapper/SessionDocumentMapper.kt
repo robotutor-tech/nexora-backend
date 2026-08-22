@@ -8,7 +8,7 @@ import com.robotutor.nexora.shared.outbox.persistence.mapper.PrincipalDataDocume
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object SessionDocumentMapper : DocumentMapper<Session, SessionDocument> {
-    override fun toMongoDocument(domain: Session): SessionDocument {
+    override fun toDocument(domain: Session): SessionDocument {
         return SessionDocument(
             id = domain.getObjectId(),
             sessionId = domain.sessionId.value,
@@ -21,7 +21,7 @@ object SessionDocumentMapper : DocumentMapper<Session, SessionDocument> {
         )
     }
 
-    override fun toDomainModel(document: SessionDocument): Session {
+    override fun toDomain(document: SessionDocument): Session {
         return Session.create(
             sessionId = SessionId(document.sessionId),
             token = HashAccessToken(document.token),

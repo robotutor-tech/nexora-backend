@@ -14,15 +14,15 @@ class MongoSessionRepository(
     private val sessionDocumentRepository: SessionDocumentRepository,
 ) : SessionRepository {
     override fun save(session: Session): Mono<Session> {
-        val sessionDocument = SessionDocumentMapper.toMongoDocument(session)
+        val sessionDocument = SessionDocumentMapper.toDocument(session)
         return sessionDocumentRepository.save(sessionDocument)
             .retryOptimisticLockingFailure()
-            .map { SessionDocumentMapper.toDomainModel(it) }
+            .map { SessionDocumentMapper.toDomain(it) }
 //            .publishEvents(eventPublisher, session)
     }
 
     override fun findBySessionId(sessionId: SessionId): Mono<Session> {
         return sessionDocumentRepository.findBySessionIdAndExpiresAtAfter(sessionId.value)
-            .map { SessionDocumentMapper.toDomainModel(it) }
+            .map { SessionDocumentMapper.toDomain(it) }
     }
 }

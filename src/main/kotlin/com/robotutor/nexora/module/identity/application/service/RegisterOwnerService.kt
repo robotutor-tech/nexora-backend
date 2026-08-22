@@ -55,13 +55,13 @@ class RegisterOwnerService(
         return listOf(
             RegisterGroupCommand(
                 premisesId = command.premisesId,
-                name = Name("OWNER"),
+                name = Name.of("OWNER"),
                 type = GroupType.OWNER,
                 roleIds = roles.map { it.roleId }
             ),
             RegisterGroupCommand(
                 premisesId = command.premisesId,
-                name = Name("ADMIN"),
+                name = Name.of("ADMIN"),
                 type = GroupType.ADMIN,
                 roleIds = roles.filter {
                     it.type in listOf(
@@ -74,7 +74,7 @@ class RegisterOwnerService(
             ),
             RegisterGroupCommand(
                 premisesId = command.premisesId,
-                name = Name("USER"),
+                name = Name.of("USER"),
                 type = GroupType.USER,
                 roleIds = roles.filter {
                     it.type in listOf(
@@ -86,7 +86,7 @@ class RegisterOwnerService(
             ),
             RegisterGroupCommand(
                 premisesId = command.premisesId,
-                name = Name("GUEST"),
+                name = Name.of("GUEST"),
                 type = GroupType.GUEST,
                 roleIds = roles.filter { it.type in listOf(RoleType.READ_ONLY) }.map { it.roleId }
             )
@@ -97,31 +97,31 @@ class RegisterOwnerService(
         return listOf(
             RegisterRoleCommand(
                 command.premisesId,
-                Name("FULL_ACCESS"),
+                Name.of("FULL_ACCESS"),
                 RoleType.FULL_ACCESS,
                 permissionSeedProvider.getDefaultPermissions(RoleType.FULL_ACCESS, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
-                Name("FULL_READ"),
+                Name.of("FULL_READ"),
                 RoleType.FULL_READ,
                 permissionSeedProvider.getDefaultPermissions(RoleType.FULL_READ, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
-                Name("FULL_WRITE"),
+                Name.of("FULL_WRITE"),
                 RoleType.FULL_WRITE,
                 permissionSeedProvider.getDefaultPermissions(RoleType.FULL_WRITE, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
-                Name("READ_ONLY"),
+                Name.of("READ_ONLY"),
                 RoleType.READ_ONLY,
                 permissionSeedProvider.getDefaultPermissions(RoleType.READ_ONLY, command.premisesId)
             ),
             RegisterRoleCommand(
                 command.premisesId,
-                Name("CONTROL_ONLY"),
+                Name.of("CONTROL_ONLY"),
                 RoleType.CONTROL_ONLY,
                 permissionSeedProvider.getDefaultPermissions(RoleType.CONTROL_ONLY, command.premisesId)
             ),

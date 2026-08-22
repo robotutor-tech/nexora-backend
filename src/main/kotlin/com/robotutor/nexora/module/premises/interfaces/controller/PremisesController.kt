@@ -1,6 +1,5 @@
 package com.robotutor.nexora.module.premises.interfaces.controller
 
-import com.robotutor.nexora.module.premises.application.command.GetAllPremisesQuery
 import com.robotutor.nexora.module.premises.application.command.GetPremisesQuery
 import com.robotutor.nexora.module.premises.application.service.GetPremisesService
 import com.robotutor.nexora.module.premises.application.service.RegisterPremisesService
@@ -8,8 +7,8 @@ import com.robotutor.nexora.module.premises.interfaces.controller.mapper.Premise
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesCreateRequest
 import com.robotutor.nexora.module.premises.interfaces.controller.view.PremisesResponse
 import com.robotutor.nexora.shared.domain.vo.PremisesId
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import com.robotutor.nexora.shared.domain.vo.UserData
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -21,19 +20,15 @@ class PremisesController(
     private val getPremisesService: GetPremisesService
 ) {
     @PostMapping
-    fun registerPremises(
-        @RequestBody premisesRequest: PremisesCreateRequest,
-        userData: UserData
-    ): Mono<PremisesResponse> {
-        val command = PremisesMapper.toRegisterPremisesCommand(premisesRequest, userData)
+    fun register(@RequestBody request: PremisesCreateRequest, userData: UserData): Mono<PremisesResponse> {
+        val command = PremisesMapper.toRegisterPremisesCommand(request, userData)
         return registerPremisesService.execute(command)
             .map { PremisesMapper.toPremisesResponse(it) }
     }
 
     @GetMapping
-    fun getAllPremises(@RequestParam premisesIds: List<String>): Flux<PremisesResponse> {
-        val query = GetAllPremisesQuery(premisesIds.map { PremisesId(it) })
-        return getPremisesService.execute(query)
+    fun getAllPremises(principalData: PrincipalData): Flux<PremisesResponse> {
+        return getPremisesService.execute(principalData)
             .map { PremisesMapper.toPremisesResponse(it) }
     }
 

@@ -15,11 +15,11 @@ import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object ZoneDocumentMapper : DocumentMapper<ZoneAggregate, ZoneDocument> {
 
-    override fun toDomainModel(document: ZoneDocument): ZoneAggregate {
+    override fun toDomain(document: ZoneDocument): ZoneAggregate {
         return ZoneAggregate.create(
             zoneId = ZoneId(document.zoneId),
             premisesId = PremisesId(document.premisesId),
-            name = Name(document.name),
+            name = Name.of(document.name),
             createdBy = ActorId(document.createdBy),
             widgets = document.widgets.map { toWidgetDomain(it) },
             createdAt = document.createdAt,
@@ -28,7 +28,7 @@ object ZoneDocumentMapper : DocumentMapper<ZoneAggregate, ZoneDocument> {
     }
 
 
-    override fun toMongoDocument(domain: ZoneAggregate): ZoneDocument {
+    override fun toDocument(domain: ZoneAggregate): ZoneDocument {
         return ZoneDocument(
             id = domain.getObjectId(),
             zoneId = domain.zoneId.value,
@@ -45,7 +45,7 @@ object ZoneDocumentMapper : DocumentMapper<ZoneAggregate, ZoneDocument> {
     private fun toWidgetDomain(document: WidgetDocument): Widget {
         return Widget.create(
             widgetId = WidgetId(document.widgetId),
-            name = Name(document.name),
+            name = Name.of(document.name),
             feedId = FeedId(document.feedId),
             metadata = ToggleWidgetMetadata(),
             createdAt = document.createdAt,

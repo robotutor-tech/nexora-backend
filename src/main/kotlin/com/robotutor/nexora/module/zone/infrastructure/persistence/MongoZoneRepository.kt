@@ -27,28 +27,28 @@ class MongoZoneRepository(
 ) : ZoneRepository {
 
     override fun save(zone: ZoneAggregate): Mono<ZoneAggregate> {
-        val zoneDocument = ZoneDocumentMapper.toMongoDocument(zone)
+        val zoneDocument = ZoneDocumentMapper.toDocument(zone)
         return zoneDocumentRepository.save(zoneDocument)
             .retryOptimisticLockingFailure()
-            .map { ZoneDocumentMapper.toDomainModel(it) }
+            .map { ZoneDocumentMapper.toDomain(it) }
             .publishEvents( zone, ZoneEventMapper)
     }
 
 
     override fun findByPremisesIdAndName(premisesId: PremisesId, name: Name): Mono<ZoneAggregate> {
         return zoneDocumentRepository.findByPremisesIdAndName(premisesId.value, name.value)
-            .map { ZoneDocumentMapper.toDomainModel(it) }
+            .map { ZoneDocumentMapper.toDomain(it) }
     }
 
     override fun findByZoneIdAndPremisesId(zoneId: ZoneId, premisesId: PremisesId): Mono<ZoneAggregate> {
         return zoneDocumentRepository.findByPremisesIdAndZoneId(premisesId.value, zoneId.value)
-            .map { ZoneDocumentMapper.toDomainModel(it) }
+            .map { ZoneDocumentMapper.toDomain(it) }
     }
 
     override fun findAll(specification: Specification<ZoneAggregate>): Flux<ZoneAggregate> {
         val query = Query(ZoneSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.find<ZoneDocument>(query)
-            .map { ZoneDocumentMapper.toDomainModel(it) }
+            .map { ZoneDocumentMapper.toDomain(it) }
     }
 
     override fun existsByPremisesIdAndName(premisesId: PremisesId, name: Name): Mono<Boolean> {

@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono
 class MongoAuditRepository(private val auditDocumentRepository: AuditDocumentRepository) : AuditRepository {
 
     override fun save(audit: Audit): Mono<Audit> {
-        val document = AuditDocumentMapper.toMongoDocument(audit)
+        val document = AuditDocumentMapper.toDocument(audit)
         return auditDocumentRepository.save(document)
             .retryOptimisticLockingFailure()
-            .map { AuditDocumentMapper.toDomainModel(it) }
+            .map { AuditDocumentMapper.toDomain(it) }
     }
 }

@@ -12,7 +12,7 @@ import com.robotutor.nexora.shared.domain.vo.ActorId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object AccountDocumentMapper : DocumentMapper<Account, AccountDocument> {
-    override fun toMongoDocument(domain: Account): AccountDocument {
+    override fun toDocument(domain: Account): AccountDocument {
         return AccountDocument(
             id = domain.getObjectId(),
             accountId = domain.accountId.value,
@@ -30,7 +30,7 @@ object AccountDocumentMapper : DocumentMapper<Account, AccountDocument> {
         )
     }
 
-    override fun toDomainModel(document: AccountDocument): Account {
+    override fun toDomain(document: AccountDocument): Account {
         return Account.create(
             accountId = AccountId(document.accountId),
             type = document.accountType,

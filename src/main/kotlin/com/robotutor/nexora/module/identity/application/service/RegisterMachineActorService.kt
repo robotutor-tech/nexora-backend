@@ -47,7 +47,7 @@ class RegisterMachineActorService(
     private fun createMachineRoleCommand(command: RegisterMachineActorCommand): RegisterRoleCommand {
         return RegisterRoleCommand(
             command.premisesId,
-            Name("DEVICE_ACCESS"),
+            Name.of("DEVICE_ACCESS"),
             RoleType.DEVICE_ACCESS,
             listOf(
                 Permission(ActionType.READ, ResourceType.DEVICE, command.deviceId, command.premisesId),

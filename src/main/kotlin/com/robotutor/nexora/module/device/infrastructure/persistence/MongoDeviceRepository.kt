@@ -25,32 +25,32 @@ class MongoDeviceRepository(
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : DeviceRepository {
     override fun save(device: DeviceAggregate): Mono<DeviceAggregate> {
-        val document = DeviceDocumentMapper.toMongoDocument(device)
+        val document = DeviceDocumentMapper.toDocument(device)
         return deviceDocumentRepository.save(document)
             .retryOptimisticLockingFailure()
-            .map { DeviceDocumentMapper.toDomainModel(it) }
+            .map { DeviceDocumentMapper.toDomain(it) }
             .publishEvents(device, DeviceEventMapper)
     }
 
     override fun findByDeviceId(deviceId: DeviceId): Mono<DeviceAggregate> {
         return deviceDocumentRepository.findByDeviceId(deviceId.value)
-            .map { DeviceDocumentMapper.toDomainModel(it) }
+            .map { DeviceDocumentMapper.toDomain(it) }
     }
 
     override fun deleteByDeviceId(deviceId: DeviceId): Mono<DeviceAggregate> {
         return deviceDocumentRepository.deleteByDeviceId(deviceId.value)
-            .map { DeviceDocumentMapper.toDomainModel(it) }
+            .map { DeviceDocumentMapper.toDomain(it) }
     }
 
     override fun findAll(specification: Specification<DeviceAggregate>): Flux<DeviceAggregate> {
         val query = Query(DeviceSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.find<DeviceDocument>(query)
-            .map { DeviceDocumentMapper.toDomainModel(it) }
+            .map { DeviceDocumentMapper.toDomain(it) }
     }
 
     override fun findBySpecification(specification: Specification<DeviceAggregate>): Mono<DeviceAggregate> {
         val query = Query(DeviceSpecificationTranslator.translate(specification))
         return reactiveMongoTemplate.findOne<DeviceDocument>(query)
-            .map { DeviceDocumentMapper.toDomainModel(it) }
+            .map { DeviceDocumentMapper.toDomain(it) }
     }
 }

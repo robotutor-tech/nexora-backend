@@ -3,7 +3,6 @@ package com.robotutor.nexora.module.identity.domain.vo
 import com.robotutor.nexora.shared.domain.utility.validation
 import com.robotutor.nexora.shared.domain.vo.AccountType
 import com.robotutor.nexora.shared.domain.vo.ValueObject
-import org.springframework.validation.annotation.Validated
 
 
 sealed interface CredentialId : ValueObject {

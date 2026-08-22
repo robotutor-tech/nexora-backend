@@ -28,7 +28,7 @@ object AutomationMapper {
             actions = toActions(request.actions),
             condition = null,
             executionMode = request.executionMode ?: ExecutionMode.MULTIPLE,
-            name = Name(request.name),
+            name = Name.of(request.name),
             description = request.description,
             createdBy = actorData.actorId,
             premisesId = actorData.premisesId

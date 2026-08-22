@@ -14,10 +14,7 @@ import java.time.Instant
 
 object SessionMapper {
     fun toTokenResponses(tokens: Tokens): TokenResponses {
-        return TokenResponses(
-            token = "Bearer ".plus(tokens.accessToken.value),
-            refreshToken = "Bearer ".plus(tokens.refreshToken.value),
-        )
+        return TokenResponses(accessToken = tokens.accessToken.value, refreshToken = tokens.refreshToken.value)
     }
 
     fun toValidateSessionCommand(token: String): ValidateTokenCommand {

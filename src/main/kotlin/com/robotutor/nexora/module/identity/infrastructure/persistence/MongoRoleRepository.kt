@@ -19,23 +19,23 @@ class MongoRoleRepository(
     private val eventMapper: EventMapper<IdentityEvent>,
 ) : RoleRepository {
     override fun save(role: Role): Mono<Role> {
-        val roleDocument = RoleDocumentMapper.toMongoDocument(role)
+        val roleDocument = RoleDocumentMapper.toDocument(role)
         return roleDocumentRepository.save(roleDocument)
             .retryOptimisticLockingFailure()
-            .map { RoleDocumentMapper.toDomainModel(it) }
+            .map { RoleDocumentMapper.toDomain(it) }
             .publishEvents(role, eventMapper)
     }
 
     override fun saveAll(roles: List<Role>): Flux<Role> {
-        val roleDocuments = roles.map { roleAggregate -> RoleDocumentMapper.toMongoDocument(roleAggregate) }
+        val roleDocuments = roles.map { roleAggregate -> RoleDocumentMapper.toDocument(roleAggregate) }
         return roleDocumentRepository.saveAll(roleDocuments)
             .retryOptimisticLockingFailure()
-            .map { RoleDocumentMapper.toDomainModel(it) }
+            .map { RoleDocumentMapper.toDomain(it) }
 //            .publishEvents(eventPublisher, roleAggregates)
     }
 
     override fun findAllByRoleIds(roleIds: Set<RoleId>): Flux<Role> {
         return roleDocumentRepository.findAllByRoleIdIn(roleIds.map { it.value })
-            .map { RoleDocumentMapper.toDomainModel(it) }
+            .map { RoleDocumentMapper.toDomain(it) }
     }
 }

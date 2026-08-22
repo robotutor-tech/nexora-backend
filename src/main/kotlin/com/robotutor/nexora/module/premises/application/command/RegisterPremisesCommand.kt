@@ -11,9 +11,6 @@ data class RegisterPremisesCommand(val name: Name, val address: Address, val own
             "name" to name.value,
             "address" to mapOf(
                 "street" to address.street,
-                "city" to address.city,
-                "state" to address.state,
-                "country" to address.country,
                 "postalCode" to address.postalCode,
             ),
             "owner" to owner.accountId.value

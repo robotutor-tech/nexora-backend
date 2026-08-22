@@ -69,10 +69,15 @@ dependencies {
 //    Gateway
     implementation("org.springframework.cloud:spring-cloud-starter-gateway-server-webflux")
 
-// JWT
+//    JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.7")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.7")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.7")
+
+//    CSV
+    implementation("org.apache.commons:commons-csv:1.14.0")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
 
     implementation("io.lettuce:lettuce-core")
     implementation("net.javacrumbs.shedlock:shedlock-spring:7.7.0")

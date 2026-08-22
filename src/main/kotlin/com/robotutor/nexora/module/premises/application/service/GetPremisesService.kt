@@ -1,12 +1,12 @@
 package com.robotutor.nexora.module.premises.application.service
 
-import com.robotutor.nexora.module.premises.application.command.GetAllPremisesQuery
 import com.robotutor.nexora.module.premises.application.command.GetPremisesQuery
 import com.robotutor.nexora.module.premises.domain.aggregate.Premises
 import com.robotutor.nexora.module.premises.domain.repository.PremisesRepository
 import com.robotutor.nexora.shared.application.logger.Logger
 import com.robotutor.nexora.shared.application.logger.logOnError
 import com.robotutor.nexora.shared.application.logger.logOnSuccess
+import com.robotutor.nexora.shared.domain.vo.PrincipalData
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -18,10 +18,11 @@ class GetPremisesService(
 ) {
     private val logger = Logger(this::class.java)
 
-    fun execute(query: GetAllPremisesQuery): Flux<Premises> {
-        return premisesRepository.findAllByPremisesIdIn(query.premisesIds)
-            .logOnSuccess(logger = logger, message = "Successfully get premises")
-            .logOnError(logger, "Failed to get premises")
+    fun execute(principalData: PrincipalData): Flux<Premises> {
+        return Flux.empty()
+//        return premisesRepository.findAllByPremisesIdIn(query.premisesIds)
+//            .logOnSuccess(logger = logger, message = "Successfully get premises")
+//            .logOnError(logger, "Failed to get premises")
     }
 
     fun execute(query: GetPremisesQuery): Mono<Premises> {

@@ -2,6 +2,8 @@ package com.robotutor.nexora.module.premises.infrastructure.persistence.mapper
 
 import com.robotutor.nexora.module.premises.domain.aggregate.Premises
 import com.robotutor.nexora.module.premises.domain.vo.Address
+import com.robotutor.nexora.module.premises.domain.vo.PostalCode
+import com.robotutor.nexora.module.premises.domain.vo.Street
 import com.robotutor.nexora.module.premises.infrastructure.persistence.document.AddressDocument
 import com.robotutor.nexora.module.premises.infrastructure.persistence.document.PremisesDocument
 import com.robotutor.nexora.shared.domain.vo.Name
@@ -10,7 +12,7 @@ import com.robotutor.nexora.shared.domain.vo.PremisesId
 import com.robotutor.nexora.shared.persistence.mapper.DocumentMapper
 
 object PremisesDocumentMapper : DocumentMapper<Premises, PremisesDocument> {
-    override fun toMongoDocument(domain: Premises): PremisesDocument {
+    override fun toDocument(domain: Premises): PremisesDocument {
         return PremisesDocument(
             id = domain.getObjectId(),
             premisesId = domain.premisesId.value,
@@ -24,11 +26,11 @@ object PremisesDocumentMapper : DocumentMapper<Premises, PremisesDocument> {
         )
     }
 
-    override fun toDomainModel(document: PremisesDocument): Premises {
+    override fun toDomain(document: PremisesDocument): Premises {
         return Premises
             .create(
                 premisesId = PremisesId(document.premisesId),
-                name = Name(document.name),
+                name = Name.of(document.name),
                 address = toAddress(document.address),
                 ownerId = AccountId(document.ownerId),
                 state = document.state,
@@ -41,21 +43,15 @@ object PremisesDocumentMapper : DocumentMapper<Premises, PremisesDocument> {
 
     private fun toAddress(address: AddressDocument): Address {
         return Address(
-            street = address.street,
-            city = address.city,
-            state = address.state,
-            country = address.country,
-            postalCode = address.postalCode
+            street = Street.of(address.street),
+            postalCode = PostalCode.of(address.postalCode)
         )
     }
 
     private fun toAddressDocument(address: Address): AddressDocument {
         return AddressDocument(
-            street = address.street,
-            city = address.city,
-            state = address.state,
-            country = address.country,
-            postalCode = address.postalCode
+            street = address.street.value,
+            postalCode = address.postalCode.value
         )
     }
 }

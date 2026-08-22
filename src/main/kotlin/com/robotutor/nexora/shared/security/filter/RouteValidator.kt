@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 const val REFRESH_TOKEN_HEADER = "refreshToken"
 const val BEARER_PREFIX = "Bearer "
 
+
 @Component
 class RouteValidator(private val appConfig: AppConfig) {
 

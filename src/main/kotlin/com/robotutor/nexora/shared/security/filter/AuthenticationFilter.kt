@@ -1,5 +1,6 @@
 package com.robotutor.nexora.shared.security.filter
 
+import com.robotutor.nexora.shared.context.ReactiveContext.CORRELATION_ID
 import com.robotutor.nexora.shared.security.service.ContextService
 import com.robotutor.nexora.shared.utility.createMono
 import org.springframework.core.annotation.Order
@@ -13,6 +14,7 @@ import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
 const val CONTEXT_HEADER = "x-context-data"
+const val CORRELATION_ID_HEADER = "x-correlation-id"
 
 @Component
 @Order(2)
@@ -27,10 +29,12 @@ class AuthenticationFilter(private val contextService: ContextService, private v
             return chain.filter(exchange)
         }
         val token = exchange.request.headers.getFirst(CONTEXT_HEADER)
+        val correlationId = exchange.request.headers.getFirst(CORRELATION_ID_HEADER)!!
         val principalData = contextService.getPrincipalData(token)
         val authentication = UsernamePasswordAuthenticationToken(principalData, null, emptyList())
         val securityContext = createMono(SecurityContextImpl(authentication))
         return chain.filter(exchange)
             .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(securityContext))
+            .contextWrite { it.put(CORRELATION_ID, correlationId) }
     }
 }

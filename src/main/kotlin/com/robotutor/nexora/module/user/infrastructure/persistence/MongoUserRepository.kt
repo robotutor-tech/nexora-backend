@@ -22,28 +22,28 @@ class MongoUserRepository(
 ) : UserRepository {
     @CacheEvicts(["user:user-id:#userAggregate.userId", "user:email:#email", "user:email:#email:exists"])
     override fun save(user: User): Mono<User> {
-        val userDocument = UserDocumentMapper.toMongoDocument(user)
+        val userDocument = UserDocumentMapper.toDocument(user)
         return userDocumentRepository.save(userDocument)
             .retryOptimisticLockingFailure()
-            .map { UserDocumentMapper.toDomainModel(it) }
+            .map { UserDocumentMapper.toDomain(it) }
             .publishEvents(user, eventMapper)
     }
 
     @CacheEvicts(["user:user-id:#userAggregate.userId", "user:email:#email", "user:email:#email:exists"])
     override fun deleteByUserId(userId: UserId): Mono<User> {
         return userDocumentRepository.deleteByUserId(userId.value)
-            .map { UserDocumentMapper.toDomainModel(it) }
+            .map { UserDocumentMapper.toDomain(it) }
     }
 
     override fun findByUserId(userId: UserId): Mono<User> {
         return userDocumentRepository.findByUserId(userId.value)
-            .map { UserDocumentMapper.toDomainModel(it) }
+            .map { UserDocumentMapper.toDomain(it) }
     }
 
     @Cache("user:email:#email")
     override fun findByEmail(email: Email): Mono<User> {
         return userDocumentRepository.findByEmail(email.value)
-            .map { UserDocumentMapper.toDomainModel(it) }
+            .map { UserDocumentMapper.toDomain(it) }
     }
 
     @Cache("user:email:#{email.value}:exists")
