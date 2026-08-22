@@ -43,7 +43,7 @@ fun <C> evaluatePolicy(policy: Policy<C>, value: C, error: ServiceError): Mono<P
     return if (!policyResult.isAllowed()) {
         val errorResponse = ErrorResponse(
             error.errorCode,
-            "${error.message} due to: ${policyResult.getReasons().joinToString(", ")}"
+            "${error.message}:\n\t${policyResult.getReasons().joinToString("\n\t")}"
         )
         createMonoError(PolicyViolationException(errorResponse))
     } else {

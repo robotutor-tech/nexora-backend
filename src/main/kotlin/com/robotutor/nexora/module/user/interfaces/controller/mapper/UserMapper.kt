@@ -11,7 +11,7 @@ import com.robotutor.nexora.module.user.interfaces.controller.view.UserResponse
 object UserMapper {
     fun toRegisterUserCommand(userRequest: UserRequest): RegisterUserCommand {
         return RegisterUserCommand(
-            fullName = FullName(userRequest.name),
+            fullName = FullName.of(userRequest.name),
             email = Email(userRequest.email),
             mobile = Mobile(userRequest.mobile)
         )

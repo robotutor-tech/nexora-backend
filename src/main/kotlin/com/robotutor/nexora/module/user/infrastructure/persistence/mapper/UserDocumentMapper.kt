@@ -28,7 +28,7 @@ object UserDocumentMapper : DocumentMapper<User, UserDocument> {
     override fun toDomainModel(document: UserDocument): User {
         return User.create(
             userId = UserId(document.userId),
-            fullName = FullName(document.name),
+            fullName = FullName.of(document.name),
             email = Email(document.email, document.isEmailVerified),
             mobile = Mobile(document.mobile, document.isMobileVerified),
             registeredAt = document.registeredAt,

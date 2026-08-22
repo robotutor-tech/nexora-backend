@@ -7,7 +7,7 @@ import com.robotutor.nexora.module.identity.domain.aggregate.Account
 import com.robotutor.nexora.module.identity.domain.vo.Email
 import com.robotutor.nexora.module.identity.domain.vo.RawPassword
 import com.robotutor.nexora.module.identity.interfaces.controller.view.AccountResponse
-import com.robotutor.nexora.module.identity.interfaces.controller.view.AuthenticateAccountRequest
+import com.robotutor.nexora.module.identity.interfaces.controller.view.AuthenticateUserAccountRequest
 import com.robotutor.nexora.module.identity.interfaces.controller.view.RegisterUserAccountRequest
 import com.robotutor.nexora.shared.domain.vo.ActorData
 import com.robotutor.nexora.shared.domain.vo.DeviceId
@@ -17,10 +17,10 @@ import com.robotutor.nexora.shared.domain.vo.Mobile
 object AccountMapper {
     fun toRegisterUserAccountCommand(request: RegisterUserAccountRequest): RegisterUserAccountCommand {
         return RegisterUserAccountCommand(
-            email = Email(request.email),
+            email = Email.of(request.email),
             password = RawPassword(request.password),
-            name = FullName(request.name),
-            mobile = Mobile(request.mobile),
+            name = FullName.of(request.name),
+            mobile = Mobile.of(request.mobile),
         )
     }
 
@@ -35,10 +35,10 @@ object AccountMapper {
         )
     }
 
-    fun toAuthenticateAccountCommand(authenticateAccountRequest: AuthenticateAccountRequest): AuthenticateAccountCommand {
+    fun toAuthenticateAccountCommand(request: AuthenticateUserAccountRequest): AuthenticateAccountCommand {
         return AuthenticateAccountCommand(
-            credentialId = Email(authenticateAccountRequest.credentialId),
-            secret = RawPassword(authenticateAccountRequest.secret),
+            credentialId = Email.of(request.email),
+            secret = RawPassword(request.password),
         )
     }
 

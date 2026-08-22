@@ -9,6 +9,7 @@ import com.robotutor.nexora.module.identity.interfaces.controller.mapper.Account
 import com.robotutor.nexora.module.identity.interfaces.controller.mapper.SessionMapper
 import com.robotutor.nexora.module.identity.interfaces.controller.view.*
 import com.robotutor.nexora.shared.domain.vo.AccountId
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
@@ -23,7 +24,6 @@ class AccountController(
 
     @PostMapping("/users/register")
     fun registerUserAccount(@RequestBody request: RegisterUserAccountRequest): Mono<AccountResponse> {
-        println("--------------$request--------------------")
         val command = AccountMapper.toRegisterUserAccountCommand(request)
         return registerUserAccountService.execute(command)
             .map { AccountMapper.toAccountResponse(it) }
@@ -39,9 +39,9 @@ class AccountController(
 //            .map { AccountMapper.toAccountResponse(it) }
 //    }
 
-    @PostMapping("/authenticate")
-    fun authenticate(@RequestBody authenticateAccountRequest: AuthenticateAccountRequest): Mono<TokenResponses> {
-        val command = AccountMapper.toAuthenticateAccountCommand(authenticateAccountRequest)
+    @PostMapping("/users/authenticate")
+    fun authenticate(@RequestBody req: AuthenticateUserAccountRequest): Mono<TokenResponses> {
+        val command = AccountMapper.toAuthenticateAccountCommand(req)
         return authenticateAccountService.execute(command)
             .map { SessionMapper.toTokenResponses(it) }
     }

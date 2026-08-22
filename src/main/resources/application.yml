@@ -40,7 +40,7 @@ app:
   security:
     un-secured-path:
       - "/identity/accounts/users/register"
-      - "/identity/accounts/authenticate"
+      - "/identity/accounts/users/authenticate"
       - "/identity/sessions/validate"
       - "/identity/sessions/refresh"
       - "/users/register"

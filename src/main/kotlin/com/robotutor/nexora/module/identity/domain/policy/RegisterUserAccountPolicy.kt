@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class RegisterUserAccountPolicy : Policy<RegisterUserAccountPolicyContext> {
     override fun evaluate(input: RegisterUserAccountPolicyContext): PolicyResult {
         return if (input.exists) {
-            PolicyResult.deny(listOf("User is already registered with ${input.credentialId.value}"))
+            PolicyResult.deny(listOf("User is already registered with '${input.credentialId.value}'."))
         } else {
             PolicyResult.allow()
         }
